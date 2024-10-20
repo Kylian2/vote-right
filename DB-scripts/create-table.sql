@@ -30,7 +30,7 @@ CREATE TABLE utilisateur (
     UTI_adresse_VC VARCHAR(200),
     UTI_codepostal_CH CHAR(6),
     UTI_naissance_DATE DATE,
-    UTI_notiffrequence_NB CHAR(1),
+    UTI_notiffrequence_CH CHAR(1),
     UTI_notifproposition_NB BOOLEAN,
     UTI_notifvote_NB BOOLEAN,
     UTI_notifreaction_NB BOOLEAN,

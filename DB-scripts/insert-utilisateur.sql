@@ -1,4 +1,4 @@
-INSERT INTO `utilisateur` (`UTI_id_NB`, `UTI_email_VC`, `UTI_nom_VC`, `UTI_prenom_VC`, `UTI_adresse_VC`, `UTI_codepostal_CH`, `UTI_naissance_DATE`, `UTI_notiffrequence_NB`, `UTI_notifproposition_NB`, `UTI_notifvote_NB`, `UTI_notifreaction_NB`) VALUES
+INSERT INTO `utilisateur` (`UTI_id_NB`, `UTI_email_VC`, `UTI_nom_VC`, `UTI_prenom_VC`, `UTI_adresse_VC`, `UTI_codepostal_CH`, `UTI_naissance_DATE`, `UTI_notiffrequence_CH`, `UTI_notifproposition_NB`, `UTI_notifvote_NB`, `UTI_notifreaction_NB`) VALUES
 (1, 'phamlett0@slate.com', 'Hamlett', 'Pacorro', '8677 Florence Center', '02360', '1958-12-27', 'H', 1, 1, 0),
 (2, 'kelmes1@zimbio.com', 'Elmes', 'Kaspar', '6 Independence Avenue', '56400', '1978-04-10', 'H', 1, 0, 0),
 (3, 'cramsted2@who.int', 'Ramsted', 'Cacilia', '647 6th Place', '65120', '1982-06-06', 'H', 0, 1, 0),
