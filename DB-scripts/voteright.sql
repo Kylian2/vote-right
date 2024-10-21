@@ -310,6 +310,7 @@ INSERT INTO `theme` (`THE_id_NB`, `THE_groupe_NB`, `THE_nom_VC`, `THE_budget_NB`
 CREATE TABLE `utilisateur` (
   `UTI_id_NB` int(11) NOT NULL,
   `UTI_email_VC` varchar(150) DEFAULT NULL,
+  `UTI_motdepasse_VC` varchar(255) DEFAULT NULL,
   `UTI_nom_VC` varchar(50) DEFAULT NULL,
   `UTI_prenom_VC` varchar(50) DEFAULT NULL,
   `UTI_adresse_VC` varchar(200) DEFAULT NULL,

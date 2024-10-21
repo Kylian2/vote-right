@@ -25,15 +25,16 @@ CREATE TABLE suffrage (
 CREATE TABLE utilisateur (
     UTI_id_NB INT AUTO_INCREMENT,
     UTI_email_VC VARCHAR(150),
+    UTI_motdepasse_VC VARCHAR(255),
     UTI_nom_VC VARCHAR(50),
     UTI_prenom_VC VARCHAR(50),
     UTI_adresse_VC VARCHAR(200),
     UTI_codepostal_CH CHAR(6),
     UTI_naissance_DATE DATE,
-    UTI_notiffrequence_CH CHAR(1),
-    UTI_notifproposition_NB BOOLEAN,
-    UTI_notifvote_NB BOOLEAN,
-    UTI_notifreaction_NB BOOLEAN,
+    UTI_notiffrequence_CH CHAR(1) DEFAULT 'H',
+    UTI_notifproposition_NB BOOLEAN DEFAULT 0,
+    UTI_notifvote_NB BOOLEAN DEFAULT 0,
+    UTI_notifreaction_NB BOOLEAN DEFAULT 0,
     CONSTRAINT PK_utilisateur PRIMARY KEY (UTI_id_NB)
 );
 
