@@ -10,16 +10,13 @@ class ControleurUtilisateur{
     }
 
     public function store(){
-        
-        if(false){
-            http_response_code(422);
-        }
 
         $body = file_get_contents('php://input');
 
         //Verifier l'unicité de l'email
 
-        //mettre en place une validation des entrées
+        //mettre en place une validation des entrées et vérifier que toutes les données sont reçus
+        //sinon 422 Unprocessable entity
 
         //mettre en place un cryptage de mot de passe
     
@@ -41,7 +38,7 @@ class ControleurUtilisateur{
         if($resultat === true){
             echo json_encode($utilisateur);
         }else{
-            echo $resultat;
+            echo json_encode($resultat);
         }
     }
 }
