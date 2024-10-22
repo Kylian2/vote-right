@@ -43,7 +43,7 @@ class Connexion {
             self::$pdo = new PDO("mysql:host=$h;dbname=$d",$l,$p,$t);
             self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }catch(PDOException $e){
-            echo "erreur de connexion : ".$e->getMessage()."<br>";
+            echo "Connexion error : ".$e->getMessage()."<br>";
         }
     }
 }
