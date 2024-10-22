@@ -1,6 +1,7 @@
 <?php
 
 @require_once('modele/utilisateur.php');
+@require_once('validateur/utilisateurValidateur.php');
 
 class ControleurUtilisateur{
 
@@ -13,16 +14,26 @@ class ControleurUtilisateur{
 
         $body = file_get_contents('php://input');
 
-        //Verifier l'unicité de l'email
-
-        //mettre en place une validation des entrées et vérifier que toutes les données sont reçus
-        //sinon 422 Unprocessable entity
-
-        //mettre en place un cryptage de mot de passe
-    
         // Décoder le JSON en tableau associatif
         $userData = json_decode($body, true);
-        
+
+        //Vérifier que toutes les données sont reçus
+        if(!isset($userData["email"]) || !isset($userData["motdepasse"]) || !isset($userData["nom"]) 
+        || !isset($userData["prenom"]) || !isset($userData["adresse"]) || !isset($userData["codepostal"])|| !isset($userData["naissance"])){
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"missing data for processing"}';
+            return;
+        }
+
+        //Validation des données
+        $validate = UtilisateurValidateur::creationDataValidateur($userData);
+        if($validate !== true){
+            http_response_code(422);
+            echo json_encode($validate);
+            return;
+        }
+
+        //mettre en place un cryptage de mot de passe
         $valeurs["email"] = $userData["email"];
         $valeurs["motdepasse"] = $userData["motdepasse"];
         $valeurs["nom"] = $userData["nom"];

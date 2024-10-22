@@ -54,6 +54,15 @@ class Utilisateur{
         $this->UTI_id_NB = $id;
     }
 
+    //Helpers functions 
+
+    public static function validateDate(string $date, string $format = 'Y-m-d') { 
+        $d = DateTime::createFromFormat($format, $date); 
+        return $d && $d->format($format) === $date; 
+    } 
+
+    //Interrogation de base de données
+
     public static function getAll(){
         $requete = "SELECT * FROM utilisateur;";
         $resultat = connexion::pdo()->query($requete);
