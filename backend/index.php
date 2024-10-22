@@ -1,8 +1,6 @@
 <?php
     header('Content-Type: application/json'); // pour préciser que le contenu renvoyé est du json
 
-    require_once 'controleur/controleurUtilisateur.php'; // Inclure le contrôleur
-
     require_once 'route/routes.php'; 
     
     require_once 'config/connexion.php'; 
