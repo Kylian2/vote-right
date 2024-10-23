@@ -1,7 +1,7 @@
 CREATE TABLE reaction (
     REA_id_NB TINYINT AUTO_INCREMENT,
     REA_label_VC VARCHAR(25),
-    CONSTRAINT PK_reaction PRIMARY KEY (REA_id_NB) -- Changed to PK_reaction to avoid name conflict with reason table
+    CONSTRAINT PK_reaction PRIMARY KEY (REA_id_NB)
 );
 
 CREATE TABLE reason (
@@ -76,7 +76,7 @@ CREATE TABLE invitation (
 );
 
 CREATE TABLE theme (
-    THM_id_NB SMALLINT AUTO_INCREMENT, -- Added AUTO_INCREMENT for the theme ID
+    THM_id_NB SMALLINT,
     THM_community_NB INT,
     THM_name_VC VARCHAR(50),
     THM_budget_NB FLOAT(12, 2),
@@ -148,7 +148,7 @@ CREATE TABLE possibility (
     POS_round_NB TINYINT,
     CONSTRAINT PK_possibility PRIMARY KEY (POS_id_NB),
     CONSTRAINT FK_POS_proposal FOREIGN KEY (POS_proposal_NB) REFERENCES proposal(PRO_id_NB),
-    CONSTRAINT FK_POS_round FOREIGN KEY (POS_proposal_NB, POS_round_NB) REFERENCES vote(VOT_proposal_NB, VOT_round_NB) -- Composite foreign key
+    CONSTRAINT FK_POS_round FOREIGN KEY (POS_proposal_NB, POS_round_NB) REFERENCES vote(VOT_proposal_NB, VOT_round_NB)
 );
 
 CREATE TABLE vote_detail (
@@ -159,7 +159,7 @@ CREATE TABLE vote_detail (
     CONSTRAINT PK_vote_detail PRIMARY KEY (DET_proposal_NB, DET_round_NB, DET_user_NB),
     CONSTRAINT FK_DET_vote FOREIGN KEY (DET_proposal_NB, DET_round_NB) REFERENCES vote(VOT_proposal_NB, VOT_round_NB),
     CONSTRAINT FK_DET_user FOREIGN KEY (DET_user_NB) REFERENCES user(USR_id_NB),
-    CONSTRAINT FK_DET_choice FOREIGN KEY (DET_choice_NB) REFERENCES possibility(POS_id_NB) -- Added comma at the end of the previous line
+    CONSTRAINT FK_DET_choice FOREIGN KEY (DET_choice_NB) REFERENCES possibility(POS_id_NB)
 );
 
 CREATE TABLE comment_reaction (
