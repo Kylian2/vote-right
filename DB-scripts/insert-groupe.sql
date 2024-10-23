@@ -1,4 +1,4 @@
-INSERT INTO `groupe` (`GRO_id_NB`, `GRO_nom_VC`, `GRO_image_VC`, `GRO_emoji_VC`, `GRO_description_VC`, `GRO_budget_NB`, `GRO_fraisfixes_NB`, `GRO_createur_NB`) VALUES
+INSERT INTO `community` (`CMY_id_NB`, `CMY_name_VC`, `CMY_image_VC`, `CMY_emoji_VC`, `CMY_description_VC`, `CMY_budget_NB`, `CMY_fixed_fees_NB`, `CMY_creator_NB`) VALUES
 (1, 'Association des arts et traditions populaires', '100004.png', '1F389', NULL, 86000.00, 40420.00, 74),
 (2, 'Mairie de Rennes – Programme des seniors actifs', '100003.png', '1F389', NULL, 32000.00, 11770.00, 4),
 (3, 'Club de modélisme ferroviaire', '100004.png', '1F389', NULL, 105000.00, 42000.00, 23),
