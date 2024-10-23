@@ -6,8 +6,8 @@
 class UserController{
 
     public function index(){
-        $utilisateur = User::getAll();
-        echo json_encode($utilisateur);
+        $users = User::getAll();
+        echo json_encode($users);
     }
 
     public function store(){
@@ -17,9 +17,9 @@ class UserController{
         // Décoder le JSON en tableau associatif
         $userData = json_decode($body, true);
 
-        //Vérifier que toutes les données sont reçus
-        if(!isset($userData["email"]) || !isset($userData["motdepasse"]) || !isset($userData["nom"]) 
-        || !isset($userData["prenom"]) || !isset($userData["adresse"]) || !isset($userData["codepostal"])|| !isset($userData["naissance"])){
+        // Vérifier que toutes les données sont reçues
+        if(!isset($userData["email"]) || !isset($userData["password"]) || !isset($userData["lastname"]) 
+        || !isset($userData["firstname"]) || !isset($userData["address"]) || !isset($userData["zipcode"]) || !isset($userData["birthdate"])){
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing data for processing"}';
             return;
@@ -35,21 +35,21 @@ class UserController{
 
         //mettre en place un cryptage de mot de passe
         $values["email"] = $userData["email"];
-        $values["motdepasse"] = $userData["motdepasse"];
-        $values["nom"] = $userData["nom"];
-        $values["prenom"] = $userData["prenom"];
-        $values["adresse"] = $userData["adresse"];
-        $values["codepostal"] = $userData["codepostal"];
-        $values["naissance"] = $userData["naissance"];
+        $values["password"] = $userData["password"];
+        $values["lastname"] = $userData["lastname"];
+        $values["firstname"] = $userData["firstname"];
+        $values["address"] = $userData["address"];
+        $values["zipcode"] = $userData["zipcode"];
+        $values["birthdate"] = $userData["birthdate"];
 
-        $utilisateur = User::createUser($values["nom"], $values["prenom"], $values["email"], $values["motdepasse"], $values["adresse"], $values["codepostal"], $values["naissance"]);
+        $user = User::createUser($values["lastname"], $values["firstname"], $values["email"], $values["password"], $values["address"], $values["zipcode"], $values["birthdate"]);
 
-        $resultat = $utilisateur->insert();
+        $result = $user->insert();
 
-        if($resultat === true){
-            echo json_encode($utilisateur);
-        }else{
-            echo json_encode($resultat);
+        if($result === true){
+            echo json_encode($user);
+        } else {
+            echo json_encode($result);
         }
     }
 }

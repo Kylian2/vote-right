@@ -14,23 +14,23 @@ class UserValidator{
                 throw new Exception("Invalid size of email");
             }
 
-            if(strlen($data["nom"]) > 50){
+            if(strlen($data["lastname"]) > 50){
                 throw new Exception("Invalid size of name");
             }
 
-            if(strlen($data["prenom"]) > 50){
+            if(strlen($data["firstname"]) > 50){
                 throw new Exception("Invalid size of firstname");
             }
 
-            if(strlen($data["adresse"]) > 200){
+            if(strlen($data["address"]) > 200){
                 throw new Exception("Invalid size of address");
             }
 
-            if(strlen($data["codepostal"]) !== 5){
+            if(strlen($data["zipcode"]) !== 5){
                 throw new Exception("Incorrect postcode");
             }
 
-            if (!User::validateDate($data["naissance"], 'Y-m-d')) { 
+            if (!User::validateDate($data["birthdate"], 'Y-m-d')) { 
                 throw new Exception("Invalid date format (must be in Y-m-d)");
             }
 
