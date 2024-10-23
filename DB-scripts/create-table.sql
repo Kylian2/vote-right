@@ -32,7 +32,7 @@ CREATE TABLE user (
     USR_zipcode_CH CHAR(5),
     USR_birthdate_DATE DATE,
     USR_notification_frequency_CH CHAR(1) DEFAULT 'H',
-    USR_notify_proposition_NB BOOLEAN DEFAULT 0,
+    USR_notify_proposal_NB BOOLEAN DEFAULT 0,
     USR_notify_vote_NB BOOLEAN DEFAULT 0,
     USR_notify_reaction_NB BOOLEAN DEFAULT 0,
     CONSTRAINT PK_user PRIMARY KEY (USR_id_NB)
