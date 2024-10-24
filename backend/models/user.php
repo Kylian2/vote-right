@@ -1,6 +1,8 @@
 <?php
 
-class User {
+@require_once('models/model.php');
+
+class User extends Model{
     public int $USR_id_NB;
     public string $USR_lastname_VC;
     public string $USR_firstname_VC;
@@ -55,6 +57,16 @@ class User {
         $result->setFetchmode(PDO::FETCH_CLASS, "user");
         $users = $result->fetchAll();
         return $users;
+    }
+
+    public static function getByEmail($email){
+        $request = "SELECT * FROM user WHERE USR_email_VC = :email";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["email"] = $email;
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "user");
+        $prepare->execute($values);
+        $result = $prepare->fetch();
+        return $result;
     }
 
     public function insert() {
