@@ -24,7 +24,7 @@ CREATE TABLE voting_system (
 
 CREATE TABLE user (
     USR_id_NB INT AUTO_INCREMENT,
-    USR_email_VC VARCHAR(150),
+    USR_email_VC VARCHAR(150) UNIQUE,
     USR_password_VC VARCHAR(255),
     USR_lastname_VC VARCHAR(50),
     USR_firstname_VC VARCHAR(50),
