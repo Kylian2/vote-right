@@ -1,4 +1,3 @@
--- Cette table n'a pas été insérée
 INSERT INTO reason (RES_id_NB, RES_label_VC) VALUES 
 (1, 'Autres'),
 (2, 'Incitation au terrorisme'),
