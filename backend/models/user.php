@@ -84,14 +84,10 @@ class User extends Model{
         $values["USR_zipcode_CH"] = $this->USR_zipcode_CH;
         $values["USR_birthdate_DATE"] = $this->USR_birthdate_DATE;
 
-        try {
-            $prepare->execute($values);
-            $id = connexion::pdo()->lastInsertId();
-            $this->setId($id);
-            return 'Validé';
-        } catch (PDOException $e) {
-            return "Error: " . $e->getMessage();
-        }
+        $prepare->execute($values);
+        $id = connexion::pdo()->lastInsertId();
+        $this->setId($id);
+        return true;
     }
 
 }

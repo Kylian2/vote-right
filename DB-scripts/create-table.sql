@@ -5,8 +5,8 @@ CREATE TABLE reaction (
 );
 
 CREATE TABLE reason (
-    RES_id_NB TINYINT AUTO_INCREMENT,
-    RES_label_VC VARCHAR(25),
+    RES_ifid_NB TINYINT AUTO_INCREMENT,
+    RES_label_VC VARCHAR(100),
     CONSTRAINT PK_reason PRIMARY KEY (RES_id_NB)
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE role (
 
 CREATE TABLE voting_system (
     SYS_id_NB TINYINT AUTO_INCREMENT,
-    SYS_label_VC VARCHAR(25),
+    SYS_label_VC VARCHAR(100),
     CONSTRAINT PK_voting_system PRIMARY KEY (SYS_id_NB)
 );
 
@@ -143,7 +143,7 @@ CREATE TABLE vote (
 
 CREATE TABLE possibility (
     POS_id_NB INT AUTO_INCREMENT,
-    POS_label_VC VARCHAR(25),
+    POS_label_VC VARCHAR(100),
     POS_proposal_NB INT,
     POS_round_NB TINYINT,
     CONSTRAINT PK_possibility PRIMARY KEY (POS_id_NB),

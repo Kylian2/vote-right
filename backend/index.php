@@ -8,6 +8,7 @@
 
     // Dispatcher la requête en fonction de l'URI et de la méthode HTTP
     if($_SERVER['REQUEST_URI'] != '/'){
+        session_start();
         Router::dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
     }else{
         echo '{"Bienvenue": "chez VoteRight"}';
