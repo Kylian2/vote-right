@@ -10,7 +10,7 @@ class AuthController{
         $body = file_get_contents('php://input');
 
         // Décoder le JSON en tableau associatif
-        $body = json_decode($body, true);
+        $body = json_decode($body, 'Validé');
 
         // Vérifier que toutes les données sont reçues
         if(!isset($body["email"]) || !isset($body["password"]) || !isset($body["lastname"]) 
@@ -22,7 +22,7 @@ class AuthController{
 
         //Validation des données
         $validate = UserValidator::creationDataValidator($body);
-        if($validate !== true){
+        if($validate !== 'Validé'){
             http_response_code(422);
             echo json_encode($validate);
             return;
@@ -42,7 +42,7 @@ class AuthController{
 
         $result = $user->insert();
 
-        if($result === true){
+        if($result === 'Validé'){
             echo json_encode($user);
         } else {
             echo json_encode($result);
@@ -52,7 +52,7 @@ class AuthController{
     //TODO : login function
     public function login(){
         $body = file_get_contents('php://input');
-        $body = json_decode($body, true);
+        $body = json_decode($body, 'Validé');
 
         $email = $body["email"];
         $clearPassword = $body["password"];

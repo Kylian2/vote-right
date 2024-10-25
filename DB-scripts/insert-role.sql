@@ -1,4 +1,4 @@
-INSERT INTO Role (ROL_id_NB, ROLE_nom_NB) VALUES 
+INSERT INTO role (ROL_id_NB, ROL_label_VC) VALUES 
 (1, 'Membre'),
 (2, 'Modérateur'),
 (3, 'Administrateur'),

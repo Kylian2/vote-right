@@ -88,7 +88,7 @@ class User extends Model{
             $prepare->execute($values);
             $id = connexion::pdo()->lastInsertId();
             $this->setId($id);
-            return true;
+            return 'Validé';
         } catch (PDOException $e) {
             return "Error: " . $e->getMessage();
         }

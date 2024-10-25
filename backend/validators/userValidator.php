@@ -34,7 +34,7 @@ class UserValidator{
                 throw new Exception("Invalid date format (must be in Y-m-d)");
             }
 
-            return true;
+            return 'Validé';
         }catch(Exception $e){
             return "Erreur : ".$e;
         }
