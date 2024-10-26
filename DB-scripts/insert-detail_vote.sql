@@ -1,0 +1,1 @@
+INSERT INTO vote_detail (DET_proposal_NB, DET_round_NB, DET_user_NB, DET_choice_NB) VALUES

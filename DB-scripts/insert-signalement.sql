@@ -1,0 +1,1 @@
+INSERT INTO report (RPT_user_NB, RPT_comment_NB, RPT_reason_NB) VALUES

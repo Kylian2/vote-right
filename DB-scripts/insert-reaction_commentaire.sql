@@ -1,0 +1,1 @@
+INSERT INTO comment_reaction (REC_comment_NB, REC_user_NB, REC_reaction_NB) VALUES

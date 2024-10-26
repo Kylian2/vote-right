@@ -1,0 +1,1 @@
+INSERT INTO comment (COM_id_NB, COM_message_VC, COM_proposal_NB, COM_sender_NB, COM_moderator_NB) VALUES

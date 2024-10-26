@@ -1,0 +1,1 @@
+INSERT INTO possibility (POS_id_NB, POS_label_VC, POS_proposal_NB, POS_round_NB) VALUES

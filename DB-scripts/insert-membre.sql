@@ -1,3 +1,4 @@
+-- Insertions réalisées
 INSERT INTO member (MEM_user_NB, MEM_community_NB, MEM_role_NB) VALUES
 (1, 4, 3),
 (2, 15, 3),
