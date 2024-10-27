@@ -19,4 +19,4 @@ INSERT INTO `community` (`CMY_id_NB`, `CMY_name_VC`, `CMY_image_VC`, `CMY_emoji_
 (17, 'Marathon d''Amsterdam', '100007.png', '1F389', NULL, 113000.00, 37290.00, 83),
 (18, 'Mairie de Dourdan', '100009.png', '1F389', NULL, 108000.00, 42120.00, 70),
 (19, 'École Jean Moulin', '100006.png', '1F389', NULL, 68000.00, 26520.00, 48),
-(20, 'CSE de capGemini, '100008.png', '1F389', NULL, 111000.00, 68820.00, 21);
+(20, 'CSE de capGemini', '100008.png', '1F389', NULL, 111000.00, 68820.00, 21);
