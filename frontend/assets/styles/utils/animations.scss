@@ -1,0 +1,11 @@
+@keyframes gradient-rotation {
+    0% {
+      color: $gradient;
+    }
+    50% {
+      background: $gradient-rotate;
+    }
+    100% {
+        background: $gradient-rotate;
+    }
+}

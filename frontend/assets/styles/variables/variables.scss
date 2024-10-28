@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+$exotic-font: "Nunito", sans-serif;
+$main-font: "Inter", serif;
+
+$contrast: #fff;
+$background-light: #F5F5F5;
+$color-1: #5AB7EE;
+$color-2: #FDBE55;
+$color-3: #FB961F;
+$color-4: #13329F;
+$color-5: #8700CF;
+$color-6: #F669D9;
+$color-7: #DE3D59;
+$gradient: linear-gradient(100deg, $color-2 0%, $color-3 32%, $color-7 69%, $color-5 94%);
+$gradient-rotate: linear-gradient(210deg, $color-2 0%, $color-3 32%, $color-7 69%, $color-5 94%);
