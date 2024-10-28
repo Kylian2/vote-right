@@ -1,7 +1,6 @@
 <template>
-    <h1>Hello VoteRight</h1>
-    <p>Bienvenue !</p>
+    <Header></Header>
 </template>
-<script>
+<script setup>
 
 </script>
