@@ -5,7 +5,7 @@
         </div>
         <nav>
             <div class="btn--border--header__wrapper">
-                <NuxtLink class="btn btn--border--header" to="#"><p>S'inscrire</p></NuxtLink>
+                <NuxtLink class="btn btn--border--header" to="/register"><p>S'inscrire</p></NuxtLink>
             </div>
             <div class="btn--full--header__wrapper">
                 <NuxtLink class="btn btn--full--header" to="#"><p>Se connecter</p></NuxtLink>

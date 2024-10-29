@@ -1,6 +1,21 @@
 .btn{
     font-size: 1em;
     &--full{
+        background: $gradient;
+        color: $contrast;
+        padding: 12px 24px;
+        transition: .2s;
+        box-shadow: inset 100vw 0 0 0 rgba(255, 255, 255, 0.0);
+        border: 0;
+        border-radius: 5px;
+        display: block;
+        text-align: center;
+        &:hover{
+            box-shadow: inset 100vw 0 0 0 rgba(255, 255, 255, 0.15);
+        }
+        &:active{
+            box-shadow: inset 100vw 0 0 0 rgba(255, 255, 255, 0.30);
+        }
         &--header{
             background: $gradient;
             color: $contrast;
