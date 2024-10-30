@@ -1,3 +1,4 @@
+-- Insertions réalisées
 INSERT INTO comment_reaction (REC_comment_NB, REC_user_NB, REC_reaction_NB) VALUES
 (12, 6, 2),
 (27, 25, 1),
@@ -17,14 +18,14 @@ INSERT INTO comment_reaction (REC_comment_NB, REC_user_NB, REC_reaction_NB) VALU
 (36, 23, 2),
 (16, 49, 2),
 (3, 31, 2),
-(1, 12, 1),
+(1, 12, 1), 
 (35, 87, 3),
 (31, 49, 4),
 (12, 20, 3),
 (1, 74, 1),
 (22, 31, 1),
 (16, 90, 3),
-(33, 7, 3),
+(33, 67, 3),
 (20, 48, 4),
 (33, 78, 2),
 (21, 48, 1),
@@ -33,26 +34,19 @@ INSERT INTO comment_reaction (REC_comment_NB, REC_user_NB, REC_reaction_NB) VALU
 (38, 89, 2),
 (1, 44, 2),
 (43, 71, 1),
-(7, 98, 1),
+(7, 52, 1),
 (42, 27, 3),
 (4, 52, 1),
 (22, 3, 3),
 (45, 68, 1),
 (4, 69, 3),
 (43, 5, 2),
-(1, 12, 2),
+(1, 91, 2),
 (5, 34, 4),
 (39, 22, 2),
 (24, 28, 1),
-(4, 41, 1),
-(29, 90, 3),
+(4, 75, 1),
+(29, 92, 3),
 (17, 96, 2),
 (28, 63, 1),
 (39, 39, 1);
-
-select MEM_user_NB, ROL_label_VC
-from member M 
-inner join role R ON R.ROL_id_NB = M.MEM_role_NB
-inner join community C ON M.MEM_community_NB = C.CMY_id_NB
-inner join proposal P ON C.CMY_id_NB = P.PRO_community_NB
-where PRO_id_NB = 37;

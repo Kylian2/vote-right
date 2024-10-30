@@ -93,7 +93,7 @@ CREATE TABLE proposal (
     PRO_request_count_NB INT,
     PRO_location_VC VARCHAR(255),
     PRO_budget_NB FLOAT(12, 2),
-    PRO_status_VC VARCHAR(6),
+    PRO_status_VC VARCHAR(25),
     PRO_initiator_NB INT,
     PRO_deleter_NB INT,
     PRO_approver_NB INT,
