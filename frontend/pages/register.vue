@@ -54,9 +54,9 @@ const handleForm = async () => {
         const response = await $fetch(`http://localhost:3333/auth/register`, {
             method: 'POST',
             body: {
-                email: lastname.value,
+                lastname: lastname.value,
                 firstname: firstname.value,
-                email: lastname.value,
+                email: email.value,
                 password: password.value,
                 address: address.value,
                 zipcode: zipcode.value,
