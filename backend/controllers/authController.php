@@ -58,6 +58,7 @@ class AuthController{
         try{
             $result = $user->insert();
         }catch(Exception $e){
+            http_response_code(400);
             $return["Erreur"] = $e->getMessage();
             echo json_encode($return);
             return;
