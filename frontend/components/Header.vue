@@ -1,8 +1,8 @@
 <template>
     <header>
-        <div class="logo">
+        <NuxtLink to="/" class="logo">
             <p>VoteRight</p>
-        </div>
+        </NuxtLink>
         <nav>
             <div class="btn--border--header__wrapper">
                 <NuxtLink class="btn btn--border--header" to="/register"><p>S'inscrire</p></NuxtLink>
