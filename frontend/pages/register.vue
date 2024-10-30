@@ -1,5 +1,5 @@
 <template>
-    <Header></Header>
+    <Header type="notlogged"></Header>
     <main>
         <div class="registration">
             <h1>Inscription</h1>
