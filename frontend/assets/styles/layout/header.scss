@@ -1,0 +1,32 @@
+header{
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    height: 75px;
+
+    .logo{
+        font-size: 2em;
+        background: url('~/public/images/background.png') center no-repeat;
+        background-size: 100%;
+        color: $contrast;
+        font-weight: bold;
+        padding: 20px 30px;
+        text-align: center;
+
+    }
+
+    nav{
+        display: flex;
+        height: 100%;
+        gap: 20px;
+        .btn{
+            display: block;
+            height: 100%;
+            text-align: center;
+            align-content: center;
+            font-weight: bold;
+        }
+    }
+}

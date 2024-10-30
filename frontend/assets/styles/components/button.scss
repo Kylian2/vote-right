@@ -1,0 +1,59 @@
+.btn{
+    font-size: 1em;
+    &--full{
+        &--header{
+            background: $gradient;
+            color: $contrast;
+            padding: 20px 30px;
+            transition: .2s;
+            box-shadow: inset 11em 0 0 0 rgba(255, 255, 255, 0.0);
+            &:hover{
+                box-shadow: inset 11em 0 0 0 rgba(255, 255, 255, 0.15);
+            }
+            &:active{
+                box-shadow: inset 11em 0 0 0 rgba(255, 255, 255, 0.30);
+            }
+            &__wrapper{
+                background: $gradient;
+                padding: 3px;
+            }
+        }
+    }
+
+    &--border{
+        &--header{
+            background: $contrast;
+            padding: 20px 30px;
+            transition:.5s;
+            box-shadow: inset 8em 0 0 0 rgb(255, 255, 255);
+            p{
+                background: $gradient;
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            &:hover{
+                background: $gradient;
+                box-shadow: inset 0em 0 0 0 rgba(255, 0, 0, 0);
+                p{
+                    color: $contrast;
+                    -webkit-background-clip: content-box;
+                    background-clip: content-box;
+                    -webkit-text-fill-color: currentColor;
+                    background: rgba($contrast, 0);
+                }
+            }
+            &:active{
+                box-shadow: inset 0 5em 0 0 rgba(255, 255, 255, 0.30);
+                transition: 0s;
+            }
+            &__wrapper{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: $gradient;
+                padding: 3px;
+            }
+        }
+    }
+}

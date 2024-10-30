@@ -1,0 +1,23 @@
+/* Import des variables */
+
+@import './variables/variables.scss';
+
+/* Import des utilitaires (animations, mixins etc...) */
+
+@import './utils/animations.scss';
+
+/* Import des composants */
+
+@import './components/form.scss';
+@import './components/button.scss';
+
+/* Import des styles de page */
+
+@import './pages/register.scss';
+
+/* Import des éléments de structures */
+
+@import './layout/header.scss';
+
+@import './reset.scss';
+@import './global.scss';
