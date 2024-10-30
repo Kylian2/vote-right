@@ -8,7 +8,7 @@
                 <NuxtLink class="btn btn--border--header" to="/register"><p>S'inscrire</p></NuxtLink>
             </div>
             <div class="btn--full--header__wrapper">
-                <NuxtLink class="btn btn--full--header" to="#"><p>Se connecter</p></NuxtLink>
+                <NuxtLink class="btn btn--full--header" to="/login"><p>Se connecter</p></NuxtLink>
             </div>
         </nav>
     </header>

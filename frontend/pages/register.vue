@@ -22,7 +22,7 @@
                 <!--formmethod="dialog" permet au bouton de se comporter comme si il allait envoyer le formulaire (et donc de faire ses vérifications de format (ex emai ou date) mais de ne pas envoyer le formulaire)-->
                 <Button v-if="step === 1" formmethod="dialog" class="btn btn--full" @click="() => { if (complete()) step++ }">Commencer l'inscription</Button>
                 <Button v-if="step === 2" formmethod="dialog" class="btn btn--full" @click="handleForm()" >Terminer l'inscription</Button>
-                <NuxtLink class="second" to="#">Ou <span class="underline">se connecter</span></NuxtLink>
+                <NuxtLink class="second" to="/login">Ou <span class="underline">se connecter</span></NuxtLink>
             </form>
         </div>
         <div class="illustration-conteneur">
@@ -64,7 +64,9 @@ const handleForm = async () => {
             }
         });
 
-        console.log(response);
+        if(response){
+            navigateTo('/home');
+        }
 
     } catch (error) {
         console.error('An unexpected error occurred:', error);
