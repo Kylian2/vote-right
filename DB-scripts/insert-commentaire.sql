@@ -1,5 +1,5 @@
 -- Insertions réalisées
-INSERT INTO comment (COM_id_NB, COM_message_VC, COM_proposal_NB, COM_sender_NB, COM_moderator_NB) VALUES
+INSERT INTO comment (COM_id_NB, COM_message_VC, COM_proposal_NB, COM_sender_NB, COM_suppressor_NB) VALUES
 -- Commentaires normaux
 (1, 'C''est une suggestion intéressante, je pense qu''elle mérite qu''on y réfléchisse.', 38, 53, NULL),
 (2, 'Bonne idée, cette proposition.', 56, 57, NULL),
@@ -51,11 +51,11 @@ INSERT INTO comment (COM_id_NB, COM_message_VC, COM_proposal_NB, COM_sender_NB, 
 (48, 'Le salon des expositions me paraît être une idée tout à fait adaptée.', 44, 55, NULL),
 (49, 'Pour moi, le parcours est bien, ça change de l''année dernière.', 48, 72, NULL),
 (50, 'C''est faisable, mais avec une planification rigoureuse.', 49, 65, NULL),
--- Commentaires signalés et épinglés par le modérateur du groupe
-(51, 'On ne devrait pas aider les gens dans le besoin, ils se sont mis tout seuls dans la merde.', 37, 49, 19),
+-- Commentaires signalés (si COM_suppressor_NB = NULL alors le commentaire n'a pas été supprimé pour le moment)
+(51, 'On ne devrait pas aider les gens dans le besoin, ils se sont mis tout seuls dans la merde.', 37, 49, NULL),
 (52, 'Les ateliers d''amélioration c''est pour les faibles, vous tous en fait.', 13, 35, 94),
 (53, 'N''hésitez pas à me joindre au 0769503412 pour des réductions exclusives sur poltronesofa.', 14, 38, 94),
-(54, 'Faudra que les danseuses portent des tenues légères sinon moi je viens pas.', 2, 25, 47),
+(54, 'Faudra que les danseuses portent des tenues légères sinon moi je viens pas.', 2, 25, NULL),
 (55, 'Vraiment la sensibilisation c''est un truc de gauchiste, les amendes c''est efficace.', 29, 41, 69),
 (56, 'En fait t''es un déchet, c''est toi qu''on va ramasser sur la plage.', 29, 98, 69),
 (57, 'Impatient de pouvoir défoncer les abrutis de la ville d''à côté.', 10, 51, 63),

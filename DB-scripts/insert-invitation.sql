@@ -80,6 +80,7 @@ INSERT INTO invitation (INV_id_NB, INV_code_VC, INV_issue_DATE, INV_acceptance_D
 (78, '612857', '2024-09-04', '2024-09-09', 8, 83, 20),
 (79, '529594', '2024-09-04', '2024-09-12', 8, 95, 20),
 (80, '675409', '2024-09-02', '2024-09-13', 8, 96, 20),
+-- Invitation sans réponse donc l'utilisateur n'est pas dans le groupe
 (81, '848469', '2024-09-04', NULL, 1, 26, 4),
 (82, '314504', '2024-09-04', NULL, 18, 8, 1),
 (83, '748970', '2024-09-06', NULL, 56, 75, 10),

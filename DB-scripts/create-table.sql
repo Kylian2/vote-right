@@ -112,11 +112,11 @@ CREATE TABLE comment (
     COM_message_VC VARCHAR(250), 
     COM_proposal_NB INT, 
     COM_sender_NB INT, 
-    COM_moderator_NB INT,
+    COM_suppressor_NB INT,
     CONSTRAINT PK_comment PRIMARY KEY (COM_id_NB),
     CONSTRAINT FK_COM_proposal FOREIGN KEY (COM_proposal_NB) REFERENCES proposal(PRO_id_NB),
     CONSTRAINT FK_COM_sender FOREIGN KEY (COM_sender_NB) REFERENCES user(USR_id_NB),
-    CONSTRAINT FK_COM_moderator FOREIGN KEY (COM_moderator_NB) REFERENCES user(USR_id_NB)
+    CONSTRAINT FK_COM_moderator FOREIGN KEY (COM_suppressor_NB) REFERENCES user(USR_id_NB)
 );
 
 CREATE TABLE proposal_reaction (
@@ -175,9 +175,9 @@ CREATE TABLE comment_reaction (
 CREATE TABLE report (
     RPT_user_NB INT, 
     RPT_comment_NB BIGINT, 
-    RPT_status_VC VARCHAR(15),
     RPT_reason_NB TINYINT, 
-    CONSTRAINT PK_report PRIMARY KEY (RPT_user_NB, RPT_comment_NB),
+    RPT_status_VC VARCHAR(25), 
+    CONSTRAINT PRIMARY KEY (RPT_user_NB, RPT_comment_NB),
     CONSTRAINT FK_RPT_user FOREIGN KEY (RPT_user_NB) REFERENCES user(USR_id_NB),
     CONSTRAINT FK_RPT_comment FOREIGN KEY (RPT_comment_NB) REFERENCES comment(COM_id_NB),
     CONSTRAINT FK_RPT_reason FOREIGN KEY (RPT_reason_NB) REFERENCES reason(RES_id_NB)
