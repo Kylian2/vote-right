@@ -93,7 +93,7 @@ CREATE TABLE proposal (
     PRO_request_count_NB INT,
     PRO_location_VC VARCHAR(255),
     PRO_budget_NB FLOAT(12, 2),
-    PRO_status_VC VARCHAR(6),
+    PRO_status_VC VARCHAR(15),
     PRO_initiator_NB INT,
     PRO_deleter_NB INT,
     PRO_approver_NB INT,
@@ -175,6 +175,7 @@ CREATE TABLE comment_reaction (
 CREATE TABLE report (
     RPT_user_NB INT, 
     RPT_comment_NB BIGINT, 
+    RPT_status_VC VARCHAR(15),
     RPT_reason_NB TINYINT, 
     CONSTRAINT PK_report PRIMARY KEY (RPT_user_NB, RPT_comment_NB),
     CONSTRAINT FK_RPT_user FOREIGN KEY (RPT_user_NB) REFERENCES user(USR_id_NB),
