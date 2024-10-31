@@ -1,5 +1,5 @@
 -- Insertions réalisées
-INSERT INTO comment (COM_id_NB, COM_message_VC, COM_proposal_NB, COM_sender_NB, COM_moderator_NB) VALUES
+INSERT INTO comment (COM_id_NB, COM_message_VC, COM_proposal_NB, COM_sender_NB, COM_suppressor_NB) VALUES
 -- Commentaires normaux
 (1, 'C''est une suggestion intéressante, je pense qu''elle mérite qu''on y réfléchisse.', 38, 53, NULL),
 (2, 'Bonne idée, cette proposition.', 56, 57, NULL),
