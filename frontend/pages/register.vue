@@ -21,7 +21,10 @@
 
                 <!--formmethod="dialog" permet au bouton de se comporter comme si il allait envoyer le formulaire (et donc de faire ses vérifications de format (ex emai ou date) mais de ne pas envoyer le formulaire)-->
                 <Button v-if="step === 1" formmethod="dialog" class="btn btn--full" @click="() => { if (complete()) step++ }">Commencer l'inscription</Button>
-                <Button v-if="step === 2" formmethod="dialog" class="btn btn--full" @click="handleForm()" >Terminer l'inscription</Button>
+                <div class="registration__button-conteneur">
+                    <Button v-if="step === 2" formmethod="dialog" class="btn btn--full" @click="handleForm()" >Terminer l'inscription</Button>
+                    <Button v-if="step === 2" type="button" class="btn btn--cancel" @click="step--" >Retour</Button>
+                </div>
                 <NuxtLink class="second" to="/login">Ou <span class="underline">se connecter</span></NuxtLink>
             </form>
         </div>

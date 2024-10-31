@@ -25,6 +25,16 @@ h1{
             width: 400px;
         }
     }
+    &__button-conteneur{
+        display: flex;
+        gap: 20px;
+        .btn--full{
+            width: 280px;
+        }
+        .btn--cancel{
+            width: auto;
+        }
+    }
     .second{
         display: block;
         margin: 10px 0;

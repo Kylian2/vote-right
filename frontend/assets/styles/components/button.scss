@@ -1,5 +1,6 @@
 .btn{
     font-size: 1em;
+    cursor: pointer;
     &--full{
         background: $gradient;
         color: $contrast;
@@ -69,6 +70,23 @@
                 background: $gradient;
                 padding: 3px;
             }
+        }
+    }
+
+    &--cancel{
+        background: $neutral;
+        color: $default;
+        padding: 12px 24px;
+        transition: .2s;
+        border: 0;
+        border-radius: 5px;
+        display: block;
+        text-align: center;
+        &:hover{
+            background: darken($color: $neutral, $amount: 10%);
+        }
+        &:active{
+            background: darken($color: $neutral, $amount: 20%);
         }
     }
 }
