@@ -1,0 +1,23 @@
+.base{
+    display: flex;
+    flex-direction: column;
+    input{
+        background: $background-light;
+        padding: 15px 10px;
+        border: 2px solid $background-light;
+        border-radius: 10px;
+        width: 400px;
+        &::placeholder{
+            color: rgba($color: $default, $alpha: 0.9)
+        }
+        &:focus, &:focus-visible, &:active{
+            border: 2px solid $color-5 !important;
+        }
+    }
+}
+
+label{
+    font-size: 20px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
