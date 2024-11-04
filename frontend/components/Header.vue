@@ -15,7 +15,7 @@
             <div class="wrapper" :class="{'active' : actif === 'accueil'}" ><NuxtLink class="logged__link" to="#">Accueil</NuxtLink></div>
             <div class="wrapper" :class="{'active' : actif === 'groupes'}"><NuxtLink class="logged__link" to="#">Groupes</NuxtLink></div>
         </nav>
-        <div v-if="type === 'logged'" class="logged"">
+        <div v-if="type === 'logged'" class="logged">
             <NuxtLink to="#" class="shine">Mon Compte</NuxtLink>
         </div>
     </header>
@@ -37,6 +37,7 @@
         </nav>
     </header>
 </template>
+
 <script setup>
 const props = defineProps({
     type: {
