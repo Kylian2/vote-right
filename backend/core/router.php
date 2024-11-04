@@ -1,7 +1,9 @@
 <?php 
 
+@require_once('core/sessionGuard.php');
+
 class Router{
-    private static $routes = array();
+    public static $routes = array();
 
     /**
      * Ajoute une route à la liste
@@ -11,10 +13,11 @@ class Router{
      * @param string $actionController Le controller et l'action à effectuer, ils doivent etre de la forme controller@action
      */
     public static function addRoute(string $method, string $uri, string $actionController){
-        self::$routes[] = [
+        self::$routes[trim($uri, '/')] = [
             'method' => $method,
             'uri' => trim($uri, '/'), #trim retire le '/' au début et en fin de chaine
-            'actionController' => $actionController
+            'actionController' => $actionController,
+            'middleware' => 0,
         ];
     }
 
@@ -36,6 +39,13 @@ class Router{
      */
     public static function post(string $uri, string $actionController){
         self::addRoute('POST', $uri, $actionController);
+    }
+
+    /**
+     * Définit une route protégée, il est possible d'accéder à une route protégée uniquement si l'on est connecté
+     */
+    public static function protect(string $uri){
+        self::$routes[trim($uri, '/')]['middleware'] = true;
     }
 
     /**
@@ -74,7 +84,17 @@ class Router{
 
         foreach(self::$routes as $route){
             if($route['uri'] === $request && $route['method'] === strtoupper($method)){
-                self::callAction($route['actionController']);
+                if(!$route['middleware']){
+                    self::callAction($route['actionController']);
+                    return;
+                }
+
+                if(SessionGuard::checkSessionValidity()){
+                    self::callAction($route['actionController']);
+                    return;
+                }
+                http_response_code(401);
+                echo json_encode(['error' => 'Unauthorized access']);
                 return;
             }
         }

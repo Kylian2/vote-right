@@ -56,14 +56,14 @@ class AuthController{
         $user = User::createUser($values["lastname"], $values["firstname"], $values["email"], $values["password"], $values["address"], $values["zipcode"], $values["birthdate"]);
 
         try{
-            $result = $user->insert();
+            $user->insert();
         }catch(Exception $e){
             http_response_code(400);
             $return["Erreur"] = $e->getMessage();
             echo json_encode($return);
             return;
         }
-
+        SessionGuard::start($user);
         echo json_encode($user);
     }
 

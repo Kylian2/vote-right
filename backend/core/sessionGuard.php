@@ -27,6 +27,9 @@ class SessionGuard{
      */
     public static function verifyCredentials($email, $password){
         $user = User::getByEmail($email);
+        if(!$user){
+            return false;
+        }
         $verification = password_verify($password, $user->get('USR_password_VC'));
         return $verification ? $user : false;
     }

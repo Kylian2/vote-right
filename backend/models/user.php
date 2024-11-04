@@ -12,11 +12,11 @@ class User extends Model{
     public string $USR_zipcode_CH;
     public string $USR_birthdate_DATE;
     public string $USR_notification_frequency_CH;
-    public int $USR_notify_proposal_NB;
-    public int $USR_notify_vote_NB;
-    public int $USR_notify_reaction_NB;
+    public int $USR_notify_proposal_BOOL;
+    public int $USR_notify_vote_BOOL;
+    public int $USR_notify_reaction_BOOL;
 
-    function __construct(int $USR_id_NB = NULL, string $USR_lastname_VC = NULL, string $USR_firstname_VC = NULL, string $USR_email_VC = NULL, string $USR_password_VC = NULL, string $USR_address_VC = NULL, string $USR_zipcode_CH = NULL, string $USR_birthdate_DATE = NULL, string $USR_notification_frequency_CH = NULL, int $USR_notify_proposal_NB = NULL, int $USR_notify_vote_NB = NULL, int $USR_notify_reaction_NB = NULL) {
+    function __construct(int $USR_id_NB = NULL, string $USR_lastname_VC = NULL, string $USR_firstname_VC = NULL, string $USR_email_VC = NULL, string $USR_password_VC = NULL, string $USR_address_VC = NULL, string $USR_zipcode_CH = NULL, string $USR_birthdate_DATE = NULL, string $USR_notification_frequency_CH = NULL, int $USR_notify_proposal_BOOL = NULL, int $USR_notify_vote_BOOL = NULL, int $USR_notify_reaction_BOOL = NULL) {
 
         /* Classique */
         /* Récupéré avec la base de données */
@@ -30,9 +30,9 @@ class User extends Model{
             $this->USR_zipcode_CH = $USR_zipcode_CH;
             $this->USR_birthdate_DATE = $USR_birthdate_DATE;
             $this->USR_notification_frequency_CH = $USR_notification_frequency_CH ? $USR_notification_frequency_CH : 'H';
-            $this->USR_notify_proposal_NB = $USR_notify_proposal_NB ? $USR_notify_proposal_NB : 0;
-            $this->USR_notify_vote_NB = $USR_notify_vote_NB ? $USR_notify_vote_NB : 0;
-            $this->USR_notify_reaction_NB = $USR_notify_reaction_NB ? $USR_notify_reaction_NB : 0;
+            $this->USR_notify_proposal_BOOL = $USR_notify_proposal_BOOL? $USR_notify_proposal_BOOL : 0;
+            $this->USR_notify_vote_BOOL = $USR_notify_vote_BOOL ? $USR_notify_vote_BOOL : 0;
+            $this->USR_notify_reaction_BOOL = $USR_notify_reaction_BOOL ? $USR_notify_reaction_BOOL : 0;
         }
     }
 
