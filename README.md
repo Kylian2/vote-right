@@ -74,7 +74,7 @@ Refs: #123
 
 Pour récuperer pour la première fois le travail, il faut cloner le dépot sur sa machine. 
 ```
-git clone https://github.com/Kylian2/jo-application.git
+git clone https://github.com/Kylian2/vote-right
 ```
 ### 2. Créer sa branche de travail
 
