@@ -1,5 +1,6 @@
 -- Insertions réalisées
 INSERT INTO invitation (INV_id_NB, INV_code_VC, INV_issue_DATE, INV_acceptance_DATE, INV_sender_NB, INV_recipient_NB, INV_community_NB) VALUES
+-- Seulement une partie des invitations sont représentées pour donner un aperçu global
 (1, '814212', '2024-09-01', '2024-09-13', 18, 23, 1),
 (2, '667568', '2024-09-01', '2024-09-10', 18, 25, 1),
 (3, '139971', '2024-09-02', '2024-09-12', 18, 47, 1),

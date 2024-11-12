@@ -1,7 +1,6 @@
 -- Insertions réalisées
 INSERT INTO vote_detail (DET_proposal_NB, DET_round_NB, DET_user_NB, DET_choice_NB) VALUES
--- Seulement les insertions pour les votes à deux tours ont été réalisées
--- Cela permet de donner un aperçus global sans avoir à tout insérer
+-- Seulement les insertions pour les votes à deux tours sont représentés cela donne une vision global
 (34, 1, 19, 1),
 (34, 1, 49, 2),
 (34, 1, 77, 1),
