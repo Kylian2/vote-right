@@ -24,6 +24,9 @@
 const email = useState("email", ()=> "");
 const password = useState("password", ()=> "");
 
+definePageMeta({
+  middleware: ["guest"]
+})
 
 /* TODO : mettre en place des validations plus poussées */
 const handleForm = async () => {
@@ -34,7 +37,8 @@ const handleForm = async () => {
             body: {
                 email: email.value,
                 password: password.value,
-            }
+            },
+            credentials: 'include'
         });
 
         if(response){

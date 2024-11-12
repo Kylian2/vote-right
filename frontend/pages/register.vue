@@ -35,6 +35,10 @@
 </template>
 <script setup>
 
+definePageMeta({
+  middleware: ["guest"]
+})
+
 const step = useState("step", ()=> 1);
 
 const lastname = useState("lastname", ()=> "");
