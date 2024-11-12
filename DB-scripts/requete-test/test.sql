@@ -1,6 +1,4 @@
-
 --Affiche les noms des groupes et leur propositions (avec les thèmes associés)
-
 SELECT CMY_name_VC, PRO_title_VC, THM_name_VC
 FROM community
 INNER JOIN proposal ON CMY_id_NB = PRO_community_NB
@@ -45,3 +43,9 @@ SELECT USR_id_NB, USR_lastname_VC, COUNT(MEM_community_NB)
 FROM member 
 RIGHT JOIN user ON USR_id_NB = MEM_community_NB
 GROUP BY USR_id_NB, USR_lastname_VC;
+
+-- Affiche les membres de chaque groupe avec leur id et leur role
+SELECT MEM_user_NB, ROL_label_VC
+FROM member M
+INNER JOIN role R ON M.MEM_role_NB = R.ROL_id_NB
+WHERE MEM_community_NB = 1;
