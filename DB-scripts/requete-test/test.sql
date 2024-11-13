@@ -48,4 +48,13 @@ GROUP BY USR_id_NB, USR_lastname_VC;
 SELECT MEM_user_NB, ROL_label_VC
 FROM member M
 INNER JOIN role R ON M.MEM_role_NB = R.ROL_id_NB
-WHERE MEM_community_NB = 1;
+WHERE MEM_community_NB = ...;
+
+-- Affiche les membres qui n'ont pas été invités alors qu'ils font parti du groupe
+SELECT M.MEM_user_NB
+FROM member M
+LEFT JOIN user U ON M.MEM_user_NB = U.USR_id_NB
+LEFT JOIN invitation I ON U.USR_id_NB = I.INV_recipient_NB 
+    			AND I.INV_community_NB = M.MEM_community_NB
+WHERE M.MEM_community_NB = 1
+AND I.INV_recipient_NB IS NULL;
