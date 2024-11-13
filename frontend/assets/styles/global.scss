@@ -1,0 +1,15 @@
+*{
+    font-family: $main-font;
+}
+
+.underline{
+    text-decoration: underline;
+    transition: .2s;
+    &:hover{
+        background: rgba($color: $color-5, $alpha: 0.3);
+    }
+}
+
+.d-none{
+    display: none !important;
+}

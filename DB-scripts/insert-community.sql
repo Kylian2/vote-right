@@ -1,4 +1,5 @@
-INSERT INTO `community` (`CMY_id_NB`, `CMY_name_VC`, `CMY_image_VC`, `CMY_emoji_VC`, `CMY_description_VC`, `CMY_budget_NB`, `CMY_fixed_fees_NB`, `CMY_creator_NB`) VALUES
+-- Insertions réalisées
+INSERT INTO community (CMY_id_NB, CMY_name_VC, CMY_image_VC, CMY_emoji_VC, CMY_description_VC, CMY_budget_NB, CMY_fixed_fees_NB, CMY_creator_NB) VALUES
 (1, 'Association des arts et traditions populaires', '100004.png', '1F389', NULL, 86000.00, 40420.00, 74),
 (2, 'Mairie de Rennes – Programme des seniors actifs', '100003.png', '1F389', NULL, 32000.00, 11770.00, 4),
 (3, 'Club de modélisme ferroviaire', '100004.png', '1F389', NULL, 105000.00, 42000.00, 23),
@@ -18,4 +19,4 @@ INSERT INTO `community` (`CMY_id_NB`, `CMY_name_VC`, `CMY_image_VC`, `CMY_emoji_
 (17, 'Marathon d''Amsterdam', '100007.png', '1F389', NULL, 113000.00, 37290.00, 83),
 (18, 'Mairie de Dourdan', '100009.png', '1F389', NULL, 108000.00, 42120.00, 70),
 (19, 'École Jean Moulin', '100006.png', '1F389', NULL, 68000.00, 26520.00, 48),
-(20, 'Comité des fêtes de la mairie de Lyon', '100008.png', '1F389', NULL, 111000.00, 68820.00, 21);
+(20, 'CSE de capGemini', '100008.png', '1F389', NULL, 111000.00, 68820.00, 21);

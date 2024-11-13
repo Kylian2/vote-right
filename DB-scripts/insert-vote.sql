@@ -1,75 +1,54 @@
-
-/*CHANTIER EN COURS...WORKING PROGRESS*/
-
--- Vote avec un seul tour --
-INSERT INTO Vote (VOT_proposition_NB, VOT_tour_NB, VOT_valide_BOOL, VOT_assesseur_NB, VOT_liste_NB, VOT_type_NB) VALUES 
-(514,1,true,ASSESSEUR,1,2),
-(253,1,true,ASSESSEUR,2,2),
-(736,1,false,ASSESSEUR,4,1),
-(927,1,false,ASSESSEUR,3,1),
-(679,1,true,ASSESSEUR,4,1),
-(262,1,false,ASSESSEUR,4,1),
-(963,1,true,ASSESSEUR,4,2),
-(702,1,false,ASSESSEUR,3,2),
-(834,1,true,ASSESSEUR,3,1);
-(389,1,true,ASSESSEUR,1,2);
-(202,1,true,ASSESSEUR,1,1);
-(749,1,false,ASSESSEUR,4,1);
-(611,1,false,ASSESSEUR,2,1);
-(22,1,true,ASSESSEUR,1,2);
-INSERT INTO Vote VALUES (735,1,false,ASSESSEUR,2,1);
-
--- Vote à deux tours --
-INSERT INTO Vote VALUES (620,1,true,ASSESSEUR,4,5);
-INSERT INTO Vote VALUES (620,2,false,ASSESSEUR,4,5);
-
-INSERT INTO Vote VALUES (930,1,true,ASSESSEUR,4,2);
-INSERT INTO Vote VALUES (930,2,true,ASSESSEUR,4,2);
-
-INSERT INTO Vote VALUES (363,1,true,ASSESSEUR,2,3);
-INSERT INTO Vote VALUES (363,2,false,ASSESSEUR,2,3);
-
-INSERT INTO Vote VALUES (395,1,true,ASSESSEUR,3,1);
-INSERT INTO Vote VALUES (395,2,true,ASSESSEUR,3,1);
-
-INSERT INTO Vote VALUES (395,1,true,ASSESSEUR,3,1);
-INSERT INTO Vote VALUES (395,2,true,ASSESSEUR,3,1);
-
-INSERT INTO Vote VALUES (363,1,true,ASSESSEUR,2,3);
-INSERT INTO Vote VALUES (363,2,false,ASSESSEUR,2,3);
-
-INSERT INTO Vote VALUES (535,1,true,ASSESSEUR,1,5);
-INSERT INTO Vote VALUES (535,2,false,ASSESSEUR,1,5);
-
--- vote à trois tours --
-INSERT INTO Vote VALUES (608,1,true,ASSESSEUR,4,3);
-INSERT INTO Vote VALUES (608,2,true,ASSESSEUR,4,3);
-INSERT INTO Vote VALUES (608,3,false,ASSESSEUR,4,3);
-
-INSERT INTO Vote VALUES (999,1,true,ASSESSEUR,4,5);
-INSERT INTO Vote VALUES (999,2,true,ASSESSEUR,4,5);
-INSERT INTO Vote VALUES (999,3,true,ASSESSEUR,4,5);
-
-INSERT INTO Vote VALUES (913,1,true,ASSESSEUR,4,2);
-INSERT INTO Vote VALUES (913,2,true,ASSESSEUR,4,2);
-INSERT INTO Vote VALUES (913,3,false,ASSESSEUR,4,2);
-
-INSERT INTO Vote VALUES (233,1,true,ASSESSEUR,3,2);
-INSERT INTO Vote VALUES (233,2,true,ASSESSEUR,3,2);
-INSERT INTO Vote VALUES (233,3,false,ASSESSEUR,3,2);
-
-INSERT INTO Vote VALUES (94,1,true,ASSESSEUR,4,5);
-INSERT INTO Vote VALUES (94,2,true,ASSESSEUR,4,5);
-INSERT INTO Vote VALUES (94,3,false,ASSESSEUR,4,5);
-
-INSERT INTO Vote VALUES (929,1,true,ASSESSEUR,2,4);
-INSERT INTO Vote VALUES (929,2,true,ASSESSEUR,2,4);
-INSERT INTO Vote VALUES (929,3,true,ASSESSEUR,2,4);
-
-INSERT INTO Vote VALUES (558,1,true,ASSESSEUR,3,1);
-INSERT INTO Vote VALUES (558,2,true,ASSESSEUR,3,1);
-INSERT INTO Vote VALUES (558,3,false,ASSESSEUR,3,1);
-
-INSERT INTO Vote VALUES (558,1,true,ASSESSEUR,3,1);
-INSERT INTO Vote VALUES (558,2,true,ASSESSEUR,3,1);
-INSERT INTO Vote VALUES (558,3,true,ASSESSEUR,3,1);
+-- Insertions réalisées
+INSERT INTO vote (VOT_proposal_NB, VOT_round_NB, VOT_valid_BOOL, VOT_assessor_NB, VOT_type_NB) VALUES
+-- vote à un tour
+(20, 1, 0, NULL, 1), 
+(30, 1, 1, 31, 2), 
+(15, 1, 1, 73, 2), 
+(5, 1, 1, 76, 1), 
+(10, 1, 1, 21, 1), 
+(12, 1, 1, 35, 1), 
+(13, 1, 1, 38, 2), 
+(22, 1, 1, 16, 2), 
+(11, 1, 0, NULL, 1), 
+(31, 1, 1, 31, 2), 
+(21, 1, 1, 40, 1), 
+(46, 1, 1, 71, 2), 
+(23, 1, 0, NULL, 2), 
+(29, 1, 0, NULL, 2), 
+(38, 1, 1, 12, 1), 
+(28, 1, 1, 52, 2), 
+(25, 1, 1, 70, 2), 
+(58, 1, 1, 96, 2), 
+(26, 1, 0, NULL, 2), 
+(35, 1, 0, NULL, 1), 
+(32, 1, 1, 31, 2), 
+(39, 1, 1, 12, 2), 
+(17, 1, 1, 73, 2), 
+(6, 1, 1, 76, 1),
+(40, 1, 1, 12, 1), 
+(14, 1, 1, 35, 2), 
+(43, 1, 1, 58, 1), 
+(37, 1, 1, 77, 1),
+(4, 1, 1, 76, 1), 
+(33, 1, 1, 77, 1),
+-- votes à deux tours
+(34, 1, 1, 77, 4),  
+(34, 2, 1, 77, 4), 
+(36, 1, 1, 77, 4),  
+(36, 2, 1, 77, 4),  
+(41, 1, 0, NULL, 4), 
+(41, 2, 0, NULL, 4), 
+(42, 1, 1, 50, 4), 
+(42, 2, 1, 58, 4), 
+(47, 1, 1, 72, 4), 
+(47, 2, 1, 72, 4),
+(48, 1, 0, NULL, 4), 
+(48, 2, 0, NULL, 4),
+(49, 1, 1, 72, 4),
+(49, 2, 1, 72, 4), 
+(50, 1, 0, NULL, 4), 
+(50, 2, 0, NULL, 4), 
+(53, 1, 0, NULL, 4), 
+(53, 2, 0, NULL, 4), 
+(59, 1, 1, 96, 4), 
+(59, 2, 1, 96, 4);
