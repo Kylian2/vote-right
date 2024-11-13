@@ -1,4 +1,3 @@
--- Insertions réalisées
 INSERT INTO voting_system (SYS_id_NB, SYS_label_VC) VALUES 
 (1, 'Pour / Contre'),
 (2, 'Oui / Non'),

@@ -1,6 +1,4 @@
--- Insertions réalisées
 INSERT INTO invitation (INV_id_NB, INV_code_VC, INV_issue_DATE, INV_acceptance_DATE, INV_sender_NB, INV_recipient_NB, INV_community_NB) VALUES
--- Seulement une partie des invitations sont représentées pour donner un aperçu global
 (1, '814212', '2024-09-01', '2024-09-13', 18, 23, 1),
 (2, '667568', '2024-09-01', '2024-09-10', 18, 25, 1),
 (3, '139971', '2024-09-02', '2024-09-12', 18, 47, 1),
@@ -81,6 +79,8 @@ INSERT INTO invitation (INV_id_NB, INV_code_VC, INV_issue_DATE, INV_acceptance_D
 (78, '612857', '2024-09-04', '2024-09-09', 8, 83, 20),
 (79, '529594', '2024-09-04', '2024-09-12', 8, 95, 20),
 (80, '675409', '2024-09-02', '2024-09-13', 8, 96, 20),
+
+
 -- Invitation sans réponse donc l'utilisateur n'a pas rejoint le groupe
 (81, '848469', '2024-09-04', NULL, 1, 26, 4),
 (82, '314504', '2024-09-04', NULL, 18, 8, 1),

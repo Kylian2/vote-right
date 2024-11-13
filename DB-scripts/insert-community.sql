@@ -1,4 +1,3 @@
--- Insertions réalisées
 INSERT INTO community (CMY_id_NB, CMY_name_VC, CMY_image_VC, CMY_emoji_VC, CMY_description_VC, CMY_budget_NB, CMY_fixed_fees_NB, CMY_creator_NB) VALUES
 (1, 'Association des arts et traditions populaires', '100004.png', '1F389', NULL, 86000.00, 40420.00, 74),
 (2, 'Mairie de Rennes – Programme des seniors actifs', '100003.png', '1F389', NULL, 32000.00, 11770.00, 4),

@@ -1,4 +1,3 @@
--- Insertions réalisées
 INSERT INTO theme (THM_id_NB, THM_community_NB, THM_name_VC, THM_budget_NB) VALUES
 (1, 1, 'Voyages', 30000.00),
 (1, 2, 'Culture', 6000.00),

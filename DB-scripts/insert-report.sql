@@ -1,4 +1,3 @@
--- Insertions réalisées
 INSERT INTO report (RPT_user_NB, RPT_comment_NB, RPT_reason_NB, RPT_status_VC) VALUES
 (90, 51, 6, 'En attente'),
 (29, 52, 6, 'Résolu'),  

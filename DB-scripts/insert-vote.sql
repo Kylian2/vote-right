@@ -1,4 +1,3 @@
--- Insertions réalisées
 INSERT INTO vote (VOT_proposal_NB, VOT_round_NB, VOT_valid_BOOL, VOT_assessor_NB, VOT_type_NB) VALUES
 -- vote à un tour
 (20, 1, 0, NULL, 1), 

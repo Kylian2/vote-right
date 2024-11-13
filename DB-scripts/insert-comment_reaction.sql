@@ -1,4 +1,3 @@
--- Insertions réalisées
 INSERT INTO comment_reaction (REC_comment_NB, REC_user_NB, REC_reaction_NB) VALUES
 (12, 6, 2),
 (27, 25, 1),

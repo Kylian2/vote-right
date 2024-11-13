@@ -1,4 +1,3 @@
--- Insertions réalisées
 INSERT INTO proposal (PRO_id_NB, PRO_title_VC, PRO_description_TXT, PRO_creation_DATE, PRO_discussion_duration_NB, PRO_request_count_NB, PRO_location_VC, PRO_budget_NB, PRO_status_VC, PRO_initiator_NB, PRO_deleter_NB, PRO_approver_NB, PRO_community_NB, PRO_theme_NB) VALUES
 (1, 'Voyage d''Échange Culturel', 'Organisation d''un voyage pour découvrir les arts populaires de la région.', '2024-10-29', 14, 5, 'Rennes', 15000.00, 'Validé', 25, NULL, 18, 1, 1),
 (2, 'Atelier de Danse Traditionnelle', 'Atelier pour apprendre les danses folkloriques.', '2024-10-30', 8, 6, 'Centre Culturel', 4000.00, 'Rejeté', 47, 18, NULL, 1, 2),

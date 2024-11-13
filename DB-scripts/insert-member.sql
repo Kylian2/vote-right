@@ -1,4 +1,3 @@
--- Insertions réalisées
 INSERT INTO member (MEM_user_NB, MEM_community_NB, MEM_role_NB) VALUES
 (1, 4, 3),
 (1, 12, 2),
@@ -136,7 +135,7 @@ INSERT INTO member (MEM_user_NB, MEM_community_NB, MEM_role_NB) VALUES
 (67, 9, 5),
 (67, 18, 4),
 (68, 2, 1), 
-(68, 12, 1)
+(68, 12, 1),
 (69, 11, 2),
 (69, 14, 2),
 (70, 10, 5),
@@ -198,4 +197,4 @@ INSERT INTO member (MEM_user_NB, MEM_community_NB, MEM_role_NB) VALUES
 (99, 7, 4),
 (99, 13, 1),
 (100, 3, 2),
-(100, 6, 4),
+(100, 6, 4);
