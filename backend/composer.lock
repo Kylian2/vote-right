@@ -92,7 +92,7 @@
             "type": "library",
             "extra": {
                 "bamarni-bin": {
-                    "bin-links": true,
+                    "bin-links": 'Validé',
                     "forward-command": false
                 },
                 "branch-alias": {
@@ -416,7 +416,7 @@
             "type": "library",
             "extra": {
                 "bamarni-bin": {
-                    "bin-links": true,
+                    "bin-links": 'Validé',
                     "forward-command": false
                 },
                 "branch-alias": {
