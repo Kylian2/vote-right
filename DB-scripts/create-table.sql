@@ -114,7 +114,7 @@ CREATE TABLE comment (
     COM_message_VC VARCHAR(250) NOT NULL, 
     COM_proposal_NB INT NOT NULL, 
     COM_sender_NB INT NOT NULL, 
-    COM_moderator_NB INT,
+    COM_suppressor_NB INT,
     COM_creation_date_DATE DATE,
     CONSTRAINT PRIMARY KEY (COM_id_NB),
     CONSTRAINT FK_COM_proposal FOREIGN KEY (COM_proposal_NB) REFERENCES proposal(PRO_id_NB),
