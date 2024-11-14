@@ -3,3 +3,5 @@ script-python
 **/.env.*
 **/vendor/
 
+backend/test.php
+autres-tests

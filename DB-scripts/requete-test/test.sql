@@ -1,4 +1,6 @@
+
 --Affiche les noms des groupes et leur propositions (avec les thèmes associés)
+
 SELECT CMY_name_VC, PRO_title_VC, THM_name_VC
 FROM community
 INNER JOIN proposal ON CMY_id_NB = PRO_community_NB
@@ -44,17 +46,65 @@ FROM member
 RIGHT JOIN user ON USR_id_NB = MEM_community_NB
 GROUP BY USR_id_NB, USR_lastname_VC;
 
--- Affiche les membres de chaque groupe avec leur id et leur role
-SELECT MEM_user_NB, ROL_label_VC
-FROM member M
-INNER JOIN role R ON M.MEM_role_NB = R.ROL_id_NB
-WHERE MEM_community_NB = 1;
+--Affiche le nombre total de réaction pour chaque proposition ainsi que le nombre de j'aime, j'aime pas, adore et deteste (avec le groupe et la date pour les traitements)
+-- SUSCEPTIBLE VUE
 
--- Affiche les membres qui n'ont pas été invités alors qu'ils font parti du groupe
-SELECT M.MEM_user_NB
-FROM member M
-LEFT JOIN user U ON M.MEM_user_NB = U.USR_id_NB
-LEFT JOIN invitation I ON U.USR_id_NB = I.INV_recipient_NB 
-    			AND I.INV_community_NB = M.MEM_community_NB
-WHERE M.MEM_community_NB = 1
-AND I.INV_recipient_NB IS NULL;
+CREATE OR REPLACE VIEW proposal_total_reaction AS 
+SELECT pro_id_nb, pro_title_vc,
+	SUM(CASE WHEN rep_reaction_nb = 3 THEN 1 ELSE 0 END) AS 'nblove',
+	SUM(CASE WHEN rep_reaction_nb = 1 THEN 1 ELSE 0 END) AS 'nblike',
+    SUM(CASE WHEN rep_reaction_nb = 2 THEN 1 ELSE 0 END) AS 'nbdislike',
+    SUM(CASE WHEN rep_reaction_nb = 4 THEN 1 ELSE 0 END) AS 'nbhate',
+    COUNT(rea_id_nb) as 'nbtotal', 
+    pro_community_nb, pro_creation_date, pro_status_vc
+FROM proposal 
+LEFT JOIN proposal_reaction ON rep_proposal_nb = pro_id_nb
+LEFT JOIN reaction ON rea_id_nb = rep_reaction_nb
+WHERE pro_deleter_nb IS NULL
+GROUP BY pro_id_nb, pro_title_vc
+ORDER BY nblove DESC, nblike DESC, nbdislike DESC, nbhate DESC, nbtotal DESC;
+
+--Affiche le nombre total de réaction pour chaque commentaire d'un groupe ainsi que le nombre de j'aime, j'aime pas, adore et deteste. On affiche la proposition 
+--ratachée et l'utilisateur qui l'a envoyé.
+
+CREATE OR REPLACE VIEW comment_total_reaction AS
+SELECT pro_id_nb, pro_title_vc, com_id_nb, com_message_vc, usr_id_nb, usr_firstname_vc, pro_community_nb,
+	SUM(CASE WHEN rep_reaction_nb = 3 THEN 1 ELSE 0 END) AS 'nblove',
+	SUM(CASE WHEN rep_reaction_nb = 1 THEN 1 ELSE 0 END) AS 'nblike',
+    SUM(CASE WHEN rep_reaction_nb = 2 THEN 1 ELSE 0 END) AS 'nbdislike',
+    SUM(CASE WHEN rep_reaction_nb = 4 THEN 1 ELSE 0 END) AS 'nbhate',
+    COUNT(*) as 'nbtotal'
+FROM proposal 
+INNER JOIN proposal_reaction ON rep_proposal_nb = pro_id_nb
+INNER JOIN comment ON com_proposal_nb = pro_id_nb
+INNER JOIN reaction ON rea_id_nb = rep_reaction_nb
+INNER JOIN user ON com_sender_nb = usr_id_nb
+WHERE com_suppressor_nb IS NULL AND pro_status_vc = 'En cours' AND pro_deleter_nb IS NULL
+GROUP BY pro_id_nb, pro_title_vc, com_id_nb, com_message_vc, usr_id_nb , usr_firstname_vc
+ORDER BY nblove DESC, nblike DESC, nbdislike DESC, nbhate DESC, nbtotal DESC;
+
+--Affiche les propositions publiée cette semaine
+
+--Affiche le nombre de personne aimant une proposition, et le nombre de commentaire sur cette proposition
+-- utilisée pour la fonction newsletter_polemic_proposal
+
+SELECT pro_id_nb, pro_title_vc, pro_community_nb,
+MAX(nblove) + MAX(nblike) as 'totallike', 
+MAX(nbhate) + MAX(nbdislike) as 'totaldislike',
+COUNT(com_id_nb) as 'nbcomment'
+FROM proposal_total_reaction
+LEFT JOIN comment ON pro_id_nb = com_proposal_nb
+WHERE pro_community_nb = 13 
+AND pro_status_vc = 'En cours'
+GROUP BY pro_id_nb, pro_title_vc, pro_community_nb;
+
+-- Les vote qui débutent ou commencent prochainement (peut etre les triés)
+SELECT pro_id_nb, pro_title_vc, vot_start_date, vot_end_date, vot_round_nb
+FROM proposal
+INNER JOIN vote ON pro_id_nb = vot_proposal_nb
+WHERE 
+((CURDATE() <= vot_start_date AND vot_start_date <= CURDATE() + INTERVAL 7 DAY)
+OR 
+(CURDATE() <= vot_end_date AND vot_end_date <= CURDATE() + INTERVAL 7 DAY))
+AND pro_deleter_nb IS NULL 
+AND pro_status_vc = 'En cours';
