@@ -123,3 +123,9 @@ LEFT JOIN invitation I ON U.USR_id_NB = I.INV_recipient_NB
     			AND I.INV_community_NB = M.MEM_community_NB
 WHERE M.MEM_community_NB = 1
 AND I.INV_recipient_NB IS NULL;
+
+-- Affiche les commentaires et identifiants des personnes qui sont membre du groupe
+SELECT COM_proposal_NB, 
+FROM comment M
+INNER JOIN proposal P ON M.COM_proposal_NB = P.PRO_id_NB
+WHERE PRO_community_NB = 1
