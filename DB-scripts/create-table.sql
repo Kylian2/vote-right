@@ -98,6 +98,7 @@ CREATE TABLE proposal (
     PRO_status_VC VARCHAR(20) DEFAULT 'En attente' NOT NULL,
     PRO_initiator_NB INT NOT NULL,
     PRO_deleter_NB INT,
+    PRO_budget_year_DATE DATE,
     PRO_approver_NB INT,
     PRO_community_NB INT NOT NULL,
     PRO_theme_NB SMALLINT NOT NULL,
