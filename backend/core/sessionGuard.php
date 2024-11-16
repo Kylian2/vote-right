@@ -66,8 +66,12 @@ class SessionGuard{
         //TODO
     }
 
-    public static function getId(){
-        //TODO
+    public static function getUserId(){
+        if(isset($_SESSION["user"]) && isset($_SESSION["last_activity"])){
+            $_SESSION["last_activity"] = time();
+            $user = $_SESSION["user"];
+            return $user->get('USR_id_NB');
+        }
     }
 
     /**

@@ -8,6 +8,7 @@ class Community extends Model{
     public string $CMY_name_VC;
     public string $CMY_image_VC;
     public string $CMY_emoji_VC;
+    public string $CMY_color_VC;
     public ?string $CMY_description_VC;
     public float $CMY_budget_NB;
     public float $CMY_fixed_fees_NB;
@@ -31,15 +32,7 @@ class Community extends Model{
         $prepare->execute($values);
         $result = $prepare->fetch();
 
-        $communities = array();
-
-        foreach (json_decode($result[0]) as $community) {
-            $community = json_decode($community, true);
-            $community['CMY_themes_TAB'] = json_decode($community['CMY_themes_TAB']);
-            $communities[] = new Community($values = $community);
-        }
-
-        return $communities;
+        return json_decode($result[0]);
     }
 
 }

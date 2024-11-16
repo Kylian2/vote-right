@@ -10,4 +10,7 @@ Router::post('/auth/logout', 'AuthController@logout');
 
 Router::protect('/user/index');
 
+Router::get('/community/index', 'CommunityController@index');
+Router::protect('/community/index');
+
 ?>
