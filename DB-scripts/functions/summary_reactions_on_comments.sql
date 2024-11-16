@@ -1,14 +1,16 @@
 DELIMITER //
 
-CREATE OR REPLACE FUNCTION summary_comments(user_id INT)
+CREATE OR REPLACE FUNCTION summary_reactions_on_comments(user_id INT)
 RETURNS TEXT
 NOT DETERMINISTIC
 BEGIN
     DECLARE comment_id BIGINT;
     DECLARE comment_message VARCHAR(250);
     DECLARE proposal_id INT;
-    DECLARE proposal_title VARCHAR(150);
-    DECLARE user_firstname VARCHAR(50);
+    DECLARE comment_nblove SMALLINT;
+    DECLARE comment_nblike SMALLINT;
+    DECLARE comment_nbdislike SMALLINT;
+    DECLARE comment_nbhate SMALLINT;
 
     DECLARE one_comment TEXT;
     DECLARE list_comments TEXT DEFAULT '[';
@@ -17,21 +19,17 @@ BEGIN
     DECLARE first INT DEFAULT 1; -- Indicateur pour la première entrée sans virgule initiale
 
     DECLARE comments CURSOR FOR
-        SELECT com_id_nb, com_message_vc, pro_id_nb, pro_title_vc, usr_firstname_vc
-        FROM proposal
-        INNER JOIN comment ON com_proposal_nb = pro_id_nb
-        INNER JOIN user ON com_sender_nb = usr_id_nb
-        WHERE pro_community_nb IN (SELECT mem_community_nb FROM member WHERE mem_user_nb = user_id)
-        AND pro_status_vc = 'En cours'
-        AND pro_initiator_nb = user_id
-        AND com_creation_date >= CURDATE() - INTERVAL 7 DAY;
+        SELECT com_id_nb, com_message_vc, pro_id_nb, nblove, nblike, nbdislike, nbhate
+        FROM comment_total_reaction
+        WHERE usr_id_nb = user_id
+        AND pro_status_vc = 'En cours';
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin_cursor = 1;
 
     OPEN comments;
 
     fetchcomments: LOOP
-        FETCH comments INTO comment_id, comment_message, proposal_id, proposal_title, user_firstname;
+        FETCH comments INTO comment_id, comment_message, proposal_id, comment_nblove, comment_nblike, comment_nbdislike, comment_nbhate;
 
         IF fin_cursor THEN 
             LEAVE fetchcomments; 
@@ -43,8 +41,10 @@ BEGIN
             '"comment_id": "', comment_id, '",',
             '"comment_message": "', comment_message, '",',
             '"proposal_id": "', proposal_id, '",',
-            '"proposal_title": "', proposal_title, '",',
-            '"user_firstname": "', user_firstname, '"',
+            '"nblove": "', comment_nblove, '",',
+            '"nblike": "', comment_nblike, '",',
+            '"nbdislike": "', comment_nbdislike, '",',
+            '"nbhate": "', comment_nbhate, '"',
             '}'
         );
 

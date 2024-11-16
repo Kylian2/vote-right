@@ -36,14 +36,14 @@ IF notify_proposal THEN
 END IF;
 
 IF notify_vote THEN 
-    SET started_votes = null; -- summary_started_votes(user_id);
-    SET ended_votes = null; -- summary_ended_votes(user_id);
+    SET started_votes = summary_started_votes(user_id);
+    SET ended_votes = summary_ended_votes(user_id);
 END IF;
 
 IF notify_reaction THEN 
     SET comments = summary_comments(user_id);
-    SET reactions_on_proposals = null; -- summary_reactions_on_proposals(user_id);
-    SET reactions_on_comments = null; -- summary_reactions_on_comments(user_id);
+    SET reactions_on_proposals = summary_reactions_on_proposals(user_id);
+    SET reactions_on_comments = summary_reactions_on_comments(user_id);
 END IF;
 
 SET summary_json = CONCAT(
