@@ -109,23 +109,23 @@ OR
 AND pro_deleter_nb IS NULL 
 AND pro_status_vc = 'En cours';
 
--- Affiche les membres de chaque groupe avec leur id et leur role
+-- Affiche les membres d'un groupe avec leur id et leur rôle
 SELECT MEM_user_NB, ROL_label_VC
 FROM member M
 INNER JOIN role R ON M.MEM_role_NB = R.ROL_id_NB
 WHERE MEM_community_NB = 1;
 
--- Affiche les membres qui n'ont pas été invités alors qu'ils font parti du groupe
+-- Affiche les membres qui n'ont pas été invités alors qu'ils font parti d'un groupe
 SELECT M.MEM_user_NB
 FROM member M
 LEFT JOIN user U ON M.MEM_user_NB = U.USR_id_NB
 LEFT JOIN invitation I ON U.USR_id_NB = I.INV_recipient_NB 
     			AND I.INV_community_NB = M.MEM_community_NB
-WHERE M.MEM_community_NB = 1
-AND I.INV_recipient_NB IS NULL;
+WHERE I.INV_recipient_NB IS NULL 
+AND M.MEM_community_NB = 1;
 
--- Affiche les commentaires et identifiants des personnes qui sont membre du groupe
-SELECT COM_proposal_NB, 
-FROM comment M
-INNER JOIN proposal P ON M.COM_proposal_NB = P.PRO_id_NB
-WHERE PRO_community_NB = 1
+-- Affiche les commentaires d'une proposition avec les informations importantes
+SELECT COM_id_NB, COM_sender_NB, COM_message_VC, COM_creation_DATE, PRO_community_NB
+FROM comment C
+INNER JOIN proposal P ON C.COM_proposal_NB = P.PRO_id_NB
+AND P.PRO_id_NB = 2;
