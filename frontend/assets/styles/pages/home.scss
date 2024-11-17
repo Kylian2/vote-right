@@ -1,0 +1,131 @@
+.home{
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+
+    h2, h3{
+        display: inline-block;
+        &::after{
+            content: '';
+            display: block;
+            height: 7px;
+            width: 100%;
+            background: $gradient;
+            border-radius: 2px;
+        }
+    }
+}
+
+.communities_contener{
+    padding: 20px 45px;
+    width: 48%;
+    background: url('~/public/images/background.png') ;
+    background-size: cover;
+    height: 65vh;
+    border-radius: 5px;
+    &__header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        a{
+            text-decoration: underline;
+        }
+    }
+
+    &__bloc{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .community{
+        &__wrapper{
+            width: 48%;
+            height: 175px;
+            border-radius: 5px;
+        }
+        height: 100%;
+        padding: 25px;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: rgba(0, 0, 0, 0.35);
+        h4, p{
+            color: $contrast;
+        }
+
+        &_themes{
+            display: flex;
+            flex-wrap: wrap;
+        }
+            
+        .tag{
+            color: $contrast;
+            font-size: 12px;
+            padding: 2px 4px;
+            text-align: center;
+            border-radius: 2px;
+            margin-right:5px;
+            &__infos{
+                font-size: 12px;
+                color: $contrast;
+            }
+        }
+
+        .emoji{
+            margin: 0 5px 0 0;
+        }
+
+        p{
+            span{
+                margin-right: 5px;
+            }
+        }
+    }
+}
+
+h1{
+    margin: 60px 5%;
+}
+
+.proposals{
+    width: 48%;
+    height: 65vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    &__block{
+        background-color: $background-light;
+        padding: 20px 45px;
+        border-radius: 5px;
+        max-height: 32vh;
+        overflow: hidden;
+    }
+    &__contener{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        overflow: scroll;
+        max-height: 32vh;
+        margin-top: 20px;
+    }
+}
+
+.proposal{
+    font-size: 16px;
+    padding: 10px 12px;
+    border-radius: 5px;
+    color: $contrast;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &__theme{
+        font-size: 14px;
+        padding: 4px 8px;
+        background: $dark;
+        border-radius: 5px;
+    }
+}
+
