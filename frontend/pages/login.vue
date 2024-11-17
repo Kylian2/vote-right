@@ -1,6 +1,6 @@
 <template>
     <Header type="notlogged"></Header>
-    <main>
+    <main class="login">
         <div class="registration">
             <h1>Connexion</h1>
             <form  class="registration__form">
