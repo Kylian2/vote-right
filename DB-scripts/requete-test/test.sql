@@ -25,6 +25,7 @@ SELECT PRO_id_NB, PRO_title_VC, COUNT(*)
 FROM community
 INNER JOIN proposal ON CMY_id_NB = PRO_community_NB
 INNER JOIN theme ON THM_community_NB = PRO_community_NB AND THM_id_NB = PRO_theme_NB
+INNER JOIN proposal_reaction ON PRO_id_NB = REP_proposal_NB
 GROUP BY PRO_id_NB, PRO_title_VC;
 
 --Le nombre de membre dans chaque groupe
