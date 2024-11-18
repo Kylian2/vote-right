@@ -15,8 +15,9 @@ class User extends Model{
     public int $USR_notify_proposal_BOOL;
     public int $USR_notify_vote_BOOL;
     public int $USR_notify_reaction_BOOL;
+    public int $USR_newsletter_BOOL;
 
-    function __construct(int $USR_id_NB = NULL, string $USR_lastname_VC = NULL, string $USR_firstname_VC = NULL, string $USR_email_VC = NULL, string $USR_password_VC = NULL, string $USR_address_VC = NULL, string $USR_zipcode_CH = NULL, string $USR_birthdate_DATE = NULL, string $USR_notification_frequency_CH = NULL, int $USR_notify_proposal_BOOL = NULL, int $USR_notify_vote_BOOL = NULL, int $USR_notify_reaction_BOOL = NULL) {
+    function __construct(int $USR_id_NB = NULL, string $USR_lastname_VC = NULL, string $USR_firstname_VC = NULL, string $USR_email_VC = NULL, string $USR_password_VC = NULL, string $USR_address_VC = NULL, string $USR_zipcode_CH = NULL, string $USR_birthdate_DATE = NULL, string $USR_notification_frequency_CH = NULL, int $USR_notify_proposal_BOOL = NULL, int $USR_notify_vote_BOOL = NULL, int $USR_notify_reaction_BOOL = NULL,  int $USR_newsletter_BOOL = NULL) {
 
         /* Classique */
         /* Récupéré avec la base de données */
@@ -33,6 +34,7 @@ class User extends Model{
             $this->USR_notify_proposal_BOOL = $USR_notify_proposal_BOOL? $USR_notify_proposal_BOOL : 0;
             $this->USR_notify_vote_BOOL = $USR_notify_vote_BOOL ? $USR_notify_vote_BOOL : 0;
             $this->USR_notify_reaction_BOOL = $USR_notify_reaction_BOOL ? $USR_notify_reaction_BOOL : 0;
+            $this->USR_newsletter_BOOL = $USR_newsletter_BOOL ? $USR_newsletter_BOOL : 0;
         }
     }
 
