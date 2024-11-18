@@ -6,7 +6,7 @@ BEFORE INSERT ON proposal
 FOR EACH ROW
 BEGIN
     IF NEW.PRO_initiator_NB NOT IN (SELECT MEM_user_NB
-                                    FROM Member 
+                                    FROM member 
                                     WHERE MEM_community_NB = NEW.PRO_community_NB)
     THEN
         SIGNAL SQLSTATE '45000'

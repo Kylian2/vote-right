@@ -8,11 +8,11 @@ BEGIN
     DECLARE community_id INT;
 
     SELECT PRO_community_NB INTO community_id
-    FROM Proposal
+    FROM proposal
     WHERE PRO_id_NB = NEW.DET_proposal_NB;
 
     IF NEW.DET_user_NB NOT IN (SELECT MEM_user_NB
-                               FROM Member 
+                               FROM member 
                                WHERE MEM_community_NB = community_id)
     THEN
         SIGNAL SQLSTATE '45000'

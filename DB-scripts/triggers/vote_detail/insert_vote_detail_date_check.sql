@@ -9,7 +9,7 @@ BEGIN
     DECLARE vote_end_date DATE;
 
     SELECT VOT_start_DATE, VOT_end_DATE INTO vote_start_date, vote_end_date
-    FROM Vote
+    FROM vote
     WHERE VOT_proposal_NB = NEW.DET_proposal_NB AND VOT_round_NB = NEW.DET_round_NB;
 
     IF NEW.DET_voted_on_DATE NOT BETWEEN vote_start_date AND vote_end_date

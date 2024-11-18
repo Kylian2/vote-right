@@ -9,7 +9,7 @@ BEGIN
 
     -- Récupère l'identifiant du système de vote "deux tours"
     SELECT SYS_id_NB INTO twoRoundSystemId 
-    FROM VOTING_SYSTEM
+    FROM voting_systeme
     WHERE SYS_label_VC LIKE '%deux tours%';
 
     -- Vérifie si le tour est le second tour et si le vote suit un suffrage à un tour

@@ -8,11 +8,11 @@ BEGIN
     IF NEW.PRO_approver_NB IS NOT NULL 
     AND NEW.PRO_budget_NB IS NOT NULL 
     AND NEW.PRO_budget_NB + (SELECT COALESCE(SUM(PRO_budget_NB), 0)
-                             FROM Proposal
+                             FROM proposal
                              WHERE PRO_id_NB != NEW.PRO_id_NB
                              AND PRO_theme_NB = NEW.PRO_theme_NB
                              AND PRO_community_NB = NEW.PRO_community_NB) > (SELECT THM_budget_NB
-                                                                             FROM Theme 
+                                                                             FROM theme 
                                                                              WHERE THM_id_NB = NEW.PRO_theme_NB)
     THEN
         SIGNAL SQLSTATE '45000'
