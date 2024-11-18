@@ -46,7 +46,7 @@
             border-radius: 5px;
         }
         height: 100%;
-        padding: 25px;
+        padding: 25px 25px 15px 25px;
         border-radius: 5px;
         display: flex;
         flex-direction: column;
@@ -63,7 +63,8 @@
             
         .tag{
             color: $contrast;
-            font-size: 12px;
+            display: inline-block;
+            font-size: 10px;
             padding: 2px 4px;
             text-align: center;
             border-radius: 2px;
