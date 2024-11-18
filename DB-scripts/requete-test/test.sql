@@ -41,10 +41,10 @@ INNER JOIN role ON ROL_id_NB = MEM_role_NB
 GROUP BY CMY_id_NB, CMY_name_VC, ROL_label_VC;q
 
 --Le nombre de groupe auxquels chaque utilisateur fait parti
-SELECT USR_id_NB, USR_lastname_VC, COUNT(MEM_community_NB)
-FROM member 
-RIGHT JOIN user ON USR_id_NB = MEM_community_NB
-GROUP BY USR_id_NB, USR_lastname_VC;
+SELECT mem_user_nb, USR_lastname_VC, COUNT(MEM_community_NB)
+FROM user 
+RIGHT JOIN member ON USR_id_NB = MEM_user_NB
+GROUP BY mem_user_nb, USR_lastname_VC;
 
 --Affiche le nombre total de réaction pour chaque proposition ainsi que le nombre de j'aime, j'aime pas, adore et deteste (avec le groupe et la date pour les traitements)
 -- SUSCEPTIBLE VUE
