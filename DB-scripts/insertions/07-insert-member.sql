@@ -1,4 +1,4 @@
-INSERT INTO `member` (`MEM_user_NB`, `MEM_community_NB`, `MEM_role_NB`) VALUES
+INSERT INTO member (MEM_user_NB, MEM_community_NB, MEM_role_NB) VALUES
 (1, 9, 1),
 (1, 11, 1),
 (1, 13, 1),
