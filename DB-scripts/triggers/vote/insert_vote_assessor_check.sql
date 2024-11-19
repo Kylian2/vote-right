@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que le membre validant un vote pour un groupe est bien assesseur de ce groupe
-CREATE TRIGGER insertVoteAssessorCheck
+CREATE OR REPLACE TRIGGER insert_vote_assessor_check
 BEFORE INSERT ON vote
 FOR EACH ROW
 BEGIN

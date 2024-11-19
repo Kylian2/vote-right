@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que l'utilisateur invitant un internaute dans un groupe est administrateur de celui-ci
-CREATE TRIGGER insertInvitationSenderRoleCheck
+CREATE OR REPLACE TRIGGER insert_invitation_sender_role_check
 BEFORE INSERT ON invitation
 FOR EACH ROW
 BEGIN

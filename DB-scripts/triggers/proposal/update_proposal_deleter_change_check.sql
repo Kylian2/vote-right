@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier qu'une proposition allant être supprimée ne le soit pas déjà
-CREATE TRIGGER updateProposalDeleterChangeCheck
+CREATE OR REPLACE TRIGGER update_proposal_deleter_change_check
 BEFORE UPDATE ON proposal
 FOR EACH ROW
 BEGIN

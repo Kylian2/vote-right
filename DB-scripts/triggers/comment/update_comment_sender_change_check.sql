@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que l'expéditeur du commentaire soit toujours le même utilisateur
-CREATE TRIGGER updateCommentSenderChangeCheck
+CREATE OR REPLACE TRIGGER update_comment_sender_change_check
 BEFORE UPDATE ON comment
 FOR EACH ROW
 BEGIN

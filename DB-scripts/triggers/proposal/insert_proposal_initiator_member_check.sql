@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que le membre créant une proposition est bien membre de ce groupe.
-CREATE TRIGGER insertProposalInitiatorMemberCheck
+CREATE OR REPLACE TRIGGER insert_proposal_initiator_member_check
 BEFORE INSERT ON proposal
 FOR EACH ROW
 BEGIN

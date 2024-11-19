@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que le membre supprimant une proposition est modérateur ou administrateur du groupe
-CREATE TRIGGER insertProposalDeleterRoleCheck
+CREATE OR REPLACE TRIGGER insert_proposal_deleter_role_check
 BEFORE INSERT ON proposal
 FOR EACH ROW
 BEGIN

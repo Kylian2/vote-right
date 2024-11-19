@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que l'utilisateur supprimant un commentaire est modérateur ou administrateur du groupe
-CREATE TRIGGER insertCommentSuppressorRoleCheck
+CREATE OR REPLACE TRIGGER insert_comment_suppressor_role_check
 BEFORE INSERT ON comment
 FOR EACH ROW
 BEGIN

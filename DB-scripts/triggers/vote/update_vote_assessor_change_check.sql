@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier qu'un vote allant être validé ne le soit pas déjà
-CREATE TRIGGER updateVoteAssessorChangeCheck
+CREATE OR REPLACE TRIGGER update_vote_assessor_change_check
 BEFORE UPDATE ON vote
 FOR EACH ROW
 BEGIN

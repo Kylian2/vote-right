@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que l'expéditeur de l'invitation ne change pas
-CREATE TRIGGER updateInvitationSenderChangeCheck
+CREATE OR REPLACE TRIGGER update_invitation_sender_change_check
 BEFORE UPDATE ON invitation
 FOR EACH ROW
 BEGIN

@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que le budget d'une proposition approuvée ne fait pas dépasser le budget total alloué pour son thème
-CREATE TRIGGER updateProposalBudgetCheck
+CREATE OR REPLACE TRIGGER update_proposal_budget_check
 BEFORE UPDATE ON proposal
 FOR EACH ROW
 BEGIN

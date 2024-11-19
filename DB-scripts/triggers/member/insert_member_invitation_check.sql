@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que le nouveau membre d'un groupe ait reçu une invitation pour rejoindre celui-ci
-CREATE TRIGGER insertMemberInvitationCheck
+CREATE OR REPLACE TRIGGER insert_member_invitation_check
 BEFORE INSERT ON member
 FOR EACH ROW
 BEGIN

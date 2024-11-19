@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier qu'une proposition allant être validée ne le soit pas déjà
-CREATE TRIGGER updateProposalApproverChangeCheck
+CREATE OR REPLACE TRIGGER update_proposal_approver_change_check
 BEFORE UPDATE ON proposal
 FOR EACH ROW
 BEGIN

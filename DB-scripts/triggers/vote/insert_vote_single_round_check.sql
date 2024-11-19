@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier qu'un vote pour une proposition à un tour ne puisse pas avoir un second tour
-CREATE TRIGGER insertVoteSingleRoundCheck
+CREATE OR REPLACE TRIGGER insert_vote_single_round_check
 BEFORE INSERT ON vote
 FOR EACH ROW
 BEGIN

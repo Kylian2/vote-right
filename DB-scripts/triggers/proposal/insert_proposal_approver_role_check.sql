@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que le membre approuvant une proposition est décideur du groupe
-CREATE TRIGGER insertProposalApproverRoleCheck
+CREATE OR REPLACE TRIGGER insert_proposal_approver_role_check
 BEFORE INSERT ON proposal
 FOR EACH ROW
 BEGIN

@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que la date du vote d'un membre se situe entre la date de début et la date de fin de ce vote
-CREATE TRIGGER insertVoteDetailDateCheck
+CREATE OR REPLACE TRIGGER insert_vote_detail_date_check
 BEFORE INSERT ON vote_detail
 FOR EACH ROW
 BEGIN

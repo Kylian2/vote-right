@@ -1,6 +1,6 @@
 DELIMITER //
 
-CREATE FUNCTION getVotesForProposal(idProposal INT, idRound TINYINT) 
+CREATE OR REPLACE FUNCTION get_votes_for_proposal(idProposal INT, idRound TINYINT) 
 RETURNS TEXT
 NOT DETERMINISTIC
 BEGIN

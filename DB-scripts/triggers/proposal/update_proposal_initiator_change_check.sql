@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier qu'une proposition ne change pas de créateur
-CREATE TRIGGER updateProposalInitiatorChangeCheck
+CREATE OR REPLACE TRIGGER update_proposal_initiator_change_check
 BEFORE UPDATE ON proposal
 FOR EACH ROW
 BEGIN
