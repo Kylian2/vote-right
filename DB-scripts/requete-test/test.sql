@@ -13,11 +13,11 @@ INNER JOIN proposal ON CMY_id_NB = PRO_community_NB
 INNER JOIN comment ON COM_proposal_NB = PRO_id_NB
 
 --Affiche le nombre de reaction à chaque commentaire
-SELECT CMY_name_VC, PRO_title_VC, COM_message_VC, COUNT(*)
+SELECT CMY_name_VC, PRO_title_VC, COM_message_VC, COUNT(REC_reaction_NB)
 FROM community
 INNER JOIN proposal ON CMY_id_NB = PRO_community_NB
 INNER JOIN comment ON COM_proposal_NB = PRO_id_NB
-INNER JOIN comment_reaction ON REC_comment_NB = COM_id_NB
+LEFT JOIN comment_reaction ON REC_comment_NB = COM_id_NB
 GROUP BY CMY_name_VC, PRO_title_VC, COM_message_VC;
 
 --Le nombre de reaction par propositions
@@ -70,15 +70,15 @@ ORDER BY nblove DESC, nblike DESC, nbdislike DESC, nbhate DESC, nbtotal DESC;
 
 CREATE OR REPLACE VIEW comment_total_reaction AS
 SELECT pro_id_nb, pro_title_vc, com_id_nb, com_message_vc, usr_id_nb, usr_firstname_vc, pro_community_nb,
-	SUM(CASE WHEN rep_reaction_nb = 3 THEN 1 ELSE 0 END) AS 'nblove',
-	SUM(CASE WHEN rep_reaction_nb = 1 THEN 1 ELSE 0 END) AS 'nblike',
-    SUM(CASE WHEN rep_reaction_nb = 2 THEN 1 ELSE 0 END) AS 'nbdislike',
-    SUM(CASE WHEN rep_reaction_nb = 4 THEN 1 ELSE 0 END) AS 'nbhate',
-    COUNT(*) as 'nbtotal'
+	SUM(CASE WHEN rec_reaction_nb = 3 THEN 1 ELSE 0 END) AS 'nblove',
+	SUM(CASE WHEN rec_reaction_nb = 1 THEN 1 ELSE 0 END) AS 'nblike',
+    SUM(CASE WHEN rec_reaction_nb = 2 THEN 1 ELSE 0 END) AS 'nbdislike',
+    SUM(CASE WHEN rec_reaction_nb = 4 THEN 1 ELSE 0 END) AS 'nbhate',
+    COUNT(rec_reaction_nb) as 'nbtotal'
 FROM proposal 
-INNER JOIN proposal_reaction ON rep_proposal_nb = pro_id_nb
 INNER JOIN comment ON com_proposal_nb = pro_id_nb
-INNER JOIN reaction ON rea_id_nb = rep_reaction_nb
+LEFT JOIN comment_reaction ON rec_comment_nb = com_id_nb
+LEFT JOIN reaction ON rea_id_nb = rec_reaction_nb
 INNER JOIN user ON com_sender_nb = usr_id_nb
 WHERE com_suppressor_nb IS NULL AND pro_status_vc = 'En cours' AND pro_deleter_nb IS NULL
 GROUP BY pro_id_nb, pro_title_vc, com_id_nb, com_message_vc, usr_id_nb , usr_firstname_vc
