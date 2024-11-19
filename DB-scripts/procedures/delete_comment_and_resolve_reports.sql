@@ -6,7 +6,7 @@ DELIMITER //
 CREATE OR REPLACE PROCEDURE delete_comment_and_resolve_reports (IN idComment BIGINT, IN idUser INT)
 BEGIN
     UPDATE comment
-    SET COM_supressor_NB = idUser
+    SET COM_suppressor_NB = idUser
     WHERE COM_id_NB = idComment;
 
     UPDATE report
