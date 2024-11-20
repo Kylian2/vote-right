@@ -7,7 +7,7 @@
         >
             <div class="community">
                 <div class="community__header">
-                    <h4> <span class="emoji">{{String.fromCodePoint(parseInt(community["CMY_emoji_VC"], 16))}}</span>{{ community["CMY_name_VC"] }}</h4>
+                    <h4> <span class="emoji">{{String.fromCodePoint(parseInt(community["CMY_emoji_VC"], 16))}}</span>{{ trunc(community["CMY_name_VC"]) }}</h4>
                     <div class="community__themes">
                         <span v-for="theme in community['CMY_themes_TAB'].slice(0, 3)" 
                                 :style="{ background: community['CMY_color_VC'] }"
@@ -40,4 +40,8 @@ const props = defineProps({
     }
 
 })
+
+const trunc = (line) => {
+    return line.length > 33 ? line.substr(0,32)+"..." : line;
+}
 </script>
