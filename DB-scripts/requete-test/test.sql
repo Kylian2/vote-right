@@ -13,11 +13,11 @@ INNER JOIN proposal ON CMY_id_NB = PRO_community_NB
 INNER JOIN comment ON COM_proposal_NB = PRO_id_NB
 
 --Affiche le nombre de reaction à chaque commentaire
-SELECT CMY_name_VC, PRO_title_VC, COM_message_VC, COUNT(*)
+SELECT CMY_name_VC, PRO_title_VC, COM_message_VC, COUNT(REC_reaction_NB)
 FROM community
 INNER JOIN proposal ON CMY_id_NB = PRO_community_NB
 INNER JOIN comment ON COM_proposal_NB = PRO_id_NB
-INNER JOIN comment_reaction ON REC_comment_NB = COM_id_NB
+LEFT JOIN comment_reaction ON REC_comment_NB = COM_id_NB
 GROUP BY CMY_name_VC, PRO_title_VC, COM_message_VC;
 
 --Le nombre de reaction par propositions
@@ -25,6 +25,7 @@ SELECT PRO_id_NB, PRO_title_VC, COUNT(*)
 FROM community
 INNER JOIN proposal ON CMY_id_NB = PRO_community_NB
 INNER JOIN theme ON THM_community_NB = PRO_community_NB AND THM_id_NB = PRO_theme_NB
+INNER JOIN proposal_reaction ON PRO_id_NB = REP_proposal_NB
 GROUP BY PRO_id_NB, PRO_title_VC;
 
 --Le nombre de membre dans chaque groupe
@@ -41,10 +42,10 @@ INNER JOIN role ON ROL_id_NB = MEM_role_NB
 GROUP BY CMY_id_NB, CMY_name_VC, ROL_label_VC;q
 
 --Le nombre de groupe auxquels chaque utilisateur fait parti
-SELECT USR_id_NB, USR_lastname_VC, COUNT(MEM_community_NB)
-FROM member 
-RIGHT JOIN user ON USR_id_NB = MEM_community_NB
-GROUP BY USR_id_NB, USR_lastname_VC;
+SELECT mem_user_nb, USR_lastname_VC, COUNT(MEM_community_NB)
+FROM user 
+RIGHT JOIN member ON USR_id_NB = MEM_user_NB
+GROUP BY mem_user_nb, USR_lastname_VC;
 
 --Affiche le nombre total de réaction pour chaque proposition ainsi que le nombre de j'aime, j'aime pas, adore et deteste (avec le groupe et la date pour les traitements)
 -- SUSCEPTIBLE VUE
@@ -69,15 +70,15 @@ ORDER BY nblove DESC, nblike DESC, nbdislike DESC, nbhate DESC, nbtotal DESC;
 
 CREATE OR REPLACE VIEW comment_total_reaction AS
 SELECT pro_id_nb, pro_title_vc, com_id_nb, com_message_vc, usr_id_nb, usr_firstname_vc, pro_community_nb,
-	SUM(CASE WHEN rep_reaction_nb = 3 THEN 1 ELSE 0 END) AS 'nblove',
-	SUM(CASE WHEN rep_reaction_nb = 1 THEN 1 ELSE 0 END) AS 'nblike',
-    SUM(CASE WHEN rep_reaction_nb = 2 THEN 1 ELSE 0 END) AS 'nbdislike',
-    SUM(CASE WHEN rep_reaction_nb = 4 THEN 1 ELSE 0 END) AS 'nbhate',
-    COUNT(*) as 'nbtotal'
+	SUM(CASE WHEN rec_reaction_nb = 3 THEN 1 ELSE 0 END) AS 'nblove',
+	SUM(CASE WHEN rec_reaction_nb = 1 THEN 1 ELSE 0 END) AS 'nblike',
+    SUM(CASE WHEN rec_reaction_nb = 2 THEN 1 ELSE 0 END) AS 'nbdislike',
+    SUM(CASE WHEN rec_reaction_nb = 4 THEN 1 ELSE 0 END) AS 'nbhate',
+    COUNT(rec_reaction_nb) as 'nbtotal'
 FROM proposal 
-INNER JOIN proposal_reaction ON rep_proposal_nb = pro_id_nb
 INNER JOIN comment ON com_proposal_nb = pro_id_nb
-INNER JOIN reaction ON rea_id_nb = rep_reaction_nb
+LEFT JOIN comment_reaction ON rec_comment_nb = com_id_nb
+LEFT JOIN reaction ON rea_id_nb = rec_reaction_nb
 INNER JOIN user ON com_sender_nb = usr_id_nb
 WHERE com_suppressor_nb IS NULL AND pro_status_vc = 'En cours' AND pro_deleter_nb IS NULL
 GROUP BY pro_id_nb, pro_title_vc, com_id_nb, com_message_vc, usr_id_nb , usr_firstname_vc
@@ -109,17 +110,23 @@ OR
 AND pro_deleter_nb IS NULL 
 AND pro_status_vc = 'En cours';
 
--- Affiche les membres de chaque groupe avec leur id et leur role
+-- Affiche les membres d'un groupe avec leur id et leur rôle
 SELECT MEM_user_NB, ROL_label_VC
 FROM member M
 INNER JOIN role R ON M.MEM_role_NB = R.ROL_id_NB
 WHERE MEM_community_NB = 1;
 
--- Affiche les membres qui n'ont pas été invités alors qu'ils font parti du groupe
+-- Affiche les membres qui n'ont pas été invités alors qu'ils font parti d'un groupe
 SELECT M.MEM_user_NB
 FROM member M
 LEFT JOIN user U ON M.MEM_user_NB = U.USR_id_NB
 LEFT JOIN invitation I ON U.USR_id_NB = I.INV_recipient_NB 
     			AND I.INV_community_NB = M.MEM_community_NB
-WHERE M.MEM_community_NB = 1
-AND I.INV_recipient_NB IS NULL;
+WHERE I.INV_recipient_NB IS NULL 
+AND M.MEM_community_NB = 1;
+
+-- Affiche les commentaires d'une proposition avec les informations importantes
+SELECT COM_id_NB, COM_sender_NB, COM_message_VC, COM_creation_DATE, PRO_community_NB
+FROM comment C
+INNER JOIN proposal P ON C.COM_proposal_NB = P.PRO_id_NB
+AND P.PRO_id_NB = 2;

@@ -6,4 +6,4 @@ script-python
 backend/test.php
 autres-tests
 
-**/.DS_Store
+.DS_Store
