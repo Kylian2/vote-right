@@ -14,7 +14,7 @@ class Proposal extends Model{
                     INNER JOIN theme ON pro_community_nb = thm_community_nb AND pro_theme_nb = thm_id_nb
                     WHERE pro_community_nb IN (SELECT mem_community_nb FROM member WHERE mem_user_nb = :user)
                     AND pro_deleter_nb IS NULL
-                    AND pro_status_vc = 'En cours' OR pro_status_vc = 'En attente';";
+                    AND (pro_status_vc = 'En cours' OR pro_status_vc = 'En attente');";
 
         $prepare = connexion::pdo()->prepare($request);
 
@@ -36,7 +36,7 @@ class Proposal extends Model{
                     INNER JOIN theme ON pro_community_nb = thm_community_nb AND pro_theme_nb = thm_id_nb
                     WHERE pro_community_nb IN (SELECT mem_community_nb FROM member WHERE mem_user_nb = :user)
                     AND pro_deleter_nb IS NULL
-                    AND pro_status_vc = 'Validé' OR pro_status_vc = 'Rejetée';";
+                    AND (pro_status_vc = 'Validée' OR pro_status_vc = 'Rejetée');";
 
         $prepare = connexion::pdo()->prepare($request);
 
