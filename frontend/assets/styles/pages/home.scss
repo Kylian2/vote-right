@@ -21,7 +21,7 @@
     width: 48%;
     background: url('~/public/images/background.png') ;
     background-size: cover;
-    height: 65vh;
+
     border-radius: 5px;
     &__header{
         display: flex;
@@ -93,7 +93,7 @@ h1{
 
 .proposals{
     width: 48%;
-    height: 65vh;
+    height: 92vh;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -101,7 +101,7 @@ h1{
         background-color: $background-light;
         padding: 20px 45px;
         border-radius: 5px;
-        max-height: 32vh;
+        max-height: 45vh;
         overflow: hidden;
     }
     &__contener{
