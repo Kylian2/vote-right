@@ -10,6 +10,7 @@ BEGIN
     DECLARE name VARCHAR(150);
     DECLARE emoji VARCHAR(5);
     DECLARE image VARCHAR(50);
+    DECLARE color VARCHAR(50);
     DECLARE nbMembre INT;
     DECLARE themes TEXT;
     DECLARE community TEXT;
@@ -18,7 +19,7 @@ BEGIN
     DECLARE first INT DEFAULT 1; -- Indicateur pour gérer la première entrée sans virgule initiale
 
     DECLARE communities CURSOR FOR 
-        SELECT CMY_id_NB, CMY_name_VC, CMY_emoji_VC, CMY_image_VC, 
+        SELECT CMY_id_NB, CMY_name_VC, CMY_emoji_VC, CMY_color_VC, CMY_image_VC, 
                (SELECT COUNT(*) FROM member WHERE MEM_community_NB = CMY_id_NB) AS nbMembre
         FROM community
         WHERE CMY_id_NB IN (SELECT MEM_community_NB FROM member WHERE MEM_user_NB = userid);
@@ -28,7 +29,7 @@ BEGIN
     OPEN communities;
 
     makejson: LOOP
-        FETCH communities INTO id, name, emoji, image, nbMembre;
+        FETCH communities INTO id, name, emoji, color, image, nbMembre;
 
         IF fin_cursor THEN
             LEAVE makejson; -- Sortir de la boucle si aucune ligne n'est trouvée
@@ -44,6 +45,7 @@ BEGIN
             '"CMY_id_NB": "', id, '",',
             '"CMY_name_VC": "', name, '",',
             '"CMY_emoji_VC": "', emoji, '",',
+            '"CMY_color_VC": "', color, '",',
             '"CMY_image_VC": "', image, '",',
             '"CMY_nb_member_NB": "', nbMembre, '",',
             '"CMY_themes_TAB": ', themes,

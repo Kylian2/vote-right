@@ -10,6 +10,11 @@ class UserController{
         echo json_encode($users);
     }
 
+    public function name(){
+        $user = SessionGuard::getUser();
+        echo $user->get('USR_firstname_VC');
+    }
+
 }
 
 ?>

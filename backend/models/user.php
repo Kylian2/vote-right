@@ -7,7 +7,7 @@ class User extends Model{
     public string $USR_lastname_VC;
     public string $USR_firstname_VC;
     public string $USR_email_VC;
-    public ?string $USR_password_VC; // Peut-être null (les faux utilisateurs ont un mot de passe null par défaut)
+    public string $USR_password_VC; 
     public string $USR_address_VC;
     public string $USR_zipcode_CH;
     public string $USR_birthdate_DATE;

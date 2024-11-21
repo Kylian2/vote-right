@@ -1,0 +1,117 @@
+.home{
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+
+    h2, h3{
+        display: inline-block;
+        &::after{
+            content: '';
+            display: block;
+            height: 7px;
+            width: 100%;
+            background: $gradient;
+            border-radius: 2px;
+        }
+    }
+
+    @media screen and (max-width: 975px) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @media screen and (max-width: 425px) {
+        margin-bottom: 100px;
+    }
+}
+
+.communities_contener{
+    padding: 20px 45px;
+    width: 48%;
+    background: url('~/public/images/background.png') ;
+    background-size: cover;
+    border-radius: 5px;
+
+    @media screen and (max-width: 1225px) {
+        padding: 20px 20px;
+        width: 30%;
+    }
+
+    @media screen and (max-width: 975px) {
+        width: 100%;
+        border-radius: 0;
+    }
+
+    &__header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        a{
+            text-decoration: underline;
+        }
+    }
+
+    &__bloc{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        @media screen and (max-width: 1225px) {
+            justify-content: center;        
+        }
+    }
+}
+
+h1{
+    margin: 60px 5%;
+}
+
+.proposals{
+    width: 48%;
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    @media screen and (max-width: 1225px) {
+        width: 66%;
+    }
+
+    @media screen and (max-width: 975px) {
+        width: 100%;
+        border-radius: 0;
+        margin-top: 30px;
+    }
+
+    &__block{
+        background-color: $background-light;
+        padding: 20px 45px;
+        border-radius: 5px;
+        max-height: 45vh;
+        overflow: hidden;
+
+        @media screen and (max-width: 975px) {
+            max-height: 820px;
+            border-radius: 0;
+            padding: 20px 20px;        
+        }
+    }
+    &__contener{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        overflow: scroll;
+        max-height: 32vh;
+        margin-top: 20px;
+        
+        @media screen and (max-width: 975px) {
+            max-height: 800px;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+
+

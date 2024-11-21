@@ -1,6 +1,6 @@
 <template>
     <Header type="notlogged"></Header>
-    <main>
+    <main class="register">
         <div class="registration">
             <h1>Inscription</h1>
             <form  class="registration__form">

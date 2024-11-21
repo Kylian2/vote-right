@@ -13,3 +13,48 @@
 .d-none{
     display: none !important;
 }
+
+h1{
+    font-size: 48px;
+    font-family: $exotic-font;
+}
+
+h2{
+    font-size: 36px;
+    font-family: $exotic-font;
+}
+
+h3{
+    font-size: 28px;
+    font-family: $exotic-font;
+}
+
+h4{
+    font-size: 22px;
+}
+
+.shine{
+    background: $gradient;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 500;
+    transition: .3s;
+    background-size: 150px;
+    &:hover{
+        background-position: -30px;
+    }
+}
+
+.shine-2{
+    background: $gradient-3;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 500;
+    transition: .3s;
+    background-size: 150px;
+    &:hover{
+        background-position: -30px;
+    }
+}
