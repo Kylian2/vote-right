@@ -1,5 +1,5 @@
 <template>
-    <Header type="logged" actif="accueil"></Header>
+    <Header type="logged" actif="groupes"></Header>
     <div class="communities__title">
         <h1>Groupes</h1>
         <NuxtLink class="btn--full btn--responsive-hidden" to="#">
