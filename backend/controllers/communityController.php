@@ -40,6 +40,16 @@ class CommunityController{
      * 
      * Procède à des vérifications de validité avant d'insérer
      * 
+     * ex de données acceptées : 
+     * 
+     * {
+     *   "name": "Voyage en Laponie",
+     *   "image": "100001.png",
+     *   "description": "Lorem ipsum dolor sit amet sen",
+     *   "emoji": "1F385",
+     *   "color": "#DE3D59"
+     * }
+     * 
      * @return void renvoie au format json la communauté si l'insertions réussie
      */
     public static function store(){
