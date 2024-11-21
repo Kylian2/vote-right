@@ -11,7 +11,7 @@ INSERT INTO theme (THM_id_NB, THM_community_NB, THM_name_VC, THM_budget_NB) VALU
 (1, 10, 'Visite', 4000.00),
 (1, 11, 'Intervention', 3000.00),
 (1, 12, 'Dédicace', 20000.00),
-(1, 13, 'Organisation', 20000.00),
+(1, 13, 'Animation', 20000.00),
 (1, 14, 'Compétition', 6000.00),
 (1, 15, 'Organisation', 6000.00),
 (1, 16, 'Exposition', 1000.00),
@@ -58,4 +58,5 @@ INSERT INTO theme (THM_id_NB, THM_community_NB, THM_name_VC, THM_budget_NB) VALU
 (4, 17, 'Animation', 10000.00),
 (4, 18, 'Projet', 22000.00),
 (5, 13, 'Décoration', 12000.00),
-(5, 17, 'Ravitaillement', 20000.00);
+(5, 17, 'Ravitaillement', 20000.00),
+(6, 13, 'Humanitaire', 10000.00);

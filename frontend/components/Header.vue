@@ -12,8 +12,8 @@
             </div>
         </nav>
         <nav v-if="type === 'logged'" class="logged">
-            <div class="wrapper" :class="{'active' : actif === 'accueil'}" ><NuxtLink class="logged__link" to="#">Accueil</NuxtLink></div>
-            <div class="wrapper" :class="{'active' : actif === 'groupes'}"><NuxtLink class="logged__link" to="#">Groupes</NuxtLink></div>
+            <div class="wrapper" :class="{'active' : actif === 'accueil'}" ><NuxtLink class="logged__link" to="/home">Accueil</NuxtLink></div>
+            <div class="wrapper" :class="{'active' : actif === 'groupes'}"><NuxtLink class="logged__link" to="/communities">Groupes</NuxtLink></div>
         </nav>
         <div v-if="type === 'logged'" class="logged">
             <NuxtLink to="#" class="shine">Mon Compte</NuxtLink>
@@ -32,7 +32,7 @@
         <nav class="d-none" id="navigation-mobile">
             <NuxtLink to="/" class="logo--mobile"><b>Vote</b>Right</NuxtLink>
             <NuxtLink to="/home">Accueil</NuxtLink>
-            <NuxtLink to="#">Groupes</NuxtLink>
+            <NuxtLink to="/communities">Groupes</NuxtLink>
             <NuxtLink to="#">Mon compte</NuxtLink>
         </nav>
     </header>

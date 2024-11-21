@@ -7,7 +7,7 @@
 
             <div class="communities_contener__header">
                 <h2>Les Groupes</h2>
-                <NuxtLink to="#">Tout voir</NuxtLink>
+                <NuxtLink to="/communities">Tout voir</NuxtLink>
             </div>
 
             <div v-if="communities" class="communities_contener__bloc">

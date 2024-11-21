@@ -10,6 +10,12 @@ class CommunityController{
         $communities = Community::communitiesOf($userId);
         echo json_encode($communities);
     }
+
+    public static function administered(){
+        $userId = SessionGuard::getUserId();
+        $communities = Community::communitiesBy($userId);
+        echo json_encode($communities);
+    }
     
 }
 
