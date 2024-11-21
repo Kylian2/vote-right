@@ -10,6 +10,7 @@
         <div class="communities__bloc">
             <h4>Mes groupes :</h4>
             <div class="communities__bloc__contener">
+                <CardCommunity v-for="community in myCommunities" :community="community"></CardCommunity>
                 <div class="add-community" :class="{ 'small': myCommunities.length > 0 }">
                     <span class="add-community__plus"></span>
                     <span class="add-community__plus"></span>
@@ -46,6 +47,16 @@ const fetchData = async () => {
         });
 
         communities.value = response
+    } catch (error) {
+        console.log("An error occured", error);
+    }
+
+    try{
+        const response = await $fetch(`http://localhost:3333/community/administered`, {
+            credentials: 'include',
+        });
+
+        myCommunities.value = response
     } catch (error) {
         console.log("An error occured", error);
     }
