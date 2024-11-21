@@ -2,8 +2,12 @@
     <Header type="logged" actif="accueil"></Header>
     <div class="communities__title">
         <h1>Groupes</h1>
-        <NuxtLink class="btn--full" to="#">
+        <NuxtLink class="btn--full btn--responsive-hidden" to="#">
             Créer mon groupe
+        </NuxtLink>
+        <NuxtLink class="btn--full btn--plus btn--responsive" to="#">
+            <span class="btn--plus__plus"></span>
+            <span class="btn--plus__plus"></span>
         </NuxtLink>
     </div>
     <main class="communities">

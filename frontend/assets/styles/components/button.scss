@@ -87,4 +87,36 @@
             background: darken($color: $neutral, $amount: 20%);
         }
     }
+
+    &--plus{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &__plus{
+            display: block;
+            height: 15px;
+            width: 3px;
+            background: $contrast;
+            border-radius: 2px;
+        }
+        &__plus:nth-child(1){
+            transform: rotate(90deg) translateY(-1px);
+        }
+        &__plus:nth-child(2){
+            transform: translateX(-2px);
+        }
+    }
+
+    &--responsive{
+        display: none;
+        @media screen and (max-width: 450px) {
+            display: flex;
+        }
+    }
+
+    &--responsive-hidden{
+        @media screen and (max-width: 450px) {
+            display: none;
+        }
+    }
 }

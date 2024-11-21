@@ -24,6 +24,11 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+
+            @media screen and (max-width: 825px) {
+                justify-content: center;
+            }
+
             p{
                 margin: 20px 10px;
             }
@@ -47,10 +52,15 @@
                     transform: rotate(90deg) translateY(-10px);
                 }
                 &.small{
-                    transform: scale(0.7);
+                    transform: scale(0.7)
+                    translateX(-70px);
+
+                    @media screen and (max-width: 825px) {
+                        transform: scale(0.7)
+                        translateY(-30px);
+                    }
                 }
             }
         }
     }
-
 }
