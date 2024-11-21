@@ -39,18 +39,6 @@ header{
     .logged{
         align-items: center;
         font-size: 20px;
-        .shine{
-            background: $gradient;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 500;
-            transition: .3s;
-            background-size: 150px;
-            &:hover{
-                background-position: -30px;
-            }
-        }
         &__link{
             box-shadow: 15px 0 0 0 rgb(255, 255, 255);
             transition: .3s;

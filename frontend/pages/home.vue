@@ -1,6 +1,6 @@
 <template>
     <Header type="logged" actif="accueil"></Header>
-    <h1> &#x1F44B; Bonjour {{ firstname }}</h1>
+    <h1> &#x1F44B; Bonjour <span class="shine-2">{{ firstname }}</span></h1>
 
     <main class="home">
         <div class="communities_contener">
