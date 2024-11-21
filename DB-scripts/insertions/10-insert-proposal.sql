@@ -20,7 +20,7 @@ INSERT INTO proposal (PRO_id_NB, PRO_title_VC, PRO_description_TXT, PRO_creation
 (19, 'Festival d''Improvisation', 'Organisation d''un festival de théâtre d''improvisation.', '2024-09-23', 10, 7, 'Salon des Expositions', 5000.00, 'En cours', NULL, 88, NULL, NULL, 7, 2),
 (20, 'Atelier de Création', 'Atelier pour enseigner les techniques artisanales.', '	2024-10-26', 9, 6, '12 Avenue de la République', 5000.00, 'En cours', NULL, 37, NULL, NULL, 8, 1),
 (21, 'Exposition Artisanale', 'Organisation d''une exposition des artisans locaux.', '2024-10-14', 10, 8, 'Salon des expositions', 6000.00, 'En cours', NULL, 85, NULL, NULL, 8, 2),
-(22, 'Remonter un moteur diesel', 'Je vous propose d''apprendre à remonter un moteur, c''est assez complexe très intéréssant.', '2024-09-18', 8, 6, 'Garage de Martin', 5000.00, 'En cours', NULL, 39, NULL, NULL, 9, 1),
+(22, 'Remonter un moteur diesel', 'Je vous propose d''apprendre à remonter un moteur, c''est assez complexe mais très intéréssant.', '2024-09-18', 8, 6, 'Garage de Martin', 5000.00, 'En cours', NULL, 39, NULL, NULL, 9, 1),
 (23, 'Sortie Automobile du Club', 'Organisation d''une sortie pour les membres du Club, tout le monde peut venir, mais pas de moteur hybride / électrique, merci.', '2024-10-21', 12, 5, 'Parking de Auchan', 10000.00, 'Validée', '2025-01-25', 22, 58, NULL, 9, 2),
 (24, 'Planification des horaires', 'Répartition des jours de permanence dans le garage du club pour décembre.', '2024-09-23', 8, 6, 'Garage de Martin', 10000.00, 'En cours', NULL, 42, NULL, NULL, 9, 3),
 (25, 'Visite d''une cave impressionnante', 'Visite de la cave de Roger, notre fidèle fournisseur.', '2024-10-18', 10, 7, 'Cave de Roger', 200.00, 'En cours', NULL, 56, NULL, NULL, 10, 1),
