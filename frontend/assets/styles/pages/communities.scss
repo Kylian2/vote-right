@@ -13,7 +13,7 @@
 
     &__bloc{
 
-        h4{
+        > h4{
             text-decoration: underline;
             font-weight: 400;
         }
@@ -21,13 +21,16 @@
         &__contener{
 
             padding: 20px 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
             p{
                 margin: 20px 10px;
             }
 
             .add-community{
                 background: $background-light;
-                width: 375px;
+                width: 350px;
                 height: 175px;
                 border-radius: 5px;
                 display: flex;
