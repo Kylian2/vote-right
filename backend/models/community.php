@@ -35,6 +35,16 @@ class Community extends Model{
         return json_decode($result[0]);
     }
 
+    public static function communitiesBy(int $id){
+        $request = 'SELECT communitiesby(:user);';
+        $prepare = connexion::pdo()->prepare($request);
+        $values['user'] = $id;
+        $prepare->execute($values);
+        $result = $prepare->fetch();
+
+        return json_decode($result[0]);
+    }
+
 }
 
 ?>
