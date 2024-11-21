@@ -34,7 +34,6 @@ INSERT INTO vote (VOT_proposal_NB, VOT_round_NB, VOT_valid_BOOL, VOT_assessor_NB
 (34, 1, 1, 77, 4),  
 (34, 2, 1, 77, 4), 
 (36, 1, 1, 77, 4),  
-(36, 2, 1, 77, 4),  
 (41, 1, 0, NULL, 4), 
 (41, 2, 0, NULL, 4), 
 (42, 1, 1, 50, 4), 

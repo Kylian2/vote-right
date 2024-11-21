@@ -90,7 +90,7 @@ INSERT INTO user (USR_id_NB, USR_email_VC, USR_password_VC, USR_lastname_VC, USR
 (89, 'atrevance2g@reference.com', 'kE1!G|Y%Hr__%|I.o%<%"he<_k$#', 'Trevance', 'Ariel', '33 Golf Course Trail', '88390', '1973-02-11', 'H', 0, 1, 0, 0),
 (90, 'mhayhoe2h@time.com', 'oL1"qA,1\y=UOS85JFpY1,Owr>=', 'Hayhoe', 'Madonna', '09 Grim Alley', '29400', '1996-02-14', 'H', 1, 1, 1, 0),
 (91, 'dadran2i@cpanel.net', 'gK3+_T6sW5`2gK&gyth3', 'Adran', 'Deborah', '077 Swallow Lane', '33850', '1983-01-18', 'H', 1, 1, 0, 1),
-(92, 'lshower2j@springer.com', 'lY4NneJ8i9zOV+0sz!0', 'Shower', 'Lonni', '909 Shasta Hill', '02880', '1974-06-04', 'H', 1, 1, 0, 0),
+(92, 'lshower2j@springer.com', '$argon2id$v=19$m=65536,t=4,p=1$WnhjdmVhaDhydzRzaXN0Lg$MIaXbReK/PjMcNda9PVKNkgixGl9crFJx07lIlfs8/c', 'Shower', 'Lonni', '909 Shasta Hill', '02880', '1974-06-04', 'H', 1, 1, 0, 0),
 (93, 'ckirgan2k@umn.edu', 'sY4|bc1UWgNPQ8%iijoT@Hq', 'Kirgan', 'Cassey', '35 American Ash Terrace', '11360', '1992-09-03', 'H', 0, 1, 0, 0),
 (94, 'dbeddoe2l@storify.com', 'nP1,80V#@sqlKBhSvpHhl*SDHC`', 'Beddoe', 'Donn', '993 Butterfield Drive', '50570', '1962-02-25', 'H', 1, 0, 0, 0),
 (95, 'kniese2m@w3.org', 'sF6!u3@vCpLSp"BSc', 'Niese', 'Kirbee', '660 Warbler Court', '32140', '2000-07-25', 'H', 1, 1, 0, 1),
