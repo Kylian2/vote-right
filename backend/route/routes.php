@@ -12,6 +12,8 @@ Router::get('/community/index', 'CommunityController@index');
 Router::protect('/community/index');
 Router::get('/community/administered', 'CommunityController@administered');
 Router::protect('/community/administered');
+Router::post('/community/store', 'CommunityController@store');
+Router::protect('/community/store');
 
 Router::protect('/user/index');
 Router::get('/user/name', 'UserController@name');

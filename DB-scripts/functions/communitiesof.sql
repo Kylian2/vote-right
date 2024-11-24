@@ -40,6 +40,10 @@ BEGIN
                                    FROM theme 
                                    WHERE THM_community_NB = id), '"]');
 
+        IF themes IS NULL THEN
+            SET themes = '[]';
+        END IF;
+
         SET community = CONCAT(
             '{',
             '"CMY_id_NB": "', id, '",',
