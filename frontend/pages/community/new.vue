@@ -41,7 +41,7 @@
             </ImagePicker>
             <div class="btn-container">
                 <NuxtLink class="btn btn--cancel" href="/communities">Annuler</NuxtLink>
-                <button :disabled="!formIsValid" @click="handleData" class="btn btn--full">Valider la création</button>
+                <button formmethod="dialog" :disabled="!formIsValid" @click="handleData" class="btn btn--full">Valider la création</button>
             </div>
         </div>
     </form>
@@ -72,36 +72,7 @@ const formIsValid  = computed(() => {
     return nameValid.value && descriptionValid.value && colorValid.value && emojiValid.value && imageValid.value;
 })
 
-const verifData = () => {
-
-    if(name.value === null){
-        return false;
-    }
-    if(description.value === null){
-        return false;
-    }
-    if(color.value === null){
-        return false;
-    }
-    if(emoji.value === null){
-        return false;
-    }
-    if(image.value === null){
-        return false;
-    }
-
-    if(name.value.length > 150){
-        return false;
-    }
-
-    return true;
-
-}
-
 const handleData = async () => {
-    if(!verifData()){
-        return false;
-    }
 
     try{
         const response = await $fetch(`http://localhost:3333/community/store`, {
