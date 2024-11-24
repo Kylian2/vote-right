@@ -133,7 +133,7 @@ La méthode **BEM** (acronyme de **Block, Element, Modifier**) est une méthodol
 
 Composant clé de l'application, il est visible sur chaque page, il permet de naviguer de page en page. Il est également adapté aux interfaces mobiles. 
 
-**Props : **
+**Props :**
 
 | Nom   | Requise ? | Valeur par défaut | Effet                                                      |
 |-------|-----------|-------------------|------------------------------------------------------------|
@@ -150,7 +150,7 @@ Composant affichant un input et sont label. Le label est à indiquer dans le slo
 
 Il est possible de spécifier des règles sur les valeurs entrées par l'utilisateur via la props *rules*.
 
-**Props : **
+**Props :**
 
 | Nom         | Requise ? | Valeur par défaut | Effet                                                                                                         |
 |-------------|-----------|-------------------|---------------------------------------------------------------------------------------------------------------|
@@ -187,7 +187,7 @@ const lastnameValid = useState('lastnameValid');
 Composant affichant une liste de couleur permettant à l'utilisateur d'en choisir une.
 Une fois la couleurs choisi, il est possible de récupérer le choix avec le même méchanisme que précédement (une variable nommée *name*).
 
-**Props : **
+**Props :**
 
 | Nom         | Requise ? | Valeur par défaut | Effet                                                                                                         |
 |-------------|-----------|-------------------|---------------------------------------------------------------------------------------------------------------|
@@ -216,7 +216,7 @@ const colors = useState("colors", () => ["#5AB7EE", "#FDBE55", "#FB961F", "#1332
 Composant affichant une liste d'image permettant à l'utilisateur d'en choisir une.
 Une fois la couleurs choisi, il est possible de récupérer le choix avec le même méchanisme que précédement (une variable nommée *name*).
 
-**Props : **
+**Props :**
 
 | Nom         | Requise ? | Valeur par défaut | Effet                                                                                                         |
 |-------------|-----------|-------------------|---------------------------------------------------------------------------------------------------------------|
@@ -248,7 +248,7 @@ const images = useState("images", () => ["100001.png", "100002.png", "100003.png
 Composant permettant de choisir un émoji parmis une liste d'émoji.
 Une fois l'émoji choisi, il est possible de récupérer le code ascii associé avec le même méchanisme que précédement (une variable nommée *name*).
 
-**Props : **
+**Props :**
 
 | Nom         | Requise ? | Valeur par défaut | Effet                                                                                                         |
 |-------------|-----------|-------------------|---------------------------------------------------------------------------------------------------------------|
@@ -269,7 +269,7 @@ Une fois l'émoji choisi, il est possible de récupérer le code ascii associé 
 
 Composant affichant une zone de texte et sont label. Le label est à indiquer dans le slot. 
 
-**Props : **
+**Props :**
 
 | Nom         | Requise ? | Valeur par défaut | Effet                                                                                                         |
 |-------------|-----------|-------------------|---------------------------------------------------------------------------------------------------------------|
@@ -296,7 +296,7 @@ Composant affichant une zone de texte et sont label. Le label est à indiquer da
 Affiche une carte contenant les informations de la communauté passé via les props. 
 
 L'objet passé via *community* passé doit avoir le format suivant :
-```json
+```
 {
     community['CMY_name_VC'] : string,
     community['CMY_image_VC'] : string,
@@ -312,7 +312,7 @@ L'objet passé via *community* passé doit avoir le format suivant :
 Affiche une carte le titre et le thème d'une proposition. 
 
 L'objet passé via *proposal* passé doit avoir le format suivant :
-```json
+```
 {
     community['CMY_title_VC'] : string,
     community['CMY_color_VC'] : string,
