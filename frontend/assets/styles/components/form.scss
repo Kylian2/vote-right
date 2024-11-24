@@ -108,7 +108,7 @@
 }
 
 .emoji-picker{
-
+    height: 50px;
     &__container{
         width: fit-content;
         display: flex;
@@ -144,7 +144,6 @@
         padding: 10px;
         align-self: flex-end;
         position: relative;
-        top: -170px;
         box-shadow: 0px 10px 15px 10px rgba(0,0,0,0.1);
     }
 
@@ -159,9 +158,10 @@
     }
 }
 
-.erreur{
+.error{
     p, label{
-        color: red
+        color: red;
+        font-size: 14px;
     }
 
     input{

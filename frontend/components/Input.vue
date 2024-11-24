@@ -1,51 +1,61 @@
 <template>
     <div class="base">
-      <label :for="name"><slot></slot></label>
-      <input
-        :id="name"
-        :type="type"
-        :placeholder="placeholder"
-        :required="required"
-        v-model="modele"
-      />
+        <label :for="name"><slot></slot></label>
+        <div v-if="hasAChange && errorMessages.length" class="error">
+            <p v-for="(error, index) in errorMessages" :key="index">{{ error }}</p>
+        </div>
+
+        <input
+            :id="name"
+            :type="type"
+            :placeholder="placeholder"
+            :required="required"
+            v-model="modele"
+        />
     </div>
-  </template>
+</template>
   
 <script setup>
-  
-    const props = defineProps({
-        name: {
-            type: String,
-            required: true,
-        },
-        type: {
-            type: String,
-            required: true,
-        },
-        placeholder: {
-            type: String,
-            required: false,
-        },
-        required: {
-            type: Boolean,
-            required: false,
-        },
-        modelValue: {
-            type: String,
-            required: false,
-        },
-    })
+import { ref, watch, computed } from 'vue';
 
-    // Récuperer la variable d'état créée dans le parent
-    const modele = useState(`${props.name}`, () => '')
-  
-    //Définir un évenement pour prévenir le parent en cas de changement de valeur
-    const emit = defineEmits(['update:modelValue'])
+const props = defineProps({
+name: {
+    type: String,
+    required: true,
+},
+type: {
+    type: String,
+    required: true,
+},
+placeholder: {
+    type: String,
+    required: false,
+},
+required: {
+    type: Boolean,
+    required: false,
+},
+rules: {
+    type: Array,
+    required: false,
+},
+});
 
-    // Émettre `update:modelValue` chaque fois que `modele` est modifié
-    watch(modele, (newVal) => {
-        emit('update:modelValue', newVal)
-    })
-  
+const modele = useState(`${props.name}`, () => '');
+const hasAChange = ref(false);
+const valid = useState(`${props.name}Valid`, () => false);
+valid.value = computed(() => errorMessages.value.length === 0);
+
+// Validation des règles
+const errorMessages = computed(() => {
+if (!props.rules || !props.rules.length) return [];
+return props.rules
+    .map((rule) => (typeof rule === 'function' ? rule(modele.value) : true))
+    .filter((result) => result !== true);
+});
+
+watch(modele, (newVal) => {
+    hasAChange.value = true;
+});
 </script>
   

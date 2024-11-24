@@ -1,23 +1,47 @@
 <template>
-
 <Header type="logged" actif="groupes"></Header>
 <h1>Créer un groupe</h1>
 <main class="new-community">
     <form>
         <div>
-            <Input :vModele="name" type="text" name="name" placeholder="Donnez un nom à votre groupe" required>Nom</Input>
-            <TextArea :vModele="description" name="description" placeholder="Décrivez votre groupe" :rows='10' required>Description</TextArea>
-            <ColorPicker name="color" :colors="colors" :vModele="color">Couleur</ColorPicker>
-            <EmojiPicker name="emoji" :vModele="emoji" >Emoji</EmojiPicker>
+            <Input 
+                type="text" name="name" placeholder="Donnez un nom à votre groupe" required
+                :rules="[
+                    (v) => Boolean(v) || 'Un nom est requis', 
+                ]"
+            >Nom</Input>
+            <TextArea 
+                name="description" placeholder="Décrivez votre groupe" :rows='10' required
+                :rules="[
+                    (v) => Boolean(v) || 'Une description est requise', 
+                ]"    
+            >Description</TextArea>
+            <ColorPicker 
+                name="color" :colors="colors"
+                :rules="[
+                        (v) => Boolean(v) || 'Une couleur est requise', 
+                ]"
+            >Couleur</ColorPicker>
+            <EmojiPicker 
+                name="emoji"
+                :rules="[
+                        (v) => Boolean(v) || 'Une couleur est requise', 
+                ]"
+            >Emoji</EmojiPicker>
         </div>    
         <div>
-            <ImagePicker name="image" :images="images" :vModele="image">
+            <ImagePicker 
+                name="image" :images="images" :vModele="image"
+                :rules="[
+                        (v) => Boolean(v) || 'Une couleur est requise', 
+                ]"
+                >
                 <template #title>Image</template>
                 <template #legend>Selectionnez une image de bannière pour votre groupe</template>
             </ImagePicker>
             <div class="btn-container">
                 <NuxtLink class="btn btn--cancel" href="/communities">Annuler</NuxtLink>
-                <button formmethod="dialog" @click="handleData()" class="btn btn--full">Valider la création</button>
+                <button :disabled="!formIsValid" @click="handleData" class="btn btn--full">Valider la création</button>
             </div>
         </div>
     </form>
@@ -31,13 +55,22 @@ definePageMeta({
 })
 
 const name = useState("name");
+const nameValid = useState("nameValid");
 const description = useState("description");
+const descriptionValid = useState("descriptionValid");
 const color = useState("color");
+const colorValid = useState("colorValid");
 const emoji = useState("emoji");
+const emojiValid = useState("emojiValid");
 const image = useState("image");
+const imageValid = useState("imageValid");
 
 const colors = useState("colors", () => ["#5AB7EE", "#FDBE55", "#FB961F", "#13329F", "#8700CF", "#F669D9", "#DE3D59"])
 const images = useState("images", () => ["100001.png", "100002.png", "100003.png", "100004.png", "100005.png", "100006.png", "100007.png"])
+
+const formIsValid  = computed(() => {
+    return nameValid.value && descriptionValid.value && colorValid.value && emojiValid.value && imageValid.value;
+})
 
 const verifData = () => {
 

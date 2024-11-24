@@ -119,4 +119,8 @@
             display: none;
         }
     }
+    &:disabled{
+        background: $background-light;
+        color: lighten($color: $dark, $amount: 50);
+    }
 }

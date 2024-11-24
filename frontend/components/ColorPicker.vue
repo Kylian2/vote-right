@@ -2,16 +2,19 @@
 
 <div class="base">
     <p><slot></slot></p>
+    <div v-if="hasAChange && errorMessages.length" class="error">
+        <p v-for="(error, index) in errorMessages" :key="index">{{ error }}</p>
+    </div>
     <div class="color-picker">
         <span 
-        v-for="(color, index) in colors"
-        class="color-picker__color"
-        :class="{ 'selected': (colorSelected === index)}"
-        :style="{background: color}"
-        @click="() => {
-            colorSelected = index;
-            modele = color;
-        }"
+            v-for="(color, index) in colors"
+            class="color-picker__color"
+            :class="{ 'selected': (colorSelected === index)}"
+            :style="{background: color}"
+            @click="() => {
+                colorSelected = index;
+                modele = color;
+            }"
         ></span>
     </div>
 </div>
@@ -31,21 +34,27 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-    modelValue: {
-        type: String,
-        required: false,
-    },
+    rules: {
+        type: Array,
+        require: false,
+    }
 })
 
-// Récuperer la variable d'état créée dans le parent
-const modele = useState(`${props.name}`, () => '')
+const modele = useState(`${props.name}`, () => '');
+const hasAChange = ref(false);
+const valid = useState(`${props.name}Valid`, () => false);
+valid.value = computed(() => errorMessages.value.length === 0);
 
-//Définir un évenement pour prévenir le parent en cas de changement de valeur
-const emit = defineEmits(['update:modelValue'])
+// Validation des règles
+const errorMessages = computed(() => {
+if (!props.rules || !props.rules.length) return [];
+return props.rules
+    .map((rule) => (typeof rule === 'function' ? rule(modele.value) : true))
+    .filter((result) => result !== true);
+});
 
-// Émettre `update:modelValue` chaque fois que `modele` est modifié
 watch(modele, (newVal) => {
-    emit('update:modelValue', newVal)
-})
+    hasAChange.value = true;
+});
   
 </script>
