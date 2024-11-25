@@ -4,42 +4,40 @@
         <div v-if="hasAChange && errorMessages.length" class="error">
             <p v-for="(error, index) in errorMessages" :key="index">{{ error }}</p>
         </div>
-
-        <input
+        <textarea
             :id="name"
-            :type="type"
             :placeholder="placeholder"
             :required="required"
             v-model="modele"
+            :rows="rows ? rows : 4"
         />
     </div>
-</template>
+  </template>
   
 <script setup>
-import { ref, watch, computed } from 'vue';
-
+  
 const props = defineProps({
-name: {
-    type: String,
-    required: true,
-},
-type: {
-    type: String,
-    required: true,
-},
-placeholder: {
-    type: String,
-    required: false,
-},
-required: {
-    type: Boolean,
-    required: false,
-},
-rules: {
-    type: Array,
-    required: false,
-},
-});
+    name: {
+        type: String,
+        required: true,
+    },
+    placeholder: {
+        type: String,
+        required: false,
+    },
+    required: {
+        type: Boolean,
+        required: false,
+    },
+    rows: {
+        type: Number,
+        required: false,
+    },
+    rules: {
+        type: Array,
+        required: false,
+    }
+})
 
 const modele = useState(`${props.name}`, () => '');
 const hasAChange = ref(false);
@@ -57,5 +55,6 @@ return props.rules
 watch(modele, (newVal) => {
     hasAChange.value = true;
 });
+  
 </script>
   

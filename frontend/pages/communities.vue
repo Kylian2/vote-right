@@ -2,7 +2,7 @@
     <Header type="logged" actif="groupes"></Header>
     <div class="communities__title">
         <h1>Groupes</h1>
-        <NuxtLink class="btn--full btn--responsive-hidden" to="#">
+        <NuxtLink class="btn--full btn--responsive-hidden" to="/community/new">
             Créer mon groupe
         </NuxtLink>
         <NuxtLink class="btn--full btn--plus btn--responsive" to="#">
@@ -15,10 +15,10 @@
             <h4>Mes groupes :</h4>
             <div class="communities__bloc__contener">
                 <CardCommunity v-for="community in myCommunities" :community="community"></CardCommunity>
-                <div class="add-community" :class="{ 'small': myCommunities.length > 0 }">
+                <NuxtLink to="/community/new" class="add-community" :class="{ 'small': myCommunities.length > 0 }">
                     <span class="add-community__plus"></span>
                     <span class="add-community__plus"></span>
-                </div>
+                </NuxtLink>
             </div>
         </div>
 

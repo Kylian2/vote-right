@@ -7,7 +7,7 @@
         padding: 12px 24px;
         transition: .2s;
         box-shadow: inset 100vw 0 0 0 rgba(255, 255, 255, 0.0);
-        border: 0;
+        border: 0px;
         border-radius: 5px;
         text-align: center;
         &:hover{
@@ -75,7 +75,7 @@
     &--cancel{
         background: $neutral;
         color: $default;
-        padding: 12px 24px;
+        padding: 11px 24px;
         transition: .2s;
         border: 0;
         border-radius: 5px;
@@ -118,5 +118,9 @@
         @media screen and (max-width: 450px) {
             display: none;
         }
+    }
+    &:disabled{
+        background: $background-light;
+        color: lighten($color: $dark, $amount: 50);
     }
 }
