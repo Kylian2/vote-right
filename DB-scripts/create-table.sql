@@ -99,7 +99,7 @@ CREATE TABLE proposal (
     PRO_status_VC VARCHAR(20) DEFAULT 'En cours' NOT NULL,
     PRO_initiator_NB INT NOT NULL,
     PRO_deleter_NB INT,
-    PRO_budget_year_DATE DATE DEFAULT YEAR(PRO_creation_DATE) NOT NULL,
+    PRO_budget_year_DATE YEAR DEFAULT YEAR(PRO_creation_DATE) NOT NULL,
     PRO_approver_NB INT,
     PRO_community_NB INT NOT NULL,
     PRO_theme_NB SMALLINT NOT NULL,
