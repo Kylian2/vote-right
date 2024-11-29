@@ -1,6 +1,6 @@
-INSERT INTO voting_system (SYS_id_NB, SYS_label_VC) VALUES 
-(1, 'Pour / Contre'),
-(2, 'Oui / Non'),
-(3, 'Scrutin majoritaire (un tour)'),
-(4, 'Scrutin majoritaire (deux tours)'),
-(5, 'Scrutin proportionnel');
+INSERT INTO voting_system (SYS_id_NB, SYS_label_VC, SYS_nb_rounds_NB) VALUES 
+(1, 'Pour / Contre', 1),
+(2, 'Oui / Non', 1),
+(3, 'Scrutin majoritaire (un tour)', 1),
+(4, 'Scrutin majoritaire (deux tours)', 2),
+(5, 'Scrutin proportionnel', 1);
