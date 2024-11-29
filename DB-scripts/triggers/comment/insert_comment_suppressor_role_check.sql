@@ -12,7 +12,7 @@ BEGIN
         INNER JOIN member ON MEM_community_NB = PRO_community_NB
         INNER JOIN role ON ROL_id_NB = MEM_role_NB
         WHERE PRO_id_NB = NEW.COM_proposal_NB 
-        AND (ROL_label_VC = 'Modérateur' OR ROL_label_VC = 'Administrateur')) 
+        AND ROL_label_VC IN ('Modérateur', 'Administrateur')) 
     THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Erreur : Seuls les modérateurs ou administrateurs peuvent supprimer un commentaire.';
