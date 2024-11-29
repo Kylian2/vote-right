@@ -20,7 +20,7 @@ BEGIN
         SELECT CMY_id_NB, CMY_name_VC, CMY_emoji_VC, CMY_color_VC, CMY_image_VC, 
                (SELECT COUNT(*) FROM member WHERE MEM_community_NB = CMY_id_NB) AS nbMembre
         FROM community
-        WHERE CMY_id_NB IN (SELECT MEM_community_NB FROM member WHERE MEM_user_NB = userid AND mem_role_nb = 3);
+        WHERE CMY_id_NB IN (SELECT MEM_community_NB FROM member WHERE MEM_user_NB = userid AND mem_role_nb = 1);
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin_cursor = 1;
 
