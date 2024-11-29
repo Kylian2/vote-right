@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que le tour du vote ne dépasse pas le nombre maximum de tours du suffrage suivi par ce vote
-CREATE TRIGGER insert_vote_round_check
+CREATE OR REPLACE TRIGGER insert_vote_round_check
 BEFORE INSERT ON vote
 FOR EACH ROW
 BEGIN
@@ -14,11 +14,7 @@ BEGIN
 
     IF NEW.VOT_round_NB > nb_max_rounds THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = CONCAT('Erreur : Impossible de créer un ',
-                                   NEW.VOT_round_NB,
-                                   'ème tour car le vote suit un suffrage à maximum ',
-                                   nb_max_rounds,
-                                   ' tour(s).');
+        SET MESSAGE_TEXT = 'Impossible d''ajouter plus de tours à ce vote.';
     END IF;
 END //
 
