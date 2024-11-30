@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier qu'un commentaire allant être supprimé ne le soit pas déjà
-CREATE OR REPLACE TRIGGER update_comment_suppressor_change_check
+CREATE OR REPLACE TRIGGER update_comment_suppressor_change
 BEFORE UPDATE ON comment
 FOR EACH ROW
 BEGIN
