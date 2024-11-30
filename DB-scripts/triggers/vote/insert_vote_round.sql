@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que le tour du vote ne dépasse pas le nombre maximum de tours du suffrage suivi par ce vote
-CREATE OR REPLACE TRIGGER insert_vote_round_check
+CREATE OR REPLACE TRIGGER insert_vote_round
 BEFORE INSERT ON vote
 FOR EACH ROW
 BEGIN

@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que le membre votant une proposition est bien membre du groupe
-CREATE OR REPLACE TRIGGER insert_vote_detail_member_check
+CREATE OR REPLACE TRIGGER insert_vote_detail_member
 BEFORE INSERT ON vote_detail
 FOR EACH ROW
 BEGIN

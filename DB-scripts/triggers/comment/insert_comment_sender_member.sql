@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que l'utilisateur commentant une proposition est membre du groupe
-CREATE OR REPLACE TRIGGER insert_comment_sender_member_check
+CREATE OR REPLACE TRIGGER insert_comment_sender_member
 BEFORE INSERT ON comment
 FOR EACH ROW
 BEGIN

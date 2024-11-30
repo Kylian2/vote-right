@@ -1,11 +1,12 @@
 DELIMITER //
 
 -- Vérifier que le membre validant un vote pour un groupe est bien assesseur de ce groupe
-CREATE OR REPLACE TRIGGER insert_vote_assessor_check
-BEFORE INSERT ON vote
+CREATE OR REPLACE TRIGGER update_vote_assessor
+BEFORE UPDATE ON vote
 FOR EACH ROW
 BEGIN
     IF NEW.VOT_assessor_NB IS NOT NULL
+    AND (OLD.VOT_assessor_NB IS NULL OR OLD.VOT_assessor_NB != NEW.VOT_assessor_NB)
     AND NEW.VOT_assessor_NB NOT IN (
         SELECT MEM_user_NB
         FROM proposal

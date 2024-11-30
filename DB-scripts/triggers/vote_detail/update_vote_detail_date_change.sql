@@ -1,7 +1,7 @@
 DELIMITER //
 
 -- Vérifier que la date du vote d'un membre ne change pas
-CREATE OR REPLACE TRIGGER update_vote_detail_date_change_check
+CREATE OR REPLACE TRIGGER update_vote_detail_date_change
 BEFORE UPDATE ON vote_detail
 FOR EACH ROW
 BEGIN
