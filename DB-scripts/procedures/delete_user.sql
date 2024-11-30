@@ -6,7 +6,7 @@ BEGIN
 UPDATE user SET 
     USR_firstname_VC = 'Supprimé',
     USR_lastname_VC = 'Supprimé',
-    USR_email_VC = 'Supprimé',
+    USR_email_VC = CONCAT('Supprimé@', user_id),
     USR_password_VC = 'Supprimé',
     USR_address_VC = 'Supprimé',
     USR_zipcode_CH = '00000',
