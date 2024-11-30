@@ -7,7 +7,7 @@ USER              ;USR_firstname_VC                ;A              ;VC          
 USER              ;USR_address_VC                  ;A              ;VC               ;200      ;Adresse d’un utilisateur
 USER              ;USR_zipcode_CHAR                ;A              ;CHAR             ;5        ;Code postal d’un utilisateur
 USER              ;USR_birthdate_DATE              ;A              ;DATE             ;         ;Date de naissance d’un utilisateur
-USER              ;USR_notification_frequency_CHAR ;A              ;CHAR             ;1        ;Fréquence de notification de l’utilisateur : ‘Q’ quotidien ou ‘H’ hebdomadaire. Par défaut = ‘H’.
+USER              ;USR_notification_frequency_CHAR ;A              ;CHAR             ;1        ;Fréquence de notification de l’utilisateur : ‘Q’ quotidien ou ‘H’ hebdomadaire. Par défaut = ‘H’ (La valeur 'S' est également possible si l'utilisateur est supprimé).
 USER              ;USR_notify_proposal_BOOL        ;A              ;BOOL             ;         ;Indique si l’utilisateur souhaite recevoir les notifications relative aux propositions. Par défaut = false.
 USER              ;USR_notify_vote_BOOL            ;A              ;BOOL             ;         ;Indique si l’utilisateur souhaite recevoir les notifications relative aux votes. Par défaut = false.
 USER              ;USR_notify_reaction_BOOL        ;A              ;BOOL             ;         ;Indique si l’utilisateur souhaite recevoir les notifications relative aux réactions. Par défaut = false.

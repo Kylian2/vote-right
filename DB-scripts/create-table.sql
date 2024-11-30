@@ -38,7 +38,7 @@ CREATE TABLE user (
     USR_notify_reaction_BOOL BOOLEAN DEFAULT 0 NOT NULL,
     USR_newsletter_BOOL BOOLEAN DEFAULT 0 NOT NULL,
     CONSTRAINT PRIMARY KEY (USR_id_NB),
-    CONSTRAINT CHK_frequency CHECK (USR_notification_frequency_CH IN ('H', 'Q'))
+    CONSTRAINT CHK_frequency CHECK (USR_notification_frequency_CH IN ('H', 'Q', 'S'))
 );
 
 CREATE TABLE community (
