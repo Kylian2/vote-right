@@ -11,7 +11,7 @@ INSERT INTO community (CMY_id_NB, CMY_name_VC, CMY_image_VC, CMY_emoji_VC, CMY_c
 (10, 'Les amateurs de vin', '100009.png', '1F389', '#DE3D59', NULL, 60000.00, 13800.00, 89),
 (11, 'Groupe de protection de l''environnement de Nice', '100003.png', '1F389', '#5AB7EE', NULL, 27000.00, 17010.00, 47),
 (12, 'Cercle des lecteurs passionnés', '100006.png', '1F389', '#FB961F', NULL, 92000.00, 11040.00, 66),
-(13, 'Marché de Noël de Strasbourg', '100010.png', '1F389', '#DE3D59', NULL, 200000.00, 53280.00, 97),
+(13, 'Marché de Noël de Strasbourg', '100010.png', '1F389', '#DE3D59', NULL, 200000.00, 53280.00, 92),
 (14, 'Cercle des Nageurs', '100006.png', '1F389', '#5AB7EE', NULL, 20000.00, 4200.00, 87),
 (15, 'Comité des fêtes de la mairie de Lyon', '100009.png', '1F389', '#8700CF', NULL, 101000.00, 56560.00, 58),
 (16, 'Association des collectionneurs de timbres', '100006.png', '1F389', '#F669D6', NULL, 10000.00, 2900.00, 73),
