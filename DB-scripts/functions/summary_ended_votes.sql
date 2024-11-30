@@ -39,7 +39,8 @@ BEGIN
             '"proposal_id": "', proposal_id, '",',
             '"proposal_title": "', proposal_title, '",',
             '"vote_end": "', vote_end, '",',
-            '"vote_round": "', vote_round, '"',
+            '"vote_round": "', vote_round, '",',
+            '"vote_score": ', get_votes_for_proposal(proposal_id, vote_round), ''
             '}'
         );
 
