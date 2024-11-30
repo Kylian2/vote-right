@@ -47,7 +47,7 @@ CREATE TABLE community (
     CMY_image_VC VARCHAR(50) NOT NULL,
     CMY_emoji_VC VARCHAR(5) NOT NULL,
     CMY_color_VC VARCHAR(7) NOT NULL,
-    CMY_description_VC TEXT,
+    CMY_description_TXT TEXT,
     CMY_budget_NB FLOAT(12, 2),
     CMY_fixed_fees_NB FLOAT(12, 2),
     CMY_creator_NB INT NOT NULL,

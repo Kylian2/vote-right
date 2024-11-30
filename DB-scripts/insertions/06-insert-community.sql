@@ -1,4 +1,4 @@
-INSERT INTO community (CMY_id_NB, CMY_name_VC, CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_VC, CMY_budget_NB, CMY_fixed_fees_NB, CMY_creator_NB) VALUES
+INSERT INTO community (CMY_id_NB, CMY_name_VC, CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_budget_NB, CMY_fixed_fees_NB, CMY_creator_NB) VALUES
 (1, 'Association des arts et traditions populaires', '100004.png', '1F389', '#DE3D59', NULL, 86000.00, 40420.00, 74),
 (2, 'Mairie de Rennes – Programme des seniors actifs', '100003.png', '1F389', '#5AB7EE', NULL, 32000.00, 11770.00, 4),
 (3, 'Club de modélisme ferroviaire', '100004.png', '1F389', '#FB961F', NULL, 105000.00, 42000.00, 23),
