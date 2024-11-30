@@ -1,4 +1,4 @@
-INSERT INTO proposal (PRO_id_NB, PRO_title_VC, PRO_description_TXT, PRO_creation_DATE, PRO_discussion_duration_NB, PRO_request_count_NB, PRO_location_VC, PRO_budget_NB, PRO_status_VC, PRO_initiator_NB, PRO_deleter_NB, PRO_budget_year_DATE, PRO_approver_NB, PRO_community_NB, PRO_theme_NB) VALUES
+INSERT INTO proposal (PRO_id_NB, PRO_title_VC, PRO_description_TXT, PRO_creation_DATE, PRO_discussion_duration_NB, PRO_request_count_NB, PRO_location_VC, PRO_budget_NB, PRO_status_VC, PRO_initiator_NB, PRO_deleter_NB, PRO_period_YEAR, PRO_approver_NB, PRO_community_NB, PRO_theme_NB) VALUES
 (1, 'Voyage d''Échange Culturel', 'Organisation d''un voyage pour découvrir les arts populaires de la région.', '2024-09-26 17:44:43', 14, 5, 'Rennes', 15000.00, 'En cours', 25, NULL, '2024', NULL, 1, 1),
 (2, 'Atelier de Danse Traditionnelle', 'Atelier pour apprendre les danses folkloriques.', '2024-10-05 13:53:15', 8, 6, 'Centre Culturel', 4000.00, 'En cours', 47, NULL, '2024', NULL, 1, 2),
 (3, 'Sortie Culturelle', 'Visite de musées et d''expositions locales.', '2024-09-22 15:04:39', 10, 5, 'Galerie des Résistants', 2000.00, 'Validée', 60, NULL, '2025', 18, 1, 3),
