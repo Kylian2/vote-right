@@ -1,6 +1,6 @@
 DELIMITER //
 
--- Vérifier qu'un administrateur ne se rétrogade pas s'il est le seul administrateur du groupe
+-- Vérifier qu'un administrateur ne quitte pas le groupe s'il est le seul administrateur de celui-ci
 CREATE OR REPLACE TRIGGER delete_member_single_administrator
 BEFORE DELETE ON member
 FOR EACH ROW
