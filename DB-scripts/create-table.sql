@@ -90,16 +90,18 @@ CREATE TABLE community_budget (
     BUC_period_YEAR YEAR NOT NULL, 
     BUC_amount_NB FLOAT(12, 2) NOT NULL,
     BUC_fixed_fees_NB FLOAT(12,2) DEFAULT 0 NOT NULL,
-    CONSTRAINT PRIMARY KEY (BUC_community_NB, BUC_year_YEAR),
+    CONSTRAINT PRIMARY KEY (BUC_community_NB, BUC_period_YEAR),
     CONSTRAINT FK_BUC_community FOREIGN KEY (BUC_community_NB) REFERENCES community(CMY_id_NB) ON DELETE CASCADE
 );
 
-CREATE TABLE theme_budget(
+
+CREATE TABLE theme_budget (
     BUT_community_NB INT, 
     BUT_theme_NB SMALLINT,
     BUT_period_YEAR YEAR NOT NULL, 
     BUT_amount_NB FLOAT(12, 2) NOT NULL,
-    CONSTRAINT PRIMARY KEY (BUT_community_NB, BUT_theme_NB, BUT_year_YEAR),
+    CONSTRAINT PRIMARY KEY (BUT_community_NB, BUT_theme_NB, BUT_period_YEAR),
+    CONSTRAINT FK_BUT_community FOREIGN KEY (BUT_community_NB) REFERENCES community(CMY_id_NB) ON DELETE CASCADE,
     CONSTRAINT FK_BUT_theme FOREIGN KEY (BUT_theme_NB, BUT_community_NB) REFERENCES theme(THM_id_NB, THM_community_NB) ON DELETE CASCADE
 );
 
