@@ -100,7 +100,6 @@ CREATE TABLE theme_budget(
     BUT_period_YEAR YEAR NOT NULL, 
     BUT_amount_NB FLOAT(12, 2) NOT NULL,
     CONSTRAINT PRIMARY KEY (BUT_community_NB, BUT_theme_NB, BUT_year_YEAR),
-    CONSTRAINT FK_BUT_community FOREIGN KEY (BUT_community_NB) REFERENCES community(CMY_id_NB) ON DELETE CASCADE,
     CONSTRAINT FK_BUT_theme FOREIGN KEY (BUT_theme_NB, BUT_community_NB) REFERENCES theme(THM_id_NB, THM_community_NB) ON DELETE CASCADE
 );
 
