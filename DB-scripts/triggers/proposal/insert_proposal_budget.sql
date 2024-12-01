@@ -13,7 +13,7 @@ BEGIN
                              AND PRO_theme_NB = NEW.PRO_theme_NB
                              AND PRO_community_NB = NEW.PRO_community_NB) > (SELECT THM_budget_NB
                                                                              FROM theme 
-                                                                             WHERE THM_id_NB = NEW.PRO_theme_NB)
+                                                                             WHERE THM_id_NB = NEW.PRO_theme_NB AND THM_community_NB = NEW.PRO_community_NB )
     THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Erreur : Le budget de cette proposition fait dépasser le budget total alloué pour son thème.';
