@@ -103,6 +103,6 @@ THEME_BUDGET      ;BUT_amount_NB                   ;A              ;NB          
                   ;REC_nbdislike_NB                ;C              ;NB               ;            ;Le nombre de personnes ayant émis une mention « n’aime pas » au commentaire. Récupérable avec une requête COUNT sur la table REACTION_COMMENTAIRE
                   ;REP_nblike_NB                   ;C              ;NB               ;            ;Le nombre de personnes ayant émis une mention « aime » à la proposition. Récupérable avec une requête COUNT sur la table REACTION_PROPOSITION
                   ;REP_nbdislike_NB                ;C              ;NB               ;            ;Le nombre de personnes ayant émis une mention « n’aime pas » à la proposition. Récupérable avec une requête COUNT sur la table REACTION_PROPOSITION
-                  ;GRO_used_budget_NB              ;C              ;NB               ;            ;Le montant du budget utilisé du groupe = SUM(THE_used_budget_NB)
-                  ;THE_used_budget_NB              ;C              ;NB               ;            ;Le montant du budget utilisé du groupe = SUM(PRO_budget_NB)
+                  ;CMY_used_budget_NB              ;C              ;NB               ;            ;Le montant du budget utilisé du groupe = SUM(THE_used_budget_NB)
+                  ;THM_used_budget_NB              ;C              ;NB               ;            ;Le montant du budget utilisé du groupe = SUM(PRO_budget_NB)
                   ;VOT_remaining_time_NB           ;C              ;NB               ;            ;Le temps restant d’un vote = VOT_end_DATE - date_actuelle
