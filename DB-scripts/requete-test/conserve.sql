@@ -62,15 +62,18 @@ AND pro_status_vc = 'En cours'
 ORDER BY vot_start_date, vot_end_date;
 
 -- Affiche les budgets de chacun des thèmes du groupe et le budget consommé pour ce thème
--- A METTRE A JOUR AVEC LES ANNEES
-CREATE OR REPLACE VIEW community_budget AS 
-SELECT CMY_id_NB, THM_id_NB, THM_name_VC, THM_budget_NB, 
-COALESCE(SUM(CASE WHEN PRO_status_VC = 'Validée' THEN PRO_budget_NB ELSE 0 END), 0) AS CMY_used_budget_NB
+CREATE OR REPLACE VIEW used_budget AS
+SELECT BUT_period_YEAR, CMY_id_NB, THM_id_NB, THM_name_VC, BUT_amount_NB, 
+COALESCE(SUM(
+    CASE 
+    WHEN PRO_status_VC = 'Validée' AND BUT_period_YEAR = PRO_period_YEAR
+    THEN PRO_budget_NB ELSE 0 END), 0) AS BUT_used_budget_NB
 FROM community
 INNER JOIN theme ON CMY_id_NB = THM_community_NB
+INNER JOIN theme_budget ON THM_id_NB = BUT_theme_NB AND THM_community_NB = BUT_community_NB
 LEFT JOIN proposal ON PRO_community_NB = THM_community_NB AND PRO_theme_NB = THM_id_nb
-GROUP BY CMY_id_NB, THM_id_NB, THM_name_VC, THM_budget_NB
-ORDER BY CMY_id_NB, THM_id_NB;
+GROUP BY CMY_id_NB, BUT_period_YEAR, THM_id_NB, THM_name_VC
+ORDER BY CMY_id_NB, BUT_period_YEAR DESC, THM_id_NB, THM_name_VC;
 
 CREATE OR REPLACE VIEW members_role AS 
 SELECT  MEM_community_NB, USR_id_NB, USR_firstname_VC, USR_lastname_VC, ROL_label_VC, MEM_role_NB

@@ -138,3 +138,10 @@ FROM user
 INNER JOIN member ON MEM_user_NB = USR_id_NB
 INNER JOIN role ON ROL_id_NB = MEM_role_NB
 ORDER BY MEM_role_NB, MEM_community_NB, USR_firstname_VC, USR_lastname_VC, USR_id_NB;
+
+-- CETTE REQUETE 
+SELECT * 
+FROM proposal
+INNER JOIN vote ON VOT_proposal_NB = PRO_id_NB
+INNER JOIN voting_system ON VOT_type_NB = SYS_id_NB
+WHERE VOT_assessor_NB IS NOT NULL AND pro_status_VC = 'En cours';
