@@ -1,3 +1,5 @@
+-- Supprime proprement un utilisateur passé en paramètre
+
 DELIMITER //
 
 CREATE OR REPLACE PROCEDURE delete_user(user_id INT) 
