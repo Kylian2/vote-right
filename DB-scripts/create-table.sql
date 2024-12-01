@@ -48,8 +48,6 @@ CREATE TABLE community (
     CMY_emoji_VC VARCHAR(5) NOT NULL,
     CMY_color_VC VARCHAR(7) NOT NULL,
     CMY_description_TXT TEXT,
-    CMY_budget_NB FLOAT(12, 2),
-    CMY_fixed_fees_NB FLOAT(12, 2),
     CMY_creator_NB INT NOT NULL,
     CONSTRAINT PRIMARY KEY (CMY_id_NB),
     CONSTRAINT FK_CMY_creator FOREIGN KEY (CMY_creator_NB) REFERENCES user(USR_id_NB) ON DELETE CASCADE
@@ -83,9 +81,27 @@ CREATE TABLE theme (
     THM_id_NB SMALLINT,
     THM_community_NB INT NOT NULL,
     THM_name_VC VARCHAR(50) NOT NULL,
-    THM_budget_NB FLOAT(12, 2) NOT NULL,
     CONSTRAINT PRIMARY KEY (THM_id_NB, THM_community_NB),
     CONSTRAINT FK_THM_community FOREIGN KEY (THM_community_NB) REFERENCES community(CMY_id_NB) ON DELETE CASCADE
+);
+
+CREATE TABLE budget_community (
+    BUC_community_NB INT, 
+    BUC_year_YEAR YEAR NOT NULL, 
+    BUC_amount_NB FLOAT(12, 2) NOT NULL,
+    BUC_fixed_fees_NB FLOAT(12,2) DEFAULT 0 NOT NULL,
+    CONSTRAINT PRIMARY KEY (BUC_community_NB, BUC_year_YEAR),
+    CONSTRAINT FK_BUC_community FOREIGN KEY (BUC_community_NB) REFERENCES community(CMY_id_NB) ON DELETE CASCADE
+);
+
+CREATE TABLE budget_theme(
+    BUT_community_NB INT, 
+    BUT_theme_NB SMALLINT,
+    BUT_year_YEAR YEAR NOT NULL, 
+    BUT_amount_NB FLOAT(12, 2) NOT NULL,
+    CONSTRAINT PRIMARY KEY (BUT_community_NB, BUT_theme_NB, BUT_year_YEAR),
+    CONSTRAINT FK_BUT_community FOREIGN KEY (BUT_community_NB) REFERENCES community(CMY_id_NB) ON DELETE CASCADE,
+    CONSTRAINT FK_BUT_theme FOREIGN KEY (BUT_theme_NB, BUT_community_NB) REFERENCES theme(THM_id_NB, THM_community_NB) ON DELETE CASCADE
 );
 
 CREATE TABLE proposal (
@@ -109,7 +125,7 @@ CREATE TABLE proposal (
     CONSTRAINT FK_PRO_deleter FOREIGN KEY (PRO_deleter_NB) REFERENCES user(USR_id_NB) ON DELETE CASCADE,
     CONSTRAINT FK_PRO_approver FOREIGN KEY (PRO_approver_NB) REFERENCES user(USR_id_NB) ON DELETE CASCADE,
     CONSTRAINT FK_PRO_community FOREIGN KEY (PRO_community_NB) REFERENCES community(CMY_id_NB) ON DELETE CASCADE,
-    CONSTRAINT FK_PRO_theme FOREIGN KEY (PRO_theme_NB) REFERENCES theme(THM_id_NB) ON DELETE CASCADE
+    CONSTRAINT FK_PRO_theme FOREIGN KEY (PRO_theme_NB, PRO_community_NB) REFERENCES theme(THM_id_NB, THM_community_NB) ON DELETE CASCADE
 );
 
 CREATE TABLE comment (
