@@ -97,7 +97,6 @@ INSERT INTO member (MEM_user_NB, MEM_community_NB, MEM_role_NB) VALUES
 (96, 6, 3),
 (96, 20, 3),
 (98, 16, 3),
-
 (1, 12, 4),
 (5, 5, 4),
 (6, 12, 4),
