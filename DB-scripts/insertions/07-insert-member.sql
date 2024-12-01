@@ -8,6 +8,8 @@
     Pour finir vous pouvez insérer le reste de la table membre.
 */
 
+/* Insertion des administrateurs */
+
 INSERT INTO member (MEM_user_NB, MEM_community_NB, MEM_role_NB) VALUES
 (1, 4, 1),
 (2, 15, 1),
@@ -29,6 +31,8 @@ INSERT INTO member (MEM_user_NB, MEM_community_NB, MEM_role_NB) VALUES
 (75, 11, 1),
 (86, 12, 1),
 (92, 13, 1);
+
+/* Insertion des autres membres */
 
 INSERT INTO member (MEM_user_NB, MEM_community_NB, MEM_role_NB) VALUES
 (2, 16, 2),
