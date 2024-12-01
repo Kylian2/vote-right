@@ -1,103 +1,108 @@
-Table             ;Attribut                        ;Type d’attibut ;Type de variable ;Taile    ;Description
-USER              ;USR_id_NB                       ;A              ;NB               ;INT      ;Identifiant d’un utilisateur
-USER              ;USR_email_VC                    ;A              ;VC               ;150      ;Email d’un utilisateur
-USER              ;USR_password_VC                 ;A              ;VC               ;255      ;Le mot de passe crypté de l’utilisateur
-USER              ;USR_lastname_VC                 ;A              ;VC               ;50       ;Nom de famille d’un utilisateur
-USER              ;USR_firstname_VC                ;A              ;VC               ;50       ;Prénom d’un utilisateur
-USER              ;USR_address_VC                  ;A              ;VC               ;200      ;Adresse d’un utilisateur
-USER              ;USR_zipcode_CHAR                ;A              ;CHAR             ;5        ;Code postal d’un utilisateur
-USER              ;USR_birthdate_DATE              ;A              ;DATE             ;         ;Date de naissance d’un utilisateur
-USER              ;USR_notification_frequency_CHAR ;A              ;CHAR             ;1        ;Fréquence de notification de l’utilisateur : ‘Q’ quotidien ou ‘H’ hebdomadaire. Par défaut = ‘H’ (La valeur 'S' est également possible si l'utilisateur est supprimé).
-USER              ;USR_notify_proposal_BOOL        ;A              ;BOOL             ;         ;Indique si l’utilisateur souhaite recevoir les notifications relative aux propositions. Par défaut = false.
-USER              ;USR_notify_vote_BOOL            ;A              ;BOOL             ;         ;Indique si l’utilisateur souhaite recevoir les notifications relative aux votes. Par défaut = false.
-USER              ;USR_notify_reaction_BOOL        ;A              ;BOOL             ;         ;Indique si l’utilisateur souhaite recevoir les notifications relative aux réactions. Par défaut = false.
-USER              ;USR_newsletter_BOOL             ;A              ;BOOL             ;         ;Indique si l’utilisateur souhaite recevoir les newsletters de recap. Par défaut = false.
-COMMUNITY         ;CMY_id_NB                       ;A              ;NB               ;INT      ;Identifiant d'un groupe
-COMMUNITY         ;CMY_name_VC                     ;A              ;VC               ;150      ;Nom d’un groupe
-COMMUNITY         ;CMY_image_VC                    ;A              ;VC               ;50       ;Image du groupe, fait partie des éléments de personnalisation, dans la base de données, c’est le nom/chemin de l’image qui est stocké.
-COMMUNITY         ;CMY_emoji_VC                    ;A              ;VC               ;5        ;Emoji du groupe, fait parti des éléments de personnalisation. C’est le code ascii qui est stocké dans la base.
-COMMUNITY         ;CMY_color_VC                    ;A              ;VC               ;7        ;Couleur du groupe, fait parti des éléments de personnalisation. Le code HEX de la couleurs est stocké dans la base.
-COMMUNITY         ;CMY_description_TXT             ;A              ;TXT              ;         ;Description longue du groupe
-COMMUNITY         ;CMY_budget_NB                   ;A              ;FLOAT            ;12,2     ;Budget général du groupe
-COMMUNITY         ;CMY_fixed_fees_NB               ;A              ;FLOAT            ;12,2     ;Frais fixes du groupe
-COMMUNITY         ;CMY_creator_NB                  ;A              ;NB               ;INT      ;Créateur du groupe, identifie un utilisateur
-INVITATION        ;INV_id_NB                       ;A              ;NB               ;INT      ;Identifiant d’une invitation
-INVITATION        ;INV_code_VC                     ;A              ;VC               ;6        ;Code de l’invitation
-INVITATION        ;INV_issue_DATE                  ;A              ;DATE             ;         ;Date d’expiration de l’invitation, elle est fixé dès la création à INV_validity_time_NB jour après la date de création
-INVITATION        ;INV_acceptance_DATE             ;A              ;DATE             ;         ;Date d’acceptation de l’invitation
-INVITATION        ;INV_sender_NB                   ;A              ;NB               ;INT      ;Envoyeur de l’invitation, identifie un utilisateur
-INVITATION        ;INV_recipient_NB                ;A              ;NB               ;INT      ;Destinataire de l’invitation, identifie un utilisateur.
-INVITATION        ;INV_community_NB                ;A              ;NB               ;INT      ;Groupe dans lequel l’utilisateur est invitée
-MEMBRE            ;MEM_user_NB                     ;A              ;NB               ;5        ;Identifie un utilisateur
-MEMBRE            ;MEM_community_NB                ;A              ;NB               ;5        ;Identifie un groupe
-MEMBRE            ;MEM_role_NB                     ;A              ;NB               ;2        ;Rôle du membre (utilisateur) dans le groupe
-ROLE              ;ROL_id_NB                       ;A              ;NB               ;TINYINT  ;Identifiant d'un role
-ROLE              ;ROL_label_NB                    ;A              ;VC               ;25       ;Nom du role
-THEME             ;THE_id_NB                       ;A              ;NB               ;SMALLINT ;Identifiant d'un thème (relatif au groupe)
-THEME             ;THE_community_NB                ;A              ;NB               ;INT      ;Identifiant d'un groupe
-THEME             ;THE_label_VC                    ;A              ;VC               ;50       ;Nom du thème
-THEME             ;THE_budget_NB                   ;A              ;FLOAT            ;12,2     ;Budget accordé au thème (une partie du budget du groupe)
-PROPOSAL          ;PRO_id_NB                       ;A              ;NB               ;INT      ;Identifiant d’une proposition
-PROPOSAL          ;PRO_title_VC                    ;A              ;VC               ;150      ;Titre d’une proposition
-PROPOSAL          ;PRO_description_TXT             ;A              ;TXT              ;         ;Description d’une proposition
-PROPOSAL          ;PRO_creation_DATE               ;A              ;DATETIME         ;         ;Date de création de la proposition
-PROPOSAL          ;PRO_discussion_duration_NB      ;A              ;NB               ;SMALLINT ;Durée de discussion de la proposition, en jours.
-PROPOSAL          ;PRO_request_count_NB            ;A              ;NB               ;INT      ;Nombre de demande de vote formel
-PROPOSAL          ;PRO_location_VC                 ;A              ;VC               ;150      ;Informations complémentaires : lieu de la proposition (peut-être nulle)
-PROPOSAL          ;PRO_budget_NB                   ;A              ;FLOAT            ;12,2     ;Budget accordé à la proposition (une partie du budget du thème)
-PROPOSAL          ;PRO_status_VC                   ;A              ;VC               ;20       ;"Statut de la proposition (indique si la proposition est acceptée, refusée ou en cours). Par défaut = ‘En cours’; "
-PROPOSAL          ;PRO_period_YEAR                   ;A              ;YEAR               ;       ;Indique la l'année de validité de la proposition, permet de calculé le budget annuellement. 
-PROPOSAL          ;PRO_initiator_NB                ;A              ;NB               ;INT      ;Utilisateur à l’origine de la proposition
-PROPOSAL          ;PRO_deleter_NB                  ;A              ;NB               ;INT      ;Utilisateur qui supprime la proposition
-PROPOSAL          ;PRO_approver_NB                 ;A              ;NB               ;INT      ;Utilisateur qui approuve (ou refuse) la proposition (un décideur du groupe)
-PROPOSAL          ;PRO_community_NB                ;A              ;NB               ;INT      ;Groupe rattaché à la proposition
-PROPOSAL          ;PRO_theme_NB                    ;A              ;NB               ;SMALLINT ;Identifiant du thème de la proposition (doit être associé avec PRO_groupe_NB)
-POSSIBILITY       ;POS_id_NB                       ;A              ;NB               ;INT      ;Identifiant d’une liste
-POSSIBILITY       ;POS_label_VC                    ;A              ;VC               ;100      ;Le label de la possibilité, un des choix que pourra faire l’utilisateur.
-POSSIBILITY       ;POS_proposal_NB                 ;A              ;NB               ;INT      ;La proposition associée à la possibilité.
-POSSIBILITY       ;POS_round_NB                    ;A              ;NB               ;TINYINT  ;Le round du vote auquel est associé la possibilité.
-VOTE              ;VOT_proposal_NB                 ;A              ;NB               ;INT      ;Identifiant d’une proposition (clé étrangère) compose la clé de la table vote quand associé avec VOT_tour_NB
-VOTE              ;VOT_round_NB                    ;A              ;NB               ;TINYINT  ;Numero du tour du vote, compose avec VOT_proposition_NB la clé primaire de la table VOTE
-VOTE              ;VOT_valid_BOOL                  ;A              ;BOOL             ;         ;Indique si le vote est validé ou non
-VOTE              ;VOT_start_DATE                  ;A              ;DATETIME         ;         ;Date de début du vote
-VOTE              ;VOT_end_DATE                    ;A              ;DATETIME         ;         ;Date de fin du vote
-VOTE              ;VOT_assessor_NB                 ;A              ;NB               ;INT      ;Identifie l’assesseur qui a rendu la décision
-VOTE              ;VOT_type_NB                     ;A              ;NB               ;TINYINT  ;Indique le type de suffrage
-VOTE_DETAIL       ;DET_proposal_NB                 ;A              ;NB               ;INT      ;Identifie une proposition, compose la clé primaire triple
-VOTE_DETAIL       ;DET_round_NB                    ;A              ;NB               ;TINYINT  ;Identifie le tour, compose la clé primaire triple
-VOTE_DETAIL       ;DET_user_NB                     ;A              ;NB               ;INT      ;Identifie un utilisateur qui vote, compose la clé primaire triple
-VOTE_DETAIL       ;DET_choice_VC                   ;A              ;NB               ;INT      ;Vote de l’utilisateur, référence une possibilité.
-VOTE_DETAIL       ;DET_voted_on_DATE               ;A              ;DATETIME         ;         ;La date et l’heure du vote de l’utilisateur.
-PROPOSAL_REACTION ;REP_proposal_NB                 ;A              ;NB               ;INT      ;Identifie une proposition, compose la clé primaire double
-PROPOSAL_REACTION ;REP_user_NB                     ;A              ;NB               ;INT      ;Identifie l’utilisateur qui réagit, compose la clé primaire double
-PROPOSAL_REACTION ;REP_reaction_NB                 ;A              ;NB               ;TINYINT  ;Réaction de l’utilisateur sur une proposition
-COMMENT_REACTION  ;REC_comment_NB                  ;A              ;NB               ;INT      ;Identifie un commentaire, compose la clé primaire double
-COMMENT_REACTION  ;REC_user_NB                     ;A              ;NB               ;INT      ;Identifie l’utilisateur qui réagit, compose la clé primaire double
-COMMENT_REACTION  ;REC_reaction_NB                 ;A              ;NB               ;TINYINT  ;Réaction de l’utilisateur sur un commentaire
-COMMENT           ;COM_id_NB                       ;A              ;NB               ;BIGINT   ;Identifiant d’un commentaire
-COMMENT           ;COM_message_VC                  ;A              ;VC               ;250      ;Le contenu du commentaire
-COMMENT           ;COM_proposal_NB                 ;A              ;NB               ;INT      ;Identifie la proposition commentée
-COMMENT           ;COM_sender_NB                   ;A              ;NB               ;INT      ;Identifie l’utilisateur qui commente
-COMMENT           ;COM_suppressor_NB               ;A              ;NB               ;INT      ;Identifie le modérateur qui effectue une action sur le commentaire
-COMMENT           ;COM_creation_DATE               ;A              ;DATETIME         ;         ;Date d’envoi du commentaire
-REASON            ;RES_id_NB                       ;A              ;NB               ;TINYINT  ;Identifiant du motif
-REASON            ;RES_label_VC                    ;A              ;VC               ;100      ;Libelle du motif
-REPORT            ;RPT_user_NB                     ;A              ;NB               ;INT      ;Identifie l'utilisateur qui signale le commentaire
-REPORT            ;RPT_comment_NB                  ;A              ;NB               ;INT      ;Identifie le commentaire signalé
-REPORT            ;RPT_reason_NB                   ;A              ;NB               ;TINYINT  ;Motif du signalement
-REPORT            ;RPT_status_VC                   ;A              ;VC               ;25       ;Indique le statut du signalement, par défaut, il est ‘En attente’ de la décision d’un modérateur.
-REPORT            ;RPT_creation_DATE               ;A              ;DATETIME         ;         ;La date et l'heure de création du signalement.
-VOTING_SYSTEM     ;SYS_id_NB                       ;A              ;NB               ;TINYINT  ;Identifiant du type de suffrage
-VOTING_SYSTEM     ;SYS_label_VC                    ;A              ;VC               ;100      ;Libelle du type de suffrage
-REACTION          ;REA_id_NB                       ;A              ;NB               ;TINYINT  ;Identifiant de la reaction
-REACTION          ;REA_label_VC                    ;A              ;VC               ;25       ;Label de la reaction
-                  ;INV_validity_time_NB            ;P              ;NB               ;         ;Durée de validité d’une invitation. Actuellement = 7j
-                  ;PRO_request_goal_NB             ;C              ;NB               ;         ;Nombre de demande à atteindre pour déclencher un vote formel. = (MEM_nbmembre_NB / 2)+1
-                  ;MEM_nb_member_NB                ;C              ;NB               ;         ;Nombre de membre d’un groupe. (Calculé avec une requête sur la table membre) = SELECT COUNT(*) FROM MEMBRE WHERE MEM_groupe_NB = x.
-                  ;REC_nblike_NB                   ;C              ;NB               ;         ;Le nombre de personnes ayant émis une mention « aime » au commentaire. Récupérable avec une requête COUNT sur la table REACTION_COMMENTAIRE
-                  ;REC_nbdislike_NB                ;C              ;NB               ;         ;Le nombre de personnes ayant émis une mention « n’aime pas » au commentaire. Récupérable avec une requête COUNT sur la table REACTION_COMMENTAIRE
-                  ;REP_nblike_NB                   ;C              ;NB               ;         ;Le nombre de personnes ayant émis une mention « aime » à la proposition. Récupérable avec une requête COUNT sur la table REACTION_PROPOSITION
-                  ;REP_nbdislike_NB                ;C              ;NB               ;         ;Le nombre de personnes ayant émis une mention « n’aime pas » à la proposition. Récupérable avec une requête COUNT sur la table REACTION_PROPOSITION
-                  ;GRO_used_budget_NB              ;C              ;NB               ;         ;Le montant du budget utilisé du groupe = SUM(THE_used_budget_NB)
-                  ;THE_used_budget_NB              ;C              ;NB               ;         ;Le montant du budget utilisé du groupe = SUM(PRO_budget_NB)
-                  ;VOT_remaining_time_NB           ;C              ;NB               ;         ;Le temps restant d’un vote = VOT_end_DATE - date_actuelle
+Table             ;Attribut                        ;Type d’attibut ;Type de variable ;Taile       ;Description
+USER              ;USR_id_NB                       ;A              ;NB               ;INT         ;Identifiant d’un utilisateur
+USER              ;USR_email_VC                    ;A              ;VC               ;150         ;Email d’un utilisateur
+USER              ;USR_password_VC                 ;A              ;VC               ;255         ;Le mot de passe crypté de l’utilisateur
+USER              ;USR_lastname_VC                 ;A              ;VC               ;50          ;Nom de famille d’un utilisateur
+USER              ;USR_firstname_VC                ;A              ;VC               ;50          ;Prénom d’un utilisateur
+USER              ;USR_address_VC                  ;A              ;VC               ;200         ;Adresse d’un utilisateur
+USER              ;USR_zipcode_CHAR                ;A              ;CHAR             ;5           ;Code postal d’un utilisateur
+USER              ;USR_birthdate_DATE              ;A              ;DATE             ;            ;Date de naissance d’un utilisateur
+USER              ;USR_notification_frequency_CHAR ;A              ;CHAR             ;1           ;Fréquence de notification de l’utilisateur : ‘Q’ quotidien ou ‘H’ hebdomadaire. Par défaut = ‘H’ (La valeur 'S' est également possible si l'utilisateur est supprimé).
+USER              ;USR_notify_proposal_BOOL        ;A              ;BOOL             ;            ;Indique si l’utilisateur souhaite recevoir les notifications relative aux propositions. Par défaut = false.
+USER              ;USR_notify_vote_BOOL            ;A              ;BOOL             ;            ;Indique si l’utilisateur souhaite recevoir les notifications relative aux votes. Par défaut = false.
+USER              ;USR_notify_reaction_BOOL        ;A              ;BOOL             ;            ;Indique si l’utilisateur souhaite recevoir les notifications relative aux réactions. Par défaut = false.
+USER              ;USR_newsletter_BOOL             ;A              ;BOOL             ;            ;Indique si l’utilisateur souhaite recevoir les newsletters de recap. Par défaut = false.
+COMMUNITY         ;CMY_id_NB                       ;A              ;NB               ;INT         ;Identifiant d'un groupe
+COMMUNITY         ;CMY_name_VC                     ;A              ;VC               ;150         ;Nom d’un groupe
+COMMUNITY         ;CMY_image_VC                    ;A              ;VC               ;50          ;Image du groupe, fait partie des éléments de personnalisation, dans la base de données, c’est le nom/chemin de l’image qui est stocké.
+COMMUNITY         ;CMY_emoji_VC                    ;A              ;VC               ;5           ;Emoji du groupe, fait parti des éléments de personnalisation. C’est le code ascii qui est stocké dans la base.
+COMMUNITY         ;CMY_color_VC                    ;A              ;VC               ;7           ;Couleur du groupe, fait parti des éléments de personnalisation. Le code HEX de la couleurs est stocké dans la base.
+COMMUNITY         ;CMY_description_TXT             ;A              ;TXT              ;            ;Description longue du groupe
+COMMUNITY         ;CMY_creator_NB                  ;A              ;NB               ;INT         ;Créateur du groupe, identifie un utilisateur
+INVITATION        ;INV_id_NB                       ;A              ;NB               ;INT         ;Identifiant d’une invitation
+INVITATION        ;INV_code_VC                     ;A              ;VC               ;6           ;Code de l’invitation
+INVITATION        ;INV_issue_DATE                  ;A              ;DATE             ;            ;Date d’expiration de l’invitation, elle est fixé dès la création à INV_validity_time_NB jour après la date de création
+INVITATION        ;INV_acceptance_DATE             ;A              ;DATE             ;            ;Date d’acceptation de l’invitation
+INVITATION        ;INV_sender_NB                   ;A              ;NB               ;INT         ;Envoyeur de l’invitation, identifie un utilisateur
+INVITATION        ;INV_recipient_NB                ;A              ;NB               ;INT         ;Destinataire de l’invitation, identifie un utilisateur.
+INVITATION        ;INV_community_NB                ;A              ;NB               ;INT         ;Groupe dans lequel l’utilisateur est invitée
+MEMBRE            ;MEM_user_NB                     ;A              ;NB               ;5           ;Identifie un utilisateur
+MEMBRE            ;MEM_community_NB                ;A              ;NB               ;5           ;Identifie un groupe
+MEMBRE            ;MEM_role_NB                     ;A              ;NB               ;2           ;Rôle du membre (utilisateur) dans le groupe
+ROLE              ;ROL_id_NB                       ;A              ;NB               ;TINYINT     ;Identifiant d'un role
+ROLE              ;ROL_label_NB                    ;A              ;VC               ;25          ;Nom du role
+THEME             ;THE_id_NB                       ;A              ;NB               ;SMALLINT    ;Identifiant d'un thème (relatif au groupe)
+THEME             ;THE_community_NB                ;A              ;NB               ;INT         ;Identifiant d'un groupe
+THEME             ;THE_label_VC                    ;A              ;VC               ;50          ;Nom du thème
+PROPOSAL          ;PRO_id_NB                       ;A              ;NB               ;INT         ;Identifiant d’une proposition
+PROPOSAL          ;PRO_title_VC                    ;A              ;VC               ;150         ;Titre d’une proposition
+PROPOSAL          ;PRO_description_TXT             ;A              ;TXT              ;            ;Description d’une proposition
+PROPOSAL          ;PRO_creation_DATE               ;A              ;DATETIME         ;            ;Date de création de la proposition
+PROPOSAL          ;PRO_discussion_duration_NB      ;A              ;NB               ;SMALLINT    ;Durée de discussion de la proposition, en jours.
+PROPOSAL          ;PRO_request_count_NB            ;A              ;NB               ;INT         ;Nombre de demande de vote formel
+PROPOSAL          ;PRO_location_VC                 ;A              ;VC               ;150         ;Informations complémentaires : lieu de la proposition (peut-être nulle)
+PROPOSAL          ;PRO_budget_NB                   ;A              ;FLOAT            ;12,2        ;Budget accordé à la proposition (une partie du budget du thème)
+PROPOSAL          ;PRO_status_VC                   ;A              ;VC               ;20          ;"Statut de la proposition (indique si la proposition est acceptée, refusée ou en cours). Par défaut = ‘En cours’; "
+PROPOSAL          ;PRO_period_YEAR                 ;A              ;YEAR             ;            ;Indique la l'année de validité de la proposition, permet de calculé le budget annuellement.
+PROPOSAL          ;PRO_initiator_NB                ;A              ;NB               ;INT         ;Utilisateur à l’origine de la proposition
+PROPOSAL          ;PRO_deleter_NB                  ;A              ;NB               ;INT         ;Utilisateur qui supprime la proposition
+PROPOSAL          ;PRO_approver_NB                 ;A              ;NB               ;INT         ;Utilisateur qui approuve (ou refuse) la proposition (un décideur du groupe)
+PROPOSAL          ;PRO_community_NB                ;A              ;NB               ;INT         ;Groupe rattaché à la proposition
+PROPOSAL          ;PRO_theme_NB                    ;A              ;NB               ;SMALLINT    ;Identifiant du thème de la proposition (doit être associé avec PRO_groupe_NB)
+POSSIBILITY       ;POS_id_NB                       ;A              ;NB               ;INT         ;Identifiant d’une liste
+POSSIBILITY       ;POS_label_VC                    ;A              ;VC               ;100         ;Le label de la possibilité, un des choix que pourra faire l’utilisateur.
+POSSIBILITY       ;POS_proposal_NB                 ;A              ;NB               ;INT         ;La proposition associée à la possibilité.
+POSSIBILITY       ;POS_round_NB                    ;A              ;NB               ;TINYINT     ;Le round du vote auquel est associé la possibilité.
+VOTE              ;VOT_proposal_NB                 ;A              ;NB               ;INT         ;Identifiant d’une proposition (clé étrangère) compose la clé de la table vote quand associé avec VOT_tour_NB
+VOTE              ;VOT_round_NB                    ;A              ;NB               ;TINYINT     ;Numero du tour du vote, compose avec VOT_proposition_NB la clé primaire de la table VOTE
+VOTE              ;VOT_valid_BOOL                  ;A              ;BOOL             ;            ;Indique si le vote est validé ou non
+VOTE              ;VOT_start_DATE                  ;A              ;DATETIME         ;            ;Date de début du vote
+VOTE              ;VOT_end_DATE                    ;A              ;DATETIME         ;            ;Date de fin du vote
+VOTE              ;VOT_assessor_NB                 ;A              ;NB               ;INT         ;Identifie l’assesseur qui a rendu la décision
+VOTE              ;VOT_type_NB                     ;A              ;NB               ;TINYINT     ;Indique le type de suffrage
+VOTE_DETAIL       ;DET_proposal_NB                 ;A              ;NB               ;INT         ;Identifie une proposition, compose la clé primaire triple
+VOTE_DETAIL       ;DET_round_NB                    ;A              ;NB               ;TINYINT     ;Identifie le tour, compose la clé primaire triple
+VOTE_DETAIL       ;DET_user_NB                     ;A              ;NB               ;INT         ;Identifie un utilisateur qui vote, compose la clé primaire triple
+VOTE_DETAIL       ;DET_choice_VC                   ;A              ;NB               ;INT         ;Vote de l’utilisateur, référence une possibilité.
+VOTE_DETAIL       ;DET_voted_on_DATE               ;A              ;DATETIME         ;            ;La date et l’heure du vote de l’utilisateur.
+PROPOSAL_REACTION ;REP_proposal_NB                 ;A              ;NB               ;INT         ;Identifie une proposition, compose la clé primaire double
+PROPOSAL_REACTION ;REP_user_NB                     ;A              ;NB               ;INT         ;Identifie l’utilisateur qui réagit, compose la clé primaire double
+PROPOSAL_REACTION ;REP_reaction_NB                 ;A              ;NB               ;TINYINT     ;Réaction de l’utilisateur sur une proposition
+COMMENT_REACTION  ;REC_comment_NB                  ;A              ;NB               ;INT         ;Identifie un commentaire, compose la clé primaire double
+COMMENT_REACTION  ;REC_user_NB                     ;A              ;NB               ;INT         ;Identifie l’utilisateur qui réagit, compose la clé primaire double
+COMMENT_REACTION  ;REC_reaction_NB                 ;A              ;NB               ;TINYINT     ;Réaction de l’utilisateur sur un commentaire
+COMMENT           ;COM_id_NB                       ;A              ;NB               ;BIGINT      ;Identifiant d’un commentaire
+COMMENT           ;COM_message_VC                  ;A              ;VC               ;250         ;Le contenu du commentaire
+COMMENT           ;COM_proposal_NB                 ;A              ;NB               ;INT         ;Identifie la proposition commentée
+COMMENT           ;COM_sender_NB                   ;A              ;NB               ;INT         ;Identifie l’utilisateur qui commente
+COMMENT           ;COM_suppressor_NB               ;A              ;NB               ;INT         ;Identifie le modérateur qui effectue une action sur le commentaire
+COMMENT           ;COM_creation_DATE               ;A              ;DATETIME         ;            ;Date d’envoi du commentaire
+REASON            ;RES_id_NB                       ;A              ;NB               ;TINYINT     ;Identifiant du motif
+REASON            ;RES_label_VC                    ;A              ;VC               ;100         ;Libelle du motif
+REPORT            ;RPT_user_NB                     ;A              ;NB               ;INT         ;Identifie l'utilisateur qui signale le commentaire
+REPORT            ;RPT_comment_NB                  ;A              ;NB               ;INT         ;Identifie le commentaire signalé
+REPORT            ;RPT_reason_NB                   ;A              ;NB               ;TINYINT     ;Motif du signalement
+REPORT            ;RPT_status_VC                   ;A              ;VC               ;25          ;Indique le statut du signalement, par défaut, il est ‘En attente’ de la décision d’un modérateur.
+REPORT            ;RPT_creation_DATE               ;A              ;DATETIME         ;            ;La date et l'heure de création du signalement.
+VOTING_SYSTEM     ;SYS_id_NB                       ;A              ;NB               ;TINYINT     ;Identifiant du type de suffrage
+VOTING_SYSTEM     ;SYS_label_VC                    ;A              ;VC               ;100         ;Libelle du type de suffrage
+REACTION          ;REA_id_NB                       ;A              ;NB               ;TINYINT     ;Identifiant de la reaction
+REACTION          ;REA_label_VC                    ;A              ;VC               ;25          ;Label de la reaction
+COMMUNITY_BUDGET  ;BUC_community_NB                ;A              ;NB               ;INT         ;Identifiant de la communauté
+COMMUNITY_BUDGET  ;BUC_period_YEAR                 ;A              ;YEAR             ;            ;La periode de validité du budget (une année, ex: 2024)
+COMMUNITY_BUDGET  ;BUC_amount_NB                   ;A              ;NB               ;FLOAT(12,2) ;Montant du budget général du groupe
+COMMUNITY_BUDGET  ;BUC_fixed_fees_NB               ;A              ;NB               ;FLOAT(12,2) ;Montant des frais fixes du groupe
+THEME_BUDGET      ;BUT_community_NB                ;A              ;NB               ;INT         ;Identifiant de la communauté
+THEME_BUDGET      ;BUT_theme_NB                    ;A              ;NB               ;SMALLINT    ;Identifiant de la communauté du thème
+THEME_BUDGET      ;BUT_period_YEAR                 ;A              ;YEAR             ;            ;La periode de validité du budget (une année, ex: 2024)
+THEME_BUDGET      ;BUT_amount_NB                   ;A              ;NB               ;FLOAT(12,2) ;Montant du bugdet dédié au theme
+                  ;INV_validity_time_NB            ;P              ;NB               ;            ;Durée de validité d’une invitation. Actuellement = 7j
+                  ;PRO_request_goal_NB             ;C              ;NB               ;            ;Nombre de demande à atteindre pour déclencher un vote formel. = (MEM_nbmembre_NB / 2)+1
+                  ;MEM_nb_member_NB                ;C              ;NB               ;            ;Nombre de membre d’un groupe. (Calculé avec une requête sur la table membre) = SELECT COUNT(*) FROM MEMBRE WHERE MEM_groupe_NB = x.
+                  ;REC_nblike_NB                   ;C              ;NB               ;            ;Le nombre de personnes ayant émis une mention « aime » au commentaire. Récupérable avec une requête COUNT sur la table REACTION_COMMENTAIRE
+                  ;REC_nbdislike_NB                ;C              ;NB               ;            ;Le nombre de personnes ayant émis une mention « n’aime pas » au commentaire. Récupérable avec une requête COUNT sur la table REACTION_COMMENTAIRE
+                  ;REP_nblike_NB                   ;C              ;NB               ;            ;Le nombre de personnes ayant émis une mention « aime » à la proposition. Récupérable avec une requête COUNT sur la table REACTION_PROPOSITION
+                  ;REP_nbdislike_NB                ;C              ;NB               ;            ;Le nombre de personnes ayant émis une mention « n’aime pas » à la proposition. Récupérable avec une requête COUNT sur la table REACTION_PROPOSITION
+                  ;CMY_used_budget_NB              ;C              ;NB               ;            ;Le montant du budget utilisé du groupe = SUM(THE_used_budget_NB)
+                  ;THM_used_budget_NB              ;C              ;NB               ;            ;Le montant du budget utilisé du groupe = SUM(PRO_budget_NB)
+                  ;VOT_remaining_time_NB           ;C              ;NB               ;            ;Le temps restant d’un vote = VOT_end_DATE - date_actuelle

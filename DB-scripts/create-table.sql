@@ -94,6 +94,7 @@ CREATE TABLE community_budget (
     CONSTRAINT FK_BUC_community FOREIGN KEY (BUC_community_NB) REFERENCES community(CMY_id_NB) ON DELETE CASCADE
 );
 
+
 CREATE TABLE theme_budget (
     BUT_community_NB INT, 
     BUT_theme_NB SMALLINT,
