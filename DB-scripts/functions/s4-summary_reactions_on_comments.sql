@@ -21,8 +21,7 @@ BEGIN
     DECLARE comments CURSOR FOR
         SELECT com_id_nb, com_message_vc, pro_id_nb, nblove, nblike, nbdislike, nbhate
         FROM comment_total_reaction
-        WHERE usr_id_nb = user_id
-        AND pro_status_vc = 'En cours';
+        WHERE usr_id_nb = user_id;
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin_cursor = 1;
 

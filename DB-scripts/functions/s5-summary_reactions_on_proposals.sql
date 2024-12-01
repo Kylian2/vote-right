@@ -21,8 +21,7 @@ BEGIN
         SELECT pr.pro_id_nb, pr.pro_title_vc, nblove, nblike, nbdislike, nbhate
         FROM proposal_total_reaction pr
         INNER JOIN proposal p ON p.pro_id_nb = pr.pro_id_nb
-        WHERE pro_initiator_nb = user_id AND pr.pro_community_nb IN (SELECT mem_community_nb FROM member WHERE mem_user_nb = 92)
-        AND pro_status_nb = 'En cours';
+        WHERE pro_initiator_nb = user_id AND pr.pro_community_nb IN (SELECT mem_community_nb FROM member WHERE mem_user_nb = 92);
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin_cursor = 1;
 
