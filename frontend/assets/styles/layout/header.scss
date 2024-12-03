@@ -62,13 +62,14 @@ header{
 
 .header{
     &--desktop{
+        background: unset !important;
         @media screen and (max-width: 600px) {
             display: none;
         }
     }
     &--mobile{
         color: $contrast;
-        background: url('~/public/images/background.png');
+        background: url('~/public/images/background.png') #fff;
         background-size: 100%;
         background-position: center;
         padding: 30px;
@@ -78,7 +79,6 @@ header{
         &.full{
             transition: .3s;
             position: fixed;
-            background-color: $contrast;
             top: 0;
             background-position: center;
             background-size: 100% 100%;
@@ -141,4 +141,219 @@ header{
             }
         }
     }
+}
+
+/* Adaptation des couleurs en fonction de la couleur du groupe */
+
+.color-5AB7EE{
+
+    .logo{
+        background: $color-1;
+    }
+
+    .shine{
+        background: $color-1;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-size: 150px;
+    }
+
+    .logged .wrapper{
+        &.active{
+            box-shadow: inset 0 -6px 0 0 $color-1;
+            &:hover{
+                box-shadow: inset 0 -24px 0 0 $color-1;
+            }
+        }
+        &:not(.active) > a:hover{
+            color: $color-1;
+        }
+    }
+
+    &.header--mobile{
+        background: $color-1;
+    }
+}
+
+.color-FDBE55{
+
+    .logo{
+        background: $color-2;
+    }
+
+    .shine{
+        background: $color-2;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-size: 150px;
+    }
+
+    .logged .wrapper{
+        &.active{
+            box-shadow: inset 0 -6px 0 0 $color-3;
+            &:hover{
+                box-shadow: inset 0 -24px 0 0 $color-3;
+            }
+        }
+        &:not(.active) > a:hover{
+            color: $color-2;
+        }
+    }
+
+    &.header--mobile{
+        background: $color-2;
+    }
+}
+
+.color-FB961F{
+
+    .logo{
+        background: $color-3;
+    }
+
+    .shine{
+        background: $color-3;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-size: 150px;
+    }
+
+    .logged .wrapper{
+        &.active{
+            box-shadow: inset 0 -6px 0 0 $color-3;
+            &:hover{
+                box-shadow: inset 0 -24px 0 0 $color-3;
+            }
+        }
+        &:not(.active) > a:hover{
+            color: $color-3;
+        }
+    }
+
+    &.header--mobile{
+        background: $color-3;
+    }
+}
+
+.color-13329F{
+
+    .logo{
+        background: $color-4;
+    }
+
+    .shine{
+        background: $color-4;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-size: 150px;
+    }
+
+    .logged .wrapper{
+        &.active{
+            box-shadow: inset 0 -6px 0 0 $color-4;
+            &:hover{
+                box-shadow: inset 0 -24px 0 0 $color-4;
+            }
+        }
+        &:not(.active) > a:hover{
+            color: $color-4;
+        }
+    }
+
+    &.header--mobile{
+        background: $color-4;
+    }
+}
+
+.color-8700CF{
+
+    .logo{
+        background: $color-5;
+    }
+
+    .shine{
+        background: $color-5;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-size: 150px;
+    }
+
+    .logged .wrapper{
+        &.active{
+            box-shadow: inset 0 -6px 0 0 $color-5;
+            &:hover{
+                box-shadow: inset 0 -24px 0 0 $color-5;
+            }
+        }
+        &:not(.active) > a:hover{
+            color: $color-5;
+        }
+    }
+
+    &.header--mobile{
+        background: $color-5;
+    }
+
+}
+
+.color-F669D9{
+
+    .logo{
+        background: $color-6;
+    }
+
+    .shine{
+        background: $color-6;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-size: 150px;
+    }
+
+    .logged .wrapper{
+        &.active{
+            box-shadow: inset 0 -6px 0 0 $color-6;
+            &:hover{
+                box-shadow: inset 0 -24px 0 0 $color-6;
+            }
+        }
+        &:not(.active) > a:hover{
+            color: $color-6;
+        }
+    }
+
+    &.header--mobile{
+        background: $color-6;
+    }
+}
+
+.color-DE3D59{
+    background: $color-7;
+
+    .logo{
+        background: $color-7;
+    }
+
+    .shine{
+        background: $color-7;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-size: 150px;
+    }
+
+    .logged .wrapper{
+        &.active{
+            box-shadow: inset 0 -6px 0 0 $color-7;
+            &:hover{
+                box-shadow: inset 0 -24px 0 0 $color-7;
+            }
+        }
+        &:not(.active) > a:hover{
+            color: $color-7;
+        }
+    }
+
+    &.header--mobile{
+        background: $color-7;
+    }
+
 }
