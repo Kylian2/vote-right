@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink to="#" class="community__wrapper"
+    <NuxtLink :to="`/community/${community['CMY_id_NB']}`" class="community__wrapper"
         :style="{ 
             background: `url(/images/communities/${community['CMY_image_VC']})`,
             backgroundSize: `cover`
