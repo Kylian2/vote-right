@@ -11,13 +11,13 @@ class Router{
      * @param string $method Le type de request (GET, POST, etc).
      * @param string $uri L'uri de la route
      * @param string $actionController Le controller et l'action à effectuer, ils doivent etre de la forme controller@action
+     * @param bool $protected true si la route doit être protégée, false sinon (par défaut = false).
      */
-    public static function addRoute(string $method, string $uri, string $actionController){
-        self::$routes[trim($uri, '/')] = [
-            'method' => $method,
+    public static function addRoute(string $method, string $uri, string $actionController, bool $protected = false){
+        self::$routes[$method][trim($uri, '/')] = [
             'uri' => trim($uri, '/'), #trim retire le '/' au début et en fin de chaine
             'actionController' => $actionController,
-            'middleware' => 0,
+            'middleware' => $protected,
         ];
     }
 
@@ -26,9 +26,10 @@ class Router{
      * 
      * @param string $uri L'uri de la route
      * @param string $actionController Le controller et l'action à effectuer, ils doivent etre de la forme controller@action
+     * @param bool $protected true si la route doit être protégée, false sinon (par défaut = false).
      */
-    public static function get(string $uri, string $actionController){
-        self::addRoute('GET', $uri, $actionController);
+    public static function get(string $uri, string $actionController, bool $protected = false){
+        self::addRoute('GET', $uri, $actionController, $protected);
     }
 
     /**
@@ -36,16 +37,10 @@ class Router{
      * 
      * @param string $uri L'uri de la route
      * @param string $actionController Le controller et l'action à effectuer, ils doivent etre de la forme controller@action
+     * @param bool $protected true si la route doit être protégée, false sinon (par défaut = false).
      */
-    public static function post(string $uri, string $actionController){
-        self::addRoute('POST', $uri, $actionController);
-    }
-
-    /**
-     * Définit une route protégée, il est possible d'accéder à une route protégée uniquement si l'on est connecté
-     */
-    public static function protect(string $uri){
-        self::$routes[trim($uri, '/')]['middleware'] = true;
+    public static function post(string $uri, string $actionController, bool $protected = false){
+        self::addRoute('POST', $uri, $actionController, $protected);
     }
 
     /**
@@ -79,11 +74,17 @@ class Router{
      */
     public static function dispatch($request, $method){
 
+        if(!in_array(strtoupper($method), array_keys(self::$routes))){
+            http_response_code(404);
+            echo json_encode(['error' => 'Route not found']);
+            return;
+        }
+
         //On "nettoie" la request 
         $request = trim(parse_url($request, PHP_URL_PATH), '/');
 
-        foreach(self::$routes as $route){
-            if($route['uri'] === $request && $route['method'] === strtoupper($method)){
+        foreach(self::$routes[strtoupper($method)] as $route){
+            if($route['uri'] === $request){
                 if(!$route['middleware']){
                     self::callAction($route['actionController']);
                     return;

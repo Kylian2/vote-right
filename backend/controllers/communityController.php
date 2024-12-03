@@ -77,7 +77,7 @@ class CommunityController{
         $values["CMY_name_VC"] = $body["name"];
         $values["CMY_color_VC"] = $body["color"];
         $values["CMY_image_VC"] = $body["image"];
-        $values["CMY_description_VC"] = $body["description"];
+        $values["CMY_description_TXT"] = $body["description"];
         $values["CMY_emoji_VC"] = $body["emoji"];
         $values["CMY_creator_NB"] = $userId;
 

@@ -75,7 +75,7 @@ const formIsValid  = computed(() => {
 const handleData = async () => {
 
     try{
-        const response = await $fetch(`http://localhost:3333/community/store`, {
+        const response = await $fetch(`http://localhost:3333/communities`, {
             method: 'POST',
             body: {
                 name: name.value,

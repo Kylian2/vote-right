@@ -2,7 +2,7 @@
 
 @require_once('models/model.php');
 
-define("ROLE_ADMIN",3);
+define("ROLE_ADMIN",1);
 
 class Community extends Model{
     
@@ -11,7 +11,7 @@ class Community extends Model{
     public string $CMY_image_VC;
     public string $CMY_emoji_VC;
     public string $CMY_color_VC;
-    public ?string $CMY_description_VC;
+    public ?string $CMY_description_TXT;
     public float $CMY_budget_NB;
     public float $CMY_fixed_fees_NB;
     public int $CMY_creator_NB;
@@ -48,7 +48,7 @@ class Community extends Model{
     }
 
     public function insert(){
-        $request = 'INSERT INTO community (CMY_name_VC, CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_VC, CMY_creator_NB)
+        $request = 'INSERT INTO community (CMY_name_VC, CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_creator_NB)
                     VALUES (:name, :image, :emoji, :color, :description, :creator);';
         $prepare = connexion::pdo()->prepare($request);
         $values = array(
@@ -56,7 +56,7 @@ class Community extends Model{
             "image" => $this->CMY_image_VC,
             "emoji" => $this->CMY_emoji_VC,
             "color" => $this->CMY_color_VC,
-            "description" => $this->CMY_description_VC,
+            "description" => $this->CMY_description_TXT,
             "creator" => $this->CMY_creator_NB,
         );
         $prepare->execute($values);

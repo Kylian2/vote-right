@@ -48,7 +48,7 @@ const finishedProposals = useState("finishedProposals");
 
 const fetchData = async () => {
     try{
-        const response = await $fetch(`http://localhost:3333/community/index`, {
+        const response = await $fetch(`http://localhost:3333/communities`, {
             credentials: 'include',
         });
 
@@ -59,7 +59,7 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`http://localhost:3333/user/name`, {
+        const response = await $fetch(`http://localhost:3333/users/me/name`, {
             credentials: 'include',
         });
 
@@ -70,7 +70,7 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`http://localhost:3333/proposal/ongoing`, {
+        const response = await $fetch(`http://localhost:3333/proposals/ongoing`, {
             credentials: 'include',
         });
 
@@ -81,7 +81,7 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`http://localhost:3333/proposal/finished`, {
+        const response = await $fetch(`http://localhost:3333/proposals/finished`, {
             credentials: 'include',
         });
 

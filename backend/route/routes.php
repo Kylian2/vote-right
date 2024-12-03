@@ -2,26 +2,19 @@
 
 @require_once('core/router.php');
 
-Router::get('/user/index', 'UserController@index');
 Router::post('/auth/register', 'AuthController@register');
 Router::post('/auth/login', 'AuthController@login');
 Router::get('/auth/check', 'AuthController@check');
 Router::post('/auth/logout', 'AuthController@logout');
 
-Router::get('/community/index', 'CommunityController@index');
-Router::protect('/community/index');
-Router::get('/community/administered', 'CommunityController@administered');
-Router::protect('/community/administered');
-Router::post('/community/store', 'CommunityController@store');
-Router::protect('/community/store');
+Router::get('/communities', 'CommunityController@index', true);
+Router::post('/communities', 'CommunityController@store', true);
+Router::get('/communities/administered', 'CommunityController@administered', true);
 
-Router::protect('/user/index');
-Router::get('/user/name', 'UserController@name');
-Router::protect('/user/name');
+Router::get('/users', 'UserController@index');
+Router::get('/users/me/name', 'UserController@name', true);
 
-Router::get('/proposal/ongoing', 'ProposalController@ongoing');
-Router::protect('/proposal/ongoing');
-Router::get('/proposal/finished', 'ProposalController@finished');
-Router::protect('/proposal/finished');
+Router::get('/proposals/ongoing', 'ProposalController@ongoing', true);
+Router::get('/proposals/finished', 'ProposalController@finished', true);
 
 ?>

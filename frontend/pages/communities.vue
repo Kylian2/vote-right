@@ -46,7 +46,7 @@ onMounted(() => {
 
 const fetchData = async () => {
     try{
-        const response = await $fetch(`http://localhost:3333/community/index`, {
+        const response = await $fetch(`http://localhost:3333/communities`, {
             credentials: 'include',
         });
 
@@ -56,7 +56,7 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`http://localhost:3333/community/administered`, {
+        const response = await $fetch(`http://localhost:3333/communities/administered`, {
             credentials: 'include',
         });
 
