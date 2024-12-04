@@ -18,6 +18,19 @@ class CommunityController{
     }
 
     /**
+     * Affiche un json contenant les données de la communauté passée dans l'URL
+     * 
+     * @param $params, un tableau correspondant auc paramètres attendus dans l'URL. 
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
+     */
+    public static function show(array $params){
+        $community = Community::getById($params[0]);
+        echo json_encode($community);
+    }
+
+    /**
      * Affiche un json de la liste des communautés dont l'utilisateur à la charge d'administration
      * 
      * @return void retourne le resultat sous forme de JSON
