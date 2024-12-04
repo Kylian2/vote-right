@@ -1,14 +1,14 @@
 <template>
-    <NuxtLink :to="`/community/${community['CMY_id_NB']}`" class="community__wrapper"
+    <NuxtLink :to="`/community/${community['CMY_id_NB']}`" class="community-card__wrapper"
         :style="{ 
             background: `url(/images/communities/${community['CMY_image_VC']})`,
             backgroundSize: `cover`
         }"
         >
-            <div class="community">
-                <div class="community__header">
+            <div class="community-card">
+                <div class="community-card__header">
                     <h4> <span class="emoji">{{String.fromCodePoint(parseInt(community["CMY_emoji_VC"], 16))}}</span>{{ trunc(community["CMY_name_VC"]) }}</h4>
-                    <div class="community__themes">
+                    <div class="community-card__themes">
                         <span v-for="theme in community['CMY_themes_TAB'].slice(0, 3)" 
                                 :style="{ background: community['CMY_color_VC'] }"
                                 class="tag">
@@ -17,7 +17,7 @@
                         <span class="tag__infos" v-if="community['CMY_themes_TAB'].length > 3">+ {{ community['CMY_themes_TAB'].length - 3 }}</span>
                     </div>
                 </div>
-                <div class="community__header">
+                <div class="community-card__header">
                     <p>
                         <span 
                             class="nbmembre"
