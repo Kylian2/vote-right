@@ -48,18 +48,21 @@ class Router{
      * 
      * @param string $actionController Le controller et l'action à effectuer, ils doivent etre de la forme controller@action
      */
-    protected static function callAction($actionController)
+    protected static function callAction($actionController, $params = null)
     {
-        list($controller, $action) = explode('@', $actionController); #permet de recuperer le controller et l'action dans la chaine controller@action
-
-        // Inclure le fichier du contrôleur
+        list($controller, $action) = explode('@', $actionController); // permet de recuperer le controller et l'action dans la chaine controller@action
 
         @require_once('controllers/' . $controller.'.php');
 
-        $controllerInstance = new $controller; #Instancier permet d'utiliser la fonction method_exists
+        $controllerInstance = new $controller; // Instancier permet d'utiliser la fonction method_exists
 
         if (!method_exists($controllerInstance, $action)) {
             throw new \Exception("$action method has not been found in $controllerClass");
+        }
+
+        /* Si des paramètres sont passé, on les transmets à l'action */
+        if($params){
+            return $controllerInstance->$action($params);
         }
 
         // Appeler la méthode du contrôleur
@@ -83,6 +86,7 @@ class Router{
         //On "nettoie" la request 
         $request = trim(parse_url($request, PHP_URL_PATH), '/');
 
+        /* Vérification des routes statiques avant les routes dynamiques*/
         foreach(self::$routes[strtoupper($method)] as $route){
             if($route['uri'] === $request){
                 if(!$route['middleware']){
@@ -98,6 +102,36 @@ class Router{
                 echo json_encode(['error' => 'Unauthorized access']);
                 return;
             }
+        }
+
+        /* Vérification des routes dynamiques */
+        foreach(self::$routes[strtoupper($method)] as $route){
+
+            // Pattern pour verifier la concordance des routes, en prenant en compte les paramètres dynamiques
+            $routePattern = preg_replace('/\{(\w+)\}/', '(\w+)', $route['uri']);  
+            // Exemple: /communities/{communityId}/prop/{propId} -> /communities/(\w+)/prop/(\w+)
+            $routePattern = "#^$routePattern$#";
+
+            if (preg_match($routePattern, $request, $params)) {
+
+                // Supprimer l'élément $params[0] qui est l'URL entière
+                array_shift($params); 
+    
+                if(!$route['middleware']){
+                    self::callAction($route['actionController'], $params);
+                    return;
+                }
+
+                if(SessionGuard::checkSessionValidity()){
+                    self::callAction($route['actionController'], $params);
+                    return;
+                }
+
+                http_response_code(401);
+                echo json_encode(['error' => 'Unauthorized access']);
+                return;
+            }
+
         }
         http_response_code(404);
         echo json_encode(['error' => 'Route not found']);
