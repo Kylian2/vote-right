@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Définir le répertoire de travail où les fichiers de l'application PHP seront
-WORKDIR /var/www/html
+WORKDIR /
 
 # Copier uniquement les fichiers composer.json et composer.lock pour installer les dépendances
 COPY ./composer.json ./composer.lock ./
