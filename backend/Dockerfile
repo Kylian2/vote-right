@@ -12,17 +12,20 @@ RUN apt-get update && apt-get install -y \
 # Installer Composer (gestionnaire de dépendances PHP)
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Définir un répertoire de travail clair
-WORKDIR /backend
+# Définir le répertoire de travail où les fichiers de l'application PHP seront
+WORKDIR /var/www/html
 
-# Copier uniquement les fichiers nécessaires pour installer les dépendances
+# Copier uniquement les fichiers composer.json et composer.lock pour installer les dépendances
 COPY ./composer.json ./composer.lock ./
 
 # Installer les dépendances PHP via Composer
 RUN composer install --no-dev --optimize-autoloader
 
 # Copier tout le projet dans le conteneur
-COPY ./ ./
+COPY . .
 
 # Exposer le port par défaut de PHP-FPM
 EXPOSE 9000
+
+# Commande par défaut pour démarrer PHP-FPM
+CMD ["php-fpm"]
