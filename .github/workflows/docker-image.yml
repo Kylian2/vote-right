@@ -41,14 +41,14 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}-backend
           labels: ${{ steps.meta.outputs.labels }}
 
-      #- name : Deploy new images 
-      #  uses : appleboy/ssh-action@master
-      #  with:
-      #    host: ${{ secrets.HOST }}
-      #    username: ${{ secrets.USERNAME }}
-      #    password: ${{ secrets.PASSWORD }}
-      #    script: |
-      #      docker-compose down
-      #      docker pull ghcr.io/kylian2/cuistop:main-frontend
-      #      docker pull ghcr.io/kylian2/cuistop:main-backend
-      #      docker compose up -d 
+      - name : Deploy new images 
+        uses : appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            docker-compose down
+            docker volume rm root_app-data
+            docker pull ghcr.io/kylian2/vote-right:main-backend
+            docker compose up -d 
