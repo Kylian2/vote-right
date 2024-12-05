@@ -1,27 +1,28 @@
-FROM php:8.2-fpm-alpine
+# Utiliser une image PHP officielle avec PHP-FPM
+FROM php:8.1-fpm
 
-# Installer les dépendances nécessaires
-RUN apk update && apk add --no-cache \
-    libzip-dev \
-    libpng-dev \
+# Installer les outils nécessaires (git, unzip, etc.)
+RUN apt-get update && apt-get install -y \
     git \
     unzip \
-    && docker-php-ext-install zip pdo pdo_mysql gd
+    libzip-dev \
+    libpng-dev \
+    && docker-php-ext-install zip pdo pdo_mysql
 
-# Installer Composer
+# Installer Composer (gestionnaire de dépendances PHP)
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Définir le répertoire de travail
+# Définir un répertoire de travail clair
 WORKDIR /backend
 
-# Copier les fichiers nécessaires pour Composer
-COPY ./backend/composer.json ./backend/composer.lock /backend/
+# Copier uniquement les fichiers nécessaires pour installer les dépendances
+COPY ./backend/composer.json ./backend/composer.lock ./
 
 # Installer les dépendances PHP via Composer
 RUN composer install --no-dev --optimize-autoloader
 
 # Copier tout le projet dans le conteneur
-COPY ./backend /backend
+COPY ./backend ./
 
-# Exposer le port de PHP-FPM
+# Exposer le port par défaut de PHP-FPM
 EXPOSE 9000
