@@ -18,11 +18,6 @@
 
     <main class="community" v-if="community">
 
-        <div class="community__description">
-            <h2>Description</h2>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus non turpis eget semper. Vestibulum placerat leo quis enim faucibus hendrerit. Phasellus finibus varius sollicitudin. Ut quis posuere justo. Integer facilisis euismod metus, non vestibulum nibh commodo at. Sed semper quis nisi non mattis. In ut gravida justo.
-        </div>
-
         <div class="community__action-block">
             <NuxtLink to="#" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
@@ -33,6 +28,11 @@
             <NuxtLink v-if="role && role['MEM_role_NB'] != 5" to="#" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">ADMINPANEL</NuxtLink>
+        </div>
+
+        <div class="community__description">
+            <h2>Description</h2>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus non turpis eget semper. Vestibulum placerat leo quis enim faucibus hendrerit. Phasellus finibus varius sollicitudin. Ut quis posuere justo. Integer facilisis euismod metus, non vestibulum nibh commodo at. Sed semper quis nisi non mattis. In ut gravida justo.
         </div>
 
         <div class="community__ongoing-proposals">
