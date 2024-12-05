@@ -30,9 +30,28 @@
             <NuxtLink to="#" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">Voir les membres</NuxtLink>
-            <NuxtLink to="#" class="btn--full btn--block" :style="{ 
+            <NuxtLink v-if="role && role['MEM_role_NB'] != 5" to="#" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">ADMINPANEL</NuxtLink>
+        </div>
+
+        <div class="community__ongoing-proposals">
+            <h2>Propositions en cours</h2>
+            <div class="community__ongoing-proposals__list" v-if="ongoingProposals && ongoingProposals.length">
+                <CardProposal v-for="proposal in ongoingProposals" :proposal="proposal"></CardProposal>
+            </div>
+            <p v-else>Aucune propositions en cours</p>
+        </div>
+
+        <div class="community__finished-proposals">
+            <div>
+                <h2>Propositions terminées</h2>
+                <NuxtLink to="#">Tout voir</NuxtLink>
+            </div>
+            <div class="community__ongoing-proposals__list" v-if="finishedProposals && finishedProposals.length">
+                <CardProposal v-for="proposal in finishedProposals" :proposal="proposal"></CardProposal>
+            </div>
+            <p v-else>Aucune propositions en cours</p>
         </div>
     </main>
 </template>
@@ -45,6 +64,9 @@ definePageMeta({
 const route = useRoute();
 
 const community = ref();
+const role = ref();
+const ongoingProposals = ref();
+const finishedProposals = ref();
 
 const fetchData = async () => {
     try{
@@ -60,8 +82,53 @@ const fetchData = async () => {
     }
 }
 
+const fetchRole = async () => {
+    try{
+
+        const response = await $fetch(`http://localhost:3333/users/me/role/${route.params.id}`, {
+            credentials: 'include',
+        })
+
+        role.value = response;
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
+const fetchOngoingProposal = async () => {
+    try{
+
+        const response = await $fetch(`http://localhost:3333/communities/${route.params.id}/ongoing`, {
+            credentials: 'include',
+        })
+
+        ongoingProposals.value = response;
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
+const fetchFinishedProposal = async () => {
+    try{
+
+        const response = await $fetch(`http://localhost:3333/communities/${route.params.id}/finished`, {
+            credentials: 'include',
+        })
+
+        finishedProposals.value = response;
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
 onMounted(()=>{
     fetchData();
+    fetchRole();
+    fetchOngoingProposal();
+    fetchFinishedProposal();
 })
 
 </script>
