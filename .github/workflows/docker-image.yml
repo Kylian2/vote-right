@@ -48,7 +48,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            docker-compose down
+            docker compose down
             docker volume rm root_app-data
             docker pull ghcr.io/kylian2/vote-right:main-backend
             docker compose up -d 
