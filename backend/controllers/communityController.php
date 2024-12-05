@@ -99,7 +99,20 @@ class CommunityController{
 
         echo json_encode($community);
     }
-    
+
+    public static function ongoingProposals($params){
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        $proposals = $community->getOngoingProposals();
+        echo json_encode($proposals);
+    }
+
+    public static function finishedProposals($params){
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        $proposals = $community->getFinishedProposals();
+        echo json_encode($proposals);
+    }   
 }
 
 ?>

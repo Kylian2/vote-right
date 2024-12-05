@@ -92,6 +92,23 @@ class User extends Model{
         return true;
     }
 
+    public function getRole(int $community){
+        $request = "SELECT MEM_role_NB, ROL_label_VC FROM members_role WHERE USR_id_NB = :user AND MEM_community_NB = :community";
+        $prepare = connexion::pdo()->prepare($request);
+
+        $values["user"] = $this->USR_id_NB;
+        $values["community"] = $community;
+
+        $prepare -> execute($values);
+        $result = $prepare->fetch();
+
+        //Retirer les éléments inutiles
+        unset($result[0]);
+        unset($result[1]);
+        
+        return $result;
+    }
+
 }
 
 ?>

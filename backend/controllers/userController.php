@@ -15,6 +15,12 @@ class UserController{
         echo $user->get('USR_firstname_VC');
     }
 
+    public static function role($params){
+        $user = SessionGuard::getUser();
+        
+        echo json_encode($user->getRole($params[0]));
+    }
+
 }
 
 ?>
