@@ -22,7 +22,7 @@
             <NuxtLink to="#" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">Nouvelle proposition</NuxtLink>
-            <NuxtLink to="#" class="btn--full btn--block" :style="{ 
+            <NuxtLink :to="`${$route.params.id}/members`" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">Voir les membres</NuxtLink>
             <NuxtLink v-if="role && role['MEM_role_NB'] != 5" to="#" class="btn--full btn--block" :style="{ 
@@ -63,7 +63,7 @@ definePageMeta({
 
 const route = useRoute();
 
-const community = ref();
+const community = useState("community");
 const role = ref();
 const ongoingProposals = ref();
 const finishedProposals = ref();
