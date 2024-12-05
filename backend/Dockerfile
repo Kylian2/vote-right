@@ -22,7 +22,7 @@ COPY ./backend/composer.json ./backend/composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
 
 # Copier tout le projet dans le conteneur
-COPY ./backend ./
+COPY ./ ./
 
 # Exposer le port par défaut de PHP-FPM
 EXPOSE 9000
