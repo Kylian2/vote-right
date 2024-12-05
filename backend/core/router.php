@@ -52,7 +52,7 @@ class Router{
     {
         list($controller, $action) = explode('@', $actionController); // permet de recuperer le controller et l'action dans la chaine controller@action
 
-        @require_once('__DIR__ '.'/../controllers/' . $controller.'.php');
+        @require_once('controllers/' . $controller.'.php');
 
         $controllerInstance = new $controller; // Instancier permet d'utiliser la fonction method_exists
 
