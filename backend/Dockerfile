@@ -1,7 +1,15 @@
-# Utiliser une image PHP officielle avec PHP-FPM
+# Étape 1 : Construction des dépendances avec Composer
+FROM composer:2 as builder
+
+WORKDIR /app
+
+COPY ./composer.json ./composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
+
+# Étape 2 : Construction de l'image PHP
 FROM php:8.1-fpm
 
-# Installer les outils nécessaires (git, unzip, etc.)
+# Installer les dépendances nécessaires
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -9,23 +17,17 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     && docker-php-ext-install zip pdo pdo_mysql
 
-# Installer Composer (gestionnaire de dépendances PHP)
+# Copier Composer de l'image précédente
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Définir le répertoire de travail où les fichiers de l'application PHP seront
-WORKDIR /
+# Copier les dépendances installées de l'image builder
+COPY --from=builder /app /app
 
-# Copier uniquement les fichiers composer.json et composer.lock pour installer les dépendances
-COPY ./composer.json ./composer.lock ./
+# Définir le répertoire de travail
+WORKDIR /app
 
-# Installer les dépendances PHP via Composer
-RUN composer install --no-dev --optimize-autoloader
-
-# Copier tout le projet dans le conteneur
-COPY . .
-
-# Exposer le port par défaut de PHP-FPM
+# Exposer le port
 EXPOSE 9000
 
-# Commande par défaut pour démarrer PHP-FPM
+# Commande pour démarrer PHP-FPM
 CMD ["php-fpm"]
