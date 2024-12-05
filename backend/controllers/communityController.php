@@ -113,6 +113,13 @@ class CommunityController{
         $proposals = $community->getFinishedProposals();
         echo json_encode($proposals);
     }   
+
+    public static function members($params){
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        $users = $community->getMembers();
+        echo json_encode($users);
+    }
 }
 
 ?>

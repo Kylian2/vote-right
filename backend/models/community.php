@@ -119,6 +119,22 @@ class Community extends Model{
         return $proposals;
     }
 
+    public function getMembers(){
+        @require_once("models/user.php");
+        $request = "SELECT USR_firstname_VC, USR_lastname_VC, ROL_label_VC, MEM_role_NB FROM members_role WHERE MEM_community_NB = :community";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["community"] = $this->CMY_id_NB;    
+        $prepare->execute($values);
+        $result = $prepare->fetchAll();
+        for($i = 0; $i < count($result); $i++){
+            unset($result[$i][0]);
+            unset($result[$i][1]);
+            unset($result[$i][2]);
+            unset($result[$i][3]);
+        }
+        return $result;
+    }
+
 }
 
 ?>
