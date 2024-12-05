@@ -123,4 +123,8 @@
         background: $background-light;
         color: lighten($color: $dark, $amount: 50);
     }
+
+    &--block{
+        display: block;
+    }
 }

@@ -1,5 +1,5 @@
 <template>
-    <header class="header--desktop">
+    <header class="header--desktop" :class="{[`color-${color}`]: color}">
         <NuxtLink to="/" class="logo">
             <p>VoteRight</p>
         </NuxtLink>
@@ -20,7 +20,7 @@
         </div>
     </header>
 
-    <header class="header--mobile" id="header-mobile">
+    <header class="header--mobile" id="header-mobile" :class="{[`color-${color}`]: color}">
         <div>
             <NuxtLink id="logo" to="/" class="logo--mobile">VoteRight</NuxtLink>
             <div class="header__hamburger" id="hamburger" @click="toggleHeader">
@@ -45,6 +45,10 @@ const props = defineProps({
         required: true,
     },
     actif: {
+        type: String,
+        required: false,
+    },
+    color: {
         type: String,
         required: false,
     }

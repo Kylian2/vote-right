@@ -19,6 +19,17 @@ class Community extends Model{
     public array $CMY_themes_TAB;
     public int $CMY_nb_member_NB;
 
+    public static function getById(int $id){
+        $request = 'SELECT * FROM community WHERE CMY_id_NB = :id';
+        $prepare = connexion::pdo()->prepare($request);
+        $values['id'] = $id;
+        $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "community");
+        $community = $prepare->fetch();
+        
+        return $community;
+    }
+
     public static function getAll() {
         $request = "SELECT * FROM community;";
         $result = connexion::pdo()->query($request);

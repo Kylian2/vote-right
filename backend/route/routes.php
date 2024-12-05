@@ -8,6 +8,7 @@ Router::get('/auth/check', 'AuthController@check');
 Router::post('/auth/logout', 'AuthController@logout');
 
 Router::get('/communities', 'CommunityController@index', true);
+Router::get('/communities/{id}', 'CommunityController@show', true);
 Router::post('/communities', 'CommunityController@store', true);
 Router::get('/communities/administered', 'CommunityController@administered', true);
 
