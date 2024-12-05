@@ -16,7 +16,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /backend
 
 # Copier uniquement les fichiers nécessaires pour installer les dépendances
-COPY ./backend/composer.json ./backend/composer.lock ./
+COPY ./composer.json ./composer.lock ./
 
 # Installer les dépendances PHP via Composer
 RUN composer install --no-dev --optimize-autoloader
