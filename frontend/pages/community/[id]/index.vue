@@ -32,7 +32,8 @@
 
         <div class="community__description">
             <h2>Description</h2>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus non turpis eget semper. Vestibulum placerat leo quis enim faucibus hendrerit. Phasellus finibus varius sollicitudin. Ut quis posuere justo. Integer facilisis euismod metus, non vestibulum nibh commodo at. Sed semper quis nisi non mattis. In ut gravida justo.
+            <p v-if="community['CMY_description_TXT']">{{ community['CMY_description_TXT'] }}</p>
+            <p v-else> Aucune description pour le groupe</p>
         </div>
 
         <div class="community__ongoing-proposals">
