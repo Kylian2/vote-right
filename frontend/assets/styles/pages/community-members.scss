@@ -4,6 +4,10 @@
     flex-direction: column;
     gap: 10px;
 
+    @media screen and (max-width: 825px) {
+        margin: 20px 2% 20px 2%;
+    }
+
     .member-card{
         display: flex;
         justify-content: space-between;
