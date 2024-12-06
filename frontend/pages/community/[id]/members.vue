@@ -19,14 +19,27 @@
     </div>
 
     <main v-if="members && members.length" class="community-members">
-
-        <div class="member-card" v-for="member in members">
+        <div class="community-members__main-header">
+            <select v-model="filter" name="role" @change="() => {
+                if(filter === ''){
+                    selectedMembers = members
+                }else{
+                    selectedMembers = members.filter((member) => member['MEM_role_NB'] === filter) 
+                }
+            }">
+                <option value="">Filtrer</option>
+                <option :value="1">Administrateur</option>
+                <option :value="2">Décideur</option>
+                <option :value="3">Assesseur</option>
+                <option :value="4">Modérateur</option>
+                <option :value="5">Membre</option>
+            </select>
+        </div>  
+        <div class="member-card" v-for="member in selectedMembers">
             <p><b>{{ member["USR_firstname_VC"] }}</b> {{ member["USR_lastname_VC"] }}</p>
             <p><span>{{ member["ROL_label_VC"] }}</span></p>
         </div>
-
     </main>
-
 </template>
 <script setup>
 
@@ -38,6 +51,8 @@ const route = useRoute();
 
 const community = useState("community");
 const members = ref();
+const selectedMembers = ref();
+const filter = ref('');
 
 const fetchData = async () => {
     try{
@@ -66,6 +81,7 @@ const fetchMembers = async () => {
         })
 
         members.value = response;
+        selectedMembers.value = response;
 
     }catch (error){
         console.log('An unexptected error occured : ', error);
@@ -76,5 +92,7 @@ onMounted(() => {
     fetchData();
     fetchMembers();
 })
+
+
 
 </script>
