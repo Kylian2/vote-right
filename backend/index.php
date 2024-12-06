@@ -2,6 +2,7 @@
     header('Content-Type: application/json'); // pour préciser que le contenu renvoyé est du json
 
     header("Access-Control-Allow-Origin: http://localhost:3000");
+    header("Access-Control-Allow-Origin: http://178.128.171.85:3000");
     header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
     header("Access-Control-Allow-Credentials: true");
     header("Access-Control-Allow-Headers: Content-Type, Authorization");
@@ -9,6 +10,7 @@
     /* Entetes en cas de requete de type OPTIONS (le client vérifies les paramètres du serveur avant de faire la requete) */
     if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
         header("Access-Control-Allow-Origin: http://localhost:3000");
+        header("Access-Control-Allow-Origin: http://178.128.171.85:3000");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
         header("Access-Control-Allow-Headers: Content-Type, Authorization");
         http_response_code(204);

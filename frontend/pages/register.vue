@@ -81,6 +81,8 @@
 </template>
 <script setup>
 
+const config = useRuntimeConfig();
+
 definePageMeta({
   middleware: ["guest"]
 })
@@ -116,7 +118,7 @@ const stepTwoIsValid  = computed(() => {
 const handleForm = async () => {
 
     try {
-        const response = await $fetch(`http://localhost:3333/auth/register`, {
+        const response = await $fetch(`${config.public.baseUrl}/auth/register`, {
             method: 'POST',
             body: {
                 lastname: lastname.value,

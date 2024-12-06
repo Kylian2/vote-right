@@ -21,6 +21,8 @@
 </template>
 <script setup>
 
+const config = useRuntimeConfig();
+
 const email = useState("email", ()=> "");
 const password = useState("password", ()=> "");
 
@@ -28,11 +30,10 @@ definePageMeta({
   middleware: ["guest"]
 })
 
-/* TODO : mettre en place des validations plus poussées */
 const handleForm = async () => {
 
     try {
-        const response = await $fetch(`http://localhost:3333/auth/login`, {
+        const response = await $fetch(`${config.public.baseUrl}/auth/login`, {
             method: 'POST',
             body: {
                 email: email.value,

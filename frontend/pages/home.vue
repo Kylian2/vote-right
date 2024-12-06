@@ -33,6 +33,8 @@
 </template>
 <script setup>
 
+const config = useRuntimeConfig();
+
 definePageMeta({
     middleware: ["auth"]
 })
@@ -48,7 +50,7 @@ const finishedProposals = useState("finishedProposals");
 
 const fetchData = async () => {
     try{
-        const response = await $fetch(`http://localhost:3333/communities`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities`, {
             credentials: 'include',
         });
 
@@ -59,7 +61,7 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`http://localhost:3333/users/me/name`, {
+        const response = await $fetch(`${config.public.baseUrl}/users/me/name`, {
             credentials: 'include',
         });
 
@@ -70,7 +72,7 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`http://localhost:3333/proposals/ongoing`, {
+        const response = await $fetch(`${config.public.baseUrl}/proposals/ongoing`, {
             credentials: 'include',
         });
 
@@ -81,7 +83,7 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`http://localhost:3333/proposals/finished`, {
+        const response = await $fetch(`${config.public.baseUrl}/proposals/finished`, {
             credentials: 'include',
         });
 

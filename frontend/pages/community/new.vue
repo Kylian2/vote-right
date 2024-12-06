@@ -50,6 +50,8 @@
 </template>
 <script setup>
 
+const config = useRuntimeConfig();
+
 definePageMeta({
     middleware: ["auth"]
 })
@@ -75,7 +77,7 @@ const formIsValid  = computed(() => {
 const handleData = async () => {
 
     try{
-        const response = await $fetch(`http://localhost:3333/communities`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities`, {
             method: 'POST',
             body: {
                 name: name.value,

@@ -33,6 +33,8 @@
 </template>
 <script setup>
 
+const config = useRuntimeConfig();
+
 definePageMeta({
     middleware: ["auth"]
 })
@@ -46,7 +48,7 @@ onMounted(() => {
 
 const fetchData = async () => {
     try{
-        const response = await $fetch(`http://localhost:3333/communities`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities`, {
             credentials: 'include',
         });
 
@@ -56,7 +58,7 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`http://localhost:3333/communities/administered`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities/administered`, {
             credentials: 'include',
         });
 

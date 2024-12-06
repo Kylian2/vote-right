@@ -58,6 +58,8 @@
 </template>
 <script setup>
 
+const config = useRuntimeConfig();
+
 definePageMeta({
     middleware: ["auth"]
 })
@@ -72,7 +74,7 @@ const finishedProposals = ref();
 const fetchData = async () => {
     try{
 
-        const response = await $fetch(`http://localhost:3333/communities/${route.params.id}`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}`, {
             credentials: 'include',
         })
 
@@ -86,7 +88,7 @@ const fetchData = async () => {
 const fetchRole = async () => {
     try{
 
-        const response = await $fetch(`http://localhost:3333/users/me/role/${route.params.id}`, {
+        const response = await $fetch(`${config.public.baseUrl}/users/me/role/${route.params.id}`, {
             credentials: 'include',
         })
 
@@ -100,7 +102,7 @@ const fetchRole = async () => {
 const fetchOngoingProposal = async () => {
     try{
 
-        const response = await $fetch(`http://localhost:3333/communities/${route.params.id}/ongoing`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/ongoing`, {
             credentials: 'include',
         })
 
@@ -114,7 +116,7 @@ const fetchOngoingProposal = async () => {
 const fetchFinishedProposal = async () => {
     try{
 
-        const response = await $fetch(`http://localhost:3333/communities/${route.params.id}/finished`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/finished`, {
             credentials: 'include',
         })
 

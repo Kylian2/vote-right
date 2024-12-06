@@ -43,6 +43,8 @@
 </template>
 <script setup>
 
+const config = useRuntimeConfig();
+
 definePageMeta({
     middleware: ["auth"]
 })
@@ -62,7 +64,7 @@ const fetchData = async () => {
             return;
         }
 
-        const response = await $fetch(`http://localhost:3333/communities/${route.params.id}`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}`, {
             credentials: 'include',
         })
 
@@ -76,7 +78,7 @@ const fetchData = async () => {
 const fetchMembers = async () => {
     try{
 
-        const response = await $fetch(`http://localhost:3333/communities/${route.params.id}/members`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/members`, {
             credentials: 'include',
         })
 
