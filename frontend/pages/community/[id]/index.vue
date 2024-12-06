@@ -9,9 +9,13 @@
     >
         <div class="community__hero-banner">
             <div></div>
-            <div>
+            <div class="community__hero-banner__infos">
                 <h1>{{ community['CMY_name_VC'] }}</h1>
-                <div></div>
+                <div v-if="communityThemes">
+                    <span v-for="theme in communityThemes" class="community__hero-banner__infos__theme" :style="{ 
+                        background: community['CMY_color_VC'],
+                    }">{{ theme['THM_name_VC'] }}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -67,6 +71,7 @@ definePageMeta({
 const route = useRoute();
 
 const community = useState("community");
+const communityThemes = useState("communityThemes");
 const role = ref();
 const ongoingProposals = ref();
 const finishedProposals = ref();
@@ -83,6 +88,18 @@ const fetchData = async () => {
     }catch (error){
         console.log('An unexptected error occured : ', error);
     }
+
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/themes`, {
+            credentials: 'include',
+        })
+
+        communityThemes.value = response;
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+
 }
 
 const fetchRole = async () => {

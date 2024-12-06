@@ -100,6 +100,16 @@ class CommunityController{
         echo json_encode($community);
     }
 
+    /**
+     * Affiche un json de la liste de propositions en cours de la communauté.
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
     public static function ongoingProposals($params){
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
@@ -107,6 +117,16 @@ class CommunityController{
         echo json_encode($proposals);
     }
 
+    /**
+     * Affiche un json de la liste de propositions terminées de la communauté (max 6).
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
     public static function finishedProposals($params){
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
@@ -114,11 +134,38 @@ class CommunityController{
         echo json_encode($proposals);
     }   
 
+    /**
+     * Affiche un json de la liste des membres et de leur role dans la communauté.
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
     public static function members($params){
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
         $users = $community->getMembers();
         echo json_encode($users);
+    }
+
+        /**
+     * Affiche un json de la liste des membres et de leur role dans la communauté.
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function themes($params){
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        $themes = $community->getThemes();
+        echo json_encode($themes);
     }
 }
 

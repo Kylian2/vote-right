@@ -135,6 +135,17 @@ class Community extends Model{
         return $result;
     }
 
+    public function getThemes(){
+        @require_once("models/theme.php");
+        $request = "SELECT * FROM theme WHERE THM_community_NB = :community";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["community"] = $this->CMY_id_NB;    
+        $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "theme");
+        $themes = $prepare->fetchAll();
+        return $themes;
+    }
+
 }
 
 ?>

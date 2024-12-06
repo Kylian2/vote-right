@@ -22,6 +22,23 @@
             }
         }
 
+        &__infos{
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            > div {
+                display: flex;
+                gap: 5px;
+                margin-bottom: 12px;
+            }
+            &__theme{
+                color: $contrast;
+                display: block;
+                padding: 3px 6px;
+                border-radius: 5px;
+            }
+        }
+
         h1{
             margin: unset;
             color: $contrast;
