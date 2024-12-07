@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-      baseUrl: process.env.NODE_ENV === "production" ? "http://178.128.171.85:3333" : "http://localhost:3333",
+      baseUrl: process.env.NODE_ENV === "production" ? "http://api.voteright.fr" : "http://localhost:3333",
     },
   },
   css: [
