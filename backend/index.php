@@ -3,8 +3,8 @@
 
     $allowed_origins = [
         'http://localhost:3000',
-        'http://voteright.fr',
-        'http://www.voteright.fr',
+        'https://voteright.fr',
+        'https://www.voteright.fr',
     ];
 
     // Récupérer l'origine de la requête
