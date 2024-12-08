@@ -3,6 +3,7 @@ export default defineNuxtRouteMiddleware(async () => {
     try {
         const headers = useRequestHeaders(['cookie']);
         const response = await $fetch(`${config.public.baseUrl}/auth/check`, { headers, credentials : 'include'});
+        console.log("GUEST AUTH MIDDLEWARE");
         if (response === true) { 
             return navigateTo('/home');
         }
