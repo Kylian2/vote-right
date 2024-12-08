@@ -1,0 +1,32 @@
+.new-proposal{
+    margin: 0 5%;
+
+    .new-proposal__form {
+        display: flex;
+        flex-direction: column;
+        gap: 100px;
+
+        &__input-container{
+            display: flex;
+            gap: 5%;
+            >div{
+                display: flex;
+                gap: 20px;
+                flex-direction: column;
+            }
+        }
+
+        &__btn-container{
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        @media screen and (max-width: 1250px) {
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+    }
+}

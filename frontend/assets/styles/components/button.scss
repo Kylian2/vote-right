@@ -120,7 +120,7 @@
         }
     }
     &:disabled{
-        background: $background-light;
+        background: $background-light !important;
         color: lighten($color: $dark, $amount: 50);
     }
 
