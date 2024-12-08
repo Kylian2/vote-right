@@ -6,12 +6,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     try {
         const headers = useRequestHeaders(['cookie']);
         const response = await $fetch(`${config.public.baseUrl}/auth/check`, { headers, credentials : 'include'});
-        console.log("FROM AUTH MIDDLEWARE --- ");
-        console.log(to.fullPath);
-        console.log(from.fullPath);
-        console.log(import.meta.client ? "client" : "serveur");
-        console.log(response);
-        console.log (" ------- ");
         if (response !== true) { 
             return navigateTo('/login');
         }
