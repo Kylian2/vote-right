@@ -22,5 +22,6 @@ Router::get('/users/me/role/{community}', 'userController@role', true);
 
 Router::get('/proposals/ongoing', 'proposalController@ongoing', true);
 Router::get('/proposals/finished', 'proposalController@finished', true);
+Router::post('/proposals', 'proposalController@store', true);
 
 ?>
