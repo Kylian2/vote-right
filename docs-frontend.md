@@ -320,6 +320,22 @@ L'objet passé via *proposal* passé doit avoir le format suivant :
 }
 ```
 
+### BannerCommunity
+
+Affiche la bannière de la communauté, avec l'image et ses thèmes. 
+
+| Nom         | Requise ? | Valeur par défaut | Effet                                                                                                         |
+|-------------|-----------|-------------------|---------------------------------------------------------------------------------------------------------------|
+| community        | Oui       |                   | les informmations de la communauté, doit contenir CMY_name_VC, CMY_color_VC, CMY_image_VC |
+| communityTheme | Oui       |               | Les thèmes de la communautée  |
+| back       | Non       |    Faux               | Indique si le bouton "retour au groupe" doit apparaitre     
+
+ex: 
+
+```html
+<BannerCommunity :community="community" :communityThemes="communityThemes"></BannerCommunity>
+```
+
 ### Les middleware
 
 Dans l'application, il y a deux middlewares : 

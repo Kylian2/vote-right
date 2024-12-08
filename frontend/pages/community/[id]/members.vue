@@ -1,22 +1,7 @@
 <template>
     <Header type="logged"   :color="community && community['CMY_color_VC'] ? community['CMY_color_VC'].slice(-6) : '000000'"></Header>
 
-    <div v-if="community" class="community__hero-banner__wrapper"
-        :style="{ 
-            background: `url(/images/communities/${community['CMY_image_VC']}) 0% 15% / cover`,
-            backgroundSize: `cover`
-        }"
-    >
-        <div class="community__hero-banner">
-            <div>
-                <NuxtLink :to="`/community/${$route.params.id}`">Retour au groupe</NuxtLink>
-            </div>
-            <div>
-                <h1>{{ community['CMY_name_VC'] }}</h1>
-                <div></div>
-            </div>
-        </div>
-    </div>
+    <BannerCommunity :community="community" :communityThemes="communityThemes" back></BannerCommunity>
 
     <main v-if="members && members.length" class="community-members">
         <div class="community-members__main-header">
@@ -52,6 +37,7 @@ definePageMeta({
 const route = useRoute();
 
 const community = useState("community");
+const communityThemes = useState("communityThemes");
 const members = ref();
 const selectedMembers = ref();
 const filter = ref('');
@@ -69,6 +55,22 @@ const fetchData = async () => {
         })
 
         community.value = response;
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+
+    try{
+
+        if(communityThemes.value){
+            return;
+        }
+
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/themes`, {
+            credentials: 'include',
+        })
+
+        communityThemes.value = response;
 
     }catch (error){
         console.log('An unexptected error occured : ', error);

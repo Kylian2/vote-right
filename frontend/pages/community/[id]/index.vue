@@ -1,24 +1,7 @@
 <template>
     <Header type="logged"   :color="community && community['CMY_color_VC'] ? community['CMY_color_VC'].slice(-6) : '000000'"></Header>
 
-    <div v-if="community" class="community__hero-banner__wrapper"
-        :style="{ 
-            background: `url(/images/communities/${community['CMY_image_VC']}) 0% 15% / cover`,
-            backgroundSize: `cover`
-        }"
-    >
-        <div class="community__hero-banner">
-            <div></div>
-            <div class="community__hero-banner__infos">
-                <h1>{{ community['CMY_name_VC'] }}</h1>
-                <div v-if="communityThemes">
-                    <span v-for="theme in communityThemes" class="community__hero-banner__infos__theme" :style="{ 
-                        background: community['CMY_color_VC'],
-                    }">{{ theme['THM_name_VC'] }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    <BannerCommunity :community="community" :communityThemes="communityThemes"></BannerCommunity>
 
     <main class="community" v-if="community">
 
@@ -61,6 +44,8 @@
     </main>
 </template>
 <script setup>
+import BannerCommunity from '~/components/BannerCommunity.vue';
+
 
 const config = useRuntimeConfig();
 
