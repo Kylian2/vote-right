@@ -42,8 +42,9 @@ class CommunityValidator{
         $data["description"] = filter_var($data["description"], FILTER_FLAG_STRIP_BACKTICK);
         $data["description"] = str_replace('"', '', $data["description"]);
         $data["description"] = filter_var($data["description"], FILTER_FLAG_EMPTY_STRING_NULL);
-    }
 
+        return true;
+    }
 }
 
 ?>
