@@ -26,8 +26,13 @@
             display: flex;
             justify-content: space-between;
             align-items: end;
+            @media screen and (max-width: 875px) {
+                align-items: start;
+                flex-direction: column;
+            }
             > div {
                 display: flex;
+                flex-wrap: wrap;
                 gap: 5px;
                 margin-bottom: 12px;
             }
