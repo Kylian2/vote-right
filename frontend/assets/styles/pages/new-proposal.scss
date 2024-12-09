@@ -9,6 +9,13 @@
         &__input-container{
             display: flex;
             gap: 5%;
+
+
+            @media screen and (max-width: 1150px) {
+                flex-direction: column;
+                gap: 20px;
+            }
+
             >div{
                 display: flex;
                 gap: 20px;
@@ -20,6 +27,11 @@
             display: flex;
             gap: 10px;
             justify-content: flex-end;
+            > button {
+                @media screen and (max-width: 600px) {
+                    width: -webkit-fill-available;
+                }
+            }
         }
 
         @media screen and (max-width: 1250px) {
