@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="new-proposal__form__btn-container">
-                <NuxtLink class="btn btn--cancel" href="/communities">Annuler</NuxtLink>
+                <NuxtLink class="btn btn--cancel" :to="`/community/${route.params.id}`">Annuler</NuxtLink>
                 <button v-if="community" formmethod="dialog" :disabled="!formIsValid" @click="handleData" class="btn btn--full" :style="{ 
                     background: community['CMY_color_VC']
                 }">Valider la création</button>
