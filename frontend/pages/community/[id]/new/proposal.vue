@@ -17,7 +17,6 @@
                             (v) => Boolean(v) || 'Une description est requise', 
                         ]"
                     >Description</TextArea>
-                    {{ themeValid }}
                     <Select v-if="communityThemes" 
                         name="proposalTheme" 
                         placeholder="Choisissez un thème" 
@@ -54,8 +53,8 @@ definePageMeta({
 const community = useState("community");
 const communityThemes = useState("communityThemes");
 
-const name = useState("proposalTitle");
-const nameValid = useState("proposalTitleValid");
+const title = useState("proposalTitle");
+const titleValid = useState("proposalTitleValid");
 const description = useState("proposalDescription");
 const descriptionValid = useState("proposalDescriptionValid");
 const location = useState("proposalLocation");
@@ -64,7 +63,7 @@ const theme = useState("proposalTheme");
 const themeValid = useState("proposalThemeValid");
 
 const formIsValid  = computed(() => {
-    return nameValid.value && descriptionValid.value && locationValid.value && themeValid.value;
+    return titleValid.value && descriptionValid.value && locationValid.value && themeValid.value;
 })
 
 const fetchCommunityInformations = async () => {
@@ -96,6 +95,37 @@ const fetchCommunityTheme = async () => {
     }catch (error){
         console.log('An unexptected error occured : ', error);
     }
+}
+
+const handleData = async () => {
+
+try{
+    const response = await $fetch(`${config.public.baseUrl}/proposals`, {
+        method: 'POST',
+        body: {
+            title: title.value,
+            description: description.value,
+            community: route.params.id,
+            location: locationValid ? location.value : null,
+            theme: theme.value,
+        },
+        credentials: 'include'
+    });
+
+    if(response){
+        title.value = null;
+        description.value = null;
+        community.value = null;
+        location.value = null;
+        theme.value = null;
+
+        navigateTo(`/community/${route.params.id}`);
+    }
+} catch (error) {
+    console.error('An unexpected error occurred:', error);
+}
+
+return true;
 }
 
 onMounted(() => {
