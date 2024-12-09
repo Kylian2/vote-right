@@ -6,7 +6,7 @@
     <main class="community" v-if="community">
 
         <div class="community__action-block">
-            <NuxtLink to="#" class="btn--full btn--block" :style="{ 
+            <NuxtLink :to="`${route.params.id}/new/proposal`" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">Nouvelle proposition</NuxtLink>
             <NuxtLink :to="`${$route.params.id}/members`" class="btn--full btn--block" :style="{ 

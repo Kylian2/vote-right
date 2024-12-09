@@ -63,12 +63,19 @@ class CommunityController{
      *   "color": "#DE3D59"
      * }
      * 
-     * @return void renvoie au format json la communauté si l'insertions réussie
+     * @return bool true si l'insertion réussie
      */
     public static function store(){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
+        if($body === null){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Missing data';
+            echo json_encode($return);
+            return;
+        }
+        
         $userId = SessionGuard::getUserId();
 
         if(!isset($body["name"]) || !isset($body["color"]) || !isset($body["emoji"]) 
