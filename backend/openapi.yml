@@ -1,0 +1,571 @@
+openapi: 3.0.1
+x-stoplight:
+  id: q80121ewju7co
+info:
+  title: API VoteRig
+  version: 1.0.0
+  description: |-
+    La liste des endpoints utilisés par l'application VoteRight.
+
+    *Attention, le rôle premier cette documentation n'est pas de tester les endpoits mais de fournir des exemples d'utilisation des différentes ressources de l'api.*
+servers:
+  - url: 'https://api.voteright.fr'
+    description: Serveur de production
+  - url: 'http://localhost:3333'
+    description: Serveur local de développement
+paths:
+  /communities:
+    get:
+      summary: Liste des communautés
+      description: Récupère la liste des communautés auxquelles l'utilisateur participe.
+      responses:
+        '200':
+          description: Les communautés renvoyées avec succès.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    CMY_id_NB:
+                      type: string
+                      description: Identifiant de la communauté
+                      example: '13'
+                    CMY_name_VC:
+                      type: string
+                      description: Nom de la communauté
+                      example: Marché de Noël de Strasbourg
+                    CMY_emoji_VC:
+                      type: string
+                      description: Emoji associé à la communauté
+                      example: 1F389
+                    CMY_color_VC:
+                      type: string
+                      description: Couleur associée à la communauté
+                      example: '#DE3D59'
+                    CMY_image_VC:
+                      type: string
+                      description: Nom de fichier de l'image de la communauté
+                      example: 100010.png
+                    CMY_nb_member_NB:
+                      type: string
+                      description: Nombre de membres dans la communauté
+                      example: '82'
+                    CMY_themes_TAB:
+                      type: array
+                      description: Liste des thèmes associés à la communauté
+                      items:
+                        type: string
+                      example:
+                        - Animation
+                        - Bénévole
+                        - Autorisation
+                        - Musique
+              examples:
+                Example 1:
+                  value:
+                    - CMY_id_NB: '13'
+                      CMY_name_VC: Marché de Noël de Strasbourg
+                      CMY_emoji_VC: 1F389
+                      CMY_color_VC: '#DE3D59'
+                      CMY_image_VC: 100010.png
+                      CMY_nb_member_NB: '82'
+                      CMY_themes_TAB:
+                        - Animation
+                        - Bénévole
+                        - Autorisation
+                        - Musique
+      x-stoplight:
+        id: ou3j9v0aj7e2a
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+    post:
+      summary: Créer une communauté
+      tags: []
+      responses:
+        '200':
+          description: 'Renvoie true si l''insertion s''est bien passé. '
+      operationId: post-communities
+      x-stoplight:
+        id: yap6p887t01kl
+      description: Crée une communauté à partir des informations passées dans le corps de la requête.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  name: Voyage en Laponie
+                  image: 100001.png
+                  description: Lorem ipsum dolor "sit amet sen
+                  emoji: 1F385
+                  color: '#DE3D59'
+              required:
+                - name
+                - image
+                - description
+                - emoji
+                - color
+              properties:
+                name:
+                  type: string
+                image:
+                  type: string
+                description:
+                  type: string
+                emoji:
+                  type: string
+                color:
+                  type: string
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/communities/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Une communauté
+      tags: []
+      responses:
+        '200':
+          description: La communauté renvoyée avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  CMY_id_NB:
+                    type: integer
+                  CMY_name_VC:
+                    type: string
+                  CMY_image_VC:
+                    type: string
+                  CMY_emoji_VC:
+                    type: string
+                  CMY_color_VC:
+                    type: string
+                  CMY_description_TXT:
+                    type: string
+                  CMY_creator_NB:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    CMY_id_NB: 13
+                    CMY_name_VC: Marché de Noël de Strasbourg
+                    CMY_image_VC: 100010.png
+                    CMY_emoji_VC: 1F389
+                    CMY_color_VC: '#DE3D59'
+                    CMY_description_TXT: Une description
+                    CMY_creator_NB: 92
+              examples:
+                Example 1:
+                  value:
+                    CMY_id_NB: 13
+                    CMY_name_VC: Marché de Noël de Strasbourg
+                    CMY_image_VC: 100010.png
+                    CMY_emoji_VC: 1F389
+                    CMY_color_VC: '#DE3D59'
+                    CMY_description_TXT: Une description
+                    CMY_creator_NB: 92
+      operationId: get-communities-id
+      x-stoplight:
+        id: cu2v89ti69pxo
+      description: Renvoie la communauté dont l'identifiant est passé en paramètre
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  /communities/administred:
+    get:
+      summary: La liste des communautés gérées par un utilisateur
+      tags: []
+      responses:
+        '200':
+          description: Un tableau des communautés.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    CMY_id_NB:
+                      type: string
+                    CMY_name_VC:
+                      type: string
+                    CMY_emoji_VC:
+                      type: string
+                    CMY_color_VC:
+                      type: string
+                    CMY_image_VC:
+                      type: string
+                    CMY_nb_member_NB:
+                      type: string
+                    CMY_themes_TAB:
+                      type: array
+                      items:
+                        type: string
+                x-examples:
+                  Example 1:
+                    - CMY_id_NB: '13'
+                      CMY_name_VC: Marché de Noël de Strasbourg
+                      CMY_emoji_VC: 1F389
+                      CMY_color_VC: '#DE3D59'
+                      CMY_image_VC: 100010.png
+                      CMY_nb_member_NB: '82'
+                      CMY_themes_TAB:
+                        - Animation
+                        - Bénévole
+                        - Autorisation
+                        - Musique
+                        - Décoration
+                        - Humanitaire
+              examples:
+                Example 1:
+                  value:
+                    - CMY_id_NB: '13'
+                      CMY_name_VC: Marché de Noël de Strasbourg
+                      CMY_emoji_VC: 1F389
+                      CMY_color_VC: '#DE3D59'
+                      CMY_image_VC: 100010.png
+                      CMY_nb_member_NB: '82'
+                      CMY_themes_TAB:
+                        - Animation
+                        - Bénévole
+                        - Autorisation
+                        - Musique
+                        - Décoration
+                        - Humanitaire
+      operationId: get-communities-administred
+      x-stoplight:
+        id: r10z4yo3p6srh
+      description: 'Renvoie la liste des communautées gérées par l''utilisateur connecté. '
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/communities/{id}/ongoing':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Les proposition en cours
+      tags: []
+      responses:
+        '200':
+          description: Les propositions renvoyées avec succès.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PRO_id_NB:
+                      type: string
+                    PRO_title_VC:
+                      type: string
+                    PRO_color_VC:
+                      type: string
+                    PRO_theme_VC:
+                      type: string
+                x-examples:
+                  Example 1:
+                    - PRO_id_NB: '33'
+                      PRO_title_VC: Installation d'une grande roue
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Animation
+                    - PRO_id_NB: '35'
+                      PRO_title_VC: Atelier de Décoration
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Animation
+                    - PRO_id_NB: '36'
+                      PRO_title_VC: Crèche Artisanale
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Décoration
+              examples:
+                Example 1:
+                  value:
+                    - PRO_id_NB: '33'
+                      PRO_title_VC: Installation d'une grande roue
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Animation
+                    - PRO_id_NB: '35'
+                      PRO_title_VC: Atelier de Décoration
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Animation
+                    - PRO_id_NB: '36'
+                      PRO_title_VC: Crèche Artisanale
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Décoration
+      operationId: get-communities-id-ongoing
+      x-stoplight:
+        id: wwq0ez66n6msy
+      description: Les propositions terminées de la communauté
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/communities/{id}/finished':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Les proposition terminées
+      tags: []
+      responses:
+        '200':
+          description: Les propositions renvoyées avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PRO_id_NB:
+                      type: string
+                    PRO_title_VC:
+                      type: string
+                    PRO_color_VC:
+                      type: string
+                    PRO_theme_VC:
+                      type: string
+                x-examples:
+                  Example 1:
+                    - PRO_id_NB: '33'
+                      PRO_title_VC: Installation d'une grande roue
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Animation
+                    - PRO_id_NB: '35'
+                      PRO_title_VC: Atelier de Décoration
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Animation
+                    - PRO_id_NB: '36'
+                      PRO_title_VC: Crèche Artisanale
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Décoration
+              examples:
+                Example 1:
+                  value:
+                    - PRO_id_NB: '33'
+                      PRO_title_VC: Installation d'une grande roue
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Animation
+                    - PRO_id_NB: '35'
+                      PRO_title_VC: Atelier de Décoration
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Animation
+                    - PRO_id_NB: '36'
+                      PRO_title_VC: Crèche Artisanale
+                      PRO_color_VC: '#DE3D59'
+                      PRO_theme_VC: Décoration
+      operationId: get-communities-id-finished
+      x-stoplight:
+        id: q9ik1tmpkhtqe
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/communities/{id}/members':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: La liste des membres
+      tags: []
+      responses:
+        '200':
+          description: La liste renvoyé avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    USR_firstname_VC:
+                      type: string
+                    USR_lastname_VC:
+                      type: string
+                    ROL_label_VC:
+                      type: string
+                    MEM_role_NB:
+                      type: integer
+                x-examples:
+                  Example 1:
+                    - USR_firstname_VC: Lonni
+                      USR_lastname_VC: Shower
+                      ROL_label_VC: Administrateur
+                      MEM_role_NB: 1
+                    - USR_firstname_VC: Ilise
+                      USR_lastname_VC: Winslett
+                      ROL_label_VC: Décideur
+                      MEM_role_NB: 2
+                    - USR_firstname_VC: Madonna
+                      USR_lastname_VC: Hayhoe
+                      ROL_label_VC: Décideur
+                      MEM_role_NB: 2
+                    - USR_firstname_VC: Justin
+                      USR_lastname_VC: Rowthorne
+                      ROL_label_VC: Assesseur
+                      MEM_role_NB: 3
+                    - USR_firstname_VC: Agathe
+                      USR_lastname_VC: Fawthorpe
+                      ROL_label_VC: Modérateur
+                      MEM_role_NB: 4
+                    - USR_firstname_VC: Sonja
+                      USR_lastname_VC: Emblem
+                      ROL_label_VC: Modérateur
+                      MEM_role_NB: 4
+                    - USR_firstname_VC: Alexander
+                      USR_lastname_VC: Quarles
+                      ROL_label_VC: Membre
+                      MEM_role_NB: 5
+                    - USR_firstname_VC: Alfy
+                      USR_lastname_VC: Meader
+                      ROL_label_VC: Membre
+                      MEM_role_NB: 5
+                    - USR_firstname_VC: Allyn
+                      USR_lastname_VC: Jozefiak
+                      ROL_label_VC: Membre
+                      MEM_role_NB: 5
+                    - USR_firstname_VC: Alvy
+                      USR_lastname_VC: Tumioto
+                      ROL_label_VC: Membre
+                      MEM_role_NB: 5
+                    - USR_firstname_VC: Amata
+                      USR_lastname_VC: Lambourn
+                      ROL_label_VC: Membre
+                      MEM_role_NB: 5
+              examples:
+                Example 1:
+                  value:
+                    - USR_firstname_VC: Lonni
+                      USR_lastname_VC: Shower
+                      ROL_label_VC: Administrateur
+                      MEM_role_NB: 1
+                    - USR_firstname_VC: Ilise
+                      USR_lastname_VC: Winslett
+                      ROL_label_VC: Décideur
+                      MEM_role_NB: 2
+                    - USR_firstname_VC: Justin
+                      USR_lastname_VC: Rowthorne
+                      ROL_label_VC: Assesseur
+                      MEM_role_NB: 3
+                    - USR_firstname_VC: Agathe
+                      USR_lastname_VC: Fawthorpe
+                      ROL_label_VC: Modérateur
+                      MEM_role_NB: 4
+                    - USR_firstname_VC: Alvy
+                      USR_lastname_VC: Tumioto
+                      ROL_label_VC: Membre
+                      MEM_role_NB: 5
+                    - USR_firstname_VC: Amata
+                      USR_lastname_VC: Lambourn
+                      ROL_label_VC: Membre
+                      MEM_role_NB: 5
+      operationId: get-communities-id-members
+      x-stoplight:
+        id: ughoa96xt9xq2
+      description: 'Renvoie la liste des membres de la communauté et leur role. '
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/communities/{id}/themes':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Les thèmes de la communauté
+      tags: []
+      responses:
+        '200':
+          description: 'La liste des thèmes récupérés avec succès. '
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    THM_id_NB:
+                      type: integer
+                    THM_community_NB:
+                      type: integer
+                    THM_name_VC:
+                      type: string
+                x-examples:
+                  Example 1:
+                    - THM_id_NB: 1
+                      THM_community_NB: 13
+                      THM_name_VC: Animation
+                    - THM_id_NB: 2
+                      THM_community_NB: 13
+                      THM_name_VC: Bénévole
+              examples:
+                Example 1:
+                  value:
+                    - THM_id_NB: 1
+                      THM_community_NB: 13
+                      THM_name_VC: Animation
+                    - THM_id_NB: 2
+                      THM_community_NB: 13
+                      THM_name_VC: Bénévole
+      operationId: get-communities-id-themes
+      x-stoplight:
+        id: c1lu388heaimj
+      description: La liste des thèmes d'une communauté
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+components:
+  securitySchemes: {}
+x-internal: true
