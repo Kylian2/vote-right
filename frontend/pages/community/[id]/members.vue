@@ -1,7 +1,7 @@
 <template>
     <Header type="logged"   :color="community && community['CMY_color_VC'] ? community['CMY_color_VC'].slice(-6) : '000000'"></Header>
 
-    <BannerCommunity :community="community" :communityThemes="communityThemes" back></BannerCommunity>
+    <Banner :community="community" :themes="communityThemes" back>{{ community["CMY_name_VC"] }}</Banner>
 
     <main v-if="members && members.length" class="community-members">
         <div class="community-members__main-header">

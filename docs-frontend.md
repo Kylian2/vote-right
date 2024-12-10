@@ -346,20 +346,22 @@ L'objet passé via *proposal* passé doit avoir le format suivant :
 }
 ```
 
-### BannerCommunity
+### Banner
 
-Affiche la bannière de la communauté, avec l'image et ses thèmes. 
+Affiche une bannière aux couleurs de la communauté
 
 | Nom         | Requise ? | Valeur par défaut | Effet                                                                                                         |
 |-------------|-----------|-------------------|---------------------------------------------------------------------------------------------------------------|
-| community        | Oui       |                   | les informmations de la communauté, doit contenir CMY_name_VC, CMY_color_VC, CMY_image_VC |
-| communityTheme | Oui       |               | Les thèmes de la communautée  |
+| community        | Oui       |                   | les informations de la communauté, doit contenir CMY_id_NB, CMY_color_VC, CMY_image_VC |
+| themes | Oui       |               | Les thèmes à afficher sur la bannières  |
 | back       | Non       |    Faux               | Indique si le bouton "retour au groupe" doit apparaitre     
+
+Le slot contient le titre afficher sur la bannière.
 
 ex: 
 
 ```html
-<BannerCommunity :community="community" :communityThemes="communityThemes"></BannerCommunity>
+<Banner :community="community" :themes="communityThemes"> Le titre visible sur la bannière </Banner>
 ```
 
 ### Les middleware

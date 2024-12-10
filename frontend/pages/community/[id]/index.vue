@@ -1,7 +1,7 @@
 <template>
     <Header type="logged"   :color="community && community['CMY_color_VC'] ? community['CMY_color_VC'].slice(-6) : '000000'"></Header>
 
-    <BannerCommunity :community="community" :communityThemes="communityThemes"></BannerCommunity>
+    <Banner :community="community" :themes="communityThemes">{{ community["CMY_name_VC"] }}</Banner>
 
     <main class="community" v-if="community">
 
@@ -44,7 +44,7 @@
     </main>
 </template>
 <script setup>
-import BannerCommunity from '~/components/BannerCommunity.vue';
+import BannerCommunity from '~/components/Banner.vue';
 
 
 const config = useRuntimeConfig();
