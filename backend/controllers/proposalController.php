@@ -50,6 +50,7 @@ class ProposalController{
             http_response_code(422);
             $return["Unprocessable Entity"] = $e->getMessage();
             echo json_encode($return);
+            return;
         }
 
         $values = array(
@@ -59,6 +60,7 @@ class ProposalController{
             "PRO_community_NB" => $body["community"],
             "PRO_theme_NB" => $body["theme"],
             "PRO_initiator_NB" => $initiator,
+            "PRO_period_YEAR" => $body["year"],
         );
 
         $proposal = new Proposal($values);

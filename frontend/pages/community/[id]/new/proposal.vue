@@ -27,6 +27,11 @@
                         >Thème</Select>
                 </div>
                 <div>
+                    <InputNumber name="proposalYear" type="number" :min="1900" :max="2099" :placeholder="`Par défaut : ${new Date().getFullYear()}`"
+                        :rules="[
+                            (v) => !v || (v >= 1900 && v <= 2099) || 'La valeur doit être entre 1900 et 2099',
+                        ]"
+                        >Année</InputNumber>
                     <Input type="text" name="proposalLocation" placeholder="Ex: 12 avenue du blé">Indiquez une localisation</Input>
                 </div>
             </div>
@@ -61,9 +66,11 @@ const location = useState("proposalLocation");
 const locationValid = useState("proposalLocationValid");
 const theme = useState("proposalTheme");
 const themeValid = useState("proposalThemeValid");
+const year = useState("proposalYear");
+const yearValid = useState("proposalYearValid");
 
 const formIsValid  = computed(() => {
-    return titleValid.value && descriptionValid.value && locationValid.value && themeValid.value;
+    return titleValid.value && descriptionValid.value && locationValid.value && themeValid.value && yearValid;
 })
 
 const fetchCommunityInformations = async () => {
@@ -108,6 +115,7 @@ try{
             community: route.params.id,
             location: locationValid ? location.value : null,
             theme: theme.value,
+            year: yearValid ? year.value : new Date().getFullYear(),
         },
         credentials: 'include'
     });

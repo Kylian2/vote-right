@@ -6,6 +6,7 @@ class Proposal extends Model{
     public string $PRO_title_VC;
     public string $PRO_description_TXT;
     public string $PRO_color_VC;
+    public string $PRO_period_YEAR;
 
     //Le numero du thème (relativement à la commaunauté) et/ou le nom du thème
     public string $PRO_theme_VC;
@@ -61,8 +62,8 @@ class Proposal extends Model{
 
     public function insert(){
 
-        $request = 'INSERT INTO proposal(PRO_title_VC, PRO_description_TXT, PRO_location_VC, PRO_initiator_NB, PRO_community_NB, PRO_theme_NB)
-                    VALUES (:title, :description, :location, :initiator, :community, :theme)';
+        $request = 'INSERT INTO proposal(PRO_title_VC, PRO_description_TXT, PRO_location_VC, PRO_initiator_NB, PRO_community_NB, PRO_theme_NB, PRO_period_YEAR)
+                    VALUES (:title, :description, :location, :initiator, :community, :theme, :year)';
         $prepare = connexion::pdo()->prepare($request);
 
         $values = array(
@@ -72,6 +73,7 @@ class Proposal extends Model{
             "initiator" => $this->PRO_initiator_NB,
             "community" => $this->PRO_community_NB,
             "theme" => $this->PRO_theme_NB,
+            "year" => $this->PRO_period_YEAR
         );
 
         $prepare->execute($values);

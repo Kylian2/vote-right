@@ -15,7 +15,7 @@ class proposalValidator{
      */
     public static function storeDataValidator(array &$data){
 
-        if(!isset($data['title']) || !isset($data['description'])|| !isset($data['community'])|| !isset($data['theme'])){
+        if(!isset($data['title']) || !isset($data['description'])|| !isset($data['community'])|| !isset($data['theme']) || !isset($data['year'])){
             throw new Error("Missing data");
         }
 
@@ -33,6 +33,10 @@ class proposalValidator{
 
         if(!is_numeric($data["theme"])){
             throw new Error("Invalid type of theme, expected an integer");
+        }
+
+        if(!(1900 <= ((int)$data["year"]) && ((int)$data["year"]) <= 2099)){
+            throw new Error("Invalid date range, must be between 1900 && 2099");
         }
 
         $data["title"] = filter_var($data["title"], FILTER_FLAG_STRIP_BACKTICK);
