@@ -736,8 +736,6 @@ paths:
   /users/me/name:
     get:
       summary: Renvoie le nom de l'utilisateur connecté
-      tags:
-        - users
       responses:
         '200':
           description: 'OK, renvoie le nom de l''utilisateur. Ex: `John`.'
@@ -746,6 +744,8 @@ paths:
       x-stoplight:
         id: 1w6ifa68b31iw
       description: ''
+      tags:
+        - users
   '/users/me/role/{community}':
     get:
       summary: Le rôle de l'utilisateur
@@ -912,6 +912,12 @@ paths:
           application/json:
             schema:
               type: object
+              x-examples:
+                Example 1:
+                  title: Augmenter les performances du serveur
+                  description: 'Cette proposition vise à optimiser les performances du serveur afin d''améliorer la rapidité, la fiabilité et l''efficacité des services qu''il prend en charge. Les objectifs incluent la réduction des temps de latence, l''augmentation de la capacité de traitement des demandes simultanées, et l''amélioration de la stabilité du système.'
+                  community: 26
+                  theme: 1
               properties:
                 title:
                   type: string
@@ -921,12 +927,10 @@ paths:
                   type: integer
                 theme:
                   type: integer
-              x-examples:
-                Example 1:
-                  title: Augmenter les performances du serveur
-                  description: 'Cette proposition vise à optimiser les performances du serveur afin d''améliorer la rapidité, la fiabilité et l''efficacité des services qu''il prend en charge. Les objectifs incluent la réduction des temps de latence, l''augmentation de la capacité de traitement des demandes simultanées, et l''amélioration de la stabilité du système.'
-                  community: 26
-                  theme: 1
+                year:
+                  type: integer
+                  x-stoplight:
+                    id: ylyt08l20ceig
             examples:
               Example 1:
                 value:
@@ -934,6 +938,7 @@ paths:
                   description: 'Cette proposition vise à optimiser les performances du serveur afin d''améliorer la rapidité, la fiabilité et l''efficacité des services qu''il prend en charge. Les objectifs incluent la réduction des temps de latence, l''augmentation de la capacité de traitement des demandes simultanées, et l''amélioration de la stabilité du système.'
                   community: 26
                   theme: 1
+                  year: 2025
 components:
   securitySchemes: {}
   responses: {}
