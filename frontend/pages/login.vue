@@ -3,6 +3,7 @@
     <main class="login">
         <div class="registration">
             <h1>Connexion</h1>
+            <p v-if="error" class="error">Login ou mot de passe incorrect, veuillez réessayer</p>
             <form  class="registration__form">
 
                 <!-- Première partie -->
@@ -26,6 +27,7 @@ const config = useRuntimeConfig();
 const email = useState("email", ()=> "");
 const password = useState("password", ()=> "");
 
+const error = ref(false);
 definePageMeta({
   middleware: ["guest"]
 })
@@ -44,6 +46,8 @@ const handleForm = async () => {
 
         if(response){
             navigateTo("/home");
+        }else{
+            error.value = true;
         }
 
     } catch (error) {
