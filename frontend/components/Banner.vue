@@ -7,12 +7,12 @@
     >
         <div class="community__hero-banner">
             <div>
-                <NuxtLink v-if="back" :to="`/community/${$route.params.id}`">Retour au groupe</NuxtLink>
+                <NuxtLink v-if="back" :to="`/community/${community['CMY_id_NB']}`">Retour au groupe</NuxtLink>
             </div>
             <div class="community__hero-banner__infos">
-                <h1>{{ community['CMY_name_VC'] }}</h1>
-                <div v-if="communityThemes">
-                    <span v-for="theme in communityThemes" class="community__hero-banner__infos__theme" :style="{ 
+                <h1><slot></slot></h1>
+                <div v-if="themes">
+                    <span v-for="theme in themes" class="community__hero-banner__infos__theme" :style="{ 
                         background: community['CMY_color_VC'],
                     }">{{ theme['THM_name_VC'] }}</span>
                 </div>
@@ -26,7 +26,7 @@ const props = defineProps({
     community: Object,
     required: true,
 
-    communityThemes: Array,
+    themes: Array,
     required: true,
 
     back: Boolean,
