@@ -146,7 +146,7 @@ Composant clé de l'application, il est visible sur chaque page, il permet de na
 
 ### Input 
 
-Composant affichant un input et sont label. Le label est à indiquer dans le slot. 
+Composant affichant un input et son label. Le label est à indiquer dans le slot. 
 
 Il est possible de spécifier des règles sur les valeurs entrées par l'utilisateur via la props *rules*.
 
@@ -180,6 +180,32 @@ const lastname = useState('lastname');
 
 //True si toutes les règles du jeu sont valides. 
 const lastnameValid = useState('lastnameValid');
+```
+
+### InputNumber
+
+Composant affichant un input de type number et son label. Le label est à indiquer dans le slot. 
+
+Il est possible de spécifier des règles sur les valeurs entrées par l'utilisateur via la props *rules*.
+
+**Props :**
+
+| Nom         | Requise ? | Valeur par défaut | Effet                                                                                                         |
+|-------------|-----------|-------------------|---------------------------------------------------------------------------------------------------------------|
+| name        | Oui       |                   | Le nom du composant crée, sert à identifié. <br>Il doit être nommé de la même façon que la variable réactive. |                        |
+| placeholder | Non       |                   | Le placeholder                                                                                                |
+| required    | Non       | false             | Indique si le champs est obligatoire                                                                          |
+| rules       | Non       |                   | Le jeu de règles auxquels la valeur entrée doit se soumettre                                                  |
+| min       | Non       |                   | La valeur minimum du champs             |
+| max       | Non       |                   | La valeur maximun du champ           |
+| step       | Non       |     1              | l'incrémentation du champ           |
+
+``` html
+<InputNumber name="proposalYear" type="number" :min="1900" :max="2099" :placeholder="`Par défaut : ${new Date().getFullYear()}`"
+  :rules="[
+      (v) => !v || (v >= 1900 && v <= 2099) || 'La valeur doit être entre 1900 et 2099',
+  ]"      
+>Année</InputNumber>
 ```
 
 ### ColorPicker 
