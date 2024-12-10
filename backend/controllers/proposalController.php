@@ -28,7 +28,7 @@ class ProposalController{
      *   "theme": 1
      *  }
      * 
-     * @return void renvoie au format json la communauté si l'insertions réussie
+     * @return bool renvoie true si l'insertion réussie
      */
     public static function store(){
         $body = file_get_contents('php://input');

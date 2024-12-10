@@ -85,9 +85,12 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communauté
     post:
       summary: Créer une communauté
-      tags: []
+      tags:
+        - communauté
       responses:
         '200':
           description: 'Renvoie true si l''insertion s''est bien passé. '
@@ -140,7 +143,8 @@ paths:
         required: true
     get:
       summary: Une communauté
-      tags: []
+      tags:
+        - communauté
       responses:
         '200':
           description: La communauté renvoyée avec succès
@@ -196,7 +200,8 @@ paths:
   /communities/administred:
     get:
       summary: La liste des communautés gérées par un utilisateur
-      tags: []
+      tags:
+        - communauté
       responses:
         '200':
           description: Un tableau des communautés.
@@ -274,7 +279,8 @@ paths:
         required: true
     get:
       summary: Les proposition en cours
-      tags: []
+      tags:
+        - communauté
       responses:
         '200':
           description: Les propositions renvoyées avec succès.
@@ -342,7 +348,8 @@ paths:
         required: true
     get:
       summary: Les proposition terminées
-      tags: []
+      tags:
+        - communauté
       responses:
         '200':
           description: Les propositions renvoyées avec succès
@@ -409,7 +416,10 @@ paths:
         required: true
     get:
       summary: La liste des membres
-      tags: []
+      tags:
+        - communauté
+        - membre
+        - role
       responses:
         '200':
           description: La liste renvoyé avec succès
@@ -504,7 +514,7 @@ paths:
       operationId: get-communities-id-members
       x-stoplight:
         id: ughoa96xt9xq2
-      description: 'Renvoie la liste des membres de la communauté et leur role. '
+      description: 'Renvoie la liste des membres de la communauté et leur role au sein de la communauté. '
       parameters:
         - schema:
             type: string
@@ -521,7 +531,8 @@ paths:
         required: true
     get:
       summary: Les thèmes de la communauté
-      tags: []
+      tags:
+        - communauté
       responses:
         '200':
           description: 'La liste des thèmes récupérés avec succès. '
@@ -566,6 +577,364 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+  /auth/register:
+    post:
+      summary: Créer un compte
+      tags:
+        - authentification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  USR_id_NB:
+                    type: integer
+                  USR_lastname_VC:
+                    type: string
+                  USR_firstname_VC:
+                    type: string
+                  USR_email_VC:
+                    type: string
+                  USR_password_VC:
+                    type: string
+                  USR_address_VC:
+                    type: string
+                  USR_zipcode_CH:
+                    type: string
+                  USR_birthdate_DATE:
+                    type: string
+                  USR_notification_frequency_CH:
+                    type: string
+                  USR_notify_proposal_BOOL:
+                    type: integer
+                  USR_notify_vote_BOOL:
+                    type: integer
+                  USR_notify_reaction_BOOL:
+                    type: integer
+                  USR_newsletter_BOOL:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    USR_id_NB: 104
+                    USR_lastname_VC: Athan
+                    USR_firstname_VC: John
+                    USR_email_VC: johnathan@gmail.com
+                    USR_password_VC: '$argon2id$v=19$m=65536,t=4,p=1$MVhlRVFOVXJ1QWhvMDNSWQ$0s4oYr327cjxPIon10lHlUEdX2LZpwE1BJs+TXDpwuo'
+                    USR_address_VC: Rue du blé
+                    USR_zipcode_CH: '78300'
+                    USR_birthdate_DATE: '2005-10-10'
+                    USR_notification_frequency_CH: H
+                    USR_notify_proposal_BOOL: 0
+                    USR_notify_vote_BOOL: 0
+                    USR_notify_reaction_BOOL: 0
+                    USR_newsletter_BOOL: 0
+              examples:
+                Example 1:
+                  value:
+                    USR_id_NB: 104
+                    USR_lastname_VC: Athan
+                    USR_firstname_VC: John
+                    USR_email_VC: johnathan@gmail.com
+                    USR_password_VC: '$argon2id$v=19$m=65536,t=4,p=1$MVhlRVFOVXJ1QWhvMDNSWQ$0s4oYr327cjxPIon10lHlUEdX2LZpwE1BJs+TXDpwuo'
+                    USR_address_VC: Rue du blé
+                    USR_zipcode_CH: '78300'
+                    USR_birthdate_DATE: '2005-10-10'
+                    USR_notification_frequency_CH: H
+                    USR_notify_proposal_BOOL: 0
+                    USR_notify_vote_BOOL: 0
+                    USR_notify_reaction_BOOL: 0
+                    USR_newsletter_BOOL: 0
+      operationId: post-auth-register
+      x-stoplight:
+        id: 1b6npyrgcq80b
+      description: 'Destiné à la création d''un compte sur l''application. '
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                lastname:
+                  type: string
+                firstname:
+                  type: string
+                address:
+                  type: string
+                zipcode:
+                  type: string
+                birthdate:
+                  type: string
+              x-examples:
+                Example 1:
+                  email: johnathan@gmail.com
+                  password: unmotdepasse
+                  lastname: Athan
+                  firstname: John
+                  address: Rue du blé
+                  zipcode: '78300'
+                  birthdate: '2005-10-10'
+            examples:
+              Example 1:
+                value:
+                  email: johnathan@gmail.com
+                  password: password
+                  lastname: Athan
+                  firstname: John
+                  address: Rue du blé
+                  zipcode: '78300'
+                  birthdate: '2005-10-10'
+  /auth/login:
+    post:
+      summary: S'authentifier
+      tags:
+        - authentification
+      responses:
+        '200':
+          description: 'OK, renvoie `true`sur l''authentification à réussi, `faux`sinon.'
+      operationId: post-auth-login
+      x-stoplight:
+        id: w454jqbrrnwef
+      description: Si valide la requête authentifie l'utilisateur
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              x-examples:
+                Example 1:
+                  email: lshower2j@springer.com
+                  password: monmotdepasse
+            examples:
+              Example 1:
+                value:
+                  email: johnathan@gmail.com
+                  password: password
+  /auth/check:
+    get:
+      summary: Vérifier la validité de la session
+      tags:
+        - authentification
+      responses:
+        '200':
+          description: OK
+      operationId: get-auth-check
+      x-stoplight:
+        id: 11aex930ha0l6
+      description: 'Renvoie `true` si la session est valide, `false` sinon.'
+  /users/me/name:
+    get:
+      summary: Renvoie le nom de l'utilisateur connecté
+      tags:
+        - users
+      responses:
+        '200':
+          description: 'OK, renvoie le nom de l''utilisateur. Ex: `John`.'
+          content: {}
+      operationId: get-users-me-name
+      x-stoplight:
+        id: 1w6ifa68b31iw
+      description: ''
+  '/users/me/role/{community}':
+    get:
+      summary: Le rôle de l'utilisateur
+      tags:
+        - users
+        - role
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  MEM_role_NB:
+                    type: integer
+                  ROL_label_VC:
+                    type: string
+                x-examples:
+                  Example 1:
+                    MEM_role_NB: 1
+                    ROL_label_VC: Administrateur
+              examples:
+                Example 1:
+                  value:
+                    MEM_role_NB: 1
+                    ROL_label_VC: Administrateur
+      operationId: get-users-me-role-community
+      x-stoplight:
+        id: hjt9so3qxv0y8
+      description: Renvoie le rôle de l'utilisateur connecté dans la communauté passée via l'url.
+    parameters:
+      - schema:
+          type: string
+        name: community
+        in: path
+        required: true
+  /proposals/ongoing:
+    get:
+      summary: La liste des propositions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PRO_id_NB:
+                      type: string
+                    PRO_title_VC:
+                      type: string
+                    PRO_color_VC:
+                      type: string
+                    PRO_theme_VC:
+                      type: string
+                x-examples:
+                  Example 1:
+                    - PRO_id_NB: '22'
+                      PRO_title_VC: Remonter un moteur diesel
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Atelier Mecanique
+                    - PRO_id_NB: '71'
+                      PRO_title_VC: 24h du mans 2025
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Rassemblement
+                    - PRO_id_NB: '24'
+                      PRO_title_VC: Planification des horaires
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Organisation
+              examples:
+                Example 1:
+                  value:
+                    - PRO_id_NB: '22'
+                      PRO_title_VC: Remonter un moteur diesel
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Atelier Mecanique
+                    - PRO_id_NB: '71'
+                      PRO_title_VC: 24h du mans 2025
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Rassemblement
+                    - PRO_id_NB: '24'
+                      PRO_title_VC: Planification des horaires
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Organisation
+      operationId: get-proposals-ongoing
+      x-stoplight:
+        id: zmd7aij7len3x
+      description: Renvoie la liste des propositions en cours des communautés auxquelles participe l'utilisateur
+      tags:
+        - proposals
+  /proposals/finished:
+    get:
+      summary: Les propositions terminées
+      tags:
+        - proposals
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PRO_id_NB:
+                      type: string
+                    PRO_title_VC:
+                      type: string
+                    PRO_color_VC:
+                      type: string
+                    PRO_theme_VC:
+                      type: string
+                x-examples:
+                  Example 1:
+                    - PRO_id_NB: '22'
+                      PRO_title_VC: Remonter un moteur diesel
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Atelier Mecanique
+                    - PRO_id_NB: '71'
+                      PRO_title_VC: 24h du mans 2025
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Rassemblement
+                    - PRO_id_NB: '24'
+                      PRO_title_VC: Planification des horaires
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Organisation
+              examples:
+                Example 1:
+                  value:
+                    - PRO_id_NB: '22'
+                      PRO_title_VC: Remonter un moteur diesel
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Atelier Mecanique
+                    - PRO_id_NB: '71'
+                      PRO_title_VC: 24h du mans 2025
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Rassemblement
+                    - PRO_id_NB: '24'
+                      PRO_title_VC: Planification des horaires
+                      PRO_color_VC: '#13329F'
+                      PRO_theme_VC: Organisation
+      operationId: get-proposals-finished
+      x-stoplight:
+        id: nzkvvamc95zdn
+      description: Renvoie une liste avec les propositions terminées récemment dans les communautés de l'utilisateur (max 6 propositions).
+  /proposals:
+    post:
+      summary: Créer une proposition
+      tags:
+        - proposals
+      responses:
+        '200':
+          description: 'OK, renvoie `true` si l''insertion réussi, `false` sinon.'
+      operationId: post-proposals
+      x-stoplight:
+        id: yk2cld9c0awht
+      description: Permet de créer une nouvelle proposition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                community:
+                  type: integer
+                theme:
+                  type: integer
+              x-examples:
+                Example 1:
+                  title: Augmenter les performances du serveur
+                  description: 'Cette proposition vise à optimiser les performances du serveur afin d''améliorer la rapidité, la fiabilité et l''efficacité des services qu''il prend en charge. Les objectifs incluent la réduction des temps de latence, l''augmentation de la capacité de traitement des demandes simultanées, et l''amélioration de la stabilité du système.'
+                  community: 26
+                  theme: 1
+            examples:
+              Example 1:
+                value:
+                  title: Augmenter les performances du serveur
+                  description: 'Cette proposition vise à optimiser les performances du serveur afin d''améliorer la rapidité, la fiabilité et l''efficacité des services qu''il prend en charge. Les objectifs incluent la réduction des temps de latence, l''augmentation de la capacité de traitement des demandes simultanées, et l''amélioration de la stabilité du système.'
+                  community: 26
+                  theme: 1
 components:
   securitySchemes: {}
+  responses: {}
 x-internal: true

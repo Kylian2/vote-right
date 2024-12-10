@@ -63,7 +63,7 @@ class CommunityController{
      *   "color": "#DE3D59"
      * }
      * 
-     * @return bool true si l'insertion réussie
+     * @return void renvoie la communauté au format json si l'insertion réussi
      */
     public static function store(){
         $body = file_get_contents('php://input');
