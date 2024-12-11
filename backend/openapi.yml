@@ -2,7 +2,7 @@ openapi: 3.0.1
 x-stoplight:
   id: q80121ewju7co
 info:
-  title: API VoteRig
+  title: API VoteRight
   version: 1.0.0
   description: |-
     La liste des endpoints utilisés par l'application VoteRight.
