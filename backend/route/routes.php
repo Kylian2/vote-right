@@ -18,7 +18,7 @@ Router::get('/communities/{id}/themes', 'communityController@themes', true);
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');
-Router::get('/users/me/name', 'userController@name', true);
+Router::get('/users/me', 'userController@me', true);
 Router::get('/users/me/role/{community}', 'userController@role', true);
 
 Router::get('/proposals/ongoing', 'proposalController@ongoing', true);
@@ -26,5 +26,7 @@ Router::get('/proposals/finished', 'proposalController@finished', true);
 Router::post('/proposals', 'proposalController@store', true);
 Router::get('/proposals/{id}', 'proposalController@show', true);
 Router::get('/proposals/{id}/comments', 'proposalController@comments', true);
+
+Router::post('/comments', 'commentController@store', true);
 
 ?>

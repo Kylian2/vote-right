@@ -46,14 +46,14 @@ class AuthController{
         //mettre en place un cryptage de mot de passe
         $values["password"] = password_hash($body["password"], PASSWORD_ARGON2ID);
 
-        $values["email"] = $body["email"];
-        $values["lastname"] = $body["lastname"];
-        $values["firstname"] = $body["firstname"];
-        $values["address"] = $body["address"];
-        $values["zipcode"] = $body["zipcode"];
-        $values["birthdate"] = $body["birthdate"];
+        $values["USR_email_VC"] = $body["email"];
+        $values["USR_lastname_VC"] = $body["lastname"];
+        $values["USR_firstname_VC"] = $body["firstname"];
+        $values["USR_address_VC"] = $body["address"];
+        $values["USR_zipcode_VC"] = $body["zipcode"];
+        $values["USR_birthdate_DATE"] = $body["birthdate"];
 
-        $user = User::createUser($values["lastname"], $values["firstname"], $values["email"], $values["password"], $values["address"], $values["zipcode"], $values["birthdate"]);
+        $user = new User($values);
 
         try{
             $user->insert();
