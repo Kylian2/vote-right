@@ -21,6 +21,11 @@ class UserController{
         echo json_encode($user->getRole($params[0]));
     }
 
+    public static function show($params){
+        $user = User::getById($params[0]);
+        echo json_encode($user);
+    }
+
 }
 
 ?>

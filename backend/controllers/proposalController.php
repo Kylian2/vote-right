@@ -3,6 +3,7 @@
 use Dotenv\Validator;
 
 @require_once("models/proposal.php");
+@require_once("models/comment.php");
 @require_once("validators/proposalValidator.php");
 
 class ProposalController{
@@ -87,6 +88,33 @@ class ProposalController{
     public static function finished(){
         $proposals = Proposal::getFinished();
         echo json_encode($proposals);
+    }
+
+    /**
+     * Affiche un json contenant les informations de la proposition dont l'identifiant est passé via l'url
+     * 
+     * $params[0] contient l'identifiant de la proposition à afficher
+     * 
+     * @param array $params un tableau contenant les paramètres contenus dans l'URL
+     * 
+     * @return void les données sont renvoyées en JSON par echo
+     */
+    public static function show(array $params){
+        $proposal = Proposal::getById($params[0]);
+        echo json_encode($proposal);
+    }
+
+    /**
+     * Affiche la liste des commentaires d'une proposition, avec l'utilisateur qui a envoyé le message
+     * $params[0] contient l'identifiant de la proposition dont les commentaires seront récupérés
+     * 
+     * @param array $params un tableau contenant les paramètres contenus dans l'URL
+     * 
+     * @return void les données sont renvoyées en JSON par echo
+     */
+    public static function comments(array $params){
+        $comment = Comment::getCommentsOfProposal($params[0]);
+        echo json_encode($comment);
     }
 
 }

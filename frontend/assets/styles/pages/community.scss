@@ -129,8 +129,10 @@ main.community{
             justify-content: space-between;
             align-items: center;
         }
-        a{
-            text-decoration: underline;
+        &__infos{
+            a{
+                text-decoration: underline;
+            }
         }
     }  
 

@@ -7,6 +7,10 @@ class Proposal extends Model{
     public string $PRO_description_TXT;
     public string $PRO_color_VC;
     public string $PRO_period_YEAR;
+    public float $PRO_budget_NB;
+    public ?int $PRO_discussion_duration_NB; //nullable
+    public string $PRO_creation_DATE;
+    public string $PRO_status_VC;
 
     //Le numero du thème (relativement à la commaunauté) et/ou le nom du thème
     public string $PRO_theme_VC;
@@ -81,6 +85,19 @@ class Proposal extends Model{
         $communityId = connexion::pdo()->lastInsertId();
         $this->set('PRO_id_NB', $communityId);
         return true;
+    }
+
+    public static function getById(int $id){
+        $request = "SELECT PRO_id_NB, PRO_title_VC, PRO_description_TXT, PRO_budget_NB, PRO_period_YEAR, PRO_discussion_duration_NB,PRO_location_VC, PRO_creation_DATE, PRO_status_VC, PRO_initiator_NB, THM_name_VC AS PRO_theme_VC, PRO_community_NB
+                    FROM proposal
+                    INNER JOIN theme ON THM_id_NB = PRO_theme_NB AND THM_community_NB = PRO_community_NB
+                    WHERE PRO_id_NB = :id";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["id"] = $id;
+        $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
+        $proposal = $prepare->fetch();
+        return $proposal;
     }
 }
 
