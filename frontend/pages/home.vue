@@ -61,11 +61,11 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`${config.public.baseUrl}/users/me/name`, {
+        const response = await $fetch(`${config.public.baseUrl}/users/me`, {
             credentials: 'include',
         });
 
-        firstname.value = response;
+        firstname.value = response['USR_firstname_VC'];
         
     } catch(error) {
         console.log("An error occured", error);
