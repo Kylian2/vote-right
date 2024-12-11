@@ -364,6 +364,21 @@ ex:
 <Banner :community="community" :themes="communityThemes"> Le titre visible sur la bannière </Banner>
 ```
 
+### Comment
+
+Affiche un commentaire, avec le nom de l'envoyeur et le message encadré
+
+| Nom         | Requise ? | Valeur par défaut | Effet                                                        |
+|-------------|-----------|-------------------|--------------------------------------------------------------|
+| comment     | Oui       |                   | L'objet commentaire à afficher                               |
+
+ex: 
+
+```html
+<Comment :comment="comment"></Comment>
+```
+
+
 ### Les middleware
 
 Dans l'application, il y a deux middlewares : 
