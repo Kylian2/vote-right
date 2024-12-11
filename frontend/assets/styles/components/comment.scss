@@ -1,8 +1,8 @@
 .comment{
-    p:nth-child(1){
+    &__sender{
         margin-bottom: 3px;
     }
-    p:nth-child(2){
+    &__message{
         border: 1px solid $dark;
         border-radius: 5px;
         padding: 10px 20px;

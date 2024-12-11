@@ -17,8 +17,8 @@
             </div>
             <div class="proposal__discussion">
                 <h2>Discussion</h2>
-                <div class="proposal__discussion__comments-container" v-if="comments">
-                    <Comment v-for="comment in comments" :comment="comment"></Comment>
+                <div class="proposal__discussion__comments-container" v-if="comments && me">
+                    <Comment v-for="comment in comments" :comment="comment" :class="{ 'self-end': (comment['COM_sender_NB'] == me['USR_id_NB'])}" :hideName="(comment['COM_sender_NB'] == me['USR_id_NB'])"></Comment>
                     <p v-if="comments.lenght === 0">Soyez le premier à commenter</p>
                 </div>
                 <div class="proposal__discussion__send-message">
@@ -27,7 +27,7 @@
                             (v) => Boolean(v) ,
                         ]"
                     ></Input>
-                    <button :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" :disabled="!commentValid">Envoyer</button>
+                    <button @click="sendMessage()" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" :disabled="!commentValid">Envoyer</button>
                 </div>
             </div>
         </section>
@@ -79,6 +79,7 @@ const initiator = ref();
 const comments = ref();
 const comment = useState('comment');
 const commentValid = useState('commentValid');
+const me = ref();
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -93,6 +94,35 @@ function getInitials(string1, string2) {
     const initial1 = string1.trim().charAt(0).toUpperCase();
     const initial2 = string2.trim().charAt(0).toUpperCase();
     return initial1 + initial2;
+}
+
+const sendMessage = async () => {
+    const response = await $fetch(`${config.public.baseUrl}/comments`, {
+        method: 'POST',
+        credentials: 'include',
+        body:{
+            message: comment.value,
+            proposal: route.params.id,
+        }
+    });
+
+    if(response){
+        comments.value.push(response);
+        comment.value = '';
+    }
+}
+
+const fetchUser = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/users/me`, {
+            credentials: 'include',
+        });
+
+        me.value = response;
+        
+    } catch(error) {
+        console.log("An error occured", error);
+    }
 }
 
 const fetchData = async () => {
@@ -147,6 +177,7 @@ const fetchComments = async () => {
 onMounted(() => {
     fetchData();
     fetchComments();
+    fetchUser();
 })
 
 </script>
