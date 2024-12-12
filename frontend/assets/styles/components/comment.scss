@@ -32,14 +32,19 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            img{
-                width: 28px;
-                transition: .3s;
-            }
+        }
+        img{
+            width: 28px;
+            transition: .3s;
         }
         >div{
             display: flex;
             gap: 25px;
+        }
+        &__reaction{
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
     }
     &__report-btn{
