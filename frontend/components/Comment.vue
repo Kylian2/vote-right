@@ -8,41 +8,24 @@
                 <p class="comment__message" :class="{ 'flip__front': !hideName}">
                     {{ comment["COM_message_VC"] }}
                 </p>
-                <div class="comment__actions flip__back" v-if="!hideName && reactions && !reactions['hasReacted']">
+                <div class="comment__actions flip__back" v-if="!hideName && reactions">
                     <div>
-                        <button @click.stop @click="react(LOVE)">
-                        <img src="/images/icons/love.png" alt="love icons">
+                        <button @click.stop @click="react(LOVE)" :disabled="reactions['hasReacted']">
+                            <img src="/images/icons/love.png" alt="love icons">
+                            <p v-if="reactions['hasReacted']">{{ reactions["nblove"] }}</p>
                         </button>
-                        <button @click.stop @click="react(LIKE)">
+                        <button @click.stop @click="react(LIKE)" :disabled="reactions['hasReacted']">
                             <img src="/images/icons/like.png" alt="like icons">
+                            <p v-if="reactions['hasReacted']">{{ reactions["nblike"] }}</p>
                         </button>
-                        <button @click.stop @click="react(DISLIKE)">
+                        <button @click.stop @click="react(DISLIKE)" :disabled="reactions['hasReacted']">
                             <img src="/images/icons/redlike.png" alt="dislike icons">
+                            <p v-if="reactions['hasReacted']">{{ reactions["nbdislike"] }}</p>
                         </button>
-                        <button @click.stop @click="react(HATE)">
+                        <button @click.stop @click="react(HATE)" :disabled="reactions['hasReacted']">
                             <img src="/images/icons/hate.png" alt="hate icons">
+                            <p v-if="reactions['hasReacted']">{{ reactions["nbhate"] }}</p>
                         </button>
-                    </div>
-                    <button @click.stop class="comment__report-btn">Signaler</button>
-                </div>
-                <div class="comment__actions flip__back" v-if="!hideName && reactions && reactions['hasReacted']">
-                    <div>
-                        <p class="comment__actions__reaction">
-                        <img src="/images/icons/love.png" alt="love icons">
-                        {{ reactions["nblove"] }}
-                        </p>
-                        <p class="comment__actions__reaction">
-                            <img src="/images/icons/like.png" alt="like icons">
-                            {{ reactions["nblike"] }}
-                        </p>
-                        <p class="comment__actions__reaction">
-                            <img src="/images/icons/redlike.png" alt="dislike icons">
-                            {{ reactions["nbdislike"] }}
-                        </p>
-                        <p class="comment__actions__reaction">
-                            <img src="/images/icons/hate.png" alt="hate icons">
-                            {{ reactions["nbhate"] }}
-                        </p>
                     </div>
                     <button @click.stop class="comment__report-btn">Signaler</button>
                 </div>
@@ -89,7 +72,39 @@ const fetchReaction = async () => {
 }
 
 const react = async (reaction) => {
-    console.log(reaction);
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/comments/${props.comment['COM_id_NB']}/react`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {
+                reaction: reaction
+            }
+        })
+
+        if (response) {
+            reactions.value['hasReacted'] = true;
+
+            switch (reaction) {
+                case 1:
+                    reactions.value['nblike']++;
+                    break;
+                case 2:
+                    reactions.value['nbdislike']++;
+                    break;
+                case 3:
+                    reactions.value['nblove']++;
+                    break;
+                case 4:
+                    reactions.value['nbhate']++;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
 }
 
 onMounted(() => {
