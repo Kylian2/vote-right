@@ -65,9 +65,9 @@
             <div class="proposal__opinions" v-if="reactions && reactions['hasReacted']">
                 <h3>Avis</h3>
                 <p v-if="reactions['hasReacted'] === LOVE  || reactions['hasReacted'] === LIKE">Vous et {{ (reactions["nblove"] + reactions["nblike"]) }} personnes 
-                    <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">aiment</span> ça.</p>
+                    <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">aiment</span> cette proposition.</p>
                 <p v-if="reactions['hasReacted'] === HATE  || reactions['hasReacted'] === DISLIKE">Vous et {{ (reactions["nbhate"] +  reactions["nbdislike"]) }} personnes 
-                    <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">n'aiment pas</span> ça.</p>
+                    <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">n'aiment pas</span> cette proposition.</p>
             </div>
         </section>
 
