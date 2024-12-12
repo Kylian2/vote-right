@@ -117,6 +117,13 @@ class ProposalController{
         echo json_encode($comment);
     }
 
+    /**
+     * Affiche les reactions sur la proposition dont l'identifiant est passé en paramètre et si l'utilisateur connecté a déjà réagit.
+     * 
+     * @param array $params un tableau composé des paramètre de l'url. $params[0] contient l'identifiant de la proposition.
+     * 
+     * @return void les données sont affichés en JSON
+     */
     public static function reactions(array $params){
         $values["PRO_id_NB"] = $params[0];
         $proposal = new Proposal($values);

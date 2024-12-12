@@ -5,6 +5,15 @@
 
 class CommentController{
 
+    /**
+     * Enregistre le commentaire dans la base de donnée. 
+     * 
+     * Le body passé par la méthode POST doit contenir : 
+     * - message : un string contenant le message (taille < 250)
+     * - proposal: l'identifiant de la proposition
+     * 
+     * @return void le commentaire inseré dans la base
+     */
     public static function store(){
 
         $body = file_get_contents('php://input');
@@ -30,6 +39,13 @@ class CommentController{
         echo json_encode($comment);
     }
 
+    /**
+     * Affiche les reactions sur le commentaire dont l'identifiant est passé en paramètre
+     * 
+     * @param array $params un tableau composé des paramètre de l'url. $params[0] contient l'identifiant du commentaire.
+     * 
+     * @return void le données sont affichés en JSON
+     */
     public static function reactions(array $params){
         $values["COM_id_NB"] = $params[0];
         $comment = new Comment($values);

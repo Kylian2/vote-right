@@ -100,6 +100,13 @@ class Proposal extends Model{
         return $proposal;
     }
 
+    /**
+     * Affiche le nombre de reactions pour la proposition et indique si l'utilisateur passé en paramètre à réagit à cette proposition
+     * 
+     * @param int $user l'identifiant de l'utilisateur
+     * 
+     * @return array un tableaux contenant les informations (nblove: int, nblike: int, nbdislike: int, nbhate: int, hasReacted: bool)
+     */
     public function getReactions(int $user){
         $request = "SELECT nblove, nblike, nbdislike, nbhate FROM proposal_total_reaction WHERE PRO_id_NB = :proposal";
         $prepare = connexion::pdo()->prepare($request);

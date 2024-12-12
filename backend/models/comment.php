@@ -57,6 +57,13 @@ class Comment extends Model{
         return true;
     }
 
+    /**
+     * Affiche le nombre de reactions pour le commentaire et indique si l'utilisateur passé en paramètre à réagit à ce commentaire
+     * 
+     * @param int $user l'identifiant de l'utilisateur
+     * 
+     * @return array un tableaux contenant les informations (nblove: int, nblike: int, nbdislike: int, nbhate: int, hasReacted: bool)
+     */
     public function getReactions(int $user){
         $request = "SELECT nblove, nblike, nbdislike, nbhate FROM comment_total_reaction WHERE COM_id_NB = :comment";
         $prepare = connexion::pdo()->prepare($request);
