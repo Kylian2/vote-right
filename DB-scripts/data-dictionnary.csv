@@ -107,3 +107,4 @@ FORMAL_REQUEST    ;FOR_user_NB                     ;A              ;NB          
                   ;CMY_used_budget_NB              ;C              ;NB               ;            ;Le montant du budget utilisé du groupe = SUM(THE_used_budget_NB)
                   ;THM_used_budget_NB              ;C              ;NB               ;            ;Le montant du budget utilisé du groupe = SUM(PRO_budget_NB)
                   ;VOT_remaining_time_NB           ;C              ;NB               ;            ;Le temps restant d’un vote = VOT_end_DATE - date_actuelle
+                  ;PRO_request_count_NB            ;A              ;NB               ;            ;Nombre de demande de vote formel
