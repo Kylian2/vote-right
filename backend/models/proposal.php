@@ -119,13 +119,18 @@ class Proposal extends Model{
         unset($reactions[2]);
         unset($reactions[3]);
 
-        $request = "SELECT COUNT(*) FROM proposal_reaction WHERE REP_user_NB = :user AND REP_proposal_NB = :proposal";
+        $reactions['nblove'] = (int) $reactions['nblove'];
+        $reactions['nblike'] = (int) $reactions['nblike'];
+        $reactions['nbdislike'] = (int) $reactions['nbdislike'];
+        $reactions['nbhate'] = (int) $reactions['nbhate'];
+
+        $request = "SELECT CASE WHEN COUNT(*) != 0 THEN REP_reaction_NB ELSE 0 END as hasReacted FROM proposal_reaction WHERE REP_user_NB = :user AND REP_proposal_NB = :proposal";
         $prepare = connexion::pdo()->prepare($request);
         $values["user"] = $user;
         $prepare->execute($values);
         $hasReacted = $prepare->fetch();
 
-        $reactions["hasReacted"] = boolval($hasReacted[0]);
+        $reactions["hasReacted"] = $hasReacted[0];
 
         return $reactions;
     }

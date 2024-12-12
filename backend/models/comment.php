@@ -76,6 +76,11 @@ class Comment extends Model{
         unset($reactions[2]);
         unset($reactions[3]);
 
+        $reactions['nblove'] = (int) $reactions['nblove'];
+        $reactions['nblike'] = (int) $reactions['nblike'];
+        $reactions['nbdislike'] = (int) $reactions['nbdislike'];
+        $reactions['nbhate'] = (int) $reactions['nbhate'];
+
         $request = "SELECT COUNT(*) FROM comment_reaction WHERE REC_user_NB = :user AND REC_comment_NB = :comment";
         $prepare = connexion::pdo()->prepare($request);
         $values["user"] = $user;
