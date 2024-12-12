@@ -157,5 +157,31 @@ class ProposalController{
         echo json_encode($result);
     }
 
+    /**
+     * Affiche le nombre de demande formelle de la proposition et si l'utilisateur a déjà réagit
+     * 
+     * @param int $params les paramètres de l'url, $params[0] la proposition
+     * 
+     * @return void Le resultat est affiché via un JSON
+     */
+    public static function getRequest($params){
+        $userId = SessionGuard::getUserId();
+        $result = Proposal::getRequest($params[0], $userId);
+        echo json_encode($result);
+    }
+
+    /**
+     * Fait une demande formelle de la part de l'utilisateur connecté sur la proposition en paramètre
+     * 
+     * @param int $params les paramètres de l'url, $params[0] la proposition
+     * 
+     * @return void Le resultat est affiché via un JSON (true si ok, false sinon)
+     */
+    public static function postRequest($params){
+        $userId = SessionGuard::getUserId();
+        $result = Proposal::postRequest($params[0], $userId);
+        echo json_encode($result);
+    }
+
 }
 ?>

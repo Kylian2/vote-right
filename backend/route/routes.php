@@ -28,6 +28,8 @@ Router::get('/proposals/{id}', 'proposalController@show', true);
 Router::get('/proposals/{id}/comments', 'proposalController@comments', true);
 Router::get('/proposals/{id}/reactions', 'proposalController@reactions', true);
 Router::post('/proposals/{id}/react', 'proposalController@react', true);
+Router::get('/proposals/{id}/requests', 'proposalController@getRequest', true);
+Router::post('/proposals/{id}/requests', 'proposalController@postRequest', true);
 
 Router::post('/comments', 'commentController@store', true);
 Router::get('/comments/{id}/reactions', 'commentController@reactions', true);

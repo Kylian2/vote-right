@@ -153,7 +153,55 @@ class Proposal extends Model{
         try{
             $prepare->execute($values);            
         }catch (PDOException $e){
-            //Généralement une erreur PDOException 23000 issue d'un doublons de clé primaire signifiant que l'utilisateur à déjà réagit au message.
+            //Généralement une erreur PDOException 23000 issue d'un doublons de clé primaire signifiant que l'utilisateur à déjà réagit.
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Compte le nombre de demande formelle de la proposition et indique si l'utilisateur a déjà réagit
+     * 
+     * @param int $proposal La proposition
+     * @param int $user L'utilisateur
+     * 
+     * @return array contenant les reponses des requetes
+     */
+    public static function getRequest(int $proposal, int $user){
+        $request = "SELECT COUNT(*) as PRO_request_count_NB FROM formal_request WHERE FOR_proposal_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['proposal'] = $proposal;
+        $prepare->execute($values);
+        $formalRequest = $prepare->fetch();
+        unset($formalRequest[0]);
+        $request = "SELECT COUNT(*) FROM formal_request WHERE FOR_proposal_NB = :proposal AND FOR_user_NB = :user";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $prepare->execute($values);
+        $result = $prepare->fetch();
+        $formalRequest['hasAsked'] = boolval($result[0]);
+        return $formalRequest;
+    }
+
+    /**
+     * Insère la demande formelle de l'utilisateur
+     * 
+     * @param int $proposal La proposition sujette à la demande
+     * @param int $user L'utilisateur qui fait la demande
+     * 
+     * @return bool true si la demande est passée, false sinon.
+     */
+    public static function postRequest(int $proposal, int $user){
+        $request = "INSERT INTO formal_request VALUES (:proposal, :user)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['proposal'] = $proposal;
+        $values['user'] = $user;
+
+        try{
+            $prepare->execute($values);            
+        }catch (PDOException $e){
+            //Généralement une erreur PDOException 23000 issue d'un doublons de clé primaire signifiant que l'utilisateur à déjà fait une demande.
             return false;
         }
 
