@@ -53,13 +53,19 @@
                 <p v-if="proposal['PRO_period_YEAR']"><img src="/images/icons/date.svg" alt="icons-theme">{{ proposal['PRO_period_YEAR'] }}</p>
             </div>
 
-            <div v-if="proposal && community" class="proposal__request">
+            <div v-if="proposal && community && formalRequest" class="proposal__request">
                 <h3>Demande Formelle</h3>
-                <button class="btn btn--full btn--block" :style="{background: community['CMY_color_VC']}">Demander</button>
-                <p class="legende" v-if="proposal['PRO_discussion_duration_NB']">
+                <button @click="makeFormalRequest()" class="btn btn--full btn--block" :style="{background: community['CMY_color_VC']}" :disabled="formalRequest['hasAsked']">
+                    <img src="/images/icons/ticks.png" alt="validation-ticks">
+                    <span>{{ formalRequest['hasAsked'] ? 'Demandé' : 'Demander'}}</span>    
+                </button>
+                <div>
+                    <p class="legende" v-if="proposal['PRO_discussion_duration_NB']">
                     En discussion jusqu'au {{ formatDate(new Date(new Date(proposal["PRO_creation_DATE"]).setDate(new Date(proposal["PRO_creation_DATE"]).getDate() + proposal['PRO_discussion_duration_NB']))) }}
-                </p>           
-                <p class="legende" v-else>La durée de discussion n'est pas définie</p>
+                    </p>           
+                    <p class="legende" v-else>La durée de discussion n'est pas définie</p>
+                    <p v-if="formalRequest['hasAsked']" class="legende">Le vote sera lancé quand une majorité de membre en auront fait la demande.</p>
+                </div>
             </div>
 
             <div class="proposal__opinions" v-if="reactions && reactions['hasReacted']">
@@ -97,6 +103,8 @@ const me = ref();
 
 const reactions = ref();
 const saveReaction = ref(false);
+
+const formalRequest = ref();
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -245,11 +253,34 @@ const react = async (reaction) => {
     }
 }
 
+const fetchFormalRequest = async () => {
+    const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/requests`, {
+        credentials: 'include'
+    })
+
+    formalRequest.value = response;
+}
+
+const makeFormalRequest = async () => {
+
+    const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/requests`, {
+        method: 'POST',
+        credentials: 'include'
+    })
+
+    if(response){
+        formalRequest.value['hasAsked'] = true;
+    }
+    
+
+}
+
 onMounted(() => {
     fetchData();
     fetchComments();
     fetchUser();
     fetchReaction();
+    fetchFormalRequest();
 })
 
 </script>
