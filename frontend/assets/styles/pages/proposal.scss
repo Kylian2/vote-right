@@ -90,7 +90,11 @@
 
     &__opinion{
         display: flex;
+        align-items: center;
         gap: 30px;
+        button:active{
+            transform: scale(1.4);
+        }
     }
 }
 
@@ -106,4 +110,11 @@
     border-radius: 50%; /* Cercle */
     text-transform: uppercase; /* Toujours en majuscules */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Légère ombre */
-  }
+}
+
+
+
+.disapear{
+    opacity: 0;
+    transition: 4s;
+}

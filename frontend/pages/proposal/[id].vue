@@ -10,10 +10,11 @@
                 <p v-if="proposal && proposal['PRO_description_TXT']">{{ proposal['PRO_description_TXT'] }}</p>
                 <p v-else> Aucune description pour le groupe</p>
             </div>  
-            <div class="proposal__opinion">
+            <div v-if="reactions && !reactions['hasReacted']" class="proposal__opinion" :class="{ 'disapear' : saveReaction}">
                 <h2>Donner son avis</h2>
-                <button :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full">J'aime</button>
-                <button :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full">Je n'aime pas</button>
+                <button v-if="!saveReaction" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" @click="react(LIKE)">J'aime</button>
+                <button v-if="!saveReaction" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" @click="react(DISLIKE)">Je n'aime pas</button>
+                <p v-if="saveReaction">Avis enregistré !</p>
             </div>
             <div class="proposal__discussion">
                 <h2>Discussion</h2>
@@ -37,7 +38,7 @@
                 <p :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="profile-initials">{{ getInitials(initiator['USR_firstname_VC'], initiator['USR_lastname_VC']) }}</p>
                 <div>
                     <p>{{ initiator['USR_firstname_VC'] }} <b>{{ initiator['USR_lastname_VC'] }}</b></p>
-                    <p class="legende">{{ formatDate(new Date(proposal['PRO_creation_DATE'])) }}</p>
+                    <p class="legende">le {{ formatDate(new Date(proposal['PRO_creation_DATE'])) }}</p>
                 </div>
             </div>
 
@@ -60,6 +61,14 @@
                 </p>           
                 <p class="legende" v-else>La durée de discussion n'est pas définie</p>
             </div>
+
+            <div class="proposal__opinions" v-if="reactions && reactions['hasReacted']">
+                <h3>Avis</h3>
+                <p v-if="reactions['hasReacted'] === LOVE  || reactions['hasReacted'] === LIKE">Vous et {{ (reactions["nblove"] + reactions["nblike"]) }} personnes 
+                    <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">aiment</span> ça.</p>
+                <p v-if="reactions['hasReacted'] === HATE  || reactions['hasReacted'] === DISLIKE">Vous et {{ (reactions["nbhate"] +  reactions["nbdislike"]) }} personnes 
+                    <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">n'aiment pas</span> ça.</p>
+            </div>
         </section>
 
     </main>
@@ -73,6 +82,11 @@ definePageMeta({
     middleware: ["auth"]
 })
 
+const LOVE = 3;
+const LIKE = 1;
+const DISLIKE = 2;
+const HATE = 4;
+
 const community = useState("community");
 const proposal = ref();
 const initiator = ref();
@@ -80,6 +94,9 @@ const comments = ref();
 const comment = useState('comment');
 const commentValid = useState('commentValid');
 const me = ref();
+
+const reactions = ref();
+const saveReaction = ref(false);
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -174,10 +191,65 @@ const fetchComments = async () => {
     }
 }
 
+const fetchReaction = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/reactions`, {
+            credentials: 'include',
+        })
+
+        reactions.value = response;
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
+const react = async (reaction) => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/react`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {
+                reaction: reaction
+            }
+        })
+
+        if (response) {
+
+            saveReaction.value = true;
+
+            setTimeout(() => {
+                reactions.value['hasReacted'] = reaction;
+            }, 4000);
+
+            switch (reaction) {
+                case 1:
+                    reactions.value['nblike']++;
+                    break;
+                case 2:
+                    reactions.value['nbdislike']++;
+                    break;
+                case 3:
+                    reactions.value['nblove']++;
+                    break;
+                case 4:
+                    reactions.value['nbhate']++;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
 onMounted(() => {
     fetchData();
     fetchComments();
     fetchUser();
+    fetchReaction();
 })
 
 </script>
