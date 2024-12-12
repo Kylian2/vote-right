@@ -65,9 +65,9 @@ class CommentController{
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
-        if(!isset($body['reaction'])){
+        if(!isset($body['reaction']) || !is_numeric($body['reaction'])){
             http_response_code(422);
-            $return["Unprocessable Entity"] = 'Missing data';
+            $return["Unprocessable Entity"] = 'Missing or incorrect data';
             echo json_encode($return);
             return;
         }

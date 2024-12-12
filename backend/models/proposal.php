@@ -129,6 +129,31 @@ class Proposal extends Model{
 
         return $reactions;
     }
+
+    /**
+     * Permet de reagir à une proposition
+     * 
+     * @param int $proposal l'identifiant de la proposition
+     * @param int $reaction la reaction (son identifiant dans la base)
+     * @param int $user l'identifiant de l'utilisateur qui réagit
+     * 
+     */
+    public static function react(int $proposal, int $reaction, int $user){
+        $request = "INSERT INTO proposal_reaction(REP_user_NB, REP_proposal_NB, REP_reaction_NB) VALUES (:user, :proposal, :reaction)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $values["reaction"] = $reaction;
+        $values["proposal"] = $proposal;
+
+        try{
+            $prepare->execute($values);            
+        }catch (PDOException $e){
+            //Généralement une erreur PDOException 23000 issue d'un doublons de clé primaire signifiant que l'utilisateur à déjà réagit au message.
+            return false;
+        }
+
+        return true;
+    }
 }
 
 
