@@ -30,5 +30,6 @@ Router::get('/proposals/{id}/reactions', 'proposalController@reactions', true);
 
 Router::post('/comments', 'commentController@store', true);
 Router::get('/comments/{id}/reactions', 'commentController@reactions', true);
+Router::post('/comments/{id}/react', 'commentController@react', true);
 
 ?>

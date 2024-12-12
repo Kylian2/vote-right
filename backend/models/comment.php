@@ -87,6 +87,31 @@ class Comment extends Model{
         return $reactions;
     }
 
+    /**
+     * Permet de reagir à un commentaire
+     * 
+     * @param int $comment l'identifiant du commentaire
+     * @param int $reaction la reaction (son identifiant dans la base)
+     * @param int $user l'identifiant de l'utilisateur qui réagit
+     * 
+     */
+    public static function react(int $comment, int $reaction, int $user){
+        $request = "INSERT INTO comment_reaction(REC_user_NB, REC_comment_NB, REC_reaction_NB) VALUES (:user, :comment, :reaction)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $values["reaction"] = $reaction;
+        $values["comment"] = $comment;
+
+        try{
+            $prepare->execute($values);            
+        }catch (PDOException $e){
+            //Généralement une erreur PDOException 23000 issue d'un doublons de clé primaire signifiant que l'utilisateur à déjà réagit au message.
+            return false;
+        }
+
+        return true;
+    }
+
 }
 
 ?>
