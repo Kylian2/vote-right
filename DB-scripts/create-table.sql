@@ -111,7 +111,6 @@ CREATE TABLE proposal (
     PRO_description_TXT TEXT NOT NULL,
     PRO_creation_DATE DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRO_discussion_duration_NB SMALLINT,
-    PRO_request_count_NB INT DEFAULT 0 NOT NULL,
     PRO_location_VC VARCHAR(255),
     PRO_budget_NB FLOAT(12, 2),
     PRO_status_VC VARCHAR(20) DEFAULT 'En cours' NOT NULL,

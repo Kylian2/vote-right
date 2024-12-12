@@ -39,7 +39,6 @@ PROPOSAL          ;PRO_title_VC                    ;A              ;VC          
 PROPOSAL          ;PRO_description_TXT             ;A              ;TXT              ;            ;Description d’une proposition
 PROPOSAL          ;PRO_creation_DATE               ;A              ;DATETIME         ;            ;Date de création de la proposition
 PROPOSAL          ;PRO_discussion_duration_NB      ;A              ;NB               ;SMALLINT    ;Durée de discussion de la proposition, en jours.
-PROPOSAL          ;PRO_request_count_NB            ;A              ;NB               ;INT         ;Nombre de demande de vote formel
 PROPOSAL          ;PRO_location_VC                 ;A              ;VC               ;150         ;Informations complémentaires : lieu de la proposition (peut-être nulle)
 PROPOSAL          ;PRO_budget_NB                   ;A              ;FLOAT            ;12,2        ;Budget accordé à la proposition (une partie du budget du thème)
 PROPOSAL          ;PRO_status_VC                   ;A              ;VC               ;20          ;"Statut de la proposition (indique si la proposition est acceptée, refusée ou en cours). Par défaut = ‘En cours’; "
