@@ -117,5 +117,13 @@ class ProposalController{
         echo json_encode($comment);
     }
 
+    public static function reactions(array $params){
+        $values["PRO_id_NB"] = $params[0];
+        $proposal = new Proposal($values);
+        $user = SessionGuard::getUserId();
+        $reactions = $proposal->getReactions($user);
+        echo json_encode($reactions);
+    }
+
 }
 ?>

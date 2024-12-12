@@ -99,6 +99,29 @@ class Proposal extends Model{
         $proposal = $prepare->fetch();
         return $proposal;
     }
+
+    public function getReactions(int $user){
+        $request = "SELECT nblove, nblike, nbdislike, nbhate FROM proposal_total_reaction WHERE PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["proposal"] = $this->PRO_id_NB;
+        $prepare->execute($values);
+        $reactions = $prepare->fetch();
+
+        unset($reactions[0]);
+        unset($reactions[1]);
+        unset($reactions[2]);
+        unset($reactions[3]);
+
+        $request = "SELECT COUNT(*) FROM proposal_reaction WHERE REP_user_NB = :user AND REP_proposal_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $prepare->execute($values);
+        $hasReacted = $prepare->fetch();
+
+        $reactions["hasReacted"] = boolval($hasReacted[0]);
+
+        return $reactions;
+    }
 }
 
 

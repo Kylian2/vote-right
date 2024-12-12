@@ -30,5 +30,13 @@ class CommentController{
         echo json_encode($comment);
     }
 
+    public static function reactions(array $params){
+        $values["COM_id_NB"] = $params[0];
+        $comment = new Comment($values);
+        $user = SessionGuard::getUserId();
+        $reactions = $comment->getReactions($user);
+        echo json_encode($reactions);
+    }
+
 }
 ?>

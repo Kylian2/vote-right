@@ -57,6 +57,28 @@ class Comment extends Model{
         return true;
     }
 
+    public function getReactions(int $user){
+        $request = "SELECT nblove, nblike, nbdislike, nbhate FROM comment_total_reaction WHERE COM_id_NB = :comment";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["comment"] = $this->COM_id_NB;
+        $prepare->execute($values);
+        $reactions = $prepare->fetch();
+
+        unset($reactions[0]);
+        unset($reactions[1]);
+        unset($reactions[2]);
+        unset($reactions[3]);
+
+        $request = "SELECT COUNT(*) FROM comment_reaction WHERE REC_user_NB = :user AND REC_comment_NB = :comment";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $prepare->execute($values);
+        $hasReacted = $prepare->fetch();
+
+        $reactions["hasReacted"] = boolval($hasReacted[0]);
+
+        return $reactions;
+    }
 
 }
 
