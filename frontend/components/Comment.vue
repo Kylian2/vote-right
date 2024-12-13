@@ -3,7 +3,7 @@
         <p class="comment__sender" v-if="!hideName">
             {{ comment["COM_sender_fname_VC"] }} <b>{{ comment["COM_sender_lname_VC"] }}</b>
         </p>
-            <p @click="toggle = !toggle" class="comment__message" :class="{ 'd-none':toggle}">
+            <p @click="() => {toggle = (!toggle && !hideName)}" class="comment__message" :class="{ 'd-none':toggle}">
                 {{ comment["COM_message_VC"] }}
             </p>
             <div @click="toggle = !toggle" class="comment__actions" v-if="!hideName && reactions" :class="{ 'd-none':!toggle}">
