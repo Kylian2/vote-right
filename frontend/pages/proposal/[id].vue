@@ -64,7 +64,7 @@
                     En discussion jusqu'au {{ formatDate(new Date(new Date(proposal["PRO_creation_DATE"]).setDate(new Date(proposal["PRO_creation_DATE"]).getDate() + proposal['PRO_discussion_duration_NB']))) }}
                     </p>           
                     <p class="legende" v-else>La durée de discussion n'est pas définie</p>
-                    <p v-if="formalRequest['hasAsked']" class="legende">Le vote sera lancé quand une majorité de membre en auront fait la demande.</p>
+                    <p v-if="formalRequest['hasAsked']" class="legende">Le vote sera lancé quand une majorité de membres en aura fait la demande.</p>
                 </div>
             </div>
 
