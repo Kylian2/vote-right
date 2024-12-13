@@ -43,14 +43,13 @@ class AuthController{
             return;
         }
 
-        //mettre en place un cryptage de mot de passe
-        $values["password"] = password_hash($body["password"], PASSWORD_ARGON2ID);
+        $values["USR_password_VC"] = password_hash($body["password"], PASSWORD_ARGON2ID);
 
         $values["USR_email_VC"] = $body["email"];
         $values["USR_lastname_VC"] = $body["lastname"];
         $values["USR_firstname_VC"] = $body["firstname"];
         $values["USR_address_VC"] = $body["address"];
-        $values["USR_zipcode_VC"] = $body["zipcode"];
+        $values["USR_zipcode_CH"] = $body["zipcode"];
         $values["USR_birthdate_DATE"] = $body["birthdate"];
 
         $user = new User($values);
