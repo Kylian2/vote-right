@@ -7,7 +7,7 @@ class Proposal extends Model{
     public string $PRO_description_TXT;
     public string $PRO_color_VC;
     public string $PRO_period_YEAR;
-    public float $PRO_budget_NB;
+    public ?float $PRO_budget_NB; //nullable
     public ?int $PRO_discussion_duration_NB; //nullable
     public string $PRO_creation_DATE;
     public string $PRO_status_VC;
