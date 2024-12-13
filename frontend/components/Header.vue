@@ -31,9 +31,8 @@
         </div>
         <nav class="d-none" id="navigation-mobile">
             <NuxtLink to="/" class="logo--mobile"><b>Vote</b>Right</NuxtLink>
-            <NuxtLink to="/home">Accueil</NuxtLink>
-            <NuxtLink to="/communities">Groupes</NuxtLink>
-            <NuxtLink to="#">Mon compte</NuxtLink>
+            <NuxtLink to="/login">Se connecter</NuxtLink>
+            <NuxtLink to="/register">S'inscrire</NuxtLink>
         </nav>
     </header>
 </template>
