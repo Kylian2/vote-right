@@ -6,6 +6,7 @@ Router::post('/auth/register', 'authController@register');
 Router::post('/auth/login', 'authController@login');
 Router::get('/auth/check', 'authController@check');
 Router::post('/auth/logout', 'authController@logout'); //à implémenter + faire la doc
+Router::get('/invitation/{id}', 'invitationController@show');
 
 Router::get('/communities', 'communityController@index', true);
 Router::get('/communities/{id}', 'communityController@show', true);
