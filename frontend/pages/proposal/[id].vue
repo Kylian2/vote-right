@@ -4,36 +4,38 @@
     <Banner v-if="proposal" :community="community" :themes="[{'THM_name_VC' : proposal['PRO_theme_VC']}]" back>{{ proposal["PRO_title_VC"] }}</Banner>
     <main class="proposal">
 
-        <section>
-            <div class="proposal__description">
-                <h2>Description</h2>
-                <p v-if="proposal && proposal['PRO_description_TXT']">{{ proposal['PRO_description_TXT'] }}</p>
-                <p v-else> Aucune description pour le groupe</p>
-            </div>  
-            <div v-if="reactions && !reactions['hasReacted']" class="proposal__opinion" :class="{ 'disapear' : saveReaction}">
-                <h2>Donner son avis</h2>
-                <button v-if="!saveReaction" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" @click="react(LIKE)">J'aime</button>
-                <button v-if="!saveReaction" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" @click="react(DISLIKE)">Je n'aime pas</button>
-                <p v-if="saveReaction">Avis enregistré !</p>
-            </div>
-            <div class="proposal__discussion">
-                <h2>Discussion</h2>
-                <div class="proposal__discussion__comments-container" v-if="comments && me">
-                    <Comment v-for="comment in comments" :comment="comment" :class="{ 'self-end': (comment['COM_sender_NB'] == me['USR_id_NB'])}" :hideName="(comment['COM_sender_NB'] == me['USR_id_NB'])"></Comment>
-                    <p v-if="comments.lenght === 0">Soyez le premier à commenter</p>
-                </div>
-                <div class="proposal__discussion__send-message">
-                    <Input type="text" name="comment" placeholder="Écrire un message..." no-label :displayError="false"
-                        :rules="[
-                            (v) => Boolean(v) ,
-                        ]"
-                    ></Input>
-                    <button @click="sendMessage()" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" :disabled="!commentValid">Envoyer</button>
-                </div>
-            </div>
-        </section>
+            <section>
+                <div class="proposal__description">
+                    <h2>Description</h2>
+                    <p v-if="proposal && proposal['PRO_description_TXT']">{{ proposal['PRO_description_TXT'] }}</p>
+                    <p v-else> Aucune description pour le groupe</p>
+                </div>  
 
-        <section>
+                <div v-if="reactions && !reactions['hasReacted']" class="proposal__opinion" :class="{ 'disapear' : saveReaction}">
+                    <h2>Donner son avis</h2>
+                    <div>
+                        <button v-if="!saveReaction" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" @click="react(LIKE)">J'aime</button>
+                        <button v-if="!saveReaction" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" @click="react(DISLIKE)">Je n'aime pas</button>
+                        <p v-if="saveReaction">Avis enregistré !</p>
+                    </div>
+                </div>
+                <div class="proposal__discussion">
+                    <h2>Discussion</h2>
+                    <div class="proposal__discussion__comments-container" v-if="comments && me">
+                        <Comment v-for="comment in comments" :comment="comment" :class="{ 'self-end': (comment['COM_sender_NB'] == me['USR_id_NB'])}" :hideName="(comment['COM_sender_NB'] == me['USR_id_NB'])"></Comment>
+                        <p v-if="comments.lenght === 0">Soyez le premier à commenter</p>
+                    </div>
+                    <div class="proposal__discussion__send-message">
+                        <Input type="text" name="comment" placeholder="Écrire un message..." no-label :displayError="false"
+                            :rules="[
+                                (v) => Boolean(v) ,
+                            ]"
+                        ></Input>
+                        <button @click="sendMessage()" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" :disabled="!commentValid">Envoyer</button>
+                    </div>
+                </div>
+            </section>
+
             <div v-if="initiator" class="proposal__initiator">
                 <p :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="profile-initials">{{ getInitials(initiator['USR_firstname_VC'], initiator['USR_lastname_VC']) }}</p>
                 <div>
@@ -75,7 +77,6 @@
                 <p v-if="reactions['hasReacted'] === HATE  || reactions['hasReacted'] === DISLIKE">Vous et {{ (reactions["nbhate"] +  reactions["nbdislike"]) }} personnes 
                     <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">n'aiment pas</span> cette proposition.</p>
             </div>
-        </section>
 
     </main>
 </template>
