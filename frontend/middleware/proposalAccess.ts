@@ -2,7 +2,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const config = useRuntimeConfig() //Pour utiliser les variables d'environnement, sera utile lorsque l'on mettra les routes de productions
 
     if(import.meta.server){
-        return;
+        return abortNavigation();
     }
     try {
         const headers = useRequestHeaders(['cookie']);
