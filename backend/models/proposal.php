@@ -7,6 +7,10 @@ class Proposal extends Model{
     public string $PRO_description_TXT;
     public string $PRO_color_VC;
     public string $PRO_period_YEAR;
+    public ?float $PRO_budget_NB; //nullable
+    public ?int $PRO_discussion_duration_NB; //nullable
+    public string $PRO_creation_DATE;
+    public string $PRO_status_VC;
 
     //Le numero du thème (relativement à la commaunauté) et/ou le nom du thème
     public string $PRO_theme_VC;
@@ -81,6 +85,145 @@ class Proposal extends Model{
         $communityId = connexion::pdo()->lastInsertId();
         $this->set('PRO_id_NB', $communityId);
         return true;
+    }
+
+    public static function getById(int $id){
+        $request = "SELECT PRO_id_NB, PRO_title_VC, PRO_description_TXT, PRO_budget_NB, PRO_period_YEAR, PRO_discussion_duration_NB,PRO_location_VC, PRO_creation_DATE, PRO_status_VC, PRO_initiator_NB, THM_name_VC AS PRO_theme_VC, PRO_community_NB
+                    FROM proposal
+                    INNER JOIN theme ON THM_id_NB = PRO_theme_NB AND THM_community_NB = PRO_community_NB
+                    WHERE PRO_id_NB = :id";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["id"] = $id;
+        $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
+        $proposal = $prepare->fetch();
+        return $proposal;
+    }
+
+    /**
+     * Affiche le nombre de reactions pour la proposition et indique si l'utilisateur passé en paramètre à réagit à cette proposition
+     * 
+     * @param int $user l'identifiant de l'utilisateur
+     * 
+     * @return array un tableaux contenant les informations (nblove: int, nblike: int, nbdislike: int, nbhate: int, hasReacted: bool)
+     */
+    public function getReactions(int $user){
+        $request = "SELECT nblove, nblike, nbdislike, nbhate FROM proposal_total_reaction WHERE PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["proposal"] = $this->PRO_id_NB;
+        $prepare->execute($values);
+        $reactions = $prepare->fetch();
+
+        unset($reactions[0]);
+        unset($reactions[1]);
+        unset($reactions[2]);
+        unset($reactions[3]);
+
+        $reactions['nblove'] = (int) $reactions['nblove'];
+        $reactions['nblike'] = (int) $reactions['nblike'];
+        $reactions['nbdislike'] = (int) $reactions['nbdislike'];
+        $reactions['nbhate'] = (int) $reactions['nbhate'];
+
+        $request = "SELECT CASE WHEN COUNT(*) != 0 THEN REP_reaction_NB ELSE 0 END as hasReacted FROM proposal_reaction WHERE REP_user_NB = :user AND REP_proposal_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $prepare->execute($values);
+        $hasReacted = $prepare->fetch();
+
+        $reactions["hasReacted"] = $hasReacted[0];
+
+        return $reactions;
+    }
+
+    /**
+     * Permet de reagir à une proposition
+     * 
+     * @param int $proposal l'identifiant de la proposition
+     * @param int $reaction la reaction (son identifiant dans la base)
+     * @param int $user l'identifiant de l'utilisateur qui réagit
+     * 
+     */
+    public static function react(int $proposal, int $reaction, int $user){
+        $request = "INSERT INTO proposal_reaction(REP_user_NB, REP_proposal_NB, REP_reaction_NB) VALUES (:user, :proposal, :reaction)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $values["reaction"] = $reaction;
+        $values["proposal"] = $proposal;
+
+        try{
+            $prepare->execute($values);            
+        }catch (PDOException $e){
+            //Généralement une erreur PDOException 23000 issue d'un doublons de clé primaire signifiant que l'utilisateur à déjà réagit.
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Compte le nombre de demande formelle de la proposition et indique si l'utilisateur a déjà réagit
+     * 
+     * @param int $proposal La proposition
+     * @param int $user L'utilisateur
+     * 
+     * @return array contenant les reponses des requetes
+     */
+    public static function getRequest(int $proposal, int $user){
+        $request = "SELECT COUNT(*) as PRO_request_count_NB FROM formal_request WHERE FOR_proposal_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['proposal'] = $proposal;
+        $prepare->execute($values);
+        $formalRequest = $prepare->fetch();
+        unset($formalRequest[0]);
+        $request = "SELECT COUNT(*) FROM formal_request WHERE FOR_proposal_NB = :proposal AND FOR_user_NB = :user";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $prepare->execute($values);
+        $result = $prepare->fetch();
+        $formalRequest['hasAsked'] = boolval($result[0]);
+        return $formalRequest;
+    }
+
+    /**
+     * Insère la demande formelle de l'utilisateur
+     * 
+     * @param int $proposal La proposition sujette à la demande
+     * @param int $user L'utilisateur qui fait la demande
+     * 
+     * @return bool true si la demande est passée, false sinon.
+     */
+    public static function postRequest(int $proposal, int $user){
+        $request = "INSERT INTO formal_request VALUES (:proposal, :user)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['proposal'] = $proposal;
+        $values['user'] = $user;
+
+        try{
+            $prepare->execute($values);            
+        }catch (PDOException $e){
+            //Généralement une erreur PDOException 23000 issue d'un doublons de clé primaire signifiant que l'utilisateur à déjà fait une demande.
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Verifie si l'utilisateur est membre de la communauté associée à la proposition
+     * 
+     * @param int $proposal 
+     * @param int $user
+     * 
+     * @return bool true si l'utilisateur est membre, false sinon
+     */
+    public static function isMember(int $proposal, int $user){
+        $request = "SELECT COUNT(*) FROM member INNER JOIN proposal ON MEM_community_NB = PRO_community_NB WHERE MEM_user_NB = :user AND PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $values["proposal"] = $proposal;
+        $prepare->execute($values);
+        $result = $prepare->fetch();
+        return boolval($result[0]);
     }
 }
 

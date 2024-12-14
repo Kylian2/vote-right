@@ -12,6 +12,7 @@
 @import './components/button.scss';
 @import './components/cardCommunity.scss';
 @import './components/cardProposal.scss';
+@import './components/comment.scss';
 
 /* Import des styles de page */
 
@@ -22,10 +23,11 @@
 @import './pages/community.scss';
 @import './pages/community-members.scss';
 @import './pages/new-proposal.scss';
-@import './pages/invitation.scss';
+@import './pages/proposal.scss';
 
 /* Import des éléments de structures */
 
 @import './layout/header.scss';
+
 @import './reset.scss';
 @import './global.scss';

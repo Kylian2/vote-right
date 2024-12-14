@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS formal_request;
 DROP TABLE IF EXISTS report;
 DROP TABLE IF EXISTS comment_reaction;
 DROP TABLE IF EXISTS vote_detail;
