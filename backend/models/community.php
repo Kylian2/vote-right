@@ -146,6 +146,16 @@ class Community extends Model{
         return $themes;
     }
 
+    public static function isMember(int $community, int $user){
+        $request = "SELECT COUNT(*) FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = :community";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $values["community"] = $community;
+        $prepare->execute($values);
+        $result = $prepare->fetch();
+        return boolval($result[0]);
+    }
+
 }
 
 ?>

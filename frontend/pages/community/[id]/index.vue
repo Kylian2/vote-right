@@ -32,7 +32,7 @@
         </div>
 
         <div class="community__finished-proposals">
-            <div>
+            <div class="community__finished-proposals__infos">
                 <h2>Propositions terminées</h2>
                 <NuxtLink to="#">Tout voir</NuxtLink>
             </div>
@@ -50,7 +50,8 @@ import BannerCommunity from '~/components/Banner.vue';
 const config = useRuntimeConfig();
 
 definePageMeta({
-    middleware: ["auth"]
+    middleware: ["auth"],
+    middleware: ["community-member"],
 })
 
 const route = useRoute();

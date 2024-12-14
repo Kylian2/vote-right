@@ -61,6 +61,12 @@
         @media screen and (max-width: 1225px) {
             justify-content: center;        
         }
+
+        &__no-community{
+            a{
+                text-decoration: underline;
+            }
+        }
     }
 }
 

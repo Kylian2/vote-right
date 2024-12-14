@@ -3,6 +3,7 @@
 use Dotenv\Validator;
 
 @require_once("models/proposal.php");
+@require_once("models/comment.php");
 @require_once("validators/proposalValidator.php");
 
 class ProposalController{
@@ -87,6 +88,115 @@ class ProposalController{
     public static function finished(){
         $proposals = Proposal::getFinished();
         echo json_encode($proposals);
+    }
+
+    /**
+     * Affiche un json contenant les informations de la proposition dont l'identifiant est passé via l'url
+     * 
+     * $params[0] contient l'identifiant de la proposition à afficher
+     * 
+     * @param array $params un tableau contenant les paramètres contenus dans l'URL
+     * 
+     * @return void les données sont renvoyées en JSON par echo
+     */
+    public static function show(array $params){
+        $proposal = Proposal::getById($params[0]);
+        echo json_encode($proposal);
+    }
+
+    /**
+     * Affiche la liste des commentaires d'une proposition, avec l'utilisateur qui a envoyé le message
+     * $params[0] contient l'identifiant de la proposition dont les commentaires seront récupérés
+     * 
+     * @param array $params un tableau contenant les paramètres contenus dans l'URL
+     * 
+     * @return void les données sont renvoyées en JSON par echo
+     */
+    public static function comments(array $params){
+        $comment = Comment::getCommentsOfProposal($params[0]);
+        echo json_encode($comment);
+    }
+
+    /**
+     * Affiche les reactions sur la proposition dont l'identifiant est passé en paramètre et si l'utilisateur connecté a déjà réagit.
+     * 
+     * @param array $params un tableau composé des paramètre de l'url. $params[0] contient l'identifiant de la proposition.
+     * 
+     * @return void les données sont affichés en JSON
+     */
+    public static function reactions(array $params){
+        $values["PRO_id_NB"] = $params[0];
+        $proposal = new Proposal($values);
+        $user = SessionGuard::getUserId();
+        $reactions = $proposal->getReactions($user);
+        echo json_encode($reactions);
+    }
+
+        /**
+     * Permet de reagir à une proposition
+     * 
+     * @param array $params les paramètres de l'url ($params[0] contient l'indentifiant de la proposition);
+     * 
+     * @return bool true si l'utilisateur a pu réagir, false sinon
+     */
+    public static function react($params){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body['reaction']) || !is_numeric($body['reaction'])){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Missing or incorrect data';
+            echo json_encode($return);
+            return;
+        }
+
+        $userId = SessionGuard::getUserId();
+
+        $result = Proposal::react($params[0], $body['reaction'], $userId);
+
+        echo json_encode($result);
+    }
+
+    /**
+     * Affiche le nombre de demande formelle de la proposition et si l'utilisateur a déjà réagit
+     * 
+     * @param int $params les paramètres de l'url, $params[0] la proposition
+     * 
+     * @return void Le resultat est affiché via un JSON
+     */
+    public static function getRequest($params){
+        $userId = SessionGuard::getUserId();
+        $result = Proposal::getRequest($params[0], $userId);
+        echo json_encode($result);
+    }
+
+    /**
+     * Fait une demande formelle de la part de l'utilisateur connecté sur la proposition en paramètre
+     * 
+     * @param int $params les paramètres de l'url, $params[0] la proposition
+     * 
+     * @return void Le resultat est affiché via un JSON (true si ok, false sinon)
+     */
+    public static function postRequest($params){
+        $userId = SessionGuard::getUserId();
+        $result = Proposal::postRequest($params[0], $userId);
+        echo json_encode($result);
+    }
+
+    /**
+     * Indique par un boolean si l'utilisateur est membre de la communauté associé à la proposition
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la proposition à vérifier. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function isMember($params){
+        $userId = SessionGuard::getUserId();
+        $result = Proposal::isMember($params[0], $userId);
+        echo json_encode(($result));
     }
 
 }

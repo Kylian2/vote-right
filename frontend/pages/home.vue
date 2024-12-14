@@ -12,6 +12,7 @@
 
             <div v-if="communities" class="communities_contener__bloc">
                 <CardCommunity v-for="community in communities" :community="community"></CardCommunity>
+                <p class="communities_contener__bloc__no-community" v-if="communities.length === 0">Vous ne participez à aucune groupe, rejoignez en ou <NuxtLink to="/community/new">créez le votre ici.</NuxtLink></p>
             </div>
         </div>
         <div class="proposals">
@@ -19,6 +20,7 @@
                 <h3>Proposition en cours</h3>
                 <div class="proposals__contener">
                     <CardProposal v-for="proposal in ongoingProposals" :proposal="proposal"></CardProposal>
+                    <p class="communities_contener__bloc__no-community" v-if="ongoingProposals && ongoingProposals.length === 0">Aucune proposition en cours.</p>
                 </div>
             </div>
 
@@ -26,6 +28,7 @@
                 <h3>Proposition terminées</h3>
                 <div class="proposals__contener">
                     <CardProposal v-for="proposal in finishedProposals" :proposal="proposal"></CardProposal>
+                    <p class="communities_contener__bloc__no-community" v-if="finishedProposals && finishedProposals.length === 0">Aucune proposition terminées</p>
                 </div>
             </div>
         </div>
@@ -61,11 +64,11 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`${config.public.baseUrl}/users/me/name`, {
+        const response = await $fetch(`${config.public.baseUrl}/users/me`, {
             credentials: 'include',
         });
 
-        firstname.value = response;
+        firstname.value = response['USR_firstname_VC'];
         
     } catch(error) {
         console.log("An error occured", error);
