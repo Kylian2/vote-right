@@ -5,7 +5,7 @@
             :style= "{ background: `url('/images/communities/${community['CMY_image_VC']}') 0% 15% / cover` }">
         </div>
         <div class="invitation__content" v-if="invitation && community">
-            <h2> {{ invitation['INV_firstname_VC'] }} {{ invitation['INV_lastname_VC'] }} vous invite à rejoindre le groupe "{{ community["CMY_name_VC"] }}"</h2>
+            <h2> {{ invitation['INV_sender_firstname_VC'] }} {{ invitation['INV_sender_lastname_VC'] }} vous invite à rejoindre le groupe "{{ community["CMY_name_VC"] }}"</h2>
             <p> En rejoignant le groupe, vous pourrez faire des propositions et participer aux votes. </p>
         </div>
         <div class="invitation__community">
