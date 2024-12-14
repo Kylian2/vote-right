@@ -86,8 +86,7 @@ const config = useRuntimeConfig();
 const route = useRoute();
 
 definePageMeta({
-    middleware: ["auth"],
-    middleware: ["proposal-acces"]
+    middleware: ["auth", "proposal-access"]
 })
 
 const LOVE = 3;

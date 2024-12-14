@@ -4,6 +4,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     try {
         const headers = useRequestHeaders(['cookie']);
         const response = await $fetch(`${config.public.baseUrl}/proposals/${to.params.id}/membership`, { headers, credentials : 'include'});
+        console.log(to);
+        console.log(from);
         if (response !== true) { 
             return navigateTo('/home');
         }
