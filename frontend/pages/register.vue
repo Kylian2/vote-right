@@ -14,14 +14,14 @@
                     ]"
                 >Nom</Input>
                 <Input 
-                    v-if="step === 1" :vModele="firstname" type="text" name="firstname" placeholder="Entrez votre prénom" required
+                    v-if="step === 1" type="text" name="firstname" placeholder="Entrez votre prénom" required
                     :rules="[
                         (v) => Boolean(v) || 'Un prénom est requis', 
                         (v) => v.length < 50 || 'Le prénom est trop long', 
                     ]"
                 >Prénom</Input>
                 <Input 
-                    v-if="step === 1" :vModele="email" type="email" name="email" placeholder="Entrez votre email" required
+                    v-if="step === 1" type="email" name="email" placeholder="Entrez votre email" required
                     :rules="[
                         (v) => Boolean(v) || 'Un email est requis', 
                         (v) => v.length < 200 || `L'email est trop long`, 
@@ -29,7 +29,7 @@
                     ]"
                 >Email</Input>
                 <Input 
-                    v-if="step === 1" :vModele="password" type="password" name="password" placeholder="Entrez un mot de passe" required
+                    v-if="step === 1" type="password" name="password" placeholder="Entrez un mot de passe" required
                     :rules="[
                         (v) => Boolean(v) || 'Un mot de passe est requis', 
                         (v) => v.length > 8 || 'Le mot de passe doit contenir au moins 8 caractères', 
@@ -38,7 +38,7 @@
                 
                 <!-- Deuxième partie -->
                 <Input 
-                    v-if="step === 2" :vModele="address" type="text" name="address" placeholder="Entrez votre adresse" required
+                    v-if="step === 2" type="text" name="address" placeholder="Entrez votre adresse" required
                     :rules="[
                         (v) => Boolean(v) || 'Une adresse est requise', 
                         (v) => v.length < 200 || `L'adresse doit faire moins de 200 caractères`, 
@@ -46,13 +46,13 @@
                 >Adresse</Input>
                 <div v-if="step === 2" class="inline-input">
                     <Input 
-                        :vModele="city" type="text" name="city" placeholder="ex: Paris" required
+                    class="inline-input__first" type="text" name="city" placeholder="ex: Paris" required
                         :rules="[
                             (v) => Boolean(v) || 'Une ville est requise', 
                         ]"  
                     >Ville</Input>
                     <Input 
-                        :vModele="zipcode" class="inline-input__second" type="text" name="zipcode" placeholder="ex: 75002" required
+                        class="inline-input__second" type="text" name="zipcode" placeholder="ex: 75002" required
                         :rules="[
                             (v) => Boolean(v) || 'Un code postal est requis', 
                             (v) => v.length === 5 || 'Le code postal est invalide', 
@@ -60,14 +60,14 @@
                     >Code Postal</Input>
                 </div>
                 <Input 
-                    v-if="step === 2" :vModele="birthdate" type="date" name="birthdate" placeholder="Entrez votre date de naissance" required
+                    v-if="step === 2" type="date" name="birthdate" placeholder="Entrez votre date de naissance" required
                     :rules="[
                         (v) => Boolean(v) || 'Une date de naissance est requise',  
                     ]"
                 >Date de naissance</Input>
                 <!--formmethod="dialog" permet au bouton de se comporter comme si il allait envoyer le formulaire (et donc de faire ses vérifications de format (ex emai ou date) mais de ne pas envoyer le formulaire)-->
                 <Button v-if="step === 1" :disabled="!stepOneIsValid" formmethod="dialog" class="btn btn--full" @click="() => { step++ }">Commencer l'inscription</Button>
-                <div class="registration__button-conteneur">
+                <div v-if="stepOneIsValid" class="registration__button-conteneur">
                     <Button v-if="step === 2" :disabled="!stepOneIsValid || !stepTwoIsValid" formmethod="dialog" class="btn btn--full" @click="handleForm()" >Terminer l'inscription</Button>
                     <Button v-if="step === 2" type="button" class="btn btn--cancel" @click="step--" >Retour</Button>
                 </div>

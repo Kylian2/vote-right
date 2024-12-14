@@ -1,7 +1,7 @@
 <template>
     <div class="base">
-        <label :for="name"><slot></slot></label>
-        <div v-if="hasAChange && errorMessages.length" class="error">
+        <label v-if="!noLabel" :for="name"><slot></slot></label>
+        <div v-if="displayError && hasAChange && errorMessages.length" class="error">
             <p v-for="(error, index) in errorMessages" :key="index">{{ error }}</p>
         </div>
 
@@ -39,6 +39,17 @@ rules: {
     type: Array,
     required: false,
 },
+noLabel: {
+    type: Boolean,
+    required: false,
+    default: false,
+},
+displayError: {
+    type: Boolean,
+    required: false,
+    default: true,
+}
+
 });
 
 const modele = useState(`${props.name}`, () => '');

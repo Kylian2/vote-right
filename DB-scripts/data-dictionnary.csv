@@ -39,7 +39,6 @@ PROPOSAL          ;PRO_title_VC                    ;A              ;VC          
 PROPOSAL          ;PRO_description_TXT             ;A              ;TXT              ;            ;Description d’une proposition
 PROPOSAL          ;PRO_creation_DATE               ;A              ;DATETIME         ;            ;Date de création de la proposition
 PROPOSAL          ;PRO_discussion_duration_NB      ;A              ;NB               ;SMALLINT    ;Durée de discussion de la proposition, en jours.
-PROPOSAL          ;PRO_request_count_NB            ;A              ;NB               ;INT         ;Nombre de demande de vote formel
 PROPOSAL          ;PRO_location_VC                 ;A              ;VC               ;150         ;Informations complémentaires : lieu de la proposition (peut-être nulle)
 PROPOSAL          ;PRO_budget_NB                   ;A              ;FLOAT            ;12,2        ;Budget accordé à la proposition (une partie du budget du thème)
 PROPOSAL          ;PRO_status_VC                   ;A              ;VC               ;20          ;"Statut de la proposition (indique si la proposition est acceptée, refusée ou en cours). Par défaut = ‘En cours’; "
@@ -96,6 +95,8 @@ THEME_BUDGET      ;BUT_community_NB                ;A              ;NB          
 THEME_BUDGET      ;BUT_theme_NB                    ;A              ;NB               ;SMALLINT    ;Identifiant de la communauté du thème
 THEME_BUDGET      ;BUT_period_YEAR                 ;A              ;YEAR             ;            ;La periode de validité du budget (une année, ex: 2024)
 THEME_BUDGET      ;BUT_amount_NB                   ;A              ;NB               ;FLOAT(12,2) ;Montant du bugdet dédié au theme
+FORMAL_REQUEST    ;FOR_proposal_NB                 ;A              ;NB               ;INT         ;La proposition sujette à la demande
+FORMAL_REQUEST    ;FOR_user_NB                     ;A              ;NB               ;INT         ;L'utilisateur qui demande
                   ;INV_validity_time_NB            ;P              ;NB               ;            ;Durée de validité d’une invitation. Actuellement = 7j
                   ;PRO_request_goal_NB             ;C              ;NB               ;            ;Nombre de demande à atteindre pour déclencher un vote formel. = (MEM_nbmembre_NB / 2)+1
                   ;MEM_nb_member_NB                ;C              ;NB               ;            ;Nombre de membre d’un groupe. (Calculé avec une requête sur la table membre) = SELECT COUNT(*) FROM MEMBRE WHERE MEM_groupe_NB = x.
@@ -106,3 +107,4 @@ THEME_BUDGET      ;BUT_amount_NB                   ;A              ;NB          
                   ;CMY_used_budget_NB              ;C              ;NB               ;            ;Le montant du budget utilisé du groupe = SUM(THE_used_budget_NB)
                   ;THM_used_budget_NB              ;C              ;NB               ;            ;Le montant du budget utilisé du groupe = SUM(PRO_budget_NB)
                   ;VOT_remaining_time_NB           ;C              ;NB               ;            ;Le temps restant d’un vote = VOT_end_DATE - date_actuelle
+                  ;PRO_request_count_NB            ;A              ;NB               ;            ;Nombre de demande de vote formel

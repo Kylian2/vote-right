@@ -364,10 +364,27 @@ ex:
 <Banner :community="community" :themes="communityThemes"> Le titre visible sur la bannière </Banner>
 ```
 
+### Comment
+
+Affiche un commentaire, avec le nom de l'envoyeur et le message encadré
+
+| Nom         | Requise ? | Valeur par défaut | Effet                                                        |
+|-------------|-----------|-------------------|--------------------------------------------------------------|
+| comment     | Oui       |                   | L'objet commentaire à afficher                               |
+
+ex: 
+
+```html
+<Comment :comment="comment"></Comment>
+```
+
+
 ### Les middleware
 
 Dans l'application, il y a deux middlewares : 
 
 1. *auth* : autorisant l'accès d'une page uniquement aux personnes connectés. Redirige vers */login*
 2. *guest* : bloquant l'accès d'une page aux personnes connectés. Redirige vers */home*.
+2. *community-member* : bloquant l'accès d'une page aux membres de faisant pas partie de la communautée. Redirige vers */home*.
+2. *proposal-access* : bloquant l'accès d'une page aux personnes n'étant pas membre de la communauté rattachée à la proposition. Redirige vers */home*.
 

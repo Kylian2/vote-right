@@ -174,6 +174,22 @@ class CommunityController{
         $themes = $community->getThemes();
         echo json_encode($themes);
     }
+
+    /**
+     * Indique par un boolean si l'utilisateur est membre du groupe
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté à vérifier. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function isMember($params){
+        $userId = SessionGuard::getUserId();
+        $result = Community::isMember($params[0], $userId);
+        echo json_encode(($result));
+    }
 }
 
 ?>

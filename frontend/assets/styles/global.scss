@@ -85,6 +85,15 @@ h4{
     color: red;
 }
 
+.legende{
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.self-end{
+    align-self: flex-end;
+}
+
 input[type="checkbox"], label{
     cursor: pointer;
 }
