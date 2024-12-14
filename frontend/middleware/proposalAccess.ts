@@ -1,19 +1,16 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const config = useRuntimeConfig() //Pour utiliser les variables d'environnement, sera utile lorsque l'on mettra les routes de productions
-    
-    console.log(to);
-    console.log(from);
-    
+
     if(import.meta.server){
         return;
     }
-    
     try {
         const headers = useRequestHeaders(['cookie']);
         const response = await $fetch(`${config.public.baseUrl}/proposals/${to.params.id}/membership`, { headers, credentials : 'include'});
- 
+        console.log(to);
+        console.log(from);
         if (response !== true) { 
-            return abortNavigation();
+            return navigateTo('/home');
         }
     } catch (error) {
         console.error("Error during authorization check:", error);
