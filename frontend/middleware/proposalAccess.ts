@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         console.log(to);
         console.log(from);
         if (response !== true) { 
-            return navigateTo('/home');
+            return abortNavigation();
         }
     } catch (error) {
         console.error("Error during authorization check:", error);
