@@ -183,5 +183,21 @@ class ProposalController{
         echo json_encode($result);
     }
 
+    /**
+     * Indique par un boolean si l'utilisateur est membre de la communauté associé à la proposition
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la proposition à vérifier. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function isMember($params){
+        $userId = SessionGuard::getUserId();
+        $result = Proposal::isMember($params[0], $userId);
+        echo json_encode(($result));
+    }
+
 }
 ?>

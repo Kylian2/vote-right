@@ -207,6 +207,24 @@ class Proposal extends Model{
 
         return true;
     }
+
+    /**
+     * Verifie si l'utilisateur est membre de la communauté associée à la proposition
+     * 
+     * @param int $proposal 
+     * @param int $user
+     * 
+     * @return bool true si l'utilisateur est membre, false sinon
+     */
+    public static function isMember(int $proposal, int $user){
+        $request = "SELECT COUNT(*) FROM member INNER JOIN proposal ON MEM_community_NB = PRO_community_NB WHERE MEM_user_NB = :user AND PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["user"] = $user;
+        $values["proposal"] = $proposal;
+        $prepare->execute($values);
+        $result = $prepare->fetch();
+        return boolval($result[0]);
+    }
 }
 
 

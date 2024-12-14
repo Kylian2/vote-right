@@ -50,7 +50,8 @@ import BannerCommunity from '~/components/Banner.vue';
 const config = useRuntimeConfig();
 
 definePageMeta({
-    middleware: ["auth"]
+    middleware: ["auth"],
+    middleware: ["community-member"],
 })
 
 const route = useRoute();
