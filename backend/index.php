@@ -30,6 +30,9 @@
         exit();
     }
 
+    ini_set('session.cookie_secure', 1);
+
+
     require_once 'route/routes.php'; 
     
     require_once 'config/connexion.php'; 
