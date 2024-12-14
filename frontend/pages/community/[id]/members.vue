@@ -4,7 +4,7 @@
     <Banner :community="community" :themes="communityThemes" back>{{ community["CMY_name_VC"] }}</Banner>
 
     <main v-if="members && members.length" class="community-members">
-        <div class="community-members__main-header">
+        <div>
             <select v-model="filter" name="role" @change="() => {
                 if(filter === ''){
                     selectedMembers = members

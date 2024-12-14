@@ -15,6 +15,7 @@ Router::get('/communities/{id}/ongoing', 'communityController@ongoingProposals',
 Router::get('/communities/{id}/finished', 'communityController@finishedProposals', true);
 Router::get('/communities/{id}/members', 'communityController@members', true);
 Router::get('/communities/{id}/themes', 'communityController@themes', true);
+Router::get('/communities/{id}/proposals', 'proposalController@allOfCommunity', true);
 
 Router::get('/users', 'userController@index');
 Router::get('/users/me/name', 'userController@name', true);

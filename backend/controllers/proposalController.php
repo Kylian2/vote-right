@@ -89,5 +89,21 @@ class ProposalController{
         echo json_encode($proposals);
     }
 
+    /**
+     * Affiche un json de la liste des propositions et leur thème d'une communauté
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function allOfCommunity($params){
+        $CMY_id_NB = $params[0];
+        $proposals = Proposal::allOfCommunity($CMY_id_NB);
+        echo json_encode($proposals);
+    }
+
 }
 ?>
