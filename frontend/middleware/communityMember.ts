@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const config = useRuntimeConfig(); // Récupération des variables d'environnement
-    const isServer = process.server;
+    const isServer = import.meta.server;
 
     // Vérification que le paramètre 'id' est défini dans la route
     if (!to.params.id) {
