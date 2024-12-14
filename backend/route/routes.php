@@ -9,14 +9,15 @@ Router::post('/auth/logout', 'authController@logout'); //à implémenter + faire
 Router::get('/invitation/{id}', 'invitationController@show');
 
 Router::get('/communities', 'communityController@index', true);
-Router::get('/communities/{id}', 'communityController@show', true);
+Router::get('/communities/{id}', 'communityController@show', false);
 Router::post('/communities', 'communityController@store', true);
 Router::get('/communities/administered', 'communityController@administered', true);
 Router::get('/communities/{id}/ongoing', 'communityController@ongoingProposals', true);
 Router::get('/communities/{id}/finished', 'communityController@finishedProposals', true);
 Router::get('/communities/{id}/members', 'communityController@members', true);
-Router::get('/communities/{id}/themes', 'communityController@themes', true);
+Router::get('/communities/{id}/themes', 'communityController@themes', false);
 Router::get('/communities/{id}/membership', 'communityController@isMember', true);
+Router::get('/communities/registration', 'communityController@insertMember', false);
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');

@@ -107,6 +107,31 @@ class CommunityController{
         echo json_encode($community);
     }
 
+    public static function insertMember(){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if($body === null){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Missing data';
+            echo json_encode($return);
+            return;
+        }
+
+        if(!isset($body["communityId"]) || !isset($body["memberId"])){
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"missing data for processing"}';
+            return;
+        }
+
+        $values["CMY_id_NB"] = $body["communityId"];
+        $values["CMY_member_NB"] = $body["memberId"];
+
+        $community = new Community($values);
+        $newMember = $community->addMember();
+        echo json_encode($newMember);
+    } 
+
     /**
      * Affiche un json de la liste de propositions en cours de la communauté.
      * 
