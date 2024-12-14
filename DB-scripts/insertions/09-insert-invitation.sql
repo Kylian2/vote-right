@@ -1,4 +1,4 @@
-INSERT INTO invitation (INV_id_NB, INV_code_VC, INV_issue_DATE, INV_acceptance_DATE, INV_sender_NB, INV_recipient_NB, INV_community_NB) VALUES
+INSERT INTO invitation (INV_id_VC, INV_code_VC, INV_issue_DATE, INV_acceptance_DATE, INV_sender_NB, INV_recipient_NB, INV_community_NB) VALUES
 -- Invitation avec réponse donc l'utilisateur a rejoint le groupe
 (1, '814212', '2024-09-01', '2024-09-13', 18, 23, 1),
 (2, '667568', '2024-09-01', '2024-09-10', 18, 25, 1),

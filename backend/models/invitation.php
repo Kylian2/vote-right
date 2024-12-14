@@ -9,14 +9,14 @@ class Invitation extends Model{
     public DateTime $INV_issue_DATE;
     public DateTime $INV_acceptance_DATE;
     public int $INV_sender_NB;
-    public string $INV_recipient_VC;
+    public string $INV_recipient_NB;
     public int $INV_community_NB;
 
-    public string $INV_firstname_VC;
-    public string $INV_lastname_VC;
+    public string $INV_sender_firstname_VC;
+    public string $INV_sender_lastname_VC;
 
     public static function getById(int $id){
-        $request = 'SELECT INV_sender_NB, INV_community_NB, USR_firstname_VC AS INV_firstname_VC, USR_lastname_VC AS INV_lastname_VC
+        $request = 'SELECT INV_sender_NB, INV_recipient_NB, INV_community_NB, USR_firstname_VC AS INV_sender_firstname_VC, USR_lastname_VC AS INV_sender_lastname_VC
                     FROM invitation I 
                     INNER JOIN user U ON I.INV_recipient_NB = U.USR_id_NB
                     WHERE INV_id_NB = :id';

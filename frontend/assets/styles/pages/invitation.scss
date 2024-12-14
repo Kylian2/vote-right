@@ -2,47 +2,77 @@
     display: flex;
     flex-direction: column;
   
-    &__community-image {
+    &__image {
         align-self: center;
+        width: 65%;
+        height: 200px;
         margin-top: 40px;
         margin-bottom: 20px;
-        width: 64%;
-        height: 200px;
 
-        @media screen and (max-width: 500px) {
-            width: 64%;
-            height: 200px; 
-        }
-
-        @media screen and (max-width: 300px) {
-            width: 64%;
+        @media screen and (max-width: 320px) {
             height: 150px; 
         }
     }
     
-    &__community-content {
+    &__content {
         align-self: center;
         width: 65%;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
+
+        h2 {
+            margin-bottom: 20px;
+        }
     }
 
-    &__community-themes {
+    &__community {
         display: flex;
-        flex-direction: column; 
+        align-self: center;
+        width: 65%;
 
-        &-list {
-            align-self: center; 
-            margin-right:45%;    
-            margin-bottom: 40px;  
+        &-themes {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
 
-            @media screen and (max-width: 500px) {
-                margin-right: 20%;   
+            @media screen and (max-width: 320px) {
+                width: 100%;
             }
-        
-            @media screen and (max-width: 300px) {
-                margin-right: 10%;   
+    
+            &-header {
+                margin-bottom: 20px;
+                width: 100%;
+            }
+    
+            &-list {
+                margin-bottom: 10%;
+                margin-left: 15%;  
             }
         }
+
+        &-verification {
+            margin-top: 20px;
+            margin-left: 13%; 
+
+            Input {
+                width: 215px;
+
+                @media screen and (max-width: 320px){
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+            }
+
+            @media screen and (max-width: 320px){
+                margin-left: 0%;
+                margin-bottom: 10%; 
+            }
+        }    
+
+        @media screen and (max-width: 320px){
+            display: flex;
+            flex-direction: column;
+        }
+        
     }
 
     &__user-actions {
@@ -52,8 +82,16 @@
         margin-bottom: 30px;
         gap: 4%; 
 
-        a{
+        Button {
             width: -webkit-fill-available;
         }
+
+        @media screen and (max-width: 320px){
+            margin-right: 10%;
+        }
+    }
+
+    @media screen and (max-width: 320px){
+        margin-right: 4%;
     }
 }

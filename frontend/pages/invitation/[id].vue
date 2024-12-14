@@ -1,24 +1,29 @@
 <template>
-    <Header type="logged"></Header>
+    <Header type="notlogged"></Header>
     <main class="invitation">
-        <div class="invitation__community-image" v-if="community" 
+        <div class="invitation__image" v-if="community" 
             :style= "{ background: `url('/images/communities/${community['CMY_image_VC']}') 0% 15% / cover` }">
         </div>
-        <div class="invitation__community-content" v-if="invitation && community">
+        <div class="invitation__content" v-if="invitation && community">
             <h2> {{ invitation['INV_firstname_VC'] }} {{ invitation['INV_lastname_VC'] }} vous invite à rejoindre le groupe "{{ community["CMY_name_VC"] }}"</h2>
-            <p class="invitation__community-text">
-                En rejoignant le groupe, vous pourrez faire des propositions et participer aux votes.
-            </p>
-            <p class="invitation__community-header">Le groupe traite des thèmes :</p>
+            <p> En rejoignant le groupe, vous pourrez faire des propositions et participer aux votes. </p>
         </div>
-        <div class="invitation__community-themes">
-            <ul class="invitation__community-themes-list" v-if="communityThemes && communityThemes.length">
-                <li v-for="theme in communityThemes"> {{ theme['THM_name_VC'] }} </li>
-            </ul>
+        <div class="invitation__community">
+            <div class="invitation__community-themes">
+                <p class="invitation__community-themes-header"> Le groupe traite des thèmes : </p>
+                <ul class="invitation__community-themes-list" v-if="communityThemes && communityThemes.length">
+                    <li v-for="theme in communityThemes"> {{ theme['THM_name_VC'] }} </li>
+                </ul>
+            </div>
+            <div class="invitation__community-verification">
+                <Input type="number" name="code" placeholder="Entrez un code à 6 chiffres" min="000000" max="999999" required>
+                    Code de sécurité
+                </Input>
+            </div>
         </div>
         <div class="invitation__user-actions">
-            <NuxtLink class="btn btn--full">Accepter</NuxtLink>
-            <NuxtLink class="btn btn--cancel">Refuser</NuxtLink>
+            <Button class="btn btn--full" type="submit" >Accepter</Button>
+            <Button class="btn btn--cancel">Refuser</Button>
         </div>
     </main>
 </template>
@@ -27,10 +32,6 @@
 
 const config = useRuntimeConfig();
 const route = useRoute();
-
-definePageMeta({
-    middleware: ["auth"]
-})
 
 onMounted(() => {
     fetchData();
