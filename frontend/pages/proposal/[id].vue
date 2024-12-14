@@ -215,7 +215,7 @@ const fetchReaction = async () => {
 
 const react = async (reaction) => {
     try{
-        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/react`, {
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/reactions`, {
             method: 'POST',
             credentials: 'include',
             body: {

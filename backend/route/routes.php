@@ -27,12 +27,12 @@ Router::post('/proposals', 'proposalController@store', true);
 Router::get('/proposals/{id}', 'proposalController@show', true);
 Router::get('/proposals/{id}/comments', 'proposalController@comments', true);
 Router::get('/proposals/{id}/reactions', 'proposalController@reactions', true);
-Router::post('/proposals/{id}/react', 'proposalController@react', true);
+Router::post('/proposals/{id}/reactions', 'proposalController@react', true);
 Router::get('/proposals/{id}/requests', 'proposalController@getRequest', true);
 Router::post('/proposals/{id}/requests', 'proposalController@postRequest', true);
 
 Router::post('/comments', 'commentController@store', true);
 Router::get('/comments/{id}/reactions', 'commentController@reactions', true);
-Router::post('/comments/{id}/react', 'commentController@react', true);
+Router::post('/comments/{id}/reactions', 'commentController@react', true);
 
 ?>

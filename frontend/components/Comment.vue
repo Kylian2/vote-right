@@ -69,7 +69,7 @@ const fetchReaction = async () => {
 
 const react = async (reaction) => {
     try{
-        const response = await $fetch(`${config.public.baseUrl}/comments/${props.comment['COM_id_NB']}/react`, {
+        const response = await $fetch(`${config.public.baseUrl}/comments/${props.comment['COM_id_NB']}/reactions`, {
             method: 'POST',
             credentials: 'include',
             body: {
