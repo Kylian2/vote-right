@@ -1186,7 +1186,7 @@ paths:
                     COM_sender_NB: '92'
       operationId: post-comments
       x-stoplight:
-        id: gxecenagktiuj
+        id: null
       description: 'Poster un commentaire sur une proposition, il faut indiquer le message et la proposition sur laquelle le message est posté.'
       requestBody:
         content:
@@ -1213,6 +1213,302 @@ paths:
           in: cookie
           name: PHPSESSID
           description: Le cookie d'authentification
+  '/users/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Les informations d'un utilisateur
+      tags:
+        - users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  USR_id_NB:
+                    type: integer
+                  USR_lastname_VC:
+                    type: string
+                  USR_firstname_VC:
+                    type: string
+                  USR_email_VC:
+                    type: string
+                x-examples:
+                  Example 1:
+                    USR_id_NB: 12
+                    USR_lastname_VC: Aymes
+                    USR_firstname_VC: Linzy
+                    USR_email_VC: laymesb@mayoclinic.com
+              examples:
+                Example 1:
+                  value:
+                    USR_id_NB: 12
+                    USR_lastname_VC: Aymes
+                    USR_firstname_VC: Linzy
+                    USR_email_VC: laymesb@mayoclinic.com
+      operationId: get-users-id
+      x-stoplight:
+        id: 6e6vbwt06rq5l
+      description: 'Récupère le nom, prénom et mail d''un utilisateur.'
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/proposals/{id}/reactions':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Les reactions à une proposition
+      tags:
+        - reactions
+        - proposals
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nblove:
+                    type: integer
+                  nblike:
+                    type: integer
+                  nbdislike:
+                    type: integer
+                  nbhate:
+                    type: integer
+                  hasReacted:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    nblove: 7
+                    nblike: 30
+                    nbdislike: 19
+                    nbhate: 5
+                    hasReacted: 1
+              examples:
+                Example 1:
+                  value:
+                    nblove: 7
+                    nblike: 30
+                    nbdislike: 19
+                    nbhate: 5
+                    hasReacted: 1
+      operationId: get-proposals-id-reactions
+      x-stoplight:
+        id: epmwiwv0wwd6e
+      description: 'Récupère le compte de chaque type de reaction sur la proposition et indique si l''utilisateur a déjà réagit (avec le numero associé à sa réaction, `0` représentant le fait qu''il n''a pas réagit).'
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+    post:
+      summary: Réagir à une proposition
+      tags:
+        - reactions
+        - proposals
+      responses:
+        '200':
+          description: 'OK, renvoie `true`si la reaction a été prise en compte, `false` sinon. En cas de false cela indique généralement qu''une réaction est déjà enregistrée.'
+      operationId: post-proposals-id-reactions
+      x-stoplight:
+        id: r5d0kwybb1hdh
+      description: Réagir à une proposition
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reaction:
+                  type: integer
+              x-examples:
+                Example 1:
+                  reaction: 1
+            examples:
+              Example 1:
+                value:
+                  reaction: 1
+        description: |-
+          Contient la réaction. Peut prendre les valeurs suivantes : 
+          - `1`: J'aime
+          - `2`: Je n'aime pas
+          - `3`: J'adore
+          - `4`: Je deteste
+  '/proposals/{id}/request':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: Envoyer la demande de l'utilisateur
+      tags:
+        - proposals
+      responses:
+        '200':
+          description: 'OK, un boolean indiquant si la demande à été prise en compte, `true` si oui, `false` sinon. (En cas de `false`, c''est généralement que l''utilisateur à déjà demandé) '
+      operationId: post-proposals-id-request
+      x-stoplight:
+        id: vkzhzyzvmrpxq
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+    get:
+      summary: Les informations sur les demandes formelles
+      tags:
+        - proposals
+      responses:
+        '200':
+          description: 'OK, le boolean est `true` si l''utilisateur a demandé, `false` sinon.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  PRO_request_count_NB:
+                    type: integer
+                  hasAsked:
+                    type: boolean
+                x-examples:
+                  Example 1:
+                    PRO_request_count_NB: 1
+                    hasAsked: true
+              examples:
+                Example 1:
+                  value:
+                    PRO_request_count_NB: 1
+                    hasAsked: true
+      operationId: get-proposals-id-request
+      x-stoplight:
+        id: jw3vltnog8nzx
+      description: Renvoie le nombre de demande formelle et un boolean indiquant si l'utilisateur a déjà fait une demande.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          required: true
+          description: Le cookie d'authentification
+  '/comments/{id}/reactions':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Les réactions sur un commentaire
+      tags:
+        - comments
+        - reactions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nblove:
+                    type: integer
+                  nblike:
+                    type: integer
+                  nbdislike:
+                    type: integer
+                  nbhate:
+                    type: integer
+                  hasReacted:
+                    type: boolean
+                x-examples:
+                  Example 1:
+                    nblove: 3
+                    nblike: 2
+                    nbdislike: 1
+                    nbhate: 0
+                    hasReacted: true
+              examples:
+                Example 1:
+                  value:
+                    nblove: 3
+                    nblike: 2
+                    nbdislike: 1
+                    nbhate: 0
+                    hasReacted: true
+      operationId: get-comments-id-reactions
+      x-stoplight:
+        id: 4xx51he23v90p
+      description: Récupère le compte de chaque type de reaction sur le commentaire et indique si l'utilisateur a déjà réagit (`false` représentant le fait qu'il n'a pas réagit).
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+    post:
+      summary: Réagir à un commentaire
+      tags:
+        - comments
+        - reactions
+      responses:
+        '200':
+          description: 'OK, renvoie `true`si la reaction a été prise en compte, `false` sinon. En cas de false cela indique généralement qu''une réaction est déjà enregistrée.'
+      operationId: post-comments-id-reactions
+      x-stoplight:
+        id: 29deihj3kg3dl
+      description: Réagir à un commentaire
+      requestBody:
+        description: |-
+          Contient la réaction. Peut prendre les valeurs suivantes : 
+          - `1`: J'aime
+          - `2`: Je n'aime pas
+          - `3`: J'adore
+          - `4`: Je deteste
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reaction:
+                  type: integer
+              x-examples:
+                Example 1:
+                  reaction: 1
+            examples:
+              Example 1:
+                value:
+                  reaction: 1
 components:
   securitySchemes: {}
   responses: {}
