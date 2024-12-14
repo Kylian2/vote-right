@@ -1509,6 +1509,56 @@ paths:
               Example 1:
                 value:
                   reaction: 1
+  '/proposals/{id}/membership':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Vérifie que l'utilisateur peut accéder à la proposition
+      tags:
+        - proposals
+      responses:
+        '200':
+          description: '`true` si l''utilisateur peut accéder, `false` sinon.'
+      operationId: get-proposals-id-membership
+      x-stoplight:
+        id: ds9qqy9qob5vo
+      description: Verifie que l'utilisateur peut accéder à la proposition (donc qu'il est membres de la communauté associée à la proposition).
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/communities/{id}/membership':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Vérifie que l'utilisateur est membre de la communauté
+      tags:
+        - community
+        - ''
+      responses:
+        '200':
+          description: 'Renvoie `true` si l''utilisateur est membre, `false` sinon.'
+      operationId: get-communities-id-membership
+      x-stoplight:
+        id: 4q6zqvueiscka
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
 components:
   securitySchemes: {}
   responses: {}
