@@ -28,7 +28,7 @@
                 <h3>Proposition terminées</h3>
                 <div class="proposals__contener">
                     <CardProposal v-for="proposal in finishedProposals" :proposal="proposal"></CardProposal>
-                    <p class="communities_contener__bloc__no-community" v-if="ongoingProposals && finishedProposals.length === 0">Aucune proposition terminées</p>
+                    <p class="communities_contener__bloc__no-community" v-if="finishedProposals && finishedProposals.length === 0">Aucune proposition terminées</p>
                 </div>
             </div>
         </div>
