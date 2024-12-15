@@ -22,8 +22,12 @@
                 <div class="proposal__discussion">
                     <h2>Discussion</h2>
                     <div class="proposal__discussion__comments-container" v-if="comments && me">
-                        <Comment v-for="comment in comments" :comment="comment" :class="{ 'self-end': (comment['COM_sender_NB'] == me['USR_id_NB'])}" :hideName="(comment['COM_sender_NB'] == me['USR_id_NB'])"></Comment>
-                        <p v-if="comments.lenght === 0">Soyez le premier à commenter</p>
+                        <Comment v-for="comment in comments" 
+                        :comment="comment" 
+                        :right="(comment['COM_sender_NB'] == me['USR_id_NB'])" 
+                        :hideName="(comment['COM_sender_NB'] == me['USR_id_NB'])" 
+                        :reasons="reasons"></Comment>
+                        <p v-if="comments.length === 0">Soyez le premier à commenter</p>
                     </div>
                     <div class="proposal__discussion__send-message">
                         <Input type="text" name="comment" placeholder="Écrire un message..." no-label :displayError="false"
@@ -106,6 +110,8 @@ const reactions = ref();
 const saveReaction = ref(false);
 
 const formalRequest = ref();
+
+const reasons = ref([]);
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -272,8 +278,19 @@ const makeFormalRequest = async () => {
     if(response){
         formalRequest.value['hasAsked'] = true;
     }
-    
+}
 
+const fetchReasons = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/reasons`, {
+            credentials: 'include',
+        })
+
+        reasons.value = response.map((r) => [r['RES_label_VC'], r['RES_id_NB']]);
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
 }
 
 onMounted(() => {
@@ -282,6 +299,7 @@ onMounted(() => {
     fetchUser();
     fetchReaction();
     fetchFormalRequest();
+    fetchReasons();
 })
 
 </script>

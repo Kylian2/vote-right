@@ -1,5 +1,5 @@
 <template>
-    <div class="comment">
+    <div class="comment" :class="{ 'self-end': right }">
         <p class="comment__sender" v-if="!hideName">
             {{ comment["COM_sender_fname_VC"] }} <b>{{ comment["COM_sender_lname_VC"] }}</b>
         </p>
@@ -33,12 +33,14 @@
         ok-text="Signaler"
         cancel-text="Annuler"
         :disable-valid="!reportReasonValid"
+        :before-ok="() => {report()}"
+        :before-cancel="() => {reportReason = ''}"
         >
             <template #title>Signalez le commentaire</template>
             <template #body>  
-                <Select 
+                <Select v-if="reasons"
                 name="reportReason" 
-                :options="[['Racisme', 1], ['Harcelement', 2], ['Vulgaire', 3]]" 
+                :options="reasons" 
                 placeholder="Selectionnez un motif"
                 :rules="[
                     (v) => Boolean(v) || 'Veuillez selection un motif'
@@ -65,6 +67,15 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false,
+    }, 
+    reasons: {
+        type: Array,
+        required: true,
+    },
+    right: {
+        type: Boolean,
+        required: false,
+        default: false,
     }
 })
 
@@ -72,6 +83,7 @@ const toggle = ref(false);
 const reactions = ref();
 
 const reportModal = useState('reportModal', () => false);
+const reportReason = useState('reportReason');
 const reportReasonValid = useState('reportReasonValid');
 
 const fetchReaction = async () => {
@@ -117,6 +129,23 @@ const react = async (reaction) => {
                     break;
             }
         }
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
+const report = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/comments/${props.comment['COM_id_NB']}/report`, {
+            method: 'POST',
+            credentials: 'include',
+            body:{
+                reason: reportReason.value
+            }
+        })
+
+        console.log(response);
 
         }catch (error){
         console.log('An unexptected error occured : ', error);
