@@ -23,6 +23,7 @@
                     <h2>Discussion</h2>
                     <div class="proposal__discussion__comments-container" v-if="comments && me">
                         <Comment v-for="comment in comments" 
+                        :key="comment['COM_id_NB']" 
                         :comment="comment" 
                         :right="(comment['COM_sender_NB'] == me['USR_id_NB'])" 
                         :hideName="(comment['COM_sender_NB'] == me['USR_id_NB'])" 

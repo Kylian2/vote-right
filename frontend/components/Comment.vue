@@ -29,14 +29,14 @@
             </div>
     </div>
     <Modal
-        name="report"
+        :name="`report${comment['COM_id_NB']}`"
         ok-text="Signaler"
         cancel-text="Annuler"
         :disable-valid="!reportReasonValid"
         :before-ok="() => {report()}"
         :before-cancel="() => {reportReason = ''}"
         >
-            <template #title>Signalez le commentaire</template>
+            <template #title>Signaler le commentaire</template>
             <template #body>  
                 <Select v-if="reasons"
                 name="reportReason" 
@@ -46,7 +46,7 @@
                     (v) => Boolean(v) || 'Veuillez selection un motif'
                 ]"
                 >Motif : </Select>
-            </template>        
+            </template>
     </Modal>
 
     <!--Les toasts de validation et d'erreur se trouvent dans la page proposition-->
@@ -78,13 +78,13 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false,
-    }
+    },
 })
 
 const toggle = ref(false);
 const reactions = ref();
 
-const reportModal = useState('reportModal', () => false);
+const reportModal = useState(`report${props.comment['COM_id_NB']}Modal`, () => false);
 const reportReason = useState('reportReason');
 const reportReasonValid = useState('reportReasonValid');
 
@@ -142,21 +142,19 @@ const reportValid = useState('reportValidUp', ()=>false);
 
 const report = async () => {
     try{
-        const response = await $fetch(`${config.public.baseUrl}/comments/${props.comment['COM_id_NB']}/report`, {
+        const response = await $fetch(`${config.public.baseUrl}/comments/${props.comment["COM_id_NB"]}/report`, {
             method: 'POST',
             credentials: 'include',
             body:{
-                reason: reportReason.value
+                reason: 1
             }
         })
 
-        console.log(response);
         if(response){
             reportValid.value = true;
         }else{
             reportError.value = true;
         }
-        console.log(reportValid.value);
 
         }catch (error){
         console.log('An unexptected error occured : ', error);
