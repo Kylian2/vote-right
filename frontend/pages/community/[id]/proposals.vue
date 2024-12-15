@@ -40,7 +40,7 @@
 const config = useRuntimeConfig();
 
 definePageMeta({
-    middleware: ["auth"]
+    middleware: ["auth", "community-member"]
 });
 
 const route = useRoute();
