@@ -11,7 +11,6 @@ class Proposal extends Model{
     public ?float $PRO_budget_NB; //nullable
     public ?int $PRO_discussion_duration_NB; //nullable
     public string $PRO_creation_DATE;
-    public string $PRO_status_VC;
 
     //Le numero du thème (relativement à la commaunauté) et/ou le nom du thème
     public string $PRO_theme_VC;
