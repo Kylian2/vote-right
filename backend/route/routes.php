@@ -36,5 +36,8 @@ Router::get('/proposals/{id}/membership', 'proposalController@isMember', true);
 Router::post('/comments', 'commentController@store', true);
 Router::get('/comments/{id}/reactions', 'commentController@reactions', true);
 Router::post('/comments/{id}/reactions', 'commentController@react', true);
+Router::post('/comments/{id}/report', 'commentController@report', true);
+
+Router::get('/reasons', 'reasonController@index', true);
 
 ?>
