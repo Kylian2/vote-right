@@ -25,10 +25,27 @@
                         <p v-if="reactions['hasReacted']">{{ reactions["nbhate"] }}</p>
                     </button>
                 </div>
-                <button @click.stop class="comment__report-btn">Signaler</button>
+                <button @click="reportModal = !reportModal" class="comment__report-btn">Signaler</button>
             </div>
-        
     </div>
+    <Modal
+        name="report"
+        ok-text="Signaler"
+        cancel-text="Annuler"
+        :disable-valid="!reportReasonValid"
+        >
+            <template #title>Signalez le commentaire</template>
+            <template #body>  
+                <Select 
+                name="reportReason" 
+                :options="[['Racisme', 1], ['Harcelement', 2], ['Vulgaire', 3]]" 
+                placeholder="Selectionnez un motif"
+                :rules="[
+                    (v) => Boolean(v) || 'Veuillez selection un motif'
+                ]"
+                >Motif : </Select>
+            </template>        
+    </Modal>
 </template>
 <script setup>
 
@@ -53,6 +70,9 @@ const props = defineProps({
 
 const toggle = ref(false);
 const reactions = ref();
+
+const reportModal = useState('reportModal', () => false);
+const reportReasonValid = useState('reportReasonValid');
 
 const fetchReaction = async () => {
     try{
