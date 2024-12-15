@@ -91,6 +91,22 @@ class ProposalController{
     }
 
     /**
+     * Affiche un json de la liste des propositions et leur thème d'une communauté
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function allOfCommunity($params){
+        $CMY_id_NB = $params[0];
+        $proposals = Proposal::allOfCommunity($CMY_id_NB);
+        echo json_encode($proposals);
+    }
+
+    /**
      * Affiche un json contenant les informations de la proposition dont l'identifiant est passé via l'url
      * 
      * $params[0] contient l'identifiant de la proposition à afficher
@@ -132,7 +148,7 @@ class ProposalController{
         echo json_encode($reactions);
     }
 
-        /**
+    /**
      * Permet de reagir à une proposition
      * 
      * @param array $params les paramètres de l'url ($params[0] contient l'indentifiant de la proposition);
@@ -198,6 +214,5 @@ class ProposalController{
         $result = Proposal::isMember($params[0], $userId);
         echo json_encode(($result));
     }
-
 }
 ?>

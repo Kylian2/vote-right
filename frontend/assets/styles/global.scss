@@ -93,3 +93,7 @@ h4{
 .self-end{
     align-self: flex-end;
 }
+
+input[type="checkbox"], label{
+    cursor: pointer;
+}
