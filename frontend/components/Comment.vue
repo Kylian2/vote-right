@@ -48,6 +48,8 @@
                 >Motif : </Select>
             </template>        
     </Modal>
+
+    <!--Les toasts de validation et d'erreur se trouvent dans la page proposition-->
 </template>
 <script setup>
 
@@ -135,6 +137,9 @@ const react = async (reaction) => {
     }
 }
 
+const reportError = useState('reportErrorUp', ()=>false);
+const reportValid = useState('reportValidUp', ()=>false);
+
 const report = async () => {
     try{
         const response = await $fetch(`${config.public.baseUrl}/comments/${props.comment['COM_id_NB']}/report`, {
@@ -146,6 +151,12 @@ const report = async () => {
         })
 
         console.log(response);
+        if(response){
+            reportValid.value = true;
+        }else{
+            reportError.value = true;
+        }
+        console.log(reportValid.value);
 
         }catch (error){
         console.log('An unexptected error occured : ', error);

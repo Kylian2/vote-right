@@ -83,6 +83,24 @@
             </div>
 
     </main>
+    <Toast 
+        name="reportValid" 
+        :type="3" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+        Commentaire signalé !
+    </Toast>
+    <Toast 
+        name="reportError" 
+        :type="1" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Vous avez déjà signalé ce commentaire
+    </Toast>
 </template>
 <script setup>
 
