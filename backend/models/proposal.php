@@ -1,5 +1,7 @@
 <?php
 
+@require_once('models/model.php');
+
 class Proposal extends Model{
 
     public string $PRO_id_NB;
