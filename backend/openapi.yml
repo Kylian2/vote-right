@@ -86,11 +86,9 @@ paths:
           description: Le cookie d'authentification
           required: true
       tags:
-        - communauté
+        - communities
     post:
       summary: Créer une communauté
-      tags:
-        - communauté
       responses:
         '200':
           description: 'Renvoie true si l''insertion s''est bien passé. '
@@ -134,6 +132,8 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   '/communities/{id}':
     parameters:
       - schema:
@@ -143,8 +143,6 @@ paths:
         required: true
     get:
       summary: Une communauté
-      tags:
-        - communauté
       responses:
         '200':
           description: La communauté renvoyée avec succès
@@ -197,11 +195,11 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   /communities/administred:
     get:
       summary: La liste des communautés gérées par un utilisateur
-      tags:
-        - communauté
       responses:
         '200':
           description: Un tableau des communautés.
@@ -279,8 +277,6 @@ paths:
         required: true
     get:
       summary: Les proposition en cours
-      tags:
-        - communauté
       responses:
         '200':
           description: Les propositions renvoyées avec succès.
@@ -339,6 +335,8 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   '/communities/{id}/finished':
     parameters:
       - schema:
@@ -348,8 +346,6 @@ paths:
         required: true
     get:
       summary: Les proposition terminées
-      tags:
-        - communauté
       responses:
         '200':
           description: Les propositions renvoyées avec succès
@@ -407,6 +403,8 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   '/communities/{id}/members':
     parameters:
       - schema:
@@ -417,9 +415,9 @@ paths:
     get:
       summary: La liste des membres
       tags:
-        - communauté
         - membre
         - role
+        - communities
       responses:
         '200':
           description: La liste renvoyé avec succès
@@ -531,8 +529,6 @@ paths:
         required: true
     get:
       summary: Les thèmes de la communauté
-      tags:
-        - communauté
       responses:
         '200':
           description: 'La liste des thèmes récupérés avec succès. '
@@ -577,6 +573,8 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   /auth/register:
     post:
       summary: Créer un compte
@@ -1543,15 +1541,102 @@ paths:
         required: true
     get:
       summary: Vérifie que l'utilisateur est membre de la communauté
-      tags:
-        - community
-        - ''
       responses:
         '200':
           description: 'Renvoie `true` si l''utilisateur est membre, `false` sinon.'
       operationId: get-communities-id-membership
       x-stoplight:
         id: 4q6zqvueiscka
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      tags:
+        - communities
+  '/comment/{id}/report':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: Signaler un commentaire
+      responses:
+        '200':
+          description: 'OK, renvoie `true` si le message a été signalé, `false` sinon.'
+      operationId: post-comment-id-report
+      x-stoplight:
+        id: 9sokzq48tpzbk
+      description: 'Permet de signaler un commentaire. '
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          required: true
+          description: Le cookie d'authentification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: integer
+              x-examples:
+                Example 1:
+                  reason: 1
+            examples:
+              Example 1:
+                value:
+                  reason: 1
+        description: '`reason` est en entier contenant un des motifs de signalement définis. '
+      tags:
+        - comments
+  /reasons:
+    get:
+      summary: Les motifs de signalement
+      tags:
+        - reasons
+      responses:
+        '200':
+          description: 'OK, la liste est renvoyée avec succès'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    RES_id_NB:
+                      type: integer
+                    RES_label_VC:
+                      type: string
+                x-examples:
+                  Example 1:
+                    - RES_id_NB: 1
+                      RES_label_VC: Motif 1
+                    - RES_id_NB: 2
+                      RES_label_VC: Motif 2
+                    - RES_id_NB: 3
+                      RES_label_VC: Motif 3
+              examples:
+                Example 1:
+                  value:
+                    - RES_id_NB: 1
+                      RES_label_VC: Motif 1
+                    - RES_id_NB: 2
+                      RES_label_VC: Motif 2
+                    - RES_id_NB: 3
+                      RES_label_VC: Motif 3
+      operationId: get-reasons
+      x-stoplight:
+        id: ahkgv9b9ov4hx
+      description: Renvoie la liste des motifs de signalement.
       parameters:
         - schema:
             type: string
