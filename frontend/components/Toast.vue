@@ -44,11 +44,7 @@ const props = defineProps({
   time: {
     type: Number,
     required: false,
-    default: 1000, // Temps en secondes
-  },
-  type: {
-    type: Number,
-    required: true,
+    default: 10, // Temps en secondes
   },
   name: {
     type: String,
@@ -56,7 +52,7 @@ const props = defineProps({
   },
 });
 
-// Émission d'événements vers le parent
+
 const disapear = ref(false);
 const loading = ref(false);
 

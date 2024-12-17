@@ -378,6 +378,88 @@ ex:
 <Comment :comment="comment"></Comment>
 ```
 
+### Modal
+
+Crée une modale. Le modale est composé d'un titre, d'un corps et de deux boutons d'actions, l'un pour valider une action, l'autre pour fermer la modale. 
+
+| Nom           | Requise ? | Valeur par défaut | Effet                                                                                                                                |
+|---------------|-----------|-------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| okText        | Non       | Valider           | Le texte du bouton validant.                                                                                                         |
+| cancelText    | Non       |                   | Affiche le bouton annulant l'action avec le texte défini dans la variable. <br>Si la variable est nulle, le bouton n'est pas affiché |
+| beforeOk      | Non       | () => {}          | La fonction lancée au moment de la validation (appuie sur le bouton OK)                                                              |
+| beforeCancel  | Non       | () => {}          | La fonction lancée au moment de l'annulation (appuie sur le bouton Cancel)                                                           |
+| BeforeClose   | Non       | () => {}          | La fonction lancée au moment de la fermeture de la modale                                                                            |
+| Fullscreen    | Non       | false             | Un boolean indiquant si la modale apparait en plein écran                                                                            |
+| name          | Oui       |                   | Permet d'identifier la modal.                                                                                                        |
+| placeholder   | Non       |                   | Le placeholder                                                                                                                       |
+| required      | Non       | false             | Indique si le champs est obligatoire                                                                                                 |
+| disabledValid | Non       | false             | Indique si le bouton Ok doit être désactiver
+
+La props `name` doit toujours être définie, c'est elle qui permet d'identifier la modal et de gérer sont statut ouvert/fermé. Quand cette props est définie, vous avez accès à une variable réactive booléenne `{name}Modal`. 
+Lorsque cette variable est `true` la modal est ouverte, `false` la modal est fermée. 
+
+Deux slots sont disponibles dans cette modal. Le slot `#title` comporte le titre de la modal, le slot `#body` le corps de la modal, c'est dans le body que les éléments qui la compose doivent être insérés. 
+
+ex: 
+
+```Html
+<Modal
+    :name="`infos`"
+    ok-text="Valider"
+    cancel-text="Annuler"
+    :before-ok="() => {console.log('Ok button clicked')}"
+    :before-cancel="() => {console.log('Modal closed')}"
+    >
+        <template #title>Le titre de la modal</template>
+        <template #body>  
+            <p>
+              Ceci est le corps de la modal, le contenu doit être placé ici. 
+            </p>
+        </template>
+</Modal>
+```
+
+```js
+const open = useState(`$infosModal`, () => false); //permet de controler la modal
+```
+
+### Toast
+
+Le toast permet d'afficher temporairement une alerte sur l'écran de l'utilisateur. 
+Il y a plusieurs niveau d'alerte : 
+- Informations (bleu) (4)
+- Validation (vert) (3)
+- Alerte (jaune) (2)
+- Erreur (rouge) (1)
+
+Le toast est composer d'un slot qui contient le message d'afficher par le toast.
+
+| Nom    | Requise ? | Valeur par défaut | Effet                                                                       |
+|--------|-----------|-------------------|-----------------------------------------------------------------------------|
+| loader | Non       | false             | Affiche la barre du temps restant                                           |
+| time   | Non       | 5                 | La durée d'affichage entière en seconde.                                    |
+| name   | Oui       |                   | Le nom permettant d'identifier le toast, il doit être unique à chaque toast |
+
+Une fois la props `name` définie, vous avez accès à une variable booléenne réactive `${name}Up` permettant de gérer le statu up/down du toast.
+
+ex:
+
+```html
+<Toast 
+    name="toast" 
+    :type="3" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+    J'affiche un message de validation !
+</Toast>
+```
+
+```js
+//permet de gérer le toast
+const up = useState('ToastUp');
+```
 
 ### Les middleware
 
