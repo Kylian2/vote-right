@@ -13,8 +13,8 @@
                 <div v-if="reactions && !reactions['hasReacted']" class="proposal__opinion" :class="{ 'disapear' : saveReaction}">
                     <h2>Donner son avis</h2>
                     <div>
-                        <button v-if="!saveReaction" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" @click="react(LIKE)">J'aime</button>
-                        <button v-if="!saveReaction" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" @click="react(DISLIKE)">Je n'aime pas</button>
+                        <button v-if="!saveReaction" :style="{background: communityColor}" class="btn btn--full" @click="react(LIKE)">J'aime</button>
+                        <button v-if="!saveReaction" :style="{background: communityColor}" class="btn btn--full" @click="react(DISLIKE)">Je n'aime pas</button>
                         <p v-if="saveReaction">Avis enregistré !</p>
                     </div>
                 </div>
@@ -35,22 +35,22 @@
                                 (v) => Boolean(v) ,
                             ]"
                         ></Input>
-                        <button @click="sendMessage()" :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="btn btn--full" :disabled="!commentValid">Envoyer</button>
+                        <button @click="sendMessage()" :style="{background: communityColor}" class="btn btn--full" :disabled="!commentValid">Envoyer</button>
                     </div>
                 </div>
             </section>
 
             <div v-if="initiator" class="proposal__initiator">
-                <p :style="{background: (community ? community['CMY_color_VC'] : '#222222')}" class="profile-initials">{{ getInitials(initiator['USR_firstname_VC'], initiator['USR_lastname_VC']) }}</p>
+                <p :style="{background: communityColor}" class="profile-initials">{{ getInitials(initiator['USR_firstname_VC'], initiator['USR_lastname_VC']) }}</p>
                 <div>
                     <p>{{ initiator['USR_firstname_VC'] }} <b>{{ initiator['USR_lastname_VC'] }}</b></p>
                     <p class="legende">le {{ formatDate(new Date(proposal['PRO_creation_DATE'])) }}</p>
                 </div>
             </div>
 
-            <div v-if="proposal && community" class="proposal__informations"
+            <div v-if="proposal" class="proposal__informations"
                 :style="{
-                    background: community['CMY_color_VC']
+                    background: communityColor
                 }"
             >
                 <p v-if="proposal['PRO_theme_VC']"><img src="/images/icons/theme.svg" alt="icons-theme">{{ proposal['PRO_theme_VC'] }}</p>
@@ -59,9 +59,9 @@
                 <p v-if="proposal['PRO_period_YEAR']"><img src="/images/icons/date.svg" alt="icons-theme">{{ proposal['PRO_period_YEAR'] }}</p>
             </div>
 
-            <div v-if="proposal && community && formalRequest" class="proposal__request">
+            <div v-if="proposal && formalRequest" class="proposal__request">
                 <h3>Demande Formelle</h3>
-                <button @click="makeFormalRequest()" class="btn btn--full btn--block" :style="{background: community['CMY_color_VC']}" :disabled="formalRequest['hasAsked']">
+                <button @click="makeFormalRequest()" class="btn btn--full btn--block" :style="{background: communityColor}" :disabled="formalRequest['hasAsked']">
                     <img src="/images/icons/ticks.png" alt="validation-ticks">
                     <span>{{ formalRequest['hasAsked'] ? 'Demandé' : 'Demander'}}</span>    
                 </button>
@@ -77,9 +77,9 @@
             <div class="proposal__opinions" v-if="reactions && reactions['hasReacted']">
                 <h3>Avis</h3>
                 <p v-if="reactions['hasReacted'] === LOVE  || reactions['hasReacted'] === LIKE">Vous et {{ (reactions["nblove"] + reactions["nblike"]) }} personnes 
-                    <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">aiment</span> cette proposition.</p>
+                    <span :style="{color: communityColor}">aiment</span> cette proposition.</p>
                 <p v-if="reactions['hasReacted'] === HATE  || reactions['hasReacted'] === DISLIKE">Vous et {{ (reactions["nbhate"] +  reactions["nbdislike"]) }} personnes 
-                    <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">n'aiment pas</span> cette proposition.</p>
+                    <span :style="{color: communityColor}">n'aiment pas</span> cette proposition.</p>
             </div>
 
             <!-- Système de vote -->
@@ -94,7 +94,7 @@
                             <div class="result__stat">
                                 <span class="result__stat__bar" 
                                 :style="{
-                                        background: (community ? community['CMY_color_VC'] : '#222222'),
+                                        background: communityColor,
                                         width: `${possibility['POS_percentNbVotes_NB']}%`
                                     }"></span>
                                 <span class="result__stat__value legende">{{ possibility['POS_percentNbVotes_NB'] }}%</span>
@@ -104,31 +104,31 @@
                 </div>
 
                 <div v-if="currentVote && (results.length+1 < nbRounds || timeRemaining !== 0)" class="vote">
-                    <h3>{{ (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2) ? 'Vote' : `Vote - Tour ${currentVote['VOT_round_NB']}`}}</h3>
+                    <h3>{{ classicSystem ? 'Vote' : `Vote - Tour ${currentVote['VOT_round_NB']}`}}</h3>
                     <div>
                         <p class="legende">{{ timeRemaining > 0 ? formatTimeRemaning(timeRemaining) : 'Le vote est terminé.'}}</p>
                         <p class="legende">Le vote est un {{currentVote['VOT_type_VC']}}</p>
                     </div>
 
                     <div 
-                    v-if="!hasVoted && (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2)" 
+                    v-if="!hasVoted && classicSystem" 
                     class="vote__options vote__options--classique">
                         <button v-for="possibility in currentVote['VOT_possibilities_TAB']"
                         class="btn btn--full" 
                         :class="{'select' : selectedVoteOption === possibility[1]}"
-                        :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
+                        :style="{background: communityColor}"
                         @click="selectedVoteOption = possibility[1]"
                         :disabled="timeRemaining === 0"
                         >{{ possibility[0] }}</button>
                     </div>
 
                     <div 
-                    v-if="!hasVoted && (currentVote['VOT_type_NB'] !== 1 && currentVote['VOT_type_NB'] !== 2)" 
+                    v-if="!hasVoted && !classicSystem" 
                     class="vote__options vote__options--multiple">
                         <button v-for="possibility in currentVote['VOT_possibilities_TAB']"
                         class="btn btn--full" 
                         :class="{'select' : selectedVoteOption === possibility[1]}"
-                        :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
+                        :style="{background: communityColor}"
                         @click="selectedVoteOption = possibility[1]"
                         :disabled="timeRemaining === 0"
                         >{{ possibility[0] }}</button>
@@ -136,7 +136,7 @@
                     <div v-if="!hasVoted && timeRemaining !== 0" class="vote__validation">
                         <p v-if="!hasVoted" class="legende">Attention, ce choix est irréversible</p>
                         <div class="vote__validation__wrapper"
-                        :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
+                        :style="{background: communityColor}"
                         >
                             <div class="vote__validation__loader" :class="{ 'active': isVoting }">
                                 <button 
@@ -187,6 +187,8 @@ const LOVE = 3;
 const LIKE = 1;
 const DISLIKE = 2;
 const HATE = 4;
+
+const communityColor = ref("#222222");
 
 const community = useState("community");
 const proposal = ref();
@@ -265,6 +267,7 @@ const fetchData = async () => {
         });
         
         community.value = com;
+        communityColor.value = community.value['CMY_color_VC'];
 
         if (!proposal.value?.PRO_initiator_NB) {
             console.warn('Community number not found in proposal data');
@@ -393,6 +396,7 @@ let votingTimer;
 const requiredHoldTime = 3000;
 const timeRemaining = ref(0);
 const nbRounds = ref();
+const classicSystem = ref();
 
 const startVoting = () => {
     isVoting.value = true;
@@ -432,6 +436,7 @@ const fetchVote = async () => {
             currentVote.value = votes.value[votes.value.length-1];
             timeRemaining.value = calculateTimeRemaining(new Date(), new Date(currentVote.value['VOT_end_DATE']?.replace(" ", "T")));
             nbRounds.value = currentVote['VOT_nb_rounds_NB'];
+            classicSystem.value = (currentVote['VOT_type_NB'] !== 1 && currentVote['VOT_type_NB'] !== 2);
 
             for(let i = 0; i < votes.value.length; i++){
                 let rmt = calculateTimeRemaining(new Date(), new Date(votes.value[i]['VOT_end_DATE']?.replace(" ", "T")));
