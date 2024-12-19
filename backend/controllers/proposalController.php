@@ -216,10 +216,37 @@ class ProposalController{
         echo json_encode(($result));
     }
 
+    /**
+     * Récupère les informations concernant les votes d'une proposition.
+     * Indique si l'utilisateur a déjà voté. 
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la proposition
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
     public static function voteInfos($params){
         $userId = SessionGuard::getUserId();
         $votes = Vote::getVoteOf($params[0], $userId);
         echo json_encode($votes);
+    }
+
+    /**
+     * Récupère les résultats d'un vote d'une proposition
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la proposition
+     * - Indice 1 = $round, le tour du vote
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function voteResult($params){
+        $result = Vote::getResult($params[0], $params[1]);
+        echo json_encode($result);
     }
 }
 ?>

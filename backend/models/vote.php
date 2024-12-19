@@ -13,8 +13,16 @@ class Vote extends Model{
     public string $VOT_type_VC;
     public array $VOT_possibilities_TAB;
 
-    //permet de dire si l'utilisateur à déjà voté
-    public bool $hasVoted;
+    /**
+     * Récupère les informations sur les votes d'une propositions (pour chaque tour). 
+     * Cette fonction ne recupère pas les résultats. 
+     * Indique si l'utilisateur en paramètre à voté. 
+     * 
+     * @param int $proposal la proposition
+     * @param int $user l'utilisateur
+     * 
+     * @return array un tableau d'objet représentant un vote, avec un attribut boolean hasVoted
+     */
     public static function getVoteOf(int $proposal, int $user){
         $request = "SELECT get_vote_informations(:proposal)";
         $prepare = connexion::pdo()->prepare($request);
@@ -36,6 +44,24 @@ class Vote extends Model{
         }
 
         return $votes;
+    }
+
+    /**
+     * Récupère les résultats des votes d'une proposition, en fonction du tour.
+     * 
+     * @param int $proposal la proposition
+     * @param int $round le tour de vote
+     * 
+     * @return object un objet contenant les resultats du vote
+     */
+    public static function getResult(int $proposal, int $round){
+        $request = "SELECT get_votes_for_proposal(:proposal, :round)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['proposal'] = $proposal;
+        $values['round'] = $round;
+        $prepare->execute($values);
+        $result = $prepare->fetch();
+        return json_decode($result[0]);
     }
 
 }
