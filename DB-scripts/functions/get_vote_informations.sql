@@ -39,7 +39,7 @@ BEGIN
             '{',
             '"VOT_proposal_NB": ', proposal_NB, ',',
             '"VOT_round_NB": ', round_NB, ',',
-            '"VOT_valid_BOOL": "', valid_BOOL, '",',
+            '"VOT_valid_BOOL": "', COALESCE(valid_BOOL, 'null'), '",',
             '"VOT_start_DATE": "', start_DATE, '",',
             '"VOT_end_DATE": "', end_DATE, '",',
             '"VOT_type_NB": ', type_NB, ',',
