@@ -1,4 +1,4 @@
-<template>
+ <template>
     <Header type="logged"   :color="community && community['CMY_color_VC'] ? community['CMY_color_VC'].slice(-6) : '000000'"></Header>
 
     <Banner v-if="proposal" :community="community" :themes="[{'THM_name_VC' : proposal['PRO_theme_VC']}]" back>{{ proposal["PRO_title_VC"] }}</Banner>
@@ -81,6 +81,47 @@
                     <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">aiment</span> cette proposition.</p>
                 <p v-if="reactions['hasReacted'] === HATE  || reactions['hasReacted'] === DISLIKE">Vous et {{ (reactions["nbhate"] +  reactions["nbdislike"]) }} personnes 
                     <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">n'aiment pas</span> cette proposition.</p>
+            </div>
+
+            <!-- Système de vote -->
+            <div v-if="vote" class="vote">
+                <h3>Vote</h3>
+                <div>
+                    <p class="legende">Le vote dure encore 4 jours</p>
+                    <p class="legende">Le vote est un scrutin majoritaire simple</p>
+                </div>
+                <div v-if="!hasVoted" class="vote__options vote__options--classique">
+                    <button 
+                    class="btn btn--full" 
+                    :class="{'select' : selectedVoteOption === 1}"
+                    :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
+                    @click="selectedVoteOption = 1"
+                    >POUR</button>
+                    <button 
+                    class="btn btn--full"
+                    :class="{'select' : selectedVoteOption === 2}"
+                    :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
+                    @click="selectedVoteOption = 2"
+                    >CONTRE</button>
+                </div>
+                <div class="vote__validation">
+                    <p v-if="!hasVoted" class="legende">Attention, ce choix est irréversible</p>
+                    <div class="vote__validation__wrapper"
+                    :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
+                    >
+                        <div class="vote__validation__loader" :class="{ 'active': isVoting }">
+                            <button 
+                            :class="{ 'active': isVoting }"
+                            class="btn btn--full"
+                            @mousedown="startVoting()"
+                            @mouseup="stopVoting()"
+                            :disabled="selectedVoteOption === -1 || hasVoted"
+                            > 
+                                {{ (selectedVoteOption === -1 )? 'Faites un choix' : (hasVoted ? "A voté" : "VOTER")}} 
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
     </main>
@@ -184,19 +225,16 @@ const fetchData = async () => {
         });
         proposal.value = response;
 
-        if (!community.value) {
-
-            if (!proposal.value?.PRO_community_NB) {
-                console.warn('Community number not found in proposal data');
-                return;
-            }
-
-            const com = await $fetch(`${config.public.baseUrl}/communities/${proposal.value['PRO_community_NB']}`, {
-                credentials: 'include',
-            });
-            
-            community.value = com;
+        if (!proposal.value?.PRO_community_NB) {
+            console.warn('Community number not found in proposal data');
+            return;
         }
+
+        const com = await $fetch(`${config.public.baseUrl}/communities/${proposal.value['PRO_community_NB']}`, {
+            credentials: 'include',
+        });
+        
+        community.value = com;
 
         if (!proposal.value?.PRO_initiator_NB) {
             console.warn('Community number not found in proposal data');
@@ -310,6 +348,30 @@ const fetchReasons = async () => {
         }catch (error){
         console.log('An unexptected error occured : ', error);
     }
+}
+
+/* Système de vote */
+
+const selectedVoteOption = ref(-1);
+const vote = ref({});
+const hasVoted = ref(false);
+
+const isVoting = ref(false);
+let votingTimer;
+const requiredHoldTime = 3000;
+
+const startVoting = () => {
+    isVoting.value = true;
+    votingTimer = setTimeout(() => {
+        console.log('VOTE');
+        hasVoted.value = true;
+    }, requiredHoldTime);
+}
+
+const stopVoting = () => {
+    isVoting.value = false;
+    clearTimeout(votingTimer);
+    console.log('STOP VOTE');
 }
 
 onMounted(() => {
