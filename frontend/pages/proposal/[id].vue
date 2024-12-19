@@ -3,7 +3,7 @@
 
     <Banner v-if="proposal" :community="community" :themes="[{'THM_name_VC' : proposal['PRO_theme_VC']}]" back>{{ proposal["PRO_title_VC"] }}</Banner>
     <main class="proposal">
-            <section>
+            <section class="section-1">
                 <div class="proposal__description">
                     <h2>Description</h2>
                     <p v-if="proposal && proposal['PRO_description_TXT']">{{ proposal['PRO_description_TXT'] }}</p>
@@ -83,56 +83,77 @@
             </div>
 
             <!-- Système de vote -->
-            <div v-if="currentVote" class="vote">
-                <h3>{{ (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2) ? 'Vote' : `Vote - Tour ${currentVote['VOT_round_NB']}`}}</h3>
-                <div>
-                    <p class="legende">{{ timeRemaining > 0 ? formatTimeRemaning(timeRemaining) : 'Le vote est terminé.'}}</p>
-                    <p class="legende">Le vote est un {{currentVote['VOT_type_VC']}}</p>
-                </div>
 
-                <div 
-                v-if="!hasVoted && (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2)" 
-                class="vote__options vote__options--classique">
-                    <button v-for="possibility in currentVote['VOT_possibilities_TAB']"
-                    class="btn btn--full" 
-                    :class="{'select' : selectedVoteOption === possibility[1]}"
-                    :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
-                    @click="selectedVoteOption = possibility[1]"
-                    :disabled="timeRemaining === 0"
-                    >{{ possibility[0] }}</button>
-                </div>
+            <section class="vote-section">
 
-                <div 
-                v-if="!hasVoted && (currentVote['VOT_type_NB'] !== 1 && currentVote['VOT_type_NB'] !== 2)" 
-                class="vote__options vote__options--multiple">
-                    <button v-for="possibility in currentVote['VOT_possibilities_TAB']"
-                    class="btn btn--full" 
-                    :class="{'select' : selectedVoteOption === possibility[1]}"
-                    :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
-                    @click="selectedVoteOption = possibility[1]"
-                    :disabled="timeRemaining === 0"
-                    >{{ possibility[0] }}</button>
-                </div>
-
-                <div v-if="!hasVoted || timeRemaining !== 0" class="vote__validation">
-                    <p v-if="!hasVoted" class="legende">Attention, ce choix est irréversible</p>
-                    <div class="vote__validation__wrapper"
-                    :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
-                    >
-                        <div class="vote__validation__loader" :class="{ 'active': isVoting }">
-                            <button 
-                            :class="{ 'active': isVoting }"
-                            class="btn btn--full"
-                            @mousedown="startVoting()"
-                            @mouseup="stopVoting()"
-                            :disabled="selectedVoteOption === -1 || hasVoted"
-                            > 
-                                {{ (selectedVoteOption === -1 )? 'Faites un choix' : (hasVoted ? "A voté" : "VOTER")}} 
-                            </button>
+                <div class="vote__results"v-if="results.length > 0 && currentVote" v-for="result, key in results">
+                    <h3>{{ (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2) ? 'Résultat' : `Résultat - Tour ${key+1}`}}</h3>
+                    <div class="vote__results__container">
+                        <div v-for="possibility, key in result" class="result">
+                            <p>{{ possibility['POS_label_VC'] }}</p>
+                            <div class="result__stat">
+                                <span class="result__stat__bar" 
+                                :style="{
+                                        background: (community ? community['CMY_color_VC'] : '#222222'),
+                                        width: `${possibility['POS_percentNbVotes_NB']}%`
+                                    }"></span>
+                                <span class="result__stat__value legende">{{ possibility['POS_percentNbVotes_NB'] }}%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <div v-if="currentVote" class="vote">
+                    <h3>{{ (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2) ? 'Vote' : `Vote - Tour ${currentVote['VOT_round_NB']}`}}</h3>
+                    <div>
+                        <p class="legende">{{ timeRemaining > 0 ? formatTimeRemaning(timeRemaining) : 'Le vote est terminé.'}}</p>
+                        <p class="legende">Le vote est un {{currentVote['VOT_type_VC']}}</p>
+                    </div>
+
+                    <div 
+                    v-if="!hasVoted && (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2)" 
+                    class="vote__options vote__options--classique">
+                        <button v-for="possibility in currentVote['VOT_possibilities_TAB']"
+                        class="btn btn--full" 
+                        :class="{'select' : selectedVoteOption === possibility[1]}"
+                        :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
+                        @click="selectedVoteOption = possibility[1]"
+                        :disabled="timeRemaining === 0"
+                        >{{ possibility[0] }}</button>
+                    </div>
+
+                    <div 
+                    v-if="!hasVoted && (currentVote['VOT_type_NB'] !== 1 && currentVote['VOT_type_NB'] !== 2)" 
+                    class="vote__options vote__options--multiple">
+                        <button v-for="possibility in currentVote['VOT_possibilities_TAB']"
+                        class="btn btn--full" 
+                        :class="{'select' : selectedVoteOption === possibility[1]}"
+                        :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
+                        @click="selectedVoteOption = possibility[1]"
+                        :disabled="timeRemaining === 0"
+                        >{{ possibility[0] }}</button>
+                    </div>
+                    <div v-if="!hasVoted && timeRemaining !== 0" class="vote__validation">
+                        <p v-if="!hasVoted" class="legende">Attention, ce choix est irréversible</p>
+                        <div class="vote__validation__wrapper"
+                        :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
+                        >
+                            <div class="vote__validation__loader" :class="{ 'active': isVoting }">
+                                <button 
+                                :class="{ 'active': isVoting }"
+                                class="btn btn--full"
+                                @mousedown="startVoting()"
+                                @mouseup="stopVoting()"
+                                :disabled="selectedVoteOption === -1 || hasVoted"
+                                > 
+                                    {{ (selectedVoteOption === -1 )? 'Faites un choix' : (hasVoted ? "A voté" : "VOTER")}} 
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
     </main>
     <Toast 
         name="reportValid" 
@@ -364,6 +385,7 @@ const fetchReasons = async () => {
 const selectedVoteOption = ref(-1);
 const votes = ref();
 const currentVote = ref();
+const results = ref([]);
 const hasVoted = ref(false);
 
 const isVoting = ref(false);
@@ -385,6 +407,19 @@ const stopVoting = () => {
     console.log('STOP VOTE');
 }
 
+const fetchResult = async (round) => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/${round}/result`, {
+            credentials: 'include',
+        })
+
+        results.value.push(response);
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
 const fetchVote = async () => {
     try{
         const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/vote`, {
@@ -395,9 +430,14 @@ const fetchVote = async () => {
         if(votes.value.length > 0){
             currentVote.value = votes.value[votes.value.length-1];
             timeRemaining.value = calculateTimeRemaining(new Date(), new Date(currentVote.value['VOT_end_DATE']?.replace(" ", "T")));
+
+            for(let i = 0; i < votes.value.length; i++){
+                let rmt = calculateTimeRemaining(new Date(), new Date(votes.value[i]['VOT_end_DATE']?.replace(" ", "T")));
+                if(rmt === 0){
+                    fetchResult(i+1);
+                }
+            }
         }
-
-
 
         }catch (error){
         console.log('An unexptected error occured : ', error);
