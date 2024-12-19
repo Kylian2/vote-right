@@ -4,35 +4,53 @@
         <div class="invitation__image" v-if="community" 
             :style= "{ background: `url('/images/communities/${community['CMY_image_VC']}') 0% 15% / cover` }">
         </div>
-        <div class="invitation__content" v-if="invitation && community">
-            <h2> {{ invitation['INV_sender_firstname_VC'] }} {{ invitation['INV_sender_lastname_VC'] }} vous invite à rejoindre le groupe "{{ community["CMY_name_VC"] }}"</h2>
-            <p> En rejoignant le groupe, vous pourrez faire des propositions et participer aux votes. </p>
+
+        <div v-if="invitationExpired">
+            <h3 style="text-align: center; margin-top: 20px; margin-bottom: 20px;"> Cette invitation a expiré </h3>
         </div>
-        <div class="invitation__community">
-            <div class="invitation__community-themes">
-                <p class="invitation__community-themes-header"> Le groupe traite des thèmes : </p>
-                <ul class="invitation__community-themes-list" v-if="communityThemes && communityThemes.length">
-                    <li v-for="theme in communityThemes"> {{ theme['THM_name_VC'] }} </li>
-                </ul>
+
+        <div v-else class="invitation__show">
+            <div class="invitation__show-content" v-if="invitation && community">
+                <h2> {{ invitation['INV_sender_firstname_VC'] }} {{ invitation['INV_sender_lastname_VC'] }} 
+                    vous invite à rejoindre le groupe 
+                    <span :style="{ color: `${community['CMY_color_VC']}`}"> {{ community["CMY_name_VC"] }} </span>
+                </h2>
+                <p> En rejoignant le groupe, vous pourrez faire des propositions et participer aux votes. </p>
             </div>
-            <div class="invitation__community-verification">
-                <Input 
-                    type="text" name="codeSecurite" placeholder="(ex : 132592)" required
-                    :rules="[
-                        (v) => Boolean(v) || 'Un code de sécurité est requis', 
-                        (v) => v.length == 6 || 'Le code de sécurité doit comporter 6 chiffres', 
-                    ]" 
-                > Code de sécurité </Input>
+
+            <div class="invitation__show-community">
+                <div class="invitation__show-community-themes">
+                    <p class="invitation__show-community-themes-header"> Le groupe traite des thèmes : </p>
+                    <div class="invitation__show-community-themes-list" v-if="communityThemes && communityThemes.length">
+                        <p v-for="theme in communityThemes"> {{ theme['THM_name_VC'] }} </p>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="invitation__user-actions">
-            <Button class="btn btn--full" :disabled="!codeCorrect"  @click="visualisationGroupe()"> Accepter </Button>
-            <Button class="btn btn--cancel" @click="redirectionLogin()"> Refuser </Button>
+
+            <div class="invitation__show-actions">
+                <div class="invitation__show-actions-input">
+                    <InputNumber
+                        name="securityCode" placeholder="(ex : 132592)" required :min="100000" :max="999999"
+                        :rules="[
+                            (v) => Boolean(v) || 'Un code de sécurité est requis', 
+                            (v) => (v >= 100000 && 999999 >= v) || 'Le code de sécurité doit comporter 6 chiffres', 
+                        ]" 
+                        > Code de sécurité 
+                    </InputNumber>
+                </div>
+                    
+                <div class="invitation__show-actions-button">
+                    <Button class="btn btn--full" :disabled="!validCode" @click="acceptInvitation()"> Accepter </Button>
+                    <Button class="btn btn--cancel" @click="rejectInvitation()"> Refuser </Button>
+                </div>
+                    
+            </div>
         </div>
     </main>
 </template>
   
 <script setup>
+import Input from '~/components/Input.vue';
 
 const config = useRuntimeConfig();
 const route = useRoute();
@@ -45,38 +63,48 @@ const invitation = ref();
 const community = ref();
 const communityThemes = ref([]);
 
-const codeSecurite = useState("codeSecurite");
+const securityCode = useState("securityCode");
+const validCode = useState("securityCodeValid");
 
-const codeCorrect  = computed(() => {
-    return codeSecurite.value.length == 6;
-})
+const invitationExpired = ref();
 
-const redirectionLogin = async () => {
+const rejectInvitation = async () => {
     try {
-        navigateTo('/login');
+        const response = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/reject`, {
+        method: 'POST',
+            body: {
+                codeSend: securityCode.value,
+            }
+        });
 
+        if(response){
+            navigateTo('/login');
+
+        }
     } catch (error) {
         console.error('An error occurred : ', error);
     }
 }
 
-const visualisationGroupe = async () => {
+const acceptInvitation = async () => {
     try {
-        if(codeSecurite == invitation.value.INV_code_VC){
-            const response = await $fetch(`${config.public.baseUrl}/communities/registration`, {
-            method: 'POST',
+        const response1 = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/accept`, {
+        method: 'POST',
             body: {
-                memberId: invitation.value.INV_recipient_NB,
-                communityId: invitation.value.INV_community_NB,
+                codeSend: securityCode.value,
             }
-            });
+        });
 
-            if(response){
-                navigateTo('/community/${invitation.value.INV_community_NB}');
+        const response2 = await $fetch(`${config.public.baseUrl}/communities/${invitation.value.INV_community_NB}/registration`, {
+        method: 'POST',
+            body: {
+                newMemberId: invitation.value.INV_recipient_NB,
+                codeSend: securityCode.value,
             }
-        }
-        else{
-            alert("Information : Le code que vous avez entré n'est pas valide");
+        });
+
+        if(response1 && response2){
+            navigateTo('/community/${invitation.value.INV_community_NB}');
         }
 
     } catch (error) {
@@ -91,6 +119,12 @@ const fetchData = async () => {
         });
 
         invitation.value = response;
+
+        if (response.INV_joursDepuisInvitation_NB > 7) {
+            invitationExpired.value = true;
+        } else {
+            invitationExpired.value = false;
+        }
 
         const response2 = await $fetch(`${config.public.baseUrl}/communities/${invitation.value.INV_community_NB}`, {
             credentials: 'include',

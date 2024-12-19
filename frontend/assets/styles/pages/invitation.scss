@@ -9,89 +9,117 @@
         margin-top: 40px;
         margin-bottom: 20px;
 
-        @media screen and (max-width: 320px) {
-            height: 150px; 
-        }
-    }
-    
-    &__content {
-        align-self: center;
-        width: 65%;
-        margin-bottom: 20px;
-
-        h2 {
-            margin-bottom: 20px;
+        @media screen and (max-width: 450px) {
+            width: 90%;
+            height: 200px;
+            margin-top: 2%;
         }
     }
 
-    &__community {
+    &__show {
         display: flex;
-        align-self: center;
-        width: 65%;
+        flex-direction: column;
 
-        &-themes {
+        &-content {
+            align-self: center;
+            width: 65%;
+            margin-bottom: 20px;
+    
+            h2 {
+                margin-bottom: 20px;
+            }
+
+            @media screen and (max-width: 450px) {
+                width: 90%;
+                margin-bottom: 2%;
+            }
+        }
+    
+        &-community {
+            align-self: center;
             display: flex;
             flex-direction: column;
-            width: 50%;
+            width: 65%;
+            margin-bottom: 20px;
 
-            @media screen and (max-width: 320px) {
-                width: 100%;
+            @media screen and (max-width: 450px){
+                width: 90%;
             }
     
-            &-header {
-                margin-bottom: 20px;
-                width: 100%;
-            }
-    
-            &-list {
-                margin-bottom: 10%;
-                margin-left: 15%;  
-            }
-        }
+            &-themes {
+                display: flex;
 
-        &-verification {
-            margin-top: 20px;
-            margin-left: 13%; 
+                @media screen and (max-width: 450px){
+                    flex-direction: column;
+                    width: 90%;
+                }
 
-            Input {
-                width: 215px;
+                &-header {
+                    width: 40%;
+                    margin-bottom: 20px;
+                    margin-top: 20px;
 
-                @media screen and (max-width: 320px){
+                    @media screen and (max-width: 450px){
+                        width: 100%;
+                        margin-bottom: 2%;
+                    }
+                }
+        
+                &-list {
+                    display: flex;
+                    flex-wrap: wrap;
                     width: 100%;
-                    margin-bottom: 10px;
+                    gap: 5px;
+    
+                    p {
+                        padding: 10px;
+                        margin-top: 2%;
+                        margin-bottom: 2%;
+                        background-color: #363335;
+                        color: #fff;
+                        border-radius: 5px;
+                        text-align: center;
+                    }
                 }
             }
-
-            @media screen and (max-width: 320px){
-                margin-left: 0%;
-                margin-bottom: 10%; 
-            }
-        }    
-
-        @media screen and (max-width: 320px){
+        }
+    
+        &-actions {
             display: flex;
             flex-direction: column;
-        }
+            align-self: center;
+            width: 65%;
+            margin-bottom: 50px;
+            gap: 4%;
+
+            @media screen and (max-width: 450px){
+                width: 90%;
+            }
+    
+            &-input{
+                Input {
+                    width: 215px;
+                    margin-bottom: 20px;
         
-    }
-
-    &__user-actions {
-        display: flex;
-        align-self: center;
-        width: 65%;
-        margin-bottom: 30px;
-        gap: 4%; 
-
-        Button {
-            width: -webkit-fill-available;
+                    @media screen and (max-width: 450px){
+                        width: 100%;
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+    
+            &-button{
+                display: flex;
+                gap: 2%;
+    
+                Button {
+                    width: -webkit-fill-available;
+                }
+        
+                @media screen and (max-width: 450px){
+                    margin-right: 10%;
+                }
+            }
         }
-
-        @media screen and (max-width: 320px){
-            margin-right: 10%;
-        }
-    }
-
-    @media screen and (max-width: 320px){
-        margin-right: 4%;
     }
 }
