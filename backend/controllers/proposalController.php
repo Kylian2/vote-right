@@ -4,6 +4,7 @@ use Dotenv\Validator;
 
 @require_once("models/proposal.php");
 @require_once("models/comment.php");
+@require_once("models/vote.php");
 @require_once("validators/proposalValidator.php");
 
 class ProposalController{
@@ -213,6 +214,12 @@ class ProposalController{
         $userId = SessionGuard::getUserId();
         $result = Proposal::isMember($params[0], $userId);
         echo json_encode(($result));
+    }
+
+    public static function voteInfos($params){
+        $userId = SessionGuard::getUserId();
+        $votes = Vote::getVoteOf($params[0], $userId);
+        echo json_encode($votes);
     }
 }
 ?>
