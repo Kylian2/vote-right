@@ -12,6 +12,7 @@ class Vote extends Model{
     public int $VOT_type_NB;
     public string $VOT_type_VC;
     public array $VOT_possibilities_TAB;
+    public int $VOT_nb_rounds_NB;
 
     /**
      * Récupère les informations sur les votes d'une propositions (pour chaque tour). 

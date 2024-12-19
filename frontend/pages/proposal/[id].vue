@@ -103,7 +103,7 @@
                     </div>
                 </div>
 
-                <div v-if="currentVote" class="vote">
+                <div v-if="currentVote && (results.length+1 < nbRounds || timeRemaining !== 0)" class="vote">
                     <h3>{{ (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2) ? 'Vote' : `Vote - Tour ${currentVote['VOT_round_NB']}`}}</h3>
                     <div>
                         <p class="legende">{{ timeRemaining > 0 ? formatTimeRemaning(timeRemaining) : 'Le vote est terminé.'}}</p>
@@ -392,6 +392,7 @@ const isVoting = ref(false);
 let votingTimer;
 const requiredHoldTime = 3000;
 const timeRemaining = ref(0);
+const nbRounds = ref();
 
 const startVoting = () => {
     isVoting.value = true;
@@ -430,6 +431,7 @@ const fetchVote = async () => {
         if(votes.value.length > 0){
             currentVote.value = votes.value[votes.value.length-1];
             timeRemaining.value = calculateTimeRemaining(new Date(), new Date(currentVote.value['VOT_end_DATE']?.replace(" ", "T")));
+            nbRounds.value = currentVote['VOT_nb_rounds_NB'];
 
             for(let i = 0; i < votes.value.length; i++){
                 let rmt = calculateTimeRemaining(new Date(), new Date(votes.value[i]['VOT_end_DATE']?.replace(" ", "T")));
@@ -469,6 +471,20 @@ const formatTimeRemaning = (time)=>{
     }
     return format || "moins d'une heure.";
 }
+
+//Non utilisée, pour connaitre le ou les gagnants. 
+const getWinner = (results) => {
+    let winner = [results[0]];
+    for (let i = 1; i < results.length; i++){
+        if (winner["POS_nbVotes_NB"] < results[i]["POS_nbVotes_NB"]){
+            winner = []
+            winner.push(results[i]);
+        }else if (winner["POS_nbVotes_NB"] === results[i]["POS_nbVotes_NB"]){
+            winner.push(results[i]);
+        }
+    }
+}
+
 onMounted(() => {
     fetchData();
     fetchComments();
