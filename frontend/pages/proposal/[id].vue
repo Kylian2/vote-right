@@ -3,7 +3,6 @@
 
     <Banner v-if="proposal" :community="community" :themes="[{'THM_name_VC' : proposal['PRO_theme_VC']}]" back>{{ proposal["PRO_title_VC"] }}</Banner>
     <main class="proposal">
-
             <section>
                 <div class="proposal__description">
                     <h2>Description</h2>
@@ -84,27 +83,38 @@
             </div>
 
             <!-- Système de vote -->
-            <div v-if="vote" class="vote">
-                <h3>Vote</h3>
+            <div v-if="currentVote" class="vote">
+                <h3>{{ (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2) ? 'Vote' : `Vote - Tour ${currentVote['VOT_round_NB']}`}}</h3>
                 <div>
-                    <p class="legende">Le vote dure encore 4 jours</p>
-                    <p class="legende">Le vote est un scrutin majoritaire simple</p>
+                    <p class="legende">{{ timeRemaining > 0 ? formatTimeRemaning(timeRemaining) : 'Le vote est terminé.'}}</p>
+                    <p class="legende">Le vote est un {{currentVote['VOT_type_VC']}}</p>
                 </div>
-                <div v-if="!hasVoted" class="vote__options vote__options--classique">
-                    <button 
+
+                <div 
+                v-if="!hasVoted && (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2)" 
+                class="vote__options vote__options--classique">
+                    <button v-for="possibility in currentVote['VOT_possibilities_TAB']"
                     class="btn btn--full" 
-                    :class="{'select' : selectedVoteOption === 1}"
+                    :class="{'select' : selectedVoteOption === possibility[1]}"
                     :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
-                    @click="selectedVoteOption = 1"
-                    >POUR</button>
-                    <button 
-                    class="btn btn--full"
-                    :class="{'select' : selectedVoteOption === 2}"
-                    :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
-                    @click="selectedVoteOption = 2"
-                    >CONTRE</button>
+                    @click="selectedVoteOption = possibility[1]"
+                    :disabled="timeRemaining === 0"
+                    >{{ possibility[0] }}</button>
                 </div>
-                <div class="vote__validation">
+
+                <div 
+                v-if="!hasVoted && (currentVote['VOT_type_NB'] !== 1 && currentVote['VOT_type_NB'] !== 2)" 
+                class="vote__options vote__options--multiple">
+                    <button v-for="possibility in currentVote['VOT_possibilities_TAB']"
+                    class="btn btn--full" 
+                    :class="{'select' : selectedVoteOption === possibility[1]}"
+                    :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
+                    @click="selectedVoteOption = possibility[1]"
+                    :disabled="timeRemaining === 0"
+                    >{{ possibility[0] }}</button>
+                </div>
+
+                <div v-if="!hasVoted || timeRemaining !== 0" class="vote__validation">
                     <p v-if="!hasVoted" class="legende">Attention, ce choix est irréversible</p>
                     <div class="vote__validation__wrapper"
                     :style="{background: (community ? community['CMY_color_VC'] : '#222222')}"
@@ -123,7 +133,6 @@
                     </div>
                 </div>
             </div>
-
     </main>
     <Toast 
         name="reportValid" 
@@ -353,12 +362,14 @@ const fetchReasons = async () => {
 /* Système de vote */
 
 const selectedVoteOption = ref(-1);
-const vote = ref({});
+const votes = ref();
+const currentVote = ref();
 const hasVoted = ref(false);
 
 const isVoting = ref(false);
 let votingTimer;
 const requiredHoldTime = 3000;
+const timeRemaining = ref(0);
 
 const startVoting = () => {
     isVoting.value = true;
@@ -374,6 +385,50 @@ const stopVoting = () => {
     console.log('STOP VOTE');
 }
 
+const fetchVote = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/vote`, {
+            credentials: 'include',
+        })
+
+        votes.value = response;
+        if(votes.value.length > 0){
+            currentVote.value = votes.value[votes.value.length-1];
+            timeRemaining.value = calculateTimeRemaining(new Date(), new Date(currentVote.value['VOT_end_DATE']?.replace(" ", "T")));
+        }
+
+
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
+const calculateTimeRemaining = (date1, date2) => {
+
+    // Calcul de la différence
+    const diffMs = date2 - date1;
+    if(diffMs < 0){
+        return 0;
+    }else{
+        return diffMs;
+    }
+}
+
+const formatTimeRemaning = (time)=>{
+
+    const days = Math.floor(time / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+    let format = 'Le vote dure encore ';
+    if (days > 0) {
+        format += `${days} jour${days > 1 ? 's' : ''}`;
+    }
+    if (hours > 0) {
+        format += (days > 0 ? ' et ' : '') + `${hours} heure${hours > 1 ? 's.' : '.'}`;
+    }
+    return format || "moins d'une heure.";
+}
 onMounted(() => {
     fetchData();
     fetchComments();
@@ -381,6 +436,7 @@ onMounted(() => {
     fetchReaction();
     fetchFormalRequest();
     fetchReasons();
+    fetchVote();
 })
 
 </script>
