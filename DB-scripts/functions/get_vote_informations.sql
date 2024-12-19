@@ -37,14 +37,14 @@ BEGIN
 
         SET one_vote = CONCAT(
             '{',
-            '"VOT_proposal_NB": "', proposal_NB, '",',
-            '"VOT_round_NB": "', round_NB, '",',
+            '"VOT_proposal_NB": ', proposal_NB, ',',
+            '"VOT_round_NB": ', round_NB, ',',
             '"VOT_valid_BOOL": "', valid_BOOL, '",',
             '"VOT_start_DATE": "', start_DATE, '",',
             '"VOT_end_DATE": "', end_DATE, '",',
-            '"VOT_type_NB": "', type_NB, '",',
+            '"VOT_type_NB": ', type_NB, ',',
             '"VOT_type_VC": "', type_VC, '",',
-            '"VOT_possibilities":', get_possibilities(proposal_NB, round_NB),
+            '"VOT_possibilities_TAB":', get_possibilities(proposal_NB, round_NB),
             '}'
         );
 
