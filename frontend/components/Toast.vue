@@ -50,6 +50,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  type: {
+    type: Number, 
+    required: true,
+  }
 });
 
 

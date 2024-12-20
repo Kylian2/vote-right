@@ -4,6 +4,7 @@ use Dotenv\Validator;
 
 @require_once("models/proposal.php");
 @require_once("models/comment.php");
+@require_once("models/vote.php");
 @require_once("validators/proposalValidator.php");
 
 class ProposalController{
@@ -213,6 +214,118 @@ class ProposalController{
         $userId = SessionGuard::getUserId();
         $result = Proposal::isMember($params[0], $userId);
         echo json_encode(($result));
+    }
+
+    /**
+     * Récupère les informations concernant les votes d'une proposition.
+     * Indique si l'utilisateur a déjà voté. 
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la proposition
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function voteInfos($params){
+        $userId = SessionGuard::getUserId();
+        $votes = Vote::getVoteOf($params[0], $userId);
+        echo json_encode($votes);
+    }
+
+    /**
+     * Récupère les résultats d'un vote d'une proposition
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la proposition
+     * - Indice 1 = $round, le tour du vote
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function voteResult($params){
+        $result = Vote::getResult($params[0], $params[1]);
+        echo json_encode($result);
+    }
+
+    /**
+     * Enregistre le vote d'un utilisateur
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la proposition
+     * - Indice 1 = $round, le tour du vote
+     * 
+     * Body : 
+     * - choice : int le numero de la possibilité choisie par l'utilisateur
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function saveVote($params){
+
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body['choice']) || !is_numeric($body['choice'])){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Missing or incorrect data';
+            echo json_encode($return);
+            return;
+        }
+
+        $proposal = $params[0];
+        $round = $params[1];
+
+        $userId = SessionGuard::getUserId();
+
+        $votes = Vote::getVoteOf($proposal, $userId);
+        $vote = $votes[$round-1]; //récupère le tour (en comptant l'index partant de 0)
+
+        if(boolval($vote->hasVoted)){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'You have already voted';
+            echo json_encode($return);
+            return;
+        }
+
+        $end = new DateTime($vote->VOT_end_DATE);
+        $today = new DateTime(date("Y-m-d H:i:s"));
+        if($today > $end){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Votetime is finished';
+            echo json_encode($return);
+            return;
+        }
+
+        try{
+            $choice = $body['choice'];
+            Vote::save($proposal, $round, $userId, $choice);
+            echo json_encode(true);
+            return;
+        } catch(PDOException $e){
+
+            if($e->errorInfo[0] == 45000){
+                http_response_code(401);
+                $return["Error"] = $e->errorInfo[2];
+                echo json_encode($return);
+                return;
+            }
+
+            if($e->errorInfo[1] === 1452){
+                http_response_code(422);
+                $return["Error"] = 'Invalid possibility';
+                echo json_encode($return);
+                return;
+            }
+
+            http_response_code(422);
+            $return["Error"] = $e;
+            echo json_encode($return);
+            return;
+        }
+
     }
 }
 ?>
