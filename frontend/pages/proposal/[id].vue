@@ -454,7 +454,7 @@ const stopVoting = () => {
 
 const fetchResult = async (round) => {
     try{
-        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/${round}/result`, {
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/${round}/vote`, {
             credentials: 'include',
         })
 
