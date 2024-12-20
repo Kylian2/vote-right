@@ -467,7 +467,7 @@ const fetchResult = async (round) => {
 
 const fetchVote = async () => {
     try{
-        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/vote`, {
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/votes`, {
             credentials: 'include',
         })
 

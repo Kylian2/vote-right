@@ -34,7 +34,7 @@ Router::post('/proposals/{id}/reactions', 'proposalController@react', true);
 Router::get('/proposals/{id}/requests', 'proposalController@getRequest', true);
 Router::post('/proposals/{id}/requests', 'proposalController@postRequest', true);
 Router::get('/proposals/{id}/membership', 'proposalController@isMember', true);
-Router::get('/proposals/{id}/vote', 'proposalController@voteInfos', true);
+Router::get('/proposals/{id}/votes', 'proposalController@voteInfos', true);
 Router::get('/proposals/{id}/{round}/vote', 'proposalController@voteResult', true);
 Router::post('/proposals/{id}/{round}/vote', 'proposalController@saveVote', true);
 
