@@ -83,7 +83,6 @@
             </div>
 
             <!-- Système de vote -->
-
             <section class="vote-section">
 
                 <div class="vote__results"v-if="results.length > 0 && currentVote" v-for="result, key in results">
@@ -133,7 +132,7 @@
                         :disabled="timeRemaining === 0"
                         >{{ possibility[0] }}</button>
                     </div>
-                    <div v-if="!hasVoted && timeRemaining !== 0" class="vote__validation">
+                    <div v-if="!hasVoted || timeRemaining !== 0" class="vote__validation">
                         <p v-if="!hasVoted" class="legende">Attention, ce choix est irréversible</p>
                         <div class="vote__validation__wrapper"
                         :style="{background: communityColor}"
@@ -146,7 +145,7 @@
                                 @mouseup="stopVoting()"
                                 :disabled="selectedVoteOption === -1 || hasVoted"
                                 > 
-                                    {{ (selectedVoteOption === -1 )? 'Faites un choix' : (hasVoted ? "A voté" : "VOTER")}} 
+                                    {{ (selectedVoteOption === -1 && !hasVoted)? 'Faites un choix' : (hasVoted ? "A voté" : "VOTER")}} 
                                 </button>
                             </div>
                         </div>
@@ -172,6 +171,24 @@
         class="toast"
     >
     Vous avez déjà signalé ce commentaire
+    </Toast>
+    <Toast 
+        name="voteValid" 
+        :type="3" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Votre vote a été enregistré !
+    </Toast>
+    <Toast 
+        name="voteError" 
+        :type="1" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Erreur lors de l'enregistrement du vote
     </Toast>
 </template>
 <script setup>
@@ -398,10 +415,33 @@ const timeRemaining = ref(0);
 const nbRounds = ref();
 const classicSystem = ref();
 
+const voteError = useState('voteErrorUp', ()=>false);
+const voteValid = useState('voteValidUp', ()=>false);
+
+const vote = async (possibility) => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/${currentVote.value['VOT_round_NB']}/vote`, {
+            method: 'POST',
+            credentials: 'include',
+            body:{
+                choice: possibility
+            }
+        })
+
+        console.log(response);
+        voteValid.value = response === true;
+        voteError.value = response !== true;
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}   
+
 const startVoting = () => {
     isVoting.value = true;
     votingTimer = setTimeout(() => {
         console.log('VOTE');
+        vote(selectedVoteOption.value);
         hasVoted.value = true;
     }, requiredHoldTime);
 }
@@ -435,8 +475,9 @@ const fetchVote = async () => {
         if(votes.value.length > 0){
             currentVote.value = votes.value[votes.value.length-1];
             timeRemaining.value = calculateTimeRemaining(new Date(), new Date(currentVote.value['VOT_end_DATE']?.replace(" ", "T")));
-            nbRounds.value = currentVote['VOT_nb_rounds_NB'];
-            classicSystem.value = (currentVote['VOT_type_NB'] !== 1 && currentVote['VOT_type_NB'] !== 2);
+            nbRounds.value = currentVote.value['VOT_nb_rounds_NB'];
+            classicSystem.value = (currentVote.value['VOT_type_NB'] === 1 || currentVote.value['VOT_type_NB'] === 2);
+            hasVoted.value = !!currentVote.value['hasVoted'];
 
             for(let i = 0; i < votes.value.length; i++){
                 let rmt = calculateTimeRemaining(new Date(), new Date(votes.value[i]['VOT_end_DATE']?.replace(" ", "T")));
