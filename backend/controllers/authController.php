@@ -3,6 +3,7 @@
 @require_once('models/user.php');
 @require_once('validators/userValidator.php');
 @require_once('core/sessionGuard.php');
+@require_once('core/mailer.php');
 
 //On peut acceder aux durées max de session et paramètre du garbage collector dans php.ini ou en 
 //les parametrant avec php_ini().
@@ -64,6 +65,16 @@ class AuthController{
         }
         SessionGuard::start($user);
         echo json_encode($user);
+
+        try{
+            $mail = Mailer::init();
+            $mail->addAddress($user->get('USR_email_VC'));
+            $mail->Subject = 'Création de compte VoteRight.fr';
+            $mail->Body = 'Bonjour '.$user->get('USR_firstname_VC').', ton compte VoteRight.fr a bien été créer !';
+            Mailer::send($mail);
+        }catch (Exception $e) {
+            echo "Erreur d'envoi : {$mail->ErrorInfo}";
+        }
     }
 
     /**
