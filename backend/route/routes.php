@@ -36,6 +36,7 @@ Router::post('/proposals/{id}/requests', 'proposalController@postRequest', true)
 Router::get('/proposals/{id}/membership', 'proposalController@isMember', true);
 Router::get('/proposals/{id}/vote', 'proposalController@voteInfos', true);
 Router::get('/proposals/{id}/{round}/result', 'proposalController@voteResult', true);
+Router::post('/proposals/{id}/{round}/vote', 'proposalController@saveVote', true);
 
 Router::post('/comments', 'commentController@store', true);
 Router::get('/comments/{id}/reactions', 'commentController@reactions', true);

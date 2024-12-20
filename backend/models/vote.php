@@ -65,6 +65,17 @@ class Vote extends Model{
         return json_decode($result[0]);
     }
 
+    public static function save(int $proposal, int $round, int $user, int $choice){
+        $request = "INSERT INTO vote_detail(DET_proposal_NB, DET_round_NB, DET_user_NB, DET_choice_NB) VALUES (:proposal, :round, :user, :choice)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['proposal'] = $proposal;
+        $values['round'] = $round;
+        $values['user'] = $user;
+        $values['choice'] = $choice;
+        $prepare->execute($values);
+        return true;
+    }
+
 }
 
 ?>
