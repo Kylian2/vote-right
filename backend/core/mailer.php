@@ -25,7 +25,7 @@ class Mailer{
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
         $mail->CharSet = 'UTF-8';
-    
+        $mail->isHTML(true);
         $mail->setFrom($_ENV['EMAIL_USER'], 'VoteRight');
 
         return $mail;
