@@ -24,6 +24,15 @@ class notificationController{
         $prepare->setFetchmode(PDO::FETCH_CLASS, "community");
         $community = $prepare->fetch();
 
+        $request = "SELECT USR_lastname_VC, USR_firstname_VC FROM user WHERE USR_id_NB = :user";
+        $prepare = connexion::pdo()->prepare($request);
+        $values = array(
+            "user" => $proposal->get('PRO_initiator_NB')
+        );
+        $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "user");
+        $senderUser = $prepare->fetch();
+
         foreach($users as $user){
             try{
                 $mail = Mailer::init();
@@ -41,8 +50,8 @@ class notificationController{
                     ],
                     [
                         $community->get("CMY_color_VC"), 
-                        $user->get("USR_firstname_VC"),
-                        $user->get("USR_lastname_VC"),
+                        $senderUser->get("USR_firstname_VC"),
+                        $senderUser->get("USR_lastname_VC"),
                         $community->get("CMY_name_VC"),
                         $proposal->get("PRO_title_VC"),
                         $proposal->get("PRO_id_NB"),
