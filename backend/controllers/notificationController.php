@@ -33,38 +33,44 @@ class notificationController{
         $prepare->setFetchmode(PDO::FETCH_CLASS, "user");
         $senderUser = $prepare->fetch();
 
+        $mail = Mailer::init();
+        $mail->Subject = 'Nouvelle proposition';
+        $htmlBody = file_get_contents('./view/mail/notify-proposal.html');
+        $htmlBody = str_replace(
+            [
+                '[backgroundColor]', 
+                '{{firstname}}', 
+                '{{lastname}}', 
+                '{{community}}', 
+                '{{proposal}}', 
+                '{{proposalId}}'
+            ],
+            [
+                $community->get("CMY_color_VC"), 
+                $senderUser->get("USR_firstname_VC"),
+                $senderUser->get("USR_lastname_VC"),
+                $community->get("CMY_name_VC"),
+                $proposal->get("PRO_title_VC"),
+                $proposal->get("PRO_id_NB"),
+            ],
+            $htmlBody
+        );
+        $mail->Body = $htmlBody;
+        $mail->SMTPKeepAlive = true;
+
         foreach($users as $user){
             try{
-                $mail = Mailer::init();
-                $mail->addAddress($user->get('USR_email_VC'));
-                $mail->Subject = 'Nouvelle proposition';
-                $htmlBody = file_get_contents('./view/mail/notify-proposal.html');
-                $htmlBody = str_replace(
-                    [
-                        '[backgroundColor]', 
-                        '{{firstname}}', 
-                        '{{lastname}}', 
-                        '{{community}}', 
-                        '{{proposal}}', 
-                        '{{proposalId}}'
-                    ],
-                    [
-                        $community->get("CMY_color_VC"), 
-                        $senderUser->get("USR_firstname_VC"),
-                        $senderUser->get("USR_lastname_VC"),
-                        $community->get("CMY_name_VC"),
-                        $proposal->get("PRO_title_VC"),
-                        $proposal->get("PRO_id_NB"),
-                    ],
-                    $htmlBody
-                );
-                $mail->Body = $htmlBody;
-                Mailer::send($mail);
+                $mail->addBCC($user->get('USR_email_VC'));
             }catch (Exception $e) {
                 echo "Erreur d'envoi : {$mail->ErrorInfo}";
             }
         }
-        
+        try{
+            Mailer::send($mail);
+        }catch (Exception $e) {
+            echo "Erreur d'envoi : {$mail->ErrorInfo}";
+        }
+        $mail->SmtpClose();
     }
 
 }
