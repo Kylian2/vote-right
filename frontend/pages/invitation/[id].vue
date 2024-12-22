@@ -10,7 +10,7 @@
         </div>
 
         <div v-else class="invitation__show">
-            <div class="invitation__show-content" v-if="invitation && community">
+            <div class="invitation__show__content" v-if="invitation && community">
                 <h2> {{ invitation['INV_sender_firstname_VC'] }} {{ invitation['INV_sender_lastname_VC'] }} 
                     vous invite à rejoindre le groupe 
                     <span :style="{ color: `${community['CMY_color_VC']}`}"> {{ community["CMY_name_VC"] }} </span>
@@ -18,17 +18,17 @@
                 <p> En rejoignant le groupe, vous pourrez faire des propositions et participer aux votes. </p>
             </div>
 
-            <div class="invitation__show-community">
-                <div class="invitation__show-community-themes">
-                    <p class="invitation__show-community-themes-header"> Le groupe traite des thèmes : </p>
-                    <div class="invitation__show-community-themes-list" v-if="communityThemes && communityThemes.length">
+            <div class="invitation__show__community">
+                <div class="invitation__show__community__themes">
+                    <p class="invitation__show__community__themes__header"> Le groupe traite des thèmes : </p>
+                    <div class="invitation__show__community__themes__list" v-if="communityThemes && communityThemes.length">
                         <p v-for="theme in communityThemes"> {{ theme['THM_name_VC'] }} </p>
                     </div>
                 </div>
             </div>
 
-            <div class="invitation__show-actions">
-                <div class="invitation__show-actions-input">
+            <div class="invitation__show__actions">
+                <div class="invitation__show__actions__input">
                     <InputNumber
                         name="securityCode" placeholder="(ex : 132592)" required :min="100000" :max="999999"
                         :rules="[
@@ -39,7 +39,7 @@
                     </InputNumber>
                 </div>
                     
-                <div class="invitation__show-actions-button">
+                <div class="invitation__show__actions__button">
                     <Button class="btn btn--full" :disabled="!validCode" @click="acceptInvitation()"> Accepter </Button>
                     <Button class="btn btn--cancel" @click="rejectInvitation()"> Refuser </Button>
                 </div>
@@ -70,7 +70,7 @@ const invitationExpired = ref();
 
 const rejectInvitation = async () => {
     try {
-        const response = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/reject`, {
+        const response = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/rejected`, {
         method: 'POST',
             body: {
                 codeSend: securityCode.value,
@@ -88,7 +88,7 @@ const rejectInvitation = async () => {
 
 const acceptInvitation = async () => {
     try {
-        const response1 = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/accept`, {
+        const response1 = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/accepted`, {
         method: 'POST',
             body: {
                 codeSend: securityCode.value,

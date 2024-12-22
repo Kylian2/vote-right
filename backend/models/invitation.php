@@ -31,33 +31,42 @@ class Invitation extends Model{
         return $invitation;
     }
 
-    public static function accept(){
+    public static function getByCode(string $id){
+        $request = 'SELECT INV_code_VC
+                    FROM invitation I 
+                    WHERE INV_id_VC = :id';
+        $prepare = connexion::pdo()->prepare($request);
+
+        $values['id'] = $id;
+        $code = $prepare->execute($values);
+
+        return $code;
+    }
+
+    public static function accept(array $params){
         $currentDate = date('Y-m-d');
         $request = 'UPDATE invitation 
                 SET INV_acceptance_DATE = :currentDate 
-                WHERE INV_id_VC = :invitationId AND INV_recipient_NB = :recipientId';
+                WHERE INV_id_VC = :invitationId';
         $prepare = connexion::pdo()->prepare($request);
 
         $values = array(
-            "currentDate" => $this->$currentDate,
-            "invitationId" => $this->$INV_id_VC,
-            "recipientId" => $this->$INV_recipient_VC,
+            "currentDate" => $currentDate,
+            "invitationId" => $params["INV_id_VC"],
         );
         $update = $prepare->execute($values);
         return $update;
     }
 
-    public static function reject(){
+    public static function reject(array $values){
         $currentDate = date('Y-m-d');
-        $request = 'UPDATE invitation 
-                SET INV_acceptance_DATE = :currentDate 
-                WHERE INV_id_VC = :invitationId AND INV_recipient_NB = :recipientId';
+        $request = 'DELETE 
+                FROM invitation
+                WHERE INV_id_VC = :invitationId';
         $prepare = connexion::pdo()->prepare($request);
 
         $values = array(
-            "currentDate" => $this->$currentDate,
-            "invitationId" => $this->$INV_id_VC,
-            "recipientId" => $this->$INV_recipient_VC,
+            "invitationId" => $params["INV_id_VC"],
         );
         $update = $prepare->execute($values);
         return $update;

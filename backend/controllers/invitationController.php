@@ -17,7 +17,7 @@ class InvitationController{
         echo json_encode($invitation);
     }
 
-    public static function accept(){
+    public static function accepted(){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
@@ -25,25 +25,31 @@ class InvitationController{
             http_response_code(422);
             $return["Unprocessable Entity"] = 'Missing data';
             echo json_encode($return);
-            return;
+            return ;
         }
 
-        if(!isset($body["newMemberId"]) || !isset($body["invitationId"]) ){
+        if(!isset($body["codeSend"]) || !isset($params[0])){
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing data for processing"}';
-            return;
+            return ;
         }
 
-        $values = [
-            "INV_id_VC" => $body["invitationId"],
-            "INV_recipient_VC" => $body["newMemberId"],
-        ];
+        $values["INV_id_VC"] = $params[0];
+        $values["INV_code_VC"] = $body["codeSend"];
 
-        $invitation = Invitation::update($values);
+        $verifCode = Invitation::getByCode($params[0]);
+
+        if($verifCode === null || $values["INV_code_VC"] != $verifCode){
+            http_response_code(401);
+            echo '{"invalid code":"the code entered by the user is invalid"}';
+            return ;
+        }
+
+        $invitation = Invitation::accept($values);
         echo json_encode($invitation);
     }
 
-    public static function reject(){
+    public static function rejected(array $params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
@@ -51,21 +57,29 @@ class InvitationController{
             http_response_code(422);
             $return["Unprocessable Entity"] = 'Missing data';
             echo json_encode($return);
-            return;
+            return ;
         }
 
-        if(!isset($body["newMemberId"]) || !isset($body["invitationId"]) ){
+        if(!isset($body["codeSend"]) || !isset($params[0])){
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing data for processing"}';
-            return;
+            return ;
         }
 
-        $values = [
-            "INV_id_VC" => $body["invitationId"],
-            "INV_recipient_VC" => $body["newMemberId"],
-        ];
+        $values["INV_id_VC"] = $params[0];
+        $values["INV_code_VC"] = $body["codeSend"];
 
-        $invitation = Invitation::update($values);
+        $verifCode = Invitation::getByCode($params[0]);
+
+        echo "{$verifCode}";
+
+        if($verifCode === null || $values["INV_code_VC"] != $verifCode){
+            http_response_code(401);
+            echo '{"invalid code":"the code entered by the user is invalid"}';
+            return ;
+        }
+
+        $invitation = Invitation::reject($values);
         echo json_encode($invitation);
     }
 }

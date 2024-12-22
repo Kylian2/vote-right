@@ -20,7 +20,7 @@
         display: flex;
         flex-direction: column;
 
-        &-content {
+        &__content {
             align-self: center;
             width: 65%;
             margin-bottom: 20px;
@@ -35,7 +35,7 @@
             }
         }
     
-        &-community {
+        &__community {
             align-self: center;
             display: flex;
             flex-direction: column;
@@ -46,7 +46,7 @@
                 width: 90%;
             }
     
-            &-themes {
+            &__themes {
                 display: flex;
 
                 @media screen and (max-width: 450px){
@@ -54,7 +54,7 @@
                     width: 90%;
                 }
 
-                &-header {
+                &__header {
                     width: 40%;
                     margin-bottom: 20px;
                     margin-top: 20px;
@@ -65,7 +65,7 @@
                     }
                 }
         
-                &-list {
+                &__list {
                     display: flex;
                     flex-wrap: wrap;
                     width: 100%;
@@ -84,7 +84,7 @@
             }
         }
     
-        &-actions {
+        &__actions {
             display: flex;
             flex-direction: column;
             align-self: center;
@@ -96,7 +96,7 @@
                 width: 90%;
             }
     
-            &-input{
+            &__input{
                 Input {
                     width: 215px;
                     margin-bottom: 20px;
@@ -108,7 +108,7 @@
                 }
             }
     
-            &-button{
+            &__button{
                 display: flex;
                 gap: 2%;
     
