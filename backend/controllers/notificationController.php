@@ -171,6 +171,71 @@ class notificationController{
         }
     }
 
+    public static function notifyReactionProposal(){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body['firstname']) || !isset($body['lastname']) || !isset($body['reaction']) ||
+           !is_numeric($body['reaction']) || !isset($body['proposal']) || !is_numeric($body['proposal']) || !isset($body['initiator']) ){
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"missing or incorrect data for processing"}';
+            return;
+        }
+
+        $request = "SELECT PRO_id_NB, PRO_title_VC, CMY_color_VC as PRO_color_VC 
+                    FROM proposal
+                    INNER JOIN community ON CMY_id_NB = PRO_community_NB
+                    WHERE PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["proposal"] = $body["proposal"];
+        $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
+        $proposal = $prepare->fetch();
+
+        $request = "SELECT nblove + nblike FROM proposal_total_reaction WHERE PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $prepare->execute($values);
+        $nbReaction = $prepare->fetch();
+
+        $mail = Mailer::init();
+        $mail->Subject = "Quelqu'un a réagit à votre proposition";
+
+        if($body['reaction'] === LIKE || $body['reaction'] === LOVE){
+            $htmlBody = file_get_contents('./view/mail/reaction-proposal-like.html');
+        }else{
+            $htmlBody = file_get_contents('./view/mail/reaction-proposal-dislike.html');
+        }
+        $htmlBody = str_replace(
+            [
+                '[backgroundColor]', 
+                '{{firstname}}', 
+                '{{lastname}}', 
+                '{{proposal}}', 
+                '{{nbReaction}}', 
+                '{{proposalId}}'
+            ],
+            [
+                $proposal->get("PRO_color_VC"), 
+                $body["firstname"],
+                $body["lastname"],
+                $proposal->get("PRO_title_VC"),
+                $nbReaction[0],
+                $proposal->get("PRO_id_NB"),
+            ],
+            $htmlBody
+        );
+        $mail->Body = $htmlBody;
+        $mail->SMTPKeepAlive = true;
+
+        try{
+            $mail->addAddress($body['initiator']);
+            echo Mailer::send($mail);
+            $mail->SmtpClose();
+        }catch (Exception $e) {
+            echo "Erreur d'envoi : {$mail->ErrorInfo}";
+        }
+    }
+
 }
 
 ?>
