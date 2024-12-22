@@ -92,12 +92,25 @@ class notificationController{
 
         $userId = SessionGuard::getUserId(); //L'utilisateur qui a réagit
 
-        $request = "SELECT COM_id_NB, COM_message_VC, USR_email_VC as COM_sender_email_VC
-                    FROM comment 
-                    INNER JOIN user ON USR_id_NB = COM_sender_NB
+        $request = "SELECT USR_notify_reaction_BOOL, USR_notification_frequency_CH, USR_email_VC 
+                    FROM user 
+                    INNER JOIN comment ON COM_sender_NB = USR_id_NB
                     WHERE COM_id_NB = :comment";
         $prepare = connexion::pdo()->prepare($request);
-        $values["comment"] = $body['comment'];
+        $values["comment"] = $body["comment"];
+        $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "user");
+        $userSender = $prepare->fetch();
+
+        echo json_encode($userSender);
+        if(!$userSender->get("USR_notify_reaction_BOOL") || $userSender->get("USR_notification_frequency_CH") != 'Q'){
+            return;
+        }
+
+        $request = "SELECT COM_id_NB, COM_message_VC
+                    FROM comment 
+                    WHERE COM_id_NB = :comment";
+        $prepare = connexion::pdo()->prepare($request);
         $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_CLASS, "comment");
         $comment = $prepare->fetch();
@@ -163,7 +176,7 @@ class notificationController{
         $mail->SMTPKeepAlive = true;
 
         try{
-            $mail->addAddress($comment->get('COM_sender_email_VC'));
+            $mail->addAddress($userSender->get('USR_email_VC'));
             echo Mailer::send($mail);
             $mail->SmtpClose();
         }catch (Exception $e) {
@@ -179,6 +192,18 @@ class notificationController{
            !is_numeric($body['reaction']) || !isset($body['proposal']) || !is_numeric($body['proposal']) || !isset($body['initiator']) ){
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing or incorrect data for processing"}';
+            return;
+        }
+
+        $request = "SELECT USR_notify_reaction_BOOL, USR_notification_frequency_CH FROM user WHERE USR_email_VC = :email";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["email"] = $body["initiator"];
+        $prepare->execute($values);
+        $notify = $prepare->fetch();
+        $values = array();
+        echo json_encode($notify);
+
+        if(!$notify["USR_notify_reaction_BOOL"] || $notify["USR_notification_frequency_CH"] != 'Q'){
             return;
         }
 
