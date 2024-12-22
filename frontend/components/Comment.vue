@@ -130,6 +130,14 @@ const react = async (reaction) => {
                 default:
                     break;
             }
+
+            await $fetch(`${config.public.baseUrl}/notifications/reactions/comments/`, {
+                method: 'POST',
+                credentials: 'include',
+                body: {
+                    comment: props.comment['COM_id_NB']
+                }
+            })
         }
 
         }catch (error){
