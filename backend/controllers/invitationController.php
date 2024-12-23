@@ -17,7 +17,28 @@ class InvitationController{
         echo json_encode($invitation);
     }
 
-    public static function accepted(){
+    /**
+     * Modifie l'invitation concernée dans la base de données
+     * 
+     * @param $params, un tableau correspondant aux paramètres attendus dans l'URL. 
+     * 
+     * Compositon de $params : 
+     * - $params[0] = $id, l'identifiant de l'invitation recherchée. 
+     * 
+     * La fonction attend l'élément suivant : 
+     * - un code (string)
+     * 
+     * Procède à des vérifications de validité avant de modifier la base
+     * 
+     * ex de données acceptées : 
+     * 
+     * {
+     *   "codeSend" : "867911",
+     * }
+     * 
+     * @return void renvoie l'invitation au format json si la modification à été faite
+     */
+    public static function accepted(array $params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
@@ -37,7 +58,7 @@ class InvitationController{
         $values["INV_id_VC"] = $params[0];
         $values["INV_code_VC"] = $body["codeSend"];
 
-        $verifCode = Invitation::getByCode($params[0]);
+        $verifCode = Invitation::getCodeById($params[0]);
 
         if($verifCode === null || $values["INV_code_VC"] != $verifCode){
             http_response_code(401);
@@ -45,10 +66,33 @@ class InvitationController{
             return ;
         }
 
-        $invitation = Invitation::accept($values);
+        Invitation::accept($values);
+        $invitation = Invitation::getById($params[0]);
         echo json_encode($invitation);
+        return true;
     }
 
+    /**
+     * Supprime l'invitation concernée dans la base de données
+     * 
+     * @param $params, un tableau correspondant aux paramètres attendus dans l'URL. 
+     * 
+     * Compositon de $params : 
+     * - $params[0] = $id, l'identifiant de l'invitation recherchée. 
+     * 
+     * La fonction attend l'élément suivant : 
+     * - un code (string)
+     * 
+     * Procède à des vérifications de validité avant de modifier la base
+     * 
+     * ex de données acceptées : 
+     * 
+     * {
+     *   "codeSend" : "867911",
+     * }
+     * 
+     * @return void renvoie un message de confirmation de suppression
+     */
     public static function rejected(array $params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
@@ -69,9 +113,7 @@ class InvitationController{
         $values["INV_id_VC"] = $params[0];
         $values["INV_code_VC"] = $body["codeSend"];
 
-        $verifCode = Invitation::getByCode($params[0]);
-
-        echo "{$verifCode}";
+        $verifCode = Invitation::getCodeById($params[0]);
 
         if($verifCode === null || $values["INV_code_VC"] != $verifCode){
             http_response_code(401);
@@ -80,7 +122,8 @@ class InvitationController{
         }
 
         $invitation = Invitation::reject($values);
-        echo json_encode($invitation);
+        echo "Supression effectuée avec succès";
+        return true;
     }
 }
 

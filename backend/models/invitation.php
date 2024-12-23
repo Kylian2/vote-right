@@ -31,7 +31,7 @@ class Invitation extends Model{
         return $invitation;
     }
 
-    public static function getByCode(string $id){
+    public static function getCodeById(string $id){
         $request = 'SELECT INV_code_VC
                     FROM invitation I 
                     WHERE INV_id_VC = :id';
@@ -55,10 +55,10 @@ class Invitation extends Model{
             "invitationId" => $params["INV_id_VC"],
         );
         $update = $prepare->execute($values);
-        return $update;
+        return true;
     }
 
-    public static function reject(array $values){
+    public static function reject(array $params){
         $currentDate = date('Y-m-d');
         $request = 'DELETE 
                 FROM invitation
@@ -68,8 +68,8 @@ class Invitation extends Model{
         $values = array(
             "invitationId" => $params["INV_id_VC"],
         );
-        $update = $prepare->execute($values);
-        return $update;
+        $prepare->execute($values);
+        return true;
     }
 }
 

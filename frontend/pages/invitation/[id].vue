@@ -41,7 +41,7 @@
                     
                 <div class="invitation__show__actions__button">
                     <Button class="btn btn--full" :disabled="!validCode" @click="acceptInvitation()"> Accepter </Button>
-                    <Button class="btn btn--cancel" @click="rejectInvitation()"> Refuser </Button>
+                    <Button class="btn btn--cancel" :disabled="!validCode" @click="rejectInvitation()"> Refuser </Button>
                 </div>
                     
             </div>
@@ -68,27 +68,9 @@ const validCode = useState("securityCodeValid");
 
 const invitationExpired = ref();
 
-const rejectInvitation = async () => {
-    try {
-        const response = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/rejected`, {
-        method: 'POST',
-            body: {
-                codeSend: securityCode.value,
-            }
-        });
-
-        if(response){
-            navigateTo('/login');
-
-        }
-    } catch (error) {
-        console.error('An error occurred : ', error);
-    }
-}
-
 const acceptInvitation = async () => {
     try {
-        const response1 = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/accepted`, {
+        const response1 = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/accept`, {
         method: 'POST',
             body: {
                 codeSend: securityCode.value,
@@ -107,6 +89,24 @@ const acceptInvitation = async () => {
             navigateTo('/community/${invitation.value.INV_community_NB}');
         }
 
+    } catch (error) {
+        console.error('An error occurred : ', error);
+    }
+}
+
+const rejectInvitation = async () => {
+    try {
+        const response = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/reject`, {
+        method: 'POST',
+            body: {
+                codeSend: securityCode.value,
+            }
+        });
+
+        if(response){
+            navigateTo('/login');
+
+        }
     } catch (error) {
         console.error('An error occurred : ', error);
     }
