@@ -97,3 +97,10 @@ h4{
 input[type="checkbox"], label{
     cursor: pointer;
 }
+
+main{
+    margin: 0 40px 0 40px;
+    @media screen and (max-width: 400px) {
+        margin: 0 20px 0 20px;
+    }
+}

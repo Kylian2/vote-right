@@ -8,8 +8,22 @@
     font-size: 16px;
     border-radius: 10px;
     cursor: pointer;
+    transition: .3s;
 
     &--full{
         width: 100%;
+    }
+
+    &--small{
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+    &:hover{
+        background: lighten($color: $dark, $amount: 10);
+    }
+
+    &:active{
+        background: lighten($color: $dark, $amount: 20);
     }
 }
