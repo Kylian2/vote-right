@@ -4,12 +4,14 @@
 
 /* Import des composants */
 
+@import './components/button.scss';
 @import './components/form.scss';
 @import './components/modal.scss';
 @import './components/toast.scss';
 
 /* Import des styles de page */
 
+@import './pages/index.scss';
 
 /* Import des éléments de structures */
 

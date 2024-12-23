@@ -1,0 +1,21 @@
+.index{
+
+    h1{
+        margin: 30px 0;
+    }
+
+    > div{
+        margin: auto;
+        display: block;
+        width: 400px;
+        align-content: center;
+        height: 80vh;
+        
+        > form{
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+    }
+
+}
