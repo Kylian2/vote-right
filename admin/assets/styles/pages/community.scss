@@ -1,0 +1,74 @@
+.community{
+
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+
+    section{
+        > div{
+            background: $background-light;
+            padding: 20px;
+            border-radius: 5px;
+
+            h3{
+                margin-bottom: 10px;
+            }
+        }
+    }
+
+    b{
+        font-weight: 600;
+    }
+
+    &__lateral{
+        grid-column: 1/3;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    } 
+
+    &__recap-budget{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &__recap-themes{
+        display: flex;
+       flex-direction: column;
+
+        &__list{
+            margin-bottom: 50px;
+        }
+
+        >div{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        button{
+            margin-top: 10px;
+        }
+    } 
+    
+    &__actions{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: unset !important;
+        padding: 0 20px !important;
+    }
+
+    &__legend{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: unset !important;
+        padding: 0 20px !important;
+
+        >div{
+            align-items: center;
+            display: flex;
+            gap: 5px;
+        }
+    }
+}
