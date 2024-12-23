@@ -88,11 +88,13 @@ class Community extends Model{
 
     public function getOngoingProposals(){
         @require_once("models/proposal.php");
-        $request = "SELECT PRO_id_NB, PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC
-                    FROM proposal
-                    INNER JOIN theme ON PRO_community_NB = THM_community_NB AND PRO_theme_NB = THM_id_NB
-                    INNER JOIN community ON PRO_community_NB = CMY_id_NB
-                    WHERE PRO_status_VC = 'En cours' AND PRO_community_NB = :community";
+        $request = "SELECT p.PRO_id_NB, p.PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC, PRO_budget_NB, PRO_period_YEAR,
+                     nblove AS PRO_love_NB, nblike AS PRO_like_NB, nbdislike AS PRO_dislike_NB, nbhate AS PRO_hate_NB
+                    FROM proposal p
+                    INNER JOIN proposal_total_reaction pr ON p.PRO_id_NB = pr.PRO_id_NB
+                    INNER JOIN theme ON p.PRO_community_NB = THM_community_NB AND PRO_theme_NB = THM_id_NB
+                    INNER JOIN community ON p.PRO_community_NB = CMY_id_NB
+                    WHERE p.PRO_status_VC = 'En cours' AND p.PRO_community_NB = :community";
 
         $prepare = connexion::pdo()->prepare($request);
         $values["community"] = $this->CMY_id_NB;    
