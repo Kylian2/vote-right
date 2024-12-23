@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         const headers = useRequestHeaders(['cookie']);
         const response = await $fetch(`${config.public.baseUrl}/auth/check`, { headers, credentials : 'include'});
         if (response !== true) { 
-            return navigateTo('/login');
+            return navigateTo('/');
         }
     } catch (error) {
         console.error("Error during authorization check:", error);
