@@ -61,7 +61,7 @@ class CommentController{
      * 
      * @return bool true si l'utilisateur a pu réagir, false sinon
      */
-    public static function react($params){
+    public static function react(array $params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
@@ -75,6 +75,31 @@ class CommentController{
         $userId = SessionGuard::getUserId();
 
         $result = Comment::react($params[0], $body['reaction'], $userId);
+
+        echo json_encode($result);
+    }
+
+    /**
+     * Permet de signaler un commentaire
+     * 
+     * @param array $params les paramètres de l'url ($params[0] contient l'indentifiant du commentaire);
+     * 
+     * @return bool true si l'utilisateur a signaler le commentaire
+     */
+    public static function report(array $params){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body['reason']) || !is_numeric($body['reason'])){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Missing or incorrect data';
+            echo json_encode($return);
+            return;
+        }
+
+        $userId = SessionGuard::getUserId();
+
+        $result = Comment::report($params[0], $body['reason'], $userId);
 
         echo json_encode($result);
     }

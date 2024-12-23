@@ -1,16 +1,18 @@
 <?php
 
+@require_once('models/model.php');
+
 class Proposal extends Model{
 
     public string $PRO_id_NB;
     public string $PRO_title_VC;
     public string $PRO_description_TXT;
     public string $PRO_color_VC;
+    public string $PRO_status_VC;
     public string $PRO_period_YEAR;
     public ?float $PRO_budget_NB; //nullable
     public ?int $PRO_discussion_duration_NB; //nullable
     public string $PRO_creation_DATE;
-    public string $PRO_status_VC;
 
     //Le numero du thème (relativement à la commaunauté) et/ou le nom du thème
     public string $PRO_theme_VC;
@@ -59,6 +61,22 @@ class Proposal extends Model{
 
         $prepare->execute($values);
 
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
+        $proposals = $prepare->fetchAll();
+        return $proposals;
+    }
+
+    public static function allOfCommunity($CMY_id_NB) {
+        @require_once("models/proposal.php");
+        $request = "SELECT PRO_id_NB, PRO_title_VC, PRO_status_VC, PRO_theme_NB, THM_name_VC as PRO_theme_VC
+                    FROM proposal
+                    INNER JOIN theme ON pro_community_nb = thm_community_nb AND pro_theme_nb = thm_id_nb
+                    WHERE pro_community_nb = :community AND pro_deleter_nb IS NULL
+                    ORDER BY PRO_creation_DATE DESC;";
+        
+        $prepare = connexion::pdo()->prepare($request);
+        $values["community"] = $CMY_id_NB;
+        $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
         $proposals = $prepare->fetchAll();
         return $proposals;

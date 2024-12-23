@@ -86,11 +86,9 @@ paths:
           description: Le cookie d'authentification
           required: true
       tags:
-        - communauté
+        - communities
     post:
       summary: Créer une communauté
-      tags:
-        - communauté
       responses:
         '200':
           description: 'Renvoie true si l''insertion s''est bien passé. '
@@ -134,6 +132,8 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   '/communities/{id}':
     parameters:
       - schema:
@@ -143,8 +143,6 @@ paths:
         required: true
     get:
       summary: Une communauté
-      tags:
-        - communauté
       responses:
         '200':
           description: La communauté renvoyée avec succès
@@ -197,11 +195,11 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   /communities/administred:
     get:
       summary: La liste des communautés gérées par un utilisateur
-      tags:
-        - communauté
       responses:
         '200':
           description: Un tableau des communautés.
@@ -279,8 +277,6 @@ paths:
         required: true
     get:
       summary: Les proposition en cours
-      tags:
-        - communauté
       responses:
         '200':
           description: Les propositions renvoyées avec succès.
@@ -339,6 +335,8 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   '/communities/{id}/finished':
     parameters:
       - schema:
@@ -348,8 +346,6 @@ paths:
         required: true
     get:
       summary: Les proposition terminées
-      tags:
-        - communauté
       responses:
         '200':
           description: Les propositions renvoyées avec succès
@@ -407,6 +403,8 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   '/communities/{id}/members':
     parameters:
       - schema:
@@ -417,9 +415,9 @@ paths:
     get:
       summary: La liste des membres
       tags:
-        - communauté
         - membre
         - role
+        - communities
       responses:
         '200':
           description: La liste renvoyé avec succès
@@ -531,8 +529,6 @@ paths:
         required: true
     get:
       summary: Les thèmes de la communauté
-      tags:
-        - communauté
       responses:
         '200':
           description: 'La liste des thèmes récupérés avec succès. '
@@ -577,6 +573,8 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   /auth/register:
     post:
       summary: Créer un compte
@@ -1543,9 +1541,6 @@ paths:
         required: true
     get:
       summary: Vérifie que l'utilisateur est membre de la communauté
-      tags:
-        - community
-        - ''
       responses:
         '200':
           description: 'Renvoie `true` si l''utilisateur est membre, `false` sinon.'
@@ -1559,6 +1554,336 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
+  '/comment/{id}/report':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: Signaler un commentaire
+      responses:
+        '200':
+          description: 'OK, renvoie `true` si le message a été signalé, `false` sinon.'
+      operationId: post-comment-id-report
+      x-stoplight:
+        id: 9sokzq48tpzbk
+      description: 'Permet de signaler un commentaire. '
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          required: true
+          description: Le cookie d'authentification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: integer
+              x-examples:
+                Example 1:
+                  reason: 1
+            examples:
+              Example 1:
+                value:
+                  reason: 1
+        description: '`reason` est en entier contenant un des motifs de signalement définis. '
+      tags:
+        - comments
+  /reasons:
+    get:
+      summary: Les motifs de signalement
+      tags:
+        - reasons
+      responses:
+        '200':
+          description: 'OK, la liste est renvoyée avec succès'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    RES_id_NB:
+                      type: integer
+                    RES_label_VC:
+                      type: string
+                x-examples:
+                  Example 1:
+                    - RES_id_NB: 1
+                      RES_label_VC: Motif 1
+                    - RES_id_NB: 2
+                      RES_label_VC: Motif 2
+                    - RES_id_NB: 3
+                      RES_label_VC: Motif 3
+              examples:
+                Example 1:
+                  value:
+                    - RES_id_NB: 1
+                      RES_label_VC: Motif 1
+                    - RES_id_NB: 2
+                      RES_label_VC: Motif 2
+                    - RES_id_NB: 3
+                      RES_label_VC: Motif 3
+      operationId: get-reasons
+      x-stoplight:
+        id: ahkgv9b9ov4hx
+      description: Renvoie la liste des motifs de signalement.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/proposals/{id}/votes':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Récupère les informations des votes
+      tags:
+        - proposals
+        - votes
+      responses:
+        '200':
+          description: 'OK, les informations récupérées.'
+          content:
+            application/json:
+              schema:
+                type: array
+                x-examples:
+                  Example 1:
+                    - VOT_proposal_NB: 34
+                      VOT_round_NB: 1
+                      VOT_valid_BOOL: '1'
+                      VOT_start_DATE: '2024-10-27 00:00:00'
+                      VOT_end_DATE: '2024-11-02 23:59:59'
+                      VOT_type_NB: 4
+                      VOT_type_VC: Scrutin majoritaire (deux tours)
+                      VOT_nb_rounds_NB: '2'
+                      VOT_possibilities_TAB:
+                        - - M. Pokora
+                          - 1
+                        - - Claudio Capéo
+                          - 2
+                        - - Vitaa
+                          - 3
+                        - - Christian Dingler
+                          - 4
+                        - - Matthieu Chedid
+                          - 5
+                        - - Patricia Kaas
+                          - 6
+                      hasVoted: 0
+                    - VOT_proposal_NB: 34
+                      VOT_round_NB: 2
+                      VOT_valid_BOOL: '1'
+                      VOT_start_DATE: '2024-12-19 00:00:00'
+                      VOT_end_DATE: '2024-12-31 23:59:59'
+                      VOT_type_NB: 4
+                      VOT_type_VC: Scrutin majoritaire (deux tours)
+                      VOT_nb_rounds_NB: '2'
+                      VOT_possibilities_TAB:
+                        - - M. Pokora
+                          - 144
+                        - - Claudio Capéo
+                          - 145
+                      hasVoted: 1
+                items:
+                  type: object
+                  properties:
+                    VOT_proposal_NB:
+                      type: integer
+                    VOT_round_NB:
+                      type: integer
+                    VOT_valid_BOOL:
+                      type: string
+                    VOT_start_DATE:
+                      type: string
+                    VOT_end_DATE:
+                      type: string
+                    VOT_type_NB:
+                      type: integer
+                    VOT_type_VC:
+                      type: string
+                    VOT_nb_rounds_NB:
+                      type: string
+                    VOT_possibilities_TAB:
+                      type: array
+                      items:
+                        type: array
+                        items: {}
+                    hasVoted:
+                      type: integer
+              examples:
+                Example 1:
+                  value:
+                    - VOT_proposal_NB: 34
+                      VOT_round_NB: 1
+                      VOT_valid_BOOL: '1'
+                      VOT_start_DATE: '2024-10-27 00:00:00'
+                      VOT_end_DATE: '2024-11-02 23:59:59'
+                      VOT_type_NB: 4
+                      VOT_type_VC: Scrutin majoritaire (deux tours)
+                      VOT_nb_rounds_NB: '2'
+                      VOT_possibilities_TAB:
+                        - - M. Pokora
+                          - 1
+                        - - Claudio Capéo
+                          - 2
+                        - - Vitaa
+                          - 3
+                        - - Christian Dingler
+                          - 4
+                        - - Matthieu Chedid
+                          - 5
+                        - - Patricia Kaas
+                          - 6
+                      hasVoted: 0
+                    - VOT_proposal_NB: 34
+                      VOT_round_NB: 2
+                      VOT_valid_BOOL: '1'
+                      VOT_start_DATE: '2024-12-19 00:00:00'
+                      VOT_end_DATE: '2024-12-31 23:59:59'
+                      VOT_type_NB: 4
+                      VOT_type_VC: Scrutin majoritaire (deux tours)
+                      VOT_nb_rounds_NB: '2'
+                      VOT_possibilities_TAB:
+                        - - M. Pokora
+                          - 144
+                        - - Claudio Capéo
+                          - 145
+                      hasVoted: 1
+      operationId: get-proposals-id-votes
+      x-stoplight:
+        id: xvknjkafyuv5o
+      description: |-
+        Récupère les informations concernants les différents tours qui composent le vote de la proposition. 
+        Indique également si l'utilisateur connecté a déjà voté.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/proposals/{id}/{round}/vote':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: round
+        in: path
+        required: true
+    get:
+      summary: Récupère les résultats du tour
+      tags:
+        - proposals
+        - votes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    POS_label_VC:
+                      type: string
+                    POS_nbVotes_NB:
+                      type: integer
+                    POS_percentNbVotes_NB:
+                      type: integer
+                x-examples:
+                  Example 1:
+                    - POS_label_VC: Contre
+                      POS_nbVotes_NB: 4
+                      POS_percentNbVotes_NB: 50
+                    - POS_label_VC: Pour
+                      POS_nbVotes_NB: 4
+                      POS_percentNbVotes_NB: 50
+              examples:
+                Example 1:
+                  value:
+                    - POS_label_VC: Claudio Capéo
+                      POS_nbVotes_NB: 34
+                      POS_percentNbVotes_NB: 52
+                    - POS_label_VC: M. Pokora
+                      POS_nbVotes_NB: 31
+                      POS_percentNbVotes_NB: 48
+      operationId: get-proposals-id-round-vote
+      x-stoplight:
+        id: avx9kuajudo44
+      description: Récupère les résultats d'un tour de vote (le nombre de vote et le pourcentage de chaque possibilité)
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+    post:
+      summary: Enregistre un vote
+      tags:
+        - proposals
+        - votes
+      responses:
+        '200':
+          description: 'OK, renvoie `true` si le vote a été enregistré.'
+        '401':
+          description: 'Unauthorized, vous ne faites pas partie de la communauté, vous ne pouvez pas voter.'
+        '422':
+          description: |-
+            Unprocessable Entity (WebDAV), le choix passé en paramètre est incorrecte, plus de détails sont donnés dans le corps de la réponse.
+            Les erreurs possibles sont entre autre: 
+            - L'utilisateur a déjà voté
+            - `choice` ne correspond pas au format attendu
+            - `choice` n'est pas une possibilité
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Unprocessable Entity:
+                    type: string
+                x-examples:
+                  Example 1:
+                    Unprocessable Entity: You have already voted
+              examples:
+                Example 1:
+                  value:
+                    Unprocessable Entity: Missing or incorrect data
+                Example 2:
+                  value:
+                    Unprocessable Entity: You have already voted
+      operationId: post-proposals-id-round-vote
+      x-stoplight:
+        id: 0luo8yj88kfvq
+      description: 'Enregistre le vote de l''utilisateur connecté, le choix est fourni dans le body via `choice` il doit être entier et correspondre à une des possibilités du vote. Évidement seul les membres d''un groupe peuvent voter sur une proposition du groupe.'
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
 components:
   securitySchemes: {}
   responses: {}

@@ -117,6 +117,22 @@ class Comment extends Model{
         return true;
     }
 
+    public static function report(int $comment, int $reason, int $user){
+        $request = "INSERT INTO report(RPT_comment_NB, RPT_user_NB, RPT_reason_NB) VALUES (:comment, :user, :reason)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['user'] = $user;
+        $values['reason'] = $reason;
+        $values['comment'] = $comment;
+
+        try{
+            $prepare->execute($values);            
+        }catch (PDOException $e){
+            //Généralement une erreur PDOException 23000 issue d'un doublons de clé primaire signifiant que l'utilisateur à déjà signalé le commentaire.
+            return false;
+        }
+        return true;
+    }
+
 }
 
 ?>

@@ -1,5 +1,5 @@
 <template>
-    <div class="comment">
+    <div class="comment" :class="{ 'self-end': right }">
         <p class="comment__sender" v-if="!hideName">
             {{ comment["COM_sender_fname_VC"] }} <b>{{ comment["COM_sender_lname_VC"] }}</b>
         </p>
@@ -25,10 +25,31 @@
                         <p v-if="reactions['hasReacted']">{{ reactions["nbhate"] }}</p>
                     </button>
                 </div>
-                <button @click.stop class="comment__report-btn">Signaler</button>
+                <button @click="reportModal = !reportModal" class="comment__report-btn">Signaler</button>
             </div>
-        
     </div>
+    <Modal
+        :name="`report${comment['COM_id_NB']}`"
+        ok-text="Signaler"
+        cancel-text="Annuler"
+        :disable-valid="!reportReasonValid"
+        :before-ok="() => {report()}"
+        :before-cancel="() => {reportReason = ''}"
+        >
+            <template #title>Signaler le commentaire</template>
+            <template #body>  
+                <Select v-if="reasons"
+                name="reportReason" 
+                :options="reasons" 
+                placeholder="Selectionnez un motif"
+                :rules="[
+                    (v) => Boolean(v) || 'Veuillez selection un motif'
+                ]"
+                >Motif : </Select>
+            </template>
+    </Modal>
+
+    <!--Les toasts de validation et d'erreur se trouvent dans la page proposition-->
 </template>
 <script setup>
 
@@ -48,11 +69,24 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false,
-    }
+    }, 
+    reasons: {
+        type: Array,
+        required: true,
+    },
+    right: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
 })
 
 const toggle = ref(false);
 const reactions = ref();
+
+const reportModal = useState(`report${props.comment['COM_id_NB']}Modal`, () => false);
+const reportReason = useState('reportReason');
+const reportReasonValid = useState('reportReasonValid');
 
 const fetchReaction = async () => {
     try{
@@ -96,6 +130,30 @@ const react = async (reaction) => {
                 default:
                     break;
             }
+        }
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
+const reportError = useState('reportErrorUp', ()=>false);
+const reportValid = useState('reportValidUp', ()=>false);
+
+const report = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/comments/${props.comment["COM_id_NB"]}/report`, {
+            method: 'POST',
+            credentials: 'include',
+            body:{
+                reason: 1
+            }
+        })
+
+        if(response){
+            reportValid.value = true;
+        }else{
+            reportError.value = true;
         }
 
         }catch (error){

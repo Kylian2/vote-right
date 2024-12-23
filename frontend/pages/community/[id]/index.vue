@@ -28,18 +28,18 @@
             <div class="community__ongoing-proposals__list" v-if="ongoingProposals && ongoingProposals.length">
                 <CardProposal v-for="proposal in ongoingProposals" :proposal="proposal"></CardProposal>
             </div>
-            <p v-else>Aucune propositions en cours</p>
+            <p v-else>Aucune proposition en cours</p>
         </div>
 
         <div class="community__finished-proposals">
             <div class="community__finished-proposals__infos">
                 <h2>Propositions terminées</h2>
-                <NuxtLink to="#">Tout voir</NuxtLink>
+                <NuxtLink :to="`${$route.params.id}/proposals`">Tout voir</NuxtLink>
             </div>
             <div class="community__ongoing-proposals__list" v-if="finishedProposals && finishedProposals.length">
                 <CardProposal v-for="proposal in finishedProposals" :proposal="proposal"></CardProposal>
             </div>
-            <p v-else>Aucune propositions en cours</p>
+            <p v-else>Aucune proposition terminée</p>
         </div>
     </main>
 </template>

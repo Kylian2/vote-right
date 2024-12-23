@@ -19,8 +19,10 @@ Router::get('/communities/{id}/ongoing', 'communityController@ongoingProposals',
 Router::get('/communities/{id}/finished', 'communityController@finishedProposals', true);
 Router::get('/communities/{id}/members', 'communityController@members', true);
 Router::get('/communities/{id}/themes', 'communityController@themes', false);
+Router::get('/communities/{id}/proposals', 'proposalController@allOfCommunity', true);
 Router::get('/communities/{id}/membership', 'communityController@isMember', true);
 Router::get('/communities/registration', 'communityController@insertMember', false);
+
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');
@@ -37,9 +39,15 @@ Router::post('/proposals/{id}/reactions', 'proposalController@react', true);
 Router::get('/proposals/{id}/requests', 'proposalController@getRequest', true);
 Router::post('/proposals/{id}/requests', 'proposalController@postRequest', true);
 Router::get('/proposals/{id}/membership', 'proposalController@isMember', true);
+Router::get('/proposals/{id}/votes', 'proposalController@voteInfos', true);
+Router::get('/proposals/{id}/{round}/vote', 'proposalController@voteResult', true);
+Router::post('/proposals/{id}/{round}/vote', 'proposalController@saveVote', true);
 
 Router::post('/comments', 'commentController@store', true);
 Router::get('/comments/{id}/reactions', 'commentController@reactions', true);
 Router::post('/comments/{id}/reactions', 'commentController@react', true);
+Router::post('/comments/{id}/report', 'commentController@report', true);
+
+Router::get('/reasons', 'reasonController@index', true);
 
 ?>
