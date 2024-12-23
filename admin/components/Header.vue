@@ -4,8 +4,8 @@
         <p class="desktop">VoteRightControlPanel</p>
         <p class="mobile">VRCP</p>
         <div>
-            <Nuxtlink class="btn btn--small" to="/home" >Accueil</Nuxtlink>
-            <Nuxtlink class="btn btn--small" to="/" >Déconnexion</Nuxtlink>
+            <NuxtLink class="btn btn--small" to="/home" >Accueil</NuxtLink>
+            <NuxtLink class="btn btn--small" to="/" >Déconnexion</NuxtLink>
         </div>
     </header>
 

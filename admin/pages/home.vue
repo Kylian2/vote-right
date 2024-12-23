@@ -5,10 +5,10 @@
 <main class="home">
 
     <div class="community-list">
-        <p v-for="community, key in communities" 
+        <NuxtLink :to="`communities/${community['CMY_id_NB']}`" v-for="community, key in communities" 
             @mouseover="(event) => event.target.style.color = community['CMY_color_VC']" 
             @mouseout="(event) => event.target.style.color = ''">
-        <strong>{{community["CMY_name_VC"]}}</strong> <span>{{community["CMY_nb_member_NB"] >= 2 ? community["CMY_nb_member_NB"] + " membres" : "1 membre"}}</span></p>
+        <strong>{{community["CMY_name_VC"]}}</strong> <span>{{community["CMY_nb_member_NB"] >= 2 ? community["CMY_nb_member_NB"] + " membres" : "1 membre"}}</span></NuxtLink>
     </div>
 
 </main>

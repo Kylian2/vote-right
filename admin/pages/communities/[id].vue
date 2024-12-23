@@ -47,7 +47,61 @@
                 </div>
             </div>
         </section>
-        <section></section>
+        <section class="community__main">
+
+            <div class="community__adopted">
+                <h3>Proposition adoptées</h3>
+                <div>
+                    <div v-for="x in 10" class="community-card">
+                        <div>
+                            <p class="community-card__theme">Animation</p>
+                            <p>Journée portes ouvertes</p>
+                        </div>
+                        <div>
+                            <p>32/23</p>
+                            <p>1300€</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="community__ongoing">
+                <h3>Action requise</h3>
+                <div>
+                    <div v-for="x in 10" class="community-card__wrapper">
+                        <img src="/images/like.png" alt="like icon" v-if="x%2">
+                        <div class="community-card" :class="{'community-card--action': x%2}">
+                            <div>
+                                <p class="community-card__theme">Animation</p>
+                                <p>Journée portes ouvertes</p>
+                            </div>
+                            <div>
+                                <p>32/23</p>
+                                <p>1300€</p>
+                            </div>
+                        </div>
+                        <button v-if="x%2" class="btn btn--small">Adopter</button>
+                        <button v-if="x%2" class="btn btn--small">Refuser</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="community__ongoing">
+                <h3>Proposition en cours</h3>
+                <div>
+                    <div v-for="x in 10" class="community-card">
+                        <div>
+                            <p class="community-card__theme">Animation</p>
+                            <p>Journée portes ouvertes</p>
+                        </div>
+                        <div>
+                            <p>32/23</p>
+                            <p>1300€</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
 </template>

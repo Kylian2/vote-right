@@ -2,6 +2,7 @@
 
     display: grid;
     grid-template-columns: repeat(10, 1fr);
+    column-gap: 20px;
 
     section{
         > div{
@@ -20,11 +21,18 @@
     }
 
     &__lateral{
-        grid-column: 1/3;
+        grid-column: 1/4;
         display: flex;
         flex-direction: column;
         gap: 20px;
     } 
+
+    &__main{
+        grid-column: 4/11;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 
     &__recap-budget{
         display: flex;
@@ -71,4 +79,60 @@
             gap: 5px;
         }
     }
+
+    &__adopted, &__ongoing{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        > div{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 300px;
+            overflow: scroll;
+        }
+    }
+
+    .community-card{
+        color: $contrast;
+        background: $dark;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 10px;
+        border-radius: 5px;
+        width: 100%;
+        >div{
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        &--action{
+            width: 90%;
+            background: $gradient;
+            ~button{
+                background: $gradient-4 !important;
+                -webkit-box-shadow: inset 0px 0px 0px 0px rgba(0,0,0,0);
+                -moz-box-shadow: inset 0px 0px 0px 0px rgba(0,0,0,0);
+                box-shadow: inset 0px 0px 0px 0px rgba(0,0,0,0);
+                transition: .4s;
+                &:hover{
+                    -webkit-box-shadow: inset 0px 0px 0px 200px rgba(255, 255, 255, 0.2);
+                    -moz-box-shadow: inset 0px 0px 0px 200px rgba(255, 255, 255, 0.2);
+                    box-shadow: inset 0px 0px 0px 200px rgba(255, 255, 255, 0.2);
+                }
+            }
+        }
+        &__theme{
+            background: $contrast;
+            color: $dark;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        &__wrapper{
+            display: flex;
+            gap: 10px;
+        }
+    }
+    
 }
