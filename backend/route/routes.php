@@ -23,7 +23,6 @@ Router::get('/communities/{id}/proposals', 'proposalController@allOfCommunity', 
 Router::get('/communities/{id}/membership', 'communityController@isMember', true);
 Router::get('/communities/registration', 'communityController@insertMember', false);
 
-
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');
 Router::get('/users/me', 'userController@me', true);

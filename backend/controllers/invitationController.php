@@ -14,6 +14,13 @@ class InvitationController{
      */
     public static function show(array $params){
         $invitation = Invitation::getById($params[0]);
+
+        if(empty($invitation)){
+            $return["invitation_status"] = 'invitation already answer';
+            echo json_encode($return);
+            return ;
+        } 
+
         echo json_encode($invitation);
     }
 
@@ -59,17 +66,16 @@ class InvitationController{
         $values["INV_code_VC"] = $body["codeSend"];
 
         $verifCode = Invitation::getCodeById($params[0]);
+        json_encode($verifCode);
 
-        if($verifCode === null || $values["INV_code_VC"] != $verifCode){
+        if($verifCode === null || $values["INV_code_VC"] != $verifCode['INV_code_VC']){
             http_response_code(401);
             echo '{"invalid code":"the code entered by the user is invalid"}';
             return ;
         }
 
         Invitation::accept($values);
-        $invitation = Invitation::getById($params[0]);
-        echo json_encode($invitation);
-        return true;
+        echo "Modification effectuée avec succès";
     }
 
     /**
@@ -114,16 +120,16 @@ class InvitationController{
         $values["INV_code_VC"] = $body["codeSend"];
 
         $verifCode = Invitation::getCodeById($params[0]);
+        json_encode($verifCode);
 
-        if($verifCode === null || $values["INV_code_VC"] != $verifCode){
+        if($verifCode === null || $values["INV_code_VC"] != $verifCode['INV_code_VC']){
             http_response_code(401);
             echo '{"invalid code":"the code entered by the user is invalid"}';
             return ;
         }
 
-        $invitation = Invitation::reject($values);
+        Invitation::reject($values);
         echo "Supression effectuée avec succès";
-        return true;
     }
 }
 

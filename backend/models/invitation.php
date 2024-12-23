@@ -20,7 +20,8 @@ class Invitation extends Model{
         $request = 'SELECT INV_recipient_NB, INV_community_NB, USR_firstname_VC AS INV_sender_firstname_VC, USR_lastname_VC AS INV_sender_lastname_VC, DATEDIFF(CURRENT_DATE, INV_issue_DATE) AS INV_joursDepuisInvitation_NB
                     FROM invitation I 
                     INNER JOIN user U ON I.INV_sender_NB = U.USR_id_NB
-                    WHERE INV_id_VC = :id';
+                    WHERE INV_id_VC = :id
+                    AND INV_acceptance_DATE IS NULL';
         $prepare = connexion::pdo()->prepare($request);
 
         $values['id'] = $id;
@@ -38,7 +39,8 @@ class Invitation extends Model{
         $prepare = connexion::pdo()->prepare($request);
 
         $values['id'] = $id;
-        $code = $prepare->execute($values);
+        $prepare->execute($values);
+        $code = $prepare->fetch();
 
         return $code;
     }
@@ -54,8 +56,7 @@ class Invitation extends Model{
             "currentDate" => $currentDate,
             "invitationId" => $params["INV_id_VC"],
         );
-        $update = $prepare->execute($values);
-        return true;
+        $prepare->execute($values);
     }
 
     public static function reject(array $params){
@@ -69,7 +70,6 @@ class Invitation extends Model{
             "invitationId" => $params["INV_id_VC"],
         );
         $prepare->execute($values);
-        return true;
     }
 }
 
