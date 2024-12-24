@@ -13,6 +13,8 @@ Router::post('/communities', 'communityController@store', true);
 Router::get('/communities/administered', 'communityController@administered', true);
 Router::get('/communities/{id}/ongoing', 'communityController@ongoingProposals', true);
 Router::get('/communities/{id}/finished', 'communityController@finishedProposals', true);
+Router::get('/communities/{id}/adopted', 'communityController@adoptedProposals', true);
+Router::get('/communities/{id}/voted', 'communityController@votedProposals', true);
 Router::get('/communities/{id}/members', 'communityController@members', true);
 Router::get('/communities/{id}/themes', 'communityController@themes', true);
 Router::get('/communities/{id}/proposals', 'proposalController@allOfCommunity', true);

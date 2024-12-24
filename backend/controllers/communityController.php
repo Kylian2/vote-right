@@ -142,6 +142,42 @@ class CommunityController{
     }   
 
     /**
+     * Affiche un json de la liste de propositions adoptées de la communauté. Par défaut tout les propositions de toutes les années sont 
+     * renvoyées. Il est possible de spécifier une année via les paramètres GET de l'url.
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function adoptedProposals($params){
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        $period = isset($_GET["period"]) ? $_GET["period"] : null;
+        $proposals = $community->getAdoptedProposals($period);
+        echo json_encode($proposals);
+    }   
+
+    /**
+     * Affiche un json de la liste de propositions dont les votes sont terminées, et dont le statut est toujours 'en cours'.
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function votedProposals($params){
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        $proposals = $community->getVotedProposals();
+        echo json_encode($proposals);
+    }   
+
+    /**
      * Affiche un json de la liste des membres et de leur role dans la communauté.
      * 
      * @param $params Une liste contenant les paramètres de la requêtes

@@ -121,6 +121,56 @@ class Community extends Model{
         return $proposals;
     }
 
+    public function getAdoptedProposals(int $period = null){
+        @require_once("models/proposal.php");
+
+        $request = "SELECT p.PRO_id_NB, p.PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC,
+                            PRO_budget_NB, nblove as PRO_love_NB, nblike as PRO_like_NB, nbdislike as PRO_dislike_NB, nbhate as PRO_hate_NB
+                    FROM proposal p
+                    INNER JOIN theme ON p.PRO_community_NB = THM_community_NB AND PRO_theme_NB = THM_id_NB
+                    INNER JOIN community ON p.PRO_community_NB = CMY_id_NB
+                    INNER JOIN proposal_total_reaction pr ON pr.PRO_id_NB = p.PRO_id_NB
+                    WHERE p.PRO_status_VC = 'Validée' AND p.PRO_community_NB = :community";
+        
+        if($period){
+            $request = "SELECT p.PRO_id_NB, p.PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC,
+                            PRO_budget_NB, nblove as PRO_love_NB, nblike as PRO_like_NB, nbdislike as PRO_dislike_NB, nbhate as PRO_hate_NB
+                        FROM proposal p
+                        INNER JOIN theme ON p.PRO_community_NB = THM_community_NB AND PRO_theme_NB = THM_id_NB
+                        INNER JOIN community ON p.PRO_community_NB = CMY_id_NB
+                        INNER JOIN proposal_total_reaction pr ON pr.PRO_id_NB = p.PRO_id_NB
+                        WHERE p.PRO_status_VC = 'Validée' AND p.PRO_community_NB = :community AND p.PRO_period_YEAR = :period";
+                        $values["period"] = $period;
+        }
+
+        $prepare = connexion::pdo()->prepare($request);
+        $values["community"] = $this->CMY_id_NB;    
+        $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
+        $proposals = $prepare->fetchAll();
+        return $proposals;
+    }
+
+    public function getVotedProposals(){
+        @require_once("models/proposal.php");
+        $request = "SELECT p.PRO_id_NB, p.PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC, PRO_budget_NB, nblove as PRO_love_NB, nblike as PRO_like_NB, nbdislike as PRO_dislike_NB, nbhate as PRO_hate_NB
+                    FROM proposal p
+                    INNER JOIN vote ON VOT_proposal_NB = PRO_id_NB
+                    INNER JOIN voting_system ON SYS_id_NB = VOT_type_NB
+                    INNER JOIN proposal_total_reaction pr ON pr.PRO_id_NB = p.PRO_id_NB
+                    INNER JOIN theme ON THM_id_NB = p.PRO_theme_NB AND THM_community_NB = p.PRO_community_NB
+                    INNER JOIN community ON CMY_id_NB = p.PRO_community_NB
+                    WHERE VOT_round_NB = SYS_nb_rounds_NB AND p.PRO_community_NB = :community AND VOT_end_DATE < CURRENT_DATE()
+                    AND p.PRO_status_VC = 'En cours'";
+
+        $prepare = connexion::pdo()->prepare($request);
+        $values["community"] = $this->CMY_id_NB;    
+        $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
+        $proposals = $prepare->fetchAll();
+        return $proposals;
+    }
+
     public function getMembers(){
         @require_once("models/user.php");
         $request = "SELECT USR_firstname_VC, USR_lastname_VC, ROL_label_VC, MEM_role_NB FROM members_role WHERE MEM_community_NB = :community";

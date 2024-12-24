@@ -52,37 +52,39 @@
             <div class="community__adopted">
                 <h3>Proposition adoptées</h3>
                 <div>
-                    <div v-for="x in 10" class="community-card">
+                    <div v-for="proposal in adopted" class="community-card">
                         <div>
-                            <p class="community-card__theme">Animation</p>
-                            <p>Journée portes ouvertes</p>
+                            <p class="community-card__theme">{{proposal['PRO_theme_VC']}}</p>
+                            <p>{{proposal['PRO_title_VC']}}</p>
                         </div>
                         <div>
-                            <p>32/23</p>
-                            <p>1300€</p>
+                            <p>{{proposal['PRO_like_NB']+proposal['PRO_love_NB']}}/{{proposal['PRO_dislike_NB']+proposal['PRO_hate_NB']}}</p>
+                            <p>{{proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '---'}} €</p>
                         </div>
                     </div>
+                    <p v-if="adopted.length === 0">Aucune proposition</p>
                 </div>
             </div>
 
             <div class="community__ongoing">
                 <h3>Action requise</h3>
                 <div>
-                    <div v-for="x in 10" class="community-card__wrapper">
-                        <img src="/images/like.png" alt="like icon" v-if="x%2">
-                        <div class="community-card" :class="{'community-card--action': x%2}">
+                    <div v-for="proposal, key in voted" class="community-card__wrapper">
+                        <img src="/images/like.png" alt="like icon" v-if="false">
+                        <div class="community-card" :class="{'community-card--action': false}">
                             <div>
-                                <p class="community-card__theme">Animation</p>
-                                <p>Journée portes ouvertes</p>
+                                <p class="community-card__theme">{{proposal["PRO_theme_VC"]}}</p>
+                                <p>{{proposal["PRO_title_VC"]}}</p>
                             </div>
                             <div>
-                                <p>32/23</p>
-                                <p>1300€</p>
+                                <p>{{proposal['PRO_like_NB']+proposal['PRO_love_NB']}}/{{proposal['PRO_dislike_NB']+proposal['PRO_hate_NB']}}</p>
+                                <p>{{proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '---'}} €</p>
                             </div>
                         </div>
-                        <button v-if="x%2" class="btn btn--small">Adopter</button>
-                        <button v-if="x%2" class="btn btn--small">Refuser</button>
+                        <button class="btn btn--small">Adopter</button>
+                        <button class="btn btn--small">Refuser</button>
                     </div>
+                    <p v-if="adopted.length === 0">Aucune proposition</p>
                 </div>
             </div>
 
@@ -99,6 +101,7 @@
                             <p>{{proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '---'}} €</p>
                         </div>
                     </div>
+                    <p v-if="adopted.length === 0">Aucune proposition</p>
                 </div>
             </div>
         </section>
@@ -115,6 +118,8 @@ const config = useRuntimeConfig();
 const route = useRoute();
 
 const ongoing = ref([]);
+const adopted = ref([]);
+const voted = ref([]);
 
 const fetchData = async () => {
     try{
@@ -123,6 +128,28 @@ const fetchData = async () => {
         });
 
         ongoing.value = response;
+        
+    } catch(error) {
+        console.log("An error occured", error);
+    }
+
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/adopted?period=2024`, {
+            credentials: 'include',
+        });
+
+        adopted.value = response;
+        
+    } catch(error) {
+        console.log("An error occured", error);
+    }
+
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/voted`, {
+            credentials: 'include',
+        });
+
+        voted.value = response;
         
     } catch(error) {
         console.log("An error occured", error);
