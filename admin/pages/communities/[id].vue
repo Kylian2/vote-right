@@ -12,8 +12,9 @@
                 <h3>
                     Récapitulatif
                 </h3>
-                <p><b>Budget Total : </b> 79 000 € /an max</p>
-                <p><b>Budget Utilisé : </b> 79 000 € /an</p>
+                <p><b>Budget Total : </b> {{formatNumber(budget['CMY_budget_NB'])}} € /an max</p>
+                <p><b>Budget Utilisé : </b> {{formatNumber(budget['CMY_used_budget_NB'])}} € /an</p>
+                <p><b>Frais fixes :</b> {{formatNumber(budget['CMY_fixed_fees_NB'])}} € /an</p>
                 <button class="btn btn--small"> Modifier le budget maximal</button>
             </div>
 
@@ -21,13 +22,8 @@
                 <h3>
                     Par thème
                 </h3>
-                <div class="community__recap-themes__list">
-                    <p><b>Animation : </b> 79 000 € /an (max: 5000 €)</p>
-                    <p><b>Aventure : </b> 15 000 € /an (max: 35000 €)</p>
-                    <p><b>Sciences : </b> 6 700 € /an (max: 19000 €)</p>
-                </div>
                 <div>
-                    <p><b>Frais fixes :</b> 4200 € /an</p>
+                    <p v-for="theme, key in budget['CMY_budget_theme_NB']"><b>{{theme['THM_name_VC']}} : </b> {{theme['BUT_used_budget_NB']}} € /an (max: {{theme['BUT_amount_NB']}} €)</p>
                 </div>
                 <button class="btn btn--small"> Modifier les budgets</button>
             </div>
@@ -84,7 +80,7 @@
                         <button class="btn btn--small">Adopter</button>
                         <button class="btn btn--small">Refuser</button>
                     </div>
-                    <p v-if="adopted.length === 0">Aucune proposition</p>
+                    <p v-if="voted.length === 0">Aucune proposition</p>
                 </div>
             </div>
 
@@ -101,7 +97,7 @@
                             <p>{{proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '---'}} €</p>
                         </div>
                     </div>
-                    <p v-if="adopted.length === 0">Aucune proposition</p>
+                    <p v-if="ongoing.length === 0">Aucune proposition</p>
                 </div>
             </div>
         </section>
@@ -120,6 +116,11 @@ const route = useRoute();
 const ongoing = ref([]);
 const adopted = ref([]);
 const voted = ref([]);
+const budget = ref({});
+
+const formatNumber = (number) => {
+    return isNaN(number) ? 0 : new Intl.NumberFormat('fr-FR').format(number);
+}
 
 const fetchData = async () => {
     try{
@@ -150,6 +151,17 @@ const fetchData = async () => {
         });
 
         voted.value = response;
+        
+    } catch(error) {
+        console.log("An error occured", error);
+    }
+
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=2024`, {
+            credentials: 'include',
+        });
+
+        budget.value = response;
         
     } catch(error) {
         console.log("An error occured", error);

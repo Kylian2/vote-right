@@ -224,7 +224,19 @@ class CommunityController{
     public static function isMember($params){
         $userId = SessionGuard::getUserId();
         $result = Community::isMember($params[0], $userId);
-        echo json_encode(($result));
+        echo json_encode($result);
+    }
+
+    public static function budget($params){
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        if(!isset($_GET['period']) || !is_numeric($_GET['period'])){
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"Period is not specified"}';
+            return;
+        }
+        $themes = $community->getBudget($_GET['period']);
+        echo json_encode($themes);
     }
 }
 

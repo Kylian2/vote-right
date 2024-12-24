@@ -208,6 +208,39 @@ class Community extends Model{
         return boolval($result[0]);
     }
 
+    public function getBudget($period){
+        $request = "SELECT THM_name_VC, BUT_amount_NB, BUT_used_budget_NB 
+                    FROM used_budget ub
+                    WHERE CMY_id_NB = :community AND BUT_period_YEAR = :period";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['community'] = $this->get('CMY_id_NB');
+        $values['period'] = $period;
+        $prepare->execute($values);
+        $budgetThemes = $prepare->fetchAll();
+
+        $usedBudget = 0;
+        for($i = 0; $i < count($budgetThemes); $i++){
+            unset($budgetThemes[$i][0]);
+            unset($budgetThemes[$i][1]);
+            unset($budgetThemes[$i][2]);
+            $usedBudget += $budgetThemes[$i]['BUT_used_budget_NB'];
+        }
+
+        $request = "SELECT BUC_amount_NB, BUC_fixed_fees_NB FROM community_budget WHERE BUC_community_NB = :community AND BUC_period_YEAR = :period";
+        $prepare = connexion::pdo()->prepare($request);
+        $prepare->execute($values);
+        $communityBudget = $prepare->fetch();
+
+        $budget = array(
+           "CMY_budget_NB" => $communityBudget['BUC_amount_NB'],
+           "CMY_used_budget_NB" => $usedBudget,
+           "CMY_fixed_fees_NB" => $communityBudget['BUC_fixed_fees_NB'],
+           "CMY_budget_theme_NB" => $budgetThemes
+        );
+
+        return $budget;
+    }
+
 }
 
 ?>
