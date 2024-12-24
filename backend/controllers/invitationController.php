@@ -11,6 +11,8 @@ class InvitationController{
      * 
      * Compositon de $params : 
      * - $params[0] = $id, l'identifiant de l'invitation recherchée. 
+     * 
+     * @return void renvoie des éléments concernant l'invitation
      */
     public static function show(array $params){
         $invitation = Invitation::getById($params[0]);
@@ -25,11 +27,11 @@ class InvitationController{
     }
 
     /**
-     * Modifie l'invitation concernée dans la base de données
+     * Modifie l'invitation concernée dans la base de données si elle est acceptée
      * 
      * @param $params, un tableau correspondant aux paramètres attendus dans l'URL. 
      * 
-     * Compositon de $params : 
+     * Composition de $params : 
      * - $params[0] = $id, l'identifiant de l'invitation recherchée. 
      * 
      * La fonction attend l'élément suivant : 
@@ -40,10 +42,10 @@ class InvitationController{
      * ex de données acceptées : 
      * 
      * {
-     *   "codeSend" : "867911",
+     *   "codeSend" : "867911"
      * }
      * 
-     * @return void renvoie l'invitation au format json si la modification à été faite
+     * @return void renvoie un message pour confirmer la modification
      */
     public static function accepted(array $params){
         $body = file_get_contents('php://input');
@@ -58,7 +60,8 @@ class InvitationController{
 
         if(!isset($body["codeSend"]) || !isset($params[0])){
             http_response_code(422);
-            echo '{"Unprocessable Entity":"missing data for processing"}';
+            $return["Unprocessable Entity"] = 'Missing data for processing';
+            echo json_encode($return);
             return ;
         }
 
@@ -69,8 +72,8 @@ class InvitationController{
         json_encode($verifCode);
 
         if($verifCode === null || $values["INV_code_VC"] != $verifCode['INV_code_VC']){
-            http_response_code(401);
-            echo '{"invalid code":"the code entered by the user is invalid"}';
+            $return["Invalid code"] = 'The code entered by the user is invalid';
+            echo json_encode($return);
             return ;
         }
 
@@ -79,11 +82,11 @@ class InvitationController{
     }
 
     /**
-     * Supprime l'invitation concernée dans la base de données
+     * Supprime l'invitation concernée dans la base de données si elle est refusée
      * 
      * @param $params, un tableau correspondant aux paramètres attendus dans l'URL. 
      * 
-     * Compositon de $params : 
+     * Composition de $params : 
      * - $params[0] = $id, l'identifiant de l'invitation recherchée. 
      * 
      * La fonction attend l'élément suivant : 
@@ -94,10 +97,10 @@ class InvitationController{
      * ex de données acceptées : 
      * 
      * {
-     *   "codeSend" : "867911",
+     *   "codeSend" : "867911"
      * }
      * 
-     * @return void renvoie un message de confirmation de suppression
+     * @return void renvoie un message pour confirmer la suppression de l'invitation
      */
     public static function rejected(array $params){
         $body = file_get_contents('php://input');
@@ -112,7 +115,8 @@ class InvitationController{
 
         if(!isset($body["codeSend"]) || !isset($params[0])){
             http_response_code(422);
-            echo '{"Unprocessable Entity":"missing data for processing"}';
+            $return["Unprocessable Entity"] = 'Missing data for processing';
+            echo json_encode($return);
             return ;
         }
 
@@ -123,8 +127,8 @@ class InvitationController{
         json_encode($verifCode);
 
         if($verifCode === null || $values["INV_code_VC"] != $verifCode['INV_code_VC']){
-            http_response_code(401);
-            echo '{"invalid code":"the code entered by the user is invalid"}';
+            $return["Invalid code"] = 'The code entered by the user is invalid';
+            echo json_encode($return);
             return ;
         }
 

@@ -83,16 +83,20 @@ const acceptInvitation = async () => {
             }
         });
 
+        if(response1["Invalid code"]){
+            alert('Le code de validation que vous avez entré est incorrect');
+            return ;
+        }
+
         const response2 = await $fetch(`${config.public.baseUrl}/communities/${invitation.value.INV_community_NB}/registration`, {
         method: 'POST',
             body: {
                 newMemberId: invitation.value.INV_recipient_NB,
-                codeSend: securityCode.value,
             }
         });
 
-        if(response1 && response2 && response3){
-            navigateTo(`/community/${invitation.value.INV_community_NB}`);
+        if(response1 && response2){
+            navigateTo(`/communities/${invitation.value.INV_community_NB}`);
         }
 
     } catch (error) {
@@ -109,9 +113,10 @@ const rejectInvitation = async () => {
             }
         });
 
-        if(response){
+        if(response["Invalid code"]){
+            alert('Le code de validation que vous avez entré est incorrect');
+        }else{
             navigateTo('/login');
-
         }
     } catch (error) {
         console.error('An error occurred : ', error);
@@ -153,5 +158,5 @@ const fetchData = async () => {
         console.error("An error occurred : ", error);
     }
 }
-
+  
 </script>

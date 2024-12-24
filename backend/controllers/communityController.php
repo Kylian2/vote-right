@@ -107,7 +107,26 @@ class CommunityController{
         echo json_encode($community);
     }
 
-    public static function insertMember(){
+    /**
+     * Ajoute un nouveau membre dans une communauté
+     * 
+     * @param $params, un tableau correspondant aux paramètres attendus dans l'URL. 
+     * 
+     * Composition de $params : 
+     * - $params[0] = $id, l'identifiant de la communauté dans laquelle on insère. 
+     * 
+     * La fonction attend l'élément suivant : 
+     * - un numéro d'utilisateur (int)
+     * 
+     * ex de données acceptées : 
+     * 
+     * {
+     *   "newMemberId" : 98
+     * }
+     * 
+     * @return void renvoie un message qui confirme que le nouveau membre à bien été inséré dans la communauté
+     */
+    public static function insertMember(array $params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
@@ -118,18 +137,18 @@ class CommunityController{
             return;
         }
 
-        if(!isset($body["communityId"]) || !isset($body["memberId"])){
+        if(!isset($body["newMemberId"]) || !isset($params[0])){
             http_response_code(422);
-            echo '{"Unprocessable Entity":"missing data for processing"}';
+            $return["Unprocessable Entity"] = 'Missing data for processing';
+            echo json_encode($return);
             return;
         }
 
-        $values["CMY_id_NB"] = $body["communityId"];
-        $values["CMY_member_NB"] = $body["memberId"];
+        $values["CMY_id_NB"] = $params[0];
+        $values["CMY_member_NB"] = $body["newMemberId"];
 
-        $community = new Community($values);
-        $newMember = $community->addMember();
-        echo json_encode($newMember);
+        Community::addMember($values);
+        echo "Ajout d'un nouveau membre effectuée avec succès";
     } 
 
     /**

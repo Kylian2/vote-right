@@ -87,16 +87,16 @@ class Community extends Model{
         return true;
     }
 
-    public function addMember(){
-        $request = 'INSERT INTO member(MEM_community_NB, MEM_user_NB, MEM_role_NB) VALUES (:community, :user, :role)';
+    public static function addMember(array $params){
+        $request = 'INSERT INTO member(MEM_community_NB, MEM_user_NB, MEM_role_NB) 
+                    VALUES (:community, :user, :role)';
         $prepare = connexion::pdo()->prepare($request);
         $member = array(
-            "community" => $this->CMY_id_NB,
-            "user" => $this->CMY_member_NB,
+            "community" => $params["CMY_id_NB"],
+            "user" => $params["CMY_member_NB"],
             "role" => ROLE_MEMBER,
         );
         $prepare->execute($member);
-        return true;
     }
 
     public function getOngoingProposals(){
