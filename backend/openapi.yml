@@ -293,37 +293,75 @@ paths:
                       type: string
                     PRO_color_VC:
                       type: string
+                    PRO_period_YEAR:
+                      type: string
+                    PRO_budget_NB:
+                      type: integer
                     PRO_theme_VC:
                       type: string
+                    PRO_like_NB:
+                      type: integer
+                    PRO_dislike_NB:
+                      type: integer
+                    PRO_love_NB:
+                      type: integer
+                    PRO_hate_NB:
+                      type: integer
                 x-examples:
                   Example 1:
                     - PRO_id_NB: '33'
                       PRO_title_VC: Installation d'une grande roue
                       PRO_color_VC: '#DE3D59'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 50000
                       PRO_theme_VC: Animation
+                      PRO_like_NB: 16
+                      PRO_dislike_NB: 24
+                      PRO_love_NB: 8
+                      PRO_hate_NB: 4
                     - PRO_id_NB: '35'
                       PRO_title_VC: Atelier de Décoration
                       PRO_color_VC: '#DE3D59'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 8000
                       PRO_theme_VC: Animation
+                      PRO_like_NB: 22
+                      PRO_dislike_NB: 18
+                      PRO_love_NB: 7
+                      PRO_hate_NB: 4
                     - PRO_id_NB: '36'
                       PRO_title_VC: Crèche Artisanale
                       PRO_color_VC: '#DE3D59'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 20000
                       PRO_theme_VC: Décoration
+                      PRO_like_NB: 25
+                      PRO_dislike_NB: 17
+                      PRO_love_NB: 7
+                      PRO_hate_NB: 4
               examples:
                 Example 1:
                   value:
                     - PRO_id_NB: '33'
                       PRO_title_VC: Installation d'une grande roue
                       PRO_color_VC: '#DE3D59'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 50000
                       PRO_theme_VC: Animation
+                      PRO_like_NB: 16
+                      PRO_dislike_NB: 24
+                      PRO_love_NB: 8
+                      PRO_hate_NB: 4
                     - PRO_id_NB: '35'
                       PRO_title_VC: Atelier de Décoration
                       PRO_color_VC: '#DE3D59'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 8000
                       PRO_theme_VC: Animation
-                    - PRO_id_NB: '36'
-                      PRO_title_VC: Crèche Artisanale
-                      PRO_color_VC: '#DE3D59'
-                      PRO_theme_VC: Décoration
+                      PRO_like_NB: 22
+                      PRO_dislike_NB: 18
+                      PRO_love_NB: 7
+                      PRO_hate_NB: 4
       operationId: get-communities-id-ongoing
       x-stoplight:
         id: wwq0ez66n6msy
@@ -1884,6 +1922,156 @@ paths:
           in: cookie
           name: PHPSESSID
           description: Le cookie d'authentification
+  '/communities/{id}/adopted':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: La liste des propositions adoptées
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PRO_id_NB:
+                      type: string
+                    PRO_title_VC:
+                      type: string
+                    PRO_color_VC:
+                      type: string
+                    PRO_period_YEAR:
+                      type: string
+                    PRO_budget_NB:
+                      type: integer
+                    PRO_theme_VC:
+                      type: string
+                    PRO_like_NB:
+                      type: integer
+                    PRO_dislike_NB:
+                      type: integer
+                    PRO_love_NB:
+                      type: integer
+                    PRO_hate_NB:
+                      type: integer
+                x-examples:
+                  Example 1:
+                    - PRO_id_NB: '5'
+                      PRO_title_VC: Atelier de Peinture
+                      PRO_color_VC: '#5AB7EE'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 4000
+                      PRO_theme_VC: Activité
+                      PRO_like_NB: 5
+                      PRO_dislike_NB: 2
+                      PRO_love_NB: 1
+                      PRO_hate_NB: 1
+              examples:
+                Example 1:
+                  value:
+                    - PRO_id_NB: '5'
+                      PRO_title_VC: Atelier de Peinture
+                      PRO_color_VC: '#5AB7EE'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 4000
+                      PRO_theme_VC: Activité
+                      PRO_like_NB: 5
+                      PRO_dislike_NB: 2
+                      PRO_love_NB: 1
+                      PRO_hate_NB: 1
+      operationId: get-communities-id-adopted
+      x-stoplight:
+        id: xfiowza6haxc8
+      description: 'Récupère la liste des propositions adoptées par la communauté. Par défaut toutes les propositions sont récupérées, il est possible de filter via la clé `period` en paramètre GET de l''url.'
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      tags:
+        - communities
+  '/communities/{id}/voted':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: La liste des propositions dont le vote est terminé
+      tags:
+        - communities
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PRO_id_NB:
+                      type: string
+                    PRO_title_VC:
+                      type: string
+                    PRO_color_VC:
+                      type: string
+                    PRO_budget_NB:
+                      type: integer
+                    PRO_theme_VC:
+                      type: string
+                    PRO_like_NB:
+                      type: integer
+                    PRO_dislike_NB:
+                      type: integer
+                    PRO_love_NB:
+                      type: integer
+                    PRO_hate_NB:
+                      type: integer
+                x-examples:
+                  Example 1:
+                    - PRO_id_NB: '33'
+                      PRO_title_VC: Installation d'une grande roue
+                      PRO_color_VC: '#DE3D59'
+                      PRO_budget_NB: 50000
+                      PRO_theme_VC: Animation
+                      PRO_like_NB: 16
+                      PRO_dislike_NB: 24
+                      PRO_love_NB: 8
+                      PRO_hate_NB: 4
+              examples:
+                Example 1:
+                  value:
+                    - PRO_id_NB: '33'
+                      PRO_title_VC: Installation d'une grande roue
+                      PRO_color_VC: '#DE3D59'
+                      PRO_budget_NB: 50000
+                      PRO_theme_VC: Animation
+                      PRO_like_NB: 16
+                      PRO_dislike_NB: 24
+                      PRO_love_NB: 8
+                      PRO_hate_NB: 4
+      operationId: get-communities-id-voted
+      x-stoplight:
+        id: wumb2vtnolwc8
+      description: Renvoie la liste des propositions dont le vote est terminé. Ces propositions sont dites "en attente d'action".
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
 components:
   securitySchemes: {}
   responses: {}
