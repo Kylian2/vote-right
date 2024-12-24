@@ -2,7 +2,7 @@
 
     <Header></Header>
 
-    <h1>Club Espace</h1>
+    <h1>{{community["CMY_name_VC"]}}</h1>
 
     <main class="community">
 
@@ -12,6 +12,15 @@
                 <h3>
                     Récapitulatif
                 </h3>
+                <select v-model="period" @change="fetchDataByPeriod()">
+                    <option value="2026">2026</option>
+                    <option value="2025">2025</option>
+                    <option selected value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                </select>
                 <p><b>Budget Total : </b> {{formatNumber(budget['CMY_budget_NB'])}} € /an max</p>
                 <p><b>Budget Utilisé : </b> {{formatNumber(budget['CMY_used_budget_NB'])}} € /an</p>
                 <p><b>Frais fixes :</b> {{formatNumber(budget['CMY_fixed_fees_NB'])}} € /an</p>
@@ -113,16 +122,29 @@ definePageMeta({
 const config = useRuntimeConfig();
 const route = useRoute();
 
+const community = ref({});
 const ongoing = ref([]);
 const adopted = ref([]);
 const voted = ref([]);
 const budget = ref({});
+const period = ref('2024');
 
 const formatNumber = (number) => {
     return isNaN(number) ? 0 : new Intl.NumberFormat('fr-FR').format(number);
 }
 
 const fetchData = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}`, {
+            credentials: 'include',
+        });
+
+        community.value = response;
+        
+    } catch(error) {
+        console.log("An error occured", error);
+    }
+
     try{
         const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/ongoing`, {
             credentials: 'include',
@@ -135,7 +157,7 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/adopted?period=2024`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/adopted?period=${period.value}`, {
             credentials: 'include',
         });
 
@@ -157,13 +179,32 @@ const fetchData = async () => {
     }
 
     try{
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=2024`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
             credentials: 'include',
         });
 
         budget.value = response;
         
     } catch(error) {
+        console.log("An error occured", error);
+    }
+}
+
+const fetchDataByPeriod = async () =>{
+    try{
+        const bud = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
+            credentials:'include', 
+        });
+
+        budget.value = bud;
+
+        const ado = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/adopted?period=${period.value}`, {
+            credentials:'include', 
+        });
+
+        adopted.value = ado;
+
+    }catch(error){
         console.log("An error occured", error);
     }
 }
