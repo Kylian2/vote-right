@@ -4,6 +4,7 @@
 
 Router::post('/auth/register', 'authController@register');
 Router::post('/auth/login', 'authController@login');
+Router::post('/auth/implicitLogin', 'authController@implicitLogin');
 Router::get('/auth/check', 'authController@check');
 Router::post('/auth/logout', 'authController@logout'); //à implémenter + faire la doc
 

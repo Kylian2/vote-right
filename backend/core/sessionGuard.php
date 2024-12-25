@@ -23,7 +23,7 @@ class SessionGuard{
      * @param string $email
      * @param string $password
      * 
-     * @return mixed l'entite user si le coupe est bon, false sinon
+     * @return mixed l'entite user si le couple est bon, false sinon
      */
     public static function verifyCredentials($email, $password){
         $user = User::getByEmail($email);
