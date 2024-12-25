@@ -12,6 +12,7 @@
             :required="required"
             :min="min"
             :max="max"
+            :step="step"
             v-model="modele"
         />
     </div>
@@ -41,7 +42,7 @@ min: {
     type: Number,
     required: false,
 },
-min: {
+max: {
     type: Number,
     required: false,
 },

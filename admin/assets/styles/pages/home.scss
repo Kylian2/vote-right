@@ -24,5 +24,30 @@
             }
         }
     }
+}
 
+
+.edit-budget{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    > div{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        >div{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            input{
+                max-width: 200px;
+                &::placeholder{
+                    color: rgb(121, 125, 125);
+                }
+            }
+        }
+    }
+    &.section-2{
+        margin-top: 60px;
+    }
 }

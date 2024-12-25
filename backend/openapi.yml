@@ -2083,7 +2083,6 @@ paths:
       summary: Les informations budgétaire de la communauté
       tags:
         - budget
-        - communities
       responses:
         '200':
           description: OK
@@ -2150,6 +2149,61 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+    post:
+      summary: Modifier les informations budgétaire du groupe
+      tags:
+        - budget
+      responses:
+        '200':
+          description: 'OK, renvoi `true` si les modifications on été appliquées'
+      operationId: post-communities-id-budget
+      x-stoplight:
+        id: toaroc9k6rfzu
+      description: Permet de faires des modifications sur le budget du groupe
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+        - schema:
+            type: number
+          in: query
+          name: period
+          description: La période (année)
+          required: true
+      requestBody:
+        description: |-
+          Le corps de la requête est composé d'un objet, avec les clé représentant les identifiants des thèmes à modifier et les valeurs correspondants au nouveau montant.
+          - `0`: le budget général du groupe
+          - `-1`: les frais fixes du groupe.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                '0':
+                  type: integer
+                '1':
+                  type: integer
+                '2':
+                  type: integer
+                '-1':
+                  type: integer
+              x-examples:
+                Example 1:
+                  '0': 500000
+                  '1': 134000
+                  '2': 10000
+                  '-1': 2400
+            examples:
+              Example 1:
+                value:
+                  '0': 500000
+                  '1': 13000
+                  '2': 21000
+                  '-1': 2400
 components:
   securitySchemes: {}
   responses: {}

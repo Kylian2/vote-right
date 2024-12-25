@@ -238,6 +238,31 @@ class CommunityController{
         $themes = $community->getBudget($_GET['period']);
         echo json_encode($themes);
     }
+
+    public static function setBudget($params){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($_GET['period']) || !is_numeric($_GET['period'])){
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"Period is not specified"}';
+            return;
+        }
+
+        foreach($body as $key => $value){
+            if(!is_numeric($key) || !is_numeric($value)){
+                http_response_code(422);
+                echo '{"Unprocessable Entity":"Invalid element in body"}';
+                return;
+            }
+        }
+
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        $community->setBudget($body, $_GET['period']);
+
+        echo json_encode(true);
+    }
 }
 
 ?>

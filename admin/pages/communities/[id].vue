@@ -24,7 +24,7 @@
                 <p><b>Budget Total : </b> {{formatNumber(budget['CMY_budget_NB'])}} € /an max</p>
                 <p><b>Budget Utilisé : </b> {{formatNumber(budget['CMY_used_budget_NB'])}} € /an</p>
                 <p><b>Frais fixes :</b> {{formatNumber(budget['CMY_fixed_fees_NB'])}} € /an</p>
-                <button class="btn btn--small"> Modifier le budget maximal</button>
+                <button class="btn btn--small" @click="editBudgetModale = true"> Modifier le budget maximal</button>
             </div>
 
             <div class="community__recap-themes">
@@ -34,7 +34,7 @@
                 <div>
                     <p v-for="theme, key in budget['CMY_budget_theme_NB']"><b>{{theme['THM_name_VC']}} : </b> {{theme['BUT_used_budget_NB']}} € /an (max: {{theme['BUT_amount_NB']}} €)</p>
                 </div>
-                <button class="btn btn--small"> Modifier les budgets</button>
+                <button class="btn btn--small" @click="editBudgetModale = true"> Modifier les budgets</button>
             </div>
 
             <div class="community__actions">
@@ -112,6 +112,74 @@
         </section>
     </main>
 
+    <Modal
+    name="editBudget"
+    ok-text="Valider les changements"
+    cancel-text="Annuler"
+    :before-ok="() => {
+        updateBudget();
+        }"
+    >
+        <template #title>Modifier les budgets</template>
+        <template #body>
+
+            <div class="edit-budget">
+                <div>
+                    <p><b>Budget max :</b></p>
+                    <div>
+                        <InputNumber :name="'budget'" :placeholder="budget['CMY_budget_NB']+''" :step="100"></InputNumber>
+                        <p> € /an</p>
+                    </div>
+                </div>
+                <div>
+                    <p>Frais fixes :</p>
+                    <div>
+                        <InputNumber :name="'feesBudget'" :placeholder="budget['CMY_fixed_fees_NB']+''" :step="100"></InputNumber>
+                        <p> € /an</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="edit-budget section-2">
+                <div v-for="theme, key in budget['CMY_budget_theme_NB']">
+                    <p><b>{{theme["THM_name_VC"]}} :</b></p>
+                    <div>
+                        <InputNumber :name="theme['THM_name_VC']+'Budget'" :placeholder="theme['BUT_amount_NB']+''" :step="100"></InputNumber>
+                        <p> € /an</p>
+                    </div>
+                </div>
+            </div>
+
+        </template>
+    </Modal>
+
+    <Toast 
+        name="budgetToastValid" 
+        :type="3" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Budget Modifié !
+    </Toast>
+    <Toast 
+        name="budgetToastError" 
+        :type="1" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Erreur lors de la modification du budget
+    </Toast>
+    <Toast 
+        name="budgetToastAlert" 
+        :type="2" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Aucune modification a appliquer
+    </Toast>
 </template>
 <script setup>
 
@@ -128,6 +196,12 @@ const adopted = ref([]);
 const voted = ref([]);
 const budget = ref({});
 const period = ref('2024');
+
+const budgetToastValid = useState('budgetToastValidUp', () => false);
+const budgetToastError = useState('budgetToastErrorUp', () => false);
+const budgetToastAlert = useState('budgetToastAlertUp', () => false);
+
+const editBudgetModale = useState('editBudgetModal', () => false);
 
 const formatNumber = (number) => {
     return isNaN(number) ? 0 : new Intl.NumberFormat('fr-FR').format(number);
@@ -205,6 +279,48 @@ const fetchDataByPeriod = async () =>{
         adopted.value = ado;
 
     }catch(error){
+        console.log("An error occured", error);
+    }
+}
+
+const updateBudget = async () => {
+    let raw = {};
+    const totalBudget = useState('budget');
+    if(totalBudget.value != ""){
+        raw['0'] = totalBudget.value;
+    }
+    const feesBudget = useState('feesBudget');
+    if(feesBudget.value != ""){
+        raw['-1'] = feesBudget.value;
+    }
+
+    budget.value['CMY_budget_theme_NB'].forEach(theme => {
+        const budgetTheme = useState(theme['THM_name_VC']+'Budget');
+        if(budgetTheme.value != ""){
+            raw[theme['THM_id_NB']] = budgetTheme.value;
+        }
+    });
+    if(Object.keys(raw).length === 0){
+        budgetToastAlert.value = true;
+        return;
+    }
+    try{
+        const response1 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
+            method: 'POST',
+            credentials: 'include',
+            body: raw
+        });
+
+        budgetToastValid.value = response1 === true;
+        budgetToastError.value = response1 !== true;
+
+        const response2 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
+            credentials: 'include',
+        });
+
+        budget.value = response2;
+        
+    } catch(error) {
         console.log("An error occured", error);
     }
 }

@@ -20,6 +20,7 @@ Router::get('/communities/{id}/themes', 'communityController@themes', true);
 Router::get('/communities/{id}/proposals', 'proposalController@allOfCommunity', true);
 Router::get('/communities/{id}/membership', 'communityController@isMember', true);
 Router::get('/communities/{id}/budget', 'communityController@budget', true);
+Router::post('/communities/{id}/budget', 'communityController@setBudget', true);
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');

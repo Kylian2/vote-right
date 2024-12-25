@@ -209,7 +209,7 @@ class Community extends Model{
     }
 
     public function getBudget($period){
-        $request = "SELECT THM_name_VC, BUT_amount_NB, BUT_used_budget_NB 
+        $request = "SELECT THM_id_NB, THM_name_VC, BUT_amount_NB, BUT_used_budget_NB 
                     FROM used_budget ub
                     WHERE CMY_id_NB = :community AND BUT_period_YEAR = :period";
         $prepare = connexion::pdo()->prepare($request);
@@ -223,6 +223,7 @@ class Community extends Model{
             unset($budgetThemes[$i][0]);
             unset($budgetThemes[$i][1]);
             unset($budgetThemes[$i][2]);
+            unset($budgetThemes[$i][3]);
             $usedBudget += $budgetThemes[$i]['BUT_used_budget_NB'];
         }
 
@@ -239,6 +240,32 @@ class Community extends Model{
         );
 
         return $budget;
+    }
+
+    public function setBudget(array $budgets, int $period){
+        $values['community'] = $this->get('CMY_id_NB');
+        $values['period'] = $period;
+        foreach($budgets as $theme => $amount){
+            if($theme == -1){
+                $request = 'UPDATE community_budget SET BUC_fixed_fees_NB = :amount WHERE BUC_community_NB = :community AND BUC_period_YEAR = :period';
+                $prepare = connexion::pdo()->prepare($request);
+                $values['amount'] = $amount;
+                $prepare->execute($values);
+                continue;
+            }
+            if($theme == 0){
+                $request = 'UPDATE community_budget SET BUC_amount_NB = :amount WHERE BUC_community_NB = :community AND BUC_period_YEAR = :period';
+                $prepare = connexion::pdo()->prepare($request);
+                $values['amount'] = $amount;
+                $prepare->execute($values);
+                continue;
+            }
+            $request = 'UPDATE theme_budget SET BUT_amount_NB = :amount WHERE BUT_theme_NB = :theme AND BUT_community_NB = :community AND BUT_period_YEAR = :period';
+            $prepare = connexion::pdo()->prepare($request);
+            $values['amount'] = $amount;
+            $values['theme'] = $theme;
+            $prepare->execute($values);
+        }
     }
 
 }
