@@ -19,7 +19,7 @@
                 hide()
             }"
             > {{ cancelText }}</button>
-            <button class="btn btn--full"
+            <button class="btn"
             :disabled="disableValid"
             @click="() => {
                 beforeOk()
