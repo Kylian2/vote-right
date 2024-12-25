@@ -48,7 +48,9 @@
             flex-direction: column-reverse;
         }
         > button{
-            width: 100%;
+            @media screen and (max-width: 600px) {
+                width: 100%;
+            }
         }
     }
 

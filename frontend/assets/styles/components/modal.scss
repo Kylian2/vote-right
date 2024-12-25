@@ -47,7 +47,9 @@
             gap: 10px;
         }
         > button{
-            width: 100%;
+            @media screen and (max-width: 600px) {
+                width: 100%;
+            }
         }
         .btn--full{
             background: $dark;
