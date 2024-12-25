@@ -414,14 +414,3 @@ INSERT INTO invitation (INV_id_VC, INV_code_VC, INV_issue_DATE, INV_acceptance_D
 ('pSdBR2WwCI', '748970', '2024-09-06', NULL, 56, 75, 10),
 ('blgXxlItAO', '559855', '2024-09-04', NULL, 75, 28, 11),
 ('XslWEQdpRA', '921348', '2024-09-02', NULL, 92, 30, 13);
-
-
-
-
-
-
-
-
-
-
-

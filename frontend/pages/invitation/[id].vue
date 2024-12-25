@@ -1,11 +1,11 @@
 <template>
     <Header type="notlogged"></Header>
-    <main class="invitation">
+    <main>
         <div v-if="invitationUnavailable">
             <h3 style="text-align: center; margin-top: 100px; margin-bottom: 100px;"> Cette invitation est inaccessible </h3>
         </div>
 
-        <div v-else>
+        <div v-else class="invitation">
             <div class="invitation__image" v-if="community" 
                 :style= "{ background: `url('/images/communities/${community['CMY_image_VC']}') 0% 15% / cover` }">
             </div>
@@ -67,6 +67,7 @@ onMounted(() => {
 const invitation = ref();
 const community = ref();
 const communityThemes = ref([]);
+//const user = ref();
 
 const securityCode = useState("securityCode");
 const validCode = useState("securityCodeValid");
@@ -95,9 +96,23 @@ const acceptInvitation = async () => {
             }
         });
 
-        if(response1 && response2){
-            navigateTo(`/communities/${invitation.value.INV_community_NB}`);
-        }
+        /*
+        const response3 = await $fetch(`${config.public.baseUrl}/users/${route.params.id}`, {
+            credentials: 'include',
+        });
+
+        user.value = response3;
+
+        const response4 = await $fetch(`${config.public.baseUrl}/auth/login`, {
+        method: 'POST',
+            body: {
+                email: user.value.USR_email_VC,
+                password: user.value.USR_password_VC
+            }
+        });
+        */
+
+        navigateTo(`/community/${invitation.value.INV_community_NB}`);
 
     } catch (error) {
         console.error('An error occurred : ', error);

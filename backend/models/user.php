@@ -85,7 +85,7 @@ class User extends Model{
     }
 
     public static function getById(int $id){
-        $request = "SELECT USR_id_NB, USR_lastname_VC, USR_firstname_VC, USR_email_VC FROM user WHERE USR_id_NB = :id";
+        $request = "SELECT USR_id_NB, USR_lastname_VC, USR_firstname_VC, USR_email_VC, USR_password_VC FROM user WHERE USR_id_NB = :id";
         $prepare = connexion::pdo()->prepare($request);
         $values["id"] = $id;    
         $prepare->execute($values);
