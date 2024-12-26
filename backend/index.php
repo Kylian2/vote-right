@@ -6,6 +6,8 @@
         'http://localhost:3001',
         'https://voteright.fr',
         'https://www.voteright.fr',
+        'https://admin.voteright.fr',
+        'https://www.admin.voteright.fr',
     ];
 
     // Récupérer l'origine de la requête
