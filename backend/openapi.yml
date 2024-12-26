@@ -293,37 +293,75 @@ paths:
                       type: string
                     PRO_color_VC:
                       type: string
+                    PRO_period_YEAR:
+                      type: string
+                    PRO_budget_NB:
+                      type: integer
                     PRO_theme_VC:
                       type: string
+                    PRO_like_NB:
+                      type: integer
+                    PRO_dislike_NB:
+                      type: integer
+                    PRO_love_NB:
+                      type: integer
+                    PRO_hate_NB:
+                      type: integer
                 x-examples:
                   Example 1:
                     - PRO_id_NB: '33'
                       PRO_title_VC: Installation d'une grande roue
                       PRO_color_VC: '#DE3D59'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 50000
                       PRO_theme_VC: Animation
+                      PRO_like_NB: 16
+                      PRO_dislike_NB: 24
+                      PRO_love_NB: 8
+                      PRO_hate_NB: 4
                     - PRO_id_NB: '35'
                       PRO_title_VC: Atelier de Décoration
                       PRO_color_VC: '#DE3D59'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 8000
                       PRO_theme_VC: Animation
+                      PRO_like_NB: 22
+                      PRO_dislike_NB: 18
+                      PRO_love_NB: 7
+                      PRO_hate_NB: 4
                     - PRO_id_NB: '36'
                       PRO_title_VC: Crèche Artisanale
                       PRO_color_VC: '#DE3D59'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 20000
                       PRO_theme_VC: Décoration
+                      PRO_like_NB: 25
+                      PRO_dislike_NB: 17
+                      PRO_love_NB: 7
+                      PRO_hate_NB: 4
               examples:
                 Example 1:
                   value:
                     - PRO_id_NB: '33'
                       PRO_title_VC: Installation d'une grande roue
                       PRO_color_VC: '#DE3D59'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 50000
                       PRO_theme_VC: Animation
+                      PRO_like_NB: 16
+                      PRO_dislike_NB: 24
+                      PRO_love_NB: 8
+                      PRO_hate_NB: 4
                     - PRO_id_NB: '35'
                       PRO_title_VC: Atelier de Décoration
                       PRO_color_VC: '#DE3D59'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 8000
                       PRO_theme_VC: Animation
-                    - PRO_id_NB: '36'
-                      PRO_title_VC: Crèche Artisanale
-                      PRO_color_VC: '#DE3D59'
-                      PRO_theme_VC: Décoration
+                      PRO_like_NB: 22
+                      PRO_dislike_NB: 18
+                      PRO_love_NB: 7
+                      PRO_hate_NB: 4
       operationId: get-communities-id-ongoing
       x-stoplight:
         id: wwq0ez66n6msy
@@ -574,7 +612,69 @@ paths:
           description: Le cookie d'authentification
           required: true
       tags:
+        - themes
         - communities
+    post:
+      summary: Ajoute un thème à la communauté
+      tags:
+        - themes
+        - communities
+      responses:
+        '200':
+          description: 'OK, le thème est ajouté'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  THM_id_NB:
+                    type: integer
+                  THM_community_NB:
+                    type: integer
+                  THM_name_VC:
+                    type: string
+                x-examples:
+                  Example 1:
+                    THM_id_NB: 8
+                    THM_community_NB: 12
+                    THM_name_VC: Animation
+              examples:
+                Example 1:
+                  value:
+                    THM_id_NB: 8
+                    THM_community_NB: 12
+                    THM_name_VC: Animation
+      operationId: post-communities-id-themes
+      x-stoplight:
+        id: 6i7fe5z63rems
+      description: 'Ajoute un thème à la communauté, le budget du thème déclaré est défini pour la periode en cours.'
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                budget:
+                  type: integer
+              x-examples:
+                Example 1:
+                  name: Animation
+                  budget: 2300
+            examples:
+              Example 1:
+                value:
+                  name: Animation
+                  budget: 2300
   /auth/register:
     post:
       summary: Créer un compte
@@ -1884,6 +1984,288 @@ paths:
           in: cookie
           name: PHPSESSID
           description: Le cookie d'authentification
+  '/communities/{id}/adopted':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: La liste des propositions adoptées
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PRO_id_NB:
+                      type: string
+                    PRO_title_VC:
+                      type: string
+                    PRO_color_VC:
+                      type: string
+                    PRO_period_YEAR:
+                      type: string
+                    PRO_budget_NB:
+                      type: integer
+                    PRO_theme_VC:
+                      type: string
+                    PRO_like_NB:
+                      type: integer
+                    PRO_dislike_NB:
+                      type: integer
+                    PRO_love_NB:
+                      type: integer
+                    PRO_hate_NB:
+                      type: integer
+                x-examples:
+                  Example 1:
+                    - PRO_id_NB: '5'
+                      PRO_title_VC: Atelier de Peinture
+                      PRO_color_VC: '#5AB7EE'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 4000
+                      PRO_theme_VC: Activité
+                      PRO_like_NB: 5
+                      PRO_dislike_NB: 2
+                      PRO_love_NB: 1
+                      PRO_hate_NB: 1
+              examples:
+                Example 1:
+                  value:
+                    - PRO_id_NB: '5'
+                      PRO_title_VC: Atelier de Peinture
+                      PRO_color_VC: '#5AB7EE'
+                      PRO_period_YEAR: '2024'
+                      PRO_budget_NB: 4000
+                      PRO_theme_VC: Activité
+                      PRO_like_NB: 5
+                      PRO_dislike_NB: 2
+                      PRO_love_NB: 1
+                      PRO_hate_NB: 1
+      operationId: get-communities-id-adopted
+      x-stoplight:
+        id: xfiowza6haxc8
+      description: 'Récupère la liste des propositions adoptées par la communauté. Par défaut toutes les propositions sont récupérées, il est possible de filter via la clé `period` en paramètre GET de l''url.'
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      tags:
+        - communities
+  '/communities/{id}/voted':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: La liste des propositions dont le vote est terminé
+      tags:
+        - communities
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PRO_id_NB:
+                      type: string
+                    PRO_title_VC:
+                      type: string
+                    PRO_color_VC:
+                      type: string
+                    PRO_budget_NB:
+                      type: integer
+                    PRO_theme_VC:
+                      type: string
+                    PRO_like_NB:
+                      type: integer
+                    PRO_dislike_NB:
+                      type: integer
+                    PRO_love_NB:
+                      type: integer
+                    PRO_hate_NB:
+                      type: integer
+                x-examples:
+                  Example 1:
+                    - PRO_id_NB: '33'
+                      PRO_title_VC: Installation d'une grande roue
+                      PRO_color_VC: '#DE3D59'
+                      PRO_budget_NB: 50000
+                      PRO_theme_VC: Animation
+                      PRO_like_NB: 16
+                      PRO_dislike_NB: 24
+                      PRO_love_NB: 8
+                      PRO_hate_NB: 4
+              examples:
+                Example 1:
+                  value:
+                    - PRO_id_NB: '33'
+                      PRO_title_VC: Installation d'une grande roue
+                      PRO_color_VC: '#DE3D59'
+                      PRO_budget_NB: 50000
+                      PRO_theme_VC: Animation
+                      PRO_like_NB: 16
+                      PRO_dislike_NB: 24
+                      PRO_love_NB: 8
+                      PRO_hate_NB: 4
+      operationId: get-communities-id-voted
+      x-stoplight:
+        id: wumb2vtnolwc8
+      description: Renvoie la liste des propositions dont le vote est terminé. Ces propositions sont dites "en attente d'action".
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/communities/{id}/budget':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Les informations budgétaire de la communauté
+      tags:
+        - budget
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  CMY_budget_NB:
+                    type: integer
+                  CMY_used_budget_NB:
+                    type: integer
+                  CMY_fixed_fees_NB:
+                    type: integer
+                  CMY_budget_theme_NB:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        THM_name_VC:
+                          type: string
+                        BUT_amount_NB:
+                          type: integer
+                        BUT_used_budget_NB:
+                          type: integer
+                x-examples:
+                  Example 1:
+                    CMY_budget_NB: 211000
+                    CMY_used_budget_NB: 0
+                    CMY_fixed_fees_NB: 211000
+                    CMY_budget_theme_NB:
+                      - THM_name_VC: Animation
+                        BUT_amount_NB: 61000
+                        BUT_used_budget_NB: 0
+                      - THM_name_VC: Bénévole
+                        BUT_amount_NB: 12000
+                        BUT_used_budget_NB: 0
+              examples:
+                Example 1:
+                  value:
+                    CMY_budget_NB: 211000
+                    CMY_used_budget_NB: 0
+                    CMY_fixed_fees_NB: 211000
+                    CMY_budget_theme_NB:
+                      - THM_name_VC: Animation
+                        BUT_amount_NB: 61000
+                        BUT_used_budget_NB: 0
+                      - THM_name_VC: Bénévole
+                        BUT_amount_NB: 12000
+                        BUT_used_budget_NB: 0
+      operationId: get-communities-id-budget
+      x-stoplight:
+        id: xo4tsdnyh004d
+      description: Récupère les informations budgétaires d'une communauté. La periode `period` est à préciser dans les paramètres GET de l'URL.
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: period
+          required: true
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+    post:
+      summary: Modifier les informations budgétaire du groupe
+      tags:
+        - budget
+      responses:
+        '200':
+          description: 'OK, renvoi `true` si les modifications on été appliquées'
+      operationId: post-communities-id-budget
+      x-stoplight:
+        id: toaroc9k6rfzu
+      description: Permet de faires des modifications sur le budget du groupe
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+        - schema:
+            type: number
+          in: query
+          name: period
+          description: La période (année)
+          required: true
+      requestBody:
+        description: |-
+          Le corps de la requête est composé d'un objet, avec les clé représentant les identifiants des thèmes à modifier et les valeurs correspondants au nouveau montant.
+          - `0`: le budget général du groupe
+          - `-1`: les frais fixes du groupe.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                '0':
+                  type: integer
+                '1':
+                  type: integer
+                '2':
+                  type: integer
+                '-1':
+                  type: integer
+              x-examples:
+                Example 1:
+                  '0': 500000
+                  '1': 134000
+                  '2': 10000
+                  '-1': 2400
+            examples:
+              Example 1:
+                value:
+                  '0': 500000
+                  '1': 13000
+                  '2': 21000
+                  '-1': 2400
 components:
   securitySchemes: {}
   responses: {}

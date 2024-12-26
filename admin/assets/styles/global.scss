@@ -1,0 +1,106 @@
+*{
+    font-family: $main-font;
+}
+
+.underline{
+    text-decoration: underline;
+    transition: .2s;
+    &:hover{
+        background: rgba($color: $color-5, $alpha: 0.3);
+    }
+}
+
+.d-none{
+    display: none !important;
+}
+
+h1{
+    font-size: 48px;
+    font-family: $exotic-font;
+    margin: 60px 5%;
+    @media screen and (max-width: 600px) {
+        font-size: 36px;
+        margin: 30px 5%;
+    }
+}
+
+h2{
+    font-size: 36px;
+    font-family: $exotic-font;
+    @media screen and (max-width: 600px) {
+        font-size: 28px;
+    }
+}
+
+h3{
+    font-size: 28px;
+    font-family: $exotic-font;
+    @media screen and (max-width: 600px) {
+        font-size: 22px;
+    }
+}
+
+h4{
+    font-size: 22px;
+    @media screen and (max-width: 600px) {
+        font-size: 20px;
+    }
+}
+
+.shine{
+    background: $gradient;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 500;
+    transition: .3s;
+    background-size: 150px;
+    &:hover{
+        background-position: -30px;
+    }
+}
+
+.shine-2{
+    background: $gradient-3;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 500;
+    transition: .3s;
+    background-size: 150px;
+    &:hover{
+        background-position: -30px;
+    }
+}
+
+.flex{
+    display: flex;
+}
+
+.align-start{
+    align-items: flex-start;
+}
+
+.error{
+    color: $error;
+}
+
+.legende{
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.self-end{
+    align-self: flex-end;
+}
+
+input[type="checkbox"], label{
+    cursor: pointer;
+}
+
+main{
+    margin: 0 40px 40px 40px;
+    @media screen and (max-width: 400px) {
+        margin: 0 20px 40px 20px;
+    }
+}

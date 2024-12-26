@@ -13,11 +13,15 @@ Router::post('/communities', 'communityController@store', true);
 Router::get('/communities/administered', 'communityController@administered', true);
 Router::get('/communities/{id}/ongoing', 'communityController@ongoingProposals', true);
 Router::get('/communities/{id}/finished', 'communityController@finishedProposals', true);
+Router::get('/communities/{id}/adopted', 'communityController@adoptedProposals', true);
+Router::get('/communities/{id}/voted', 'communityController@votedProposals', true);
 Router::get('/communities/{id}/members', 'communityController@members', true);
 Router::get('/communities/{id}/themes', 'communityController@themes', true);
 Router::get('/communities/{id}/proposals', 'proposalController@allOfCommunity', true);
 Router::get('/communities/{id}/membership', 'communityController@isMember', true);
-
+Router::get('/communities/{id}/budget', 'communityController@budget', true);
+Router::post('/communities/{id}/budget', 'communityController@setBudget', true);
+Router::post('/communities/{id}/themes', 'themeController@store', true);
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');
