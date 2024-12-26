@@ -11,7 +11,7 @@
             </div>
 
             <div v-if="communities" class="communities_contener__bloc">
-                <CardCommunity v-for="community in communities" :community="community"></CardCommunity>
+                <CardCommunity v-for="community in communities.slice(0,6)" :community="community"></CardCommunity>
                 <p class="communities_contener__bloc__no-community" v-if="communities.length === 0">Vous ne participez à aucune groupe, rejoignez en ou <NuxtLink to="/community/new">créez le votre ici.</NuxtLink></p>
             </div>
         </div>
