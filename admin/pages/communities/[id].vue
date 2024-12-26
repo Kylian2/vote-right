@@ -3,7 +3,6 @@
     <Header></Header>
 
     <h1>{{community["CMY_name_VC"]}}</h1>
-
     <main class="community">
 
         <section class="community__lateral">
@@ -24,7 +23,7 @@
                 <p><b>Budget Total : </b> {{formatNumber(budget['CMY_budget_NB'])}} € /an max</p>
                 <p><b>Budget Utilisé : </b> {{formatNumber(budget['CMY_used_budget_NB'])}} € /an</p>
                 <p><b>Frais fixes :</b> {{formatNumber(budget['CMY_fixed_fees_NB'])}} € /an</p>
-                <button class="btn btn--small" @click="editBudgetModale = true"> Modifier le budget maximal</button>
+                <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="editBudgetModale = true"> Modifier le budget maximal</button>
             </div>
 
             <div class="community__recap-themes">
@@ -34,7 +33,7 @@
                 <div>
                     <p v-for="theme, key in budget['CMY_budget_theme_NB']"><b>{{theme['THM_name_VC']}} : </b> {{theme['BUT_used_budget_NB']}} € /an (max: {{theme['BUT_amount_NB']}} €)</p>
                 </div>
-                <button class="btn btn--small" @click="editBudgetModale = true"> Modifier les budgets</button>
+                <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="editBudgetModale = true"> Modifier les budgets</button>
             </div>
 
         </section>
@@ -88,7 +87,7 @@
                                 <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                             </div>
                         </div>
-                        <div class="proposal-card__btns" :class="{'proposal-card__btns': false}">
+                        <div v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER"  class="proposal-card__btns" :class="{'proposal-card__btns': false}">
                             <button class="btn btn--small">Adopter</button>
                             <button class="btn btn--small">Refuser</button>
                         </div>
@@ -124,11 +123,11 @@
         </section>
         <section class="community__actions">
             <div class="community__actions__btns">
-                <button class="btn btn--small" @click="addThemeModal = true"> Ajouter un thème</button>
+                <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="addThemeModal = true"> Ajouter un thème</button>
                 <button class="btn btn--small"> Voir toutes les propositions</button>
-                <button class="btn btn--small"> Modifier le groupe</button>
-                <button class="btn btn--small"> Gérer les membres</button>
-                <button class="btn btn--small"> Accéder aux outils de modérations</button>
+                <button v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small"> Modifier le groupe</button>
+                <button v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small"> Gérer les membres</button>
+                <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == MODERATOR" class="btn btn--small"> Accéder aux outils de modérations</button>
             </div>
 
             <div class="community__actions__legend">
@@ -257,6 +256,10 @@
 </template>
 <script setup>
 
+const ADMIN = 1;
+const DECIDER = 2;
+const MODERATOR = 4;
+
 definePageMeta({
   middleware: ["auth"]
 })
@@ -270,6 +273,7 @@ const adopted = ref([]);
 const voted = ref([]);
 const budget = ref({});
 const period = ref('2024');
+const role = ref({});
 
 const budgetToastValid = useState('budgetToastValidUp', () => false);
 const budgetToastError = useState('budgetToastErrorUp', () => false);
@@ -288,54 +292,41 @@ const fetchData = async () => {
         });
 
         community.value = response;
-        
-    } catch(error) {
-        console.log("An error occured", error);
-    }
 
-    try{
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/ongoing`, {
+        const response2 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/ongoing`, {
             credentials: 'include',
         });
 
-        ongoing.value = response;
-        
-    } catch(error) {
-        console.log("An error occured", error);
-    }
+        ongoing.value = response2;
 
-    try{
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/adopted?period=${period.value}`, {
+        const response3 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/adopted?period=${period.value}`, {
             credentials: 'include',
         });
 
-        adopted.value = response;
-        
-    } catch(error) {
-        console.log("An error occured", error);
-    }
+        adopted.value = response3;
 
-    try{
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/voted`, {
+        const response4 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/voted`, {
             credentials: 'include',
         });
 
-        voted.value = response;
-        
-    } catch(error) {
-        console.log("An error occured", error);
-    }
+        voted.value = response4;
 
-    try{
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
+        const response5 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
             credentials: 'include',
         });
 
-        budget.value = response;
+        budget.value = response5;
+
+        const response6 = await $fetch(`${config.public.baseUrl}/users/me/role/${route.params.id}/`, {
+            credentials: 'include',
+        });
+
+        role.value = response6;
         
     } catch(error) {
         console.log("An error occured", error);
     }
+
 }
 
 const fetchDataByPeriod = async () =>{
