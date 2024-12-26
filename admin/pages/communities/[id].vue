@@ -37,34 +37,28 @@
                 <button class="btn btn--small" @click="editBudgetModale = true"> Modifier les budgets</button>
             </div>
 
-            <div class="community__actions">
-                <button class="btn btn--small"> Ajouter un thème</button>
-                <button class="btn btn--small"> Voir toutes les propositions</button>
-                <button class="btn btn--small"> Modifier le groupe</button>
-                <button class="btn btn--small"> Gérer les membres</button>
-                <button class="btn btn--small"> Accéder aux outils de modérations</button>
-            </div>
-
-            <div class="community__legend">
-                <div>
-                    <img src="/images/like.png" alt="">
-                    <p class="legend">: proposition appréciée</p>
-                </div>
-            </div>
         </section>
         <section class="community__main">
 
             <div class="community__adopted">
                 <h3>Proposition adoptées</h3>
                 <div>
-                    <div v-for="proposal in adopted" class="community-card">
+                    <div v-for="proposal in adopted" class="proposal-card">
                         <div>
-                            <p class="community-card__theme">{{proposal['PRO_theme_VC']}}</p>
-                            <p>{{proposal['PRO_title_VC']}}</p>
+                            <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
+                            <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                         </div>
                         <div>
                             <p>{{proposal['PRO_like_NB']+proposal['PRO_love_NB']}}/{{proposal['PRO_dislike_NB']+proposal['PRO_hate_NB']}}</p>
                             <p>{{proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '---'}} €</p>
+                        </div>
+                        <div>
+                            <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
+                            <p>{{proposal['PRO_like_NB']+proposal['PRO_love_NB']}}/{{proposal['PRO_dislike_NB']+proposal['PRO_hate_NB']}}</p>
+                            <p>{{proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '---'}} €</p>
+                        </div>
+                        <div>
+                            <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                         </div>
                     </div>
                     <p v-if="adopted.length === 0">Aucune proposition</p>
@@ -74,20 +68,30 @@
             <div class="community__ongoing">
                 <h3>Action requise</h3>
                 <div>
-                    <div v-for="proposal, key in voted" class="community-card__wrapper">
-                        <img src="/images/like.png" alt="like icon" v-if="false">
-                        <div class="community-card" :class="{'community-card--action': false}">
+                    <div v-for="proposal, key in voted" class="proposal-card__wrapper">
+                        <img class="proposal-card__image" src="/images/like.png" alt="like icon" >
+                        <div class="proposal-card" :class="{'proposal-card--action': true}">
                             <div>
-                                <p class="community-card__theme">{{proposal["PRO_theme_VC"]}}</p>
-                                <p>{{proposal["PRO_title_VC"]}}</p>
+                                <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
+                                <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                             </div>
                             <div>
                                 <p>{{proposal['PRO_like_NB']+proposal['PRO_love_NB']}}/{{proposal['PRO_dislike_NB']+proposal['PRO_hate_NB']}}</p>
                                 <p>{{proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '---'}} €</p>
                             </div>
+                            <div>
+                                <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
+                                <p>{{proposal['PRO_like_NB']+proposal['PRO_love_NB']}}/{{proposal['PRO_dislike_NB']+proposal['PRO_hate_NB']}}</p>
+                                <p>{{proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '---'}} €</p>
+                            </div>
+                            <div>
+                                <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
+                            </div>
                         </div>
-                        <button class="btn btn--small">Adopter</button>
-                        <button class="btn btn--small">Refuser</button>
+                        <div class="proposal-card__btns">
+                            <button class="btn btn--small">Adopter</button>
+                            <button class="btn btn--small">Refuser</button>
+                        </div>
                     </div>
                     <p v-if="voted.length === 0">Aucune proposition</p>
                 </div>
@@ -96,17 +100,41 @@
             <div class="community__ongoing">
                 <h3>Proposition en cours</h3>
                 <div>
-                    <div v-for="proposal in ongoing" class="community-card">
+                    <div v-for="proposal in ongoing" class="proposal-card">
                         <div>
-                            <p class="community-card__theme">{{proposal['PRO_theme_VC']}}</p>
-                            <p>{{proposal['PRO_title_VC']}}</p>
+                            <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
+                            <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                         </div>
                         <div>
                             <p>{{proposal['PRO_like_NB']+proposal['PRO_love_NB']}}/{{proposal['PRO_dislike_NB']+proposal['PRO_hate_NB']}}</p>
                             <p>{{proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '---'}} €</p>
                         </div>
+                        <div>
+                            <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
+                            <p>{{proposal['PRO_like_NB']+proposal['PRO_love_NB']}}/{{proposal['PRO_dislike_NB']+proposal['PRO_hate_NB']}}</p>
+                            <p>{{proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '---'}} €</p>
+                        </div>
+                        <div>
+                            <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
+                        </div>
                     </div>
                     <p v-if="ongoing.length === 0">Aucune proposition</p>
+                </div>
+            </div>
+        </section>
+        <section class="community__actions">
+            <div class="community__actions__btns">
+                <button class="btn btn--small"> Ajouter un thème</button>
+                <button class="btn btn--small"> Voir toutes les propositions</button>
+                <button class="btn btn--small"> Modifier le groupe</button>
+                <button class="btn btn--small"> Gérer les membres</button>
+                <button class="btn btn--small"> Accéder aux outils de modérations</button>
+            </div>
+
+            <div class="community__actions__legend">
+                <div>
+                    <img src="/images/like.png" alt="">
+                    <p class="legend">: proposition appréciée</p>
                 </div>
             </div>
         </section>
