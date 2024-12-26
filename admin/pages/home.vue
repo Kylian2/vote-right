@@ -27,7 +27,7 @@ const communities = ref();
 const fetchData =  async() =>{
 
     try{
-        const response = await $fetch(`${config.public.baseUrl}/communities/administered`, {
+        const response = await $fetch(`${config.public.baseUrl}/communities/managed`, {
             credentials: 'include',
         });
 
