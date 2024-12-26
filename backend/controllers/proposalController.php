@@ -1,9 +1,8 @@
 <?php
 
-use Dotenv\Validator;
-
 @require_once("models/proposal.php");
 @require_once("models/comment.php");
+@require_once("controllers/notificationController.php");
 @require_once("models/vote.php");
 @require_once("validators/proposalValidator.php");
 
@@ -67,6 +66,8 @@ class ProposalController{
 
         $proposal = new Proposal($values);
         $result = $proposal->insert();
+
+        notificationController::notifyNewProposal($proposal);
 
         echo json_encode($result);
     }
