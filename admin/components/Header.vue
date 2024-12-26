@@ -5,15 +5,25 @@
         <p class="mobile">VRCP</p>
         <div>
             <NuxtLink class="btn btn--small" to="/home" >Accueil</NuxtLink>
-            <NuxtLink class="btn btn--small" to="/" @click="disconnect()">Déconnexion</NuxtLink>
+            <NuxtLink class="btn btn--small" @click="disconnect()">Déconnexion</NuxtLink>
         </div>
     </header>
 
 </template>
 <script setup>
+const config = useRuntimeConfig();
 
-const disconnect = () => {
-    document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+const disconnect = async () => {
+    try{
+        await $fetch(`${config.public.baseUrl}/auth/logout`, {
+            method: 'POST',
+            credentials: 'include',
+        });
+
+        navigateTo('/');
+    } catch (error) {
+        console.log("An error occured", error);
+    }
 }
 
 </script>
