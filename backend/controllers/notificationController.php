@@ -104,6 +104,7 @@ class notificationController{
 
         echo json_encode($userSender);
         if(!$userSender->get("USR_notify_reaction_BOOL") || $userSender->get("USR_notification_frequency_CH") != 'Q'){
+            echo 'sans notif';
             return;
         }
 
@@ -145,6 +146,7 @@ class notificationController{
         $mail->Subject = "Quelqu'un a réagit à votre commentaire";
         
         if(!$reaction){
+            echo 'pas de reaction';
             return;
         }
 
@@ -178,6 +180,7 @@ class notificationController{
         try{
             $mail->addAddress($userSender->get('USR_email_VC'));
             echo Mailer::send($mail);
+            echo 'mail envoyé';
             $mail->SmtpClose();
         }catch (Exception $e) {
             echo "Erreur d'envoi : {$mail->ErrorInfo}";
