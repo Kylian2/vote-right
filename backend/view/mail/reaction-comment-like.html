@@ -1,0 +1,34 @@
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <table style="max-width: 600px; margin: auto; font-family: 'Inter', Arial, Helvetica, sans-serif;">
+        <tr>
+            <td>
+                <p style="padding: 16px 30px; background-color: [backgroundColor]; display: block; width: 125px; font-weight: bold; font-size: 22px; text-align: center; color: #fff;">
+                    VoteRight
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td style="display: block; margin: auto; max-width: 600px;">
+                <h1>Quelqu'un a aimé votre commentaire</h1>
+                <p> {{firstname}} {{lastname}} a aimé votre commentaire 
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 2px solid black; background: #F5F5F5; padding: 15px 15px; border-radius: 5px;">
+                {{comment}}
+            </td>
+        </tr>
+        <tr style="margin-top: 10px; display: block;">
+            <td>
+                sur la proposition <strong>{{proposal}}</strong>
+            </td>
+        </tr>
+        <tr>
+            <td><a style="text-align: center; padding: 10px 40px; background: [backgroundColor]; color: #fff; border-radius: 10px; text-decoration: unset; margin-top: 20px; display: block; max-width: 150px;" href="https://voteright.fr/proposal/{{proposalId}}">Voir la proposition</a></td>
+        </tr>
+    </table>
+</body>

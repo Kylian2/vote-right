@@ -37,7 +37,7 @@ class Mailer{
      * @param PHPMailer une instance de mail PHPMailer
      */
     public static function send(PHPMailer $mail){
-        $mail->send();
+        return $mail->send();
     }
 }
 
