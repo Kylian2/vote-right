@@ -261,7 +261,7 @@ const DECIDER = 2;
 const MODERATOR = 4;
 
 definePageMeta({
-  middleware: ["auth"]
+  middleware: ["auth", "managed"]
 })
 
 const config = useRuntimeConfig();

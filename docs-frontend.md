@@ -463,10 +463,17 @@ const up = useState('ToastUp');
 
 ### Les middleware
 
-Dans l'application, il y a deux middlewares : 
+Dans l'application, il y a des middlewares permettant de restreindre l'accès à des ressources :
+
+**Application Utilisateur**:
 
 1. *auth* : autorisant l'accès d'une page uniquement aux personnes connectés. Redirige vers */login*
 2. *guest* : bloquant l'accès d'une page aux personnes connectés. Redirige vers */home*.
 2. *community-member* : bloquant l'accès d'une page aux membres de faisant pas partie de la communautée. Redirige vers */home*.
 2. *proposal-access* : bloquant l'accès d'une page aux personnes n'étant pas membre de la communauté rattachée à la proposition. Redirige vers */home*.
 
+**Application Administrateur**:
+
+1. *auth* : autorisant l'accès d'une page uniquement aux personnes connectés. Redirige vers */*
+2. *guest* : bloquant l'accès d'une page aux personnes connectés. Redirige vers */home*.
+3. *managed* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de gestion. Redirige vers */home*.
