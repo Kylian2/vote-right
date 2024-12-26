@@ -2266,6 +2266,75 @@ paths:
                   '1': 13000
                   '2': 21000
                   '-1': 2400
+  /communities/managed:
+    get:
+      summary: La liste des communautés que l'utilisateur gère
+      tags:
+        - communities
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                x-examples:
+                  Example 1:
+                    - CMY_id_NB: 13
+                      CMY_name_VC: Marché de Noël de Strasbourg
+                      CMY_image_VC: 100010.png
+                      CMY_emoji_VC: 1F389
+                      CMY_color_VC: '#DE3D59'
+                      CMY_description_TXT: null
+                    - CMY_id_NB: 26
+                      CMY_name_VC: Développement de VoteRight
+                      CMY_image_VC: 100002.png
+                      CMY_emoji_VC: 1F347
+                      CMY_color_VC: '#8700CF'
+                      CMY_description_TXT: |+
+                        Cette communauté est dédiée à la création d'outils numériques favorisant l'engagement citoyen et la participation active au processus démocratique. Nous travaillons ensemble à développer une application web innovante, permettant aux citoyens de s'impliquer dans les décisions publiques, de partager leurs idées et de participer à des consultations ouvertes. Notre projet vise à démocratiser l'accès à la gouvernance locale et nationale en facilitant les échanges entre citoyens, élus et acteurs institutionnels. Nous mettons en avant la transparence, l'inclusivité et l'égalité dans la participation politique à travers une plateforme simple et intuitive.
+
+                items:
+                  type: object
+                  properties:
+                    CMY_id_NB:
+                      type: integer
+                    CMY_name_VC:
+                      type: string
+                    CMY_image_VC:
+                      type: string
+                    CMY_emoji_VC:
+                      type: string
+                    CMY_color_VC:
+                      type: string
+                    CMY_description_TXT:
+                      type: string
+              examples:
+                Example 1:
+                  value:
+                    - CMY_id_NB: 13
+                      CMY_name_VC: Marché de Noël de Strasbourg
+                      CMY_image_VC: 100010.png
+                      CMY_emoji_VC: 1F389
+                      CMY_color_VC: '#DE3D59'
+                      CMY_description_TXT: La description
+                    - CMY_id_NB: 26
+                      CMY_name_VC: Développement de VoteRight
+                      CMY_image_VC: 100002.png
+                      CMY_emoji_VC: 1F347
+                      CMY_color_VC: '#8700CF'
+                      CMY_description_TXT: La description
+      operationId: get-communities-managed
+      x-stoplight:
+        id: ujk30j08kcmpf
+      description: 'Renvoie la liste des communautés gérées par l''utilisateur. (Celle dont il y a un role d''administateur, de modérateur, etc).'
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
 components:
   securitySchemes: {}
   responses: {}

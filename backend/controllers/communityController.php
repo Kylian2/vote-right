@@ -42,6 +42,18 @@ class CommunityController{
     }
 
     /**
+     * Affiche un json de la liste des communautés dans lequels l'utilisateur à un role de gestion 
+     * (admin, modérateur, décideur, assesseur)
+     * 
+     * @return void retourne le resultat sous forme de JSON
+     */
+    public static function managed(){
+        $userId = SessionGuard::getUserId();
+        $communities = Community::communitiesManagedBy($userId);
+        echo json_encode($communities);
+    }
+
+    /**
      * Insère dans la base de données une nouvelle communauté
      * 
      * La fonctions attends les éléments suivant : 
