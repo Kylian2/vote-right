@@ -1,6 +1,6 @@
 <template>
     <div class="base">
-        <label :for="name"><slot></slot></label>
+        <label v-if="!noLabel" :for="name"><slot></slot></label>
         <div v-if="hasAChange && errorMessages.length" class="error">
             <p v-for="(error, index) in errorMessages" :key="index">{{ error }}</p>
         </div>
@@ -50,6 +50,11 @@ step: {
     type: Number,
     required: false,
     default: 1,
+},
+noLabel: {
+    type: Boolean,
+    required: false,
+    default: false,
 },
 });
 

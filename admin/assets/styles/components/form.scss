@@ -13,7 +13,7 @@
         }
 
         &::placeholder{
-            color: rgba($color: $default, $alpha: 0.9)
+            color: rgba($color: $default, $alpha: 0.6)
         }
         &:focus, &:focus-visible, &:active{
             border: 2px solid $color-5 !important;

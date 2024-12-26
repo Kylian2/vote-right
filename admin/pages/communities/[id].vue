@@ -208,6 +208,37 @@
     >
     Aucune modification a appliquer
     </Toast>
+
+    <Modal
+    name="addTheme"
+    ok-text="Ajouter le theme"
+    cancel-text="Annuler"
+    >
+        <template #title>Ajouter un thème</template>
+        <template #body>
+
+            <div class="edit-budget">
+                <div>
+                    <p><b>Budget max :</b></p>
+                    <p><b>{{ budget['CMY_budget_NB'] }}</b> € /an</p>
+                </div>
+                <div>
+                    <p>Budget utilisé :</p>
+                    <p><b>{{ budget['CMY_used_budget_NB'] }}</b> € /an</p>
+                </div>
+            </div>
+
+            <div class="ajouter-theme">
+                <p>Nom du thème :</p>
+                <Input class="ajouter-theme__name" type="text" name="nameNewTheme" no-label placeholder="Entrez le nom"></Input>
+                <div class="ajouter-theme__budget">
+                    <InputNumber class="ajouter-theme__budget__input" type="text" name="budgetNewTheme" no-label placeholder="Entrez le budget" :step="100" :min="0"></InputNumber>
+                    <p> € /an</p>
+                </div>
+            </div>
+
+        </template>
+    </Modal>
 </template>
 <script setup>
 
@@ -352,6 +383,8 @@ const updateBudget = async () => {
         console.log("An error occured", error);
     }
 }
+
+const addThemeModal = useState('addThemeModal', () => true);
 
 onMounted(() => {
     fetchData();
