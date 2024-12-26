@@ -612,7 +612,69 @@ paths:
           description: Le cookie d'authentification
           required: true
       tags:
+        - themes
         - communities
+    post:
+      summary: Ajoute un thème à la communauté
+      tags:
+        - themes
+        - communities
+      responses:
+        '200':
+          description: 'OK, le thème est ajouté'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  THM_id_NB:
+                    type: integer
+                  THM_community_NB:
+                    type: integer
+                  THM_name_VC:
+                    type: string
+                x-examples:
+                  Example 1:
+                    THM_id_NB: 8
+                    THM_community_NB: 12
+                    THM_name_VC: Animation
+              examples:
+                Example 1:
+                  value:
+                    THM_id_NB: 8
+                    THM_community_NB: 12
+                    THM_name_VC: Animation
+      operationId: post-communities-id-themes
+      x-stoplight:
+        id: 6i7fe5z63rems
+      description: 'Ajoute un thème à la communauté, le budget du thème déclaré est défini pour la periode en cours.'
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                budget:
+                  type: integer
+              x-examples:
+                Example 1:
+                  name: Animation
+                  budget: 2300
+            examples:
+              Example 1:
+                value:
+                  name: Animation
+                  budget: 2300
   /auth/register:
     post:
       summary: Créer un compte
