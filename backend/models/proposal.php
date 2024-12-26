@@ -22,6 +22,11 @@ class Proposal extends Model{
     public int $PRO_community_NB;
     public int $PRO_initiator_NB;
 
+    public int $PRO_like_NB;
+    public int $PRO_dislike_NB;
+    public int $PRO_love_NB;
+    public int $PRO_hate_NB;
+
     public static function getOngoing() {
         $request = "SELECT PRO_id_NB, PRO_title_VC, CMY_color_VC as PRO_color_VC, THM_name_VC as PRO_theme_VC
                     FROM proposal

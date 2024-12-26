@@ -49,6 +49,14 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}-frontend
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Build and push Docker frontend
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: ./admin
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}-admin
+          labels: ${{ steps.meta.outputs.labels }}
+
       - name : Deploy new images 
         uses : appleboy/ssh-action@master
         with:
@@ -60,5 +68,6 @@ jobs:
             docker volume rm root_app-data
             docker pull ghcr.io/kylian2/vote-right:main-backend
             docker pull ghcr.io/kylian2/vote-right:main-frontend
+            docker pull ghcr.io/kylian2/vote-right:main-admin
             docker compose up -d 
             docker ps

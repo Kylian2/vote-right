@@ -22,8 +22,16 @@
     margin: auto;
     background: $contrast;
 
+    @media screen and (max-width: 600px) {
+        padding: 20px 20px;
+        height: 75%;
+    }
+
     h3{
         margin-bottom: 40px;
+        @media screen and (max-width: 600px) {
+            margin-bottom: 20px;
+        }
     }
 
 
@@ -33,6 +41,16 @@
         align-items: center;
         gap: 15px;
         margin-top: 50px;
+        @media screen and (max-width: 600px) {
+            margin-top: 20px;
+            flex-direction: column-reverse;
+            gap: 10px;
+        }
+        > button{
+            @media screen and (max-width: 600px) {
+                width: 100%;
+            }
+        }
         .btn--full{
             background: $dark;
             padding-left: 40px;
@@ -41,7 +59,10 @@
     }
 
     &__body{
+        max-height: 50vh;
+        overflow: scroll;
         @media screen and (max-width: 600px) {
+            max-height: none;
             height: 75%;
         }
     }

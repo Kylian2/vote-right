@@ -12,6 +12,7 @@ class Comment extends Model{
     //Les infos de l'utilisateur qui envoie le commentaire
     public string $COM_sender_fname_VC;
     public string $COM_sender_lname_VC;
+    public string $COM_sender_email_VC;
     public string $COM_sender_NB;
 
     /**
