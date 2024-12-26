@@ -124,7 +124,7 @@
         </section>
         <section class="community__actions">
             <div class="community__actions__btns">
-                <button class="btn btn--small"> Ajouter un thème</button>
+                <button class="btn btn--small" @click="addThemeModal = true"> Ajouter un thème</button>
                 <button class="btn btn--small"> Voir toutes les propositions</button>
                 <button class="btn btn--small"> Modifier le groupe</button>
                 <button class="btn btn--small"> Gérer les membres</button>
@@ -213,6 +213,10 @@
     name="addTheme"
     ok-text="Ajouter le theme"
     cancel-text="Annuler"
+    :before-ok="() => {
+        addTheme();
+        }"
+    >
     >
         <template #title>Ajouter un thème</template>
         <template #body>
@@ -236,9 +240,20 @@
                     <p> € /an</p>
                 </div>
             </div>
+            <p class="legende mt20">Le budget défini pour le thème sera ajouté pour la période en cours ({{ new Date().getFullYear() }}).</p>
 
         </template>
     </Modal>
+
+    <Toast 
+        name="addThemeValid" 
+        :type="3" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Thème ajouté
+    </Toast>
 </template>
 <script setup>
 
@@ -384,7 +399,34 @@ const updateBudget = async () => {
     }
 }
 
-const addThemeModal = useState('addThemeModal', () => true);
+const addThemeModal = useState('addThemeModal', () => false);
+const addThemeToast = useState('addThemeValidUp', () => false);
+const nameNewTheme = useState('nameNewTheme');
+const budgetNewTheme = useState('budgetNewTheme');
+
+const addTheme = async () => {
+    try{
+        const response1 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/themes`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {
+                name: nameNewTheme.value,
+                budget: budgetNewTheme.value,
+            }
+        });
+
+        addThemeToast.value = 'THM_id_NB' in response1 && !isNaN(response1['THM_id_NB']);
+
+        const response2 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
+            credentials: 'include',
+        });
+
+        budget.value = response2;
+        
+    } catch(error) {
+        console.log("An error occured", error);
+    }
+}
 
 onMounted(() => {
     fetchData();
