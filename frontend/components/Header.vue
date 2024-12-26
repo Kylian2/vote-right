@@ -16,7 +16,7 @@
             <div class="wrapper" :class="{'active' : actif === 'groupes'}"><NuxtLink class="logged__link" to="/communities">Groupes</NuxtLink></div>
         </nav>
         <div v-if="type === 'logged'" class="logged">
-            <NuxtLink to="#" class="shine">Mon Compte</NuxtLink>
+            <button @click="showModal = !showModal">Mon Compte</button>
         </div>
     </header>
 
@@ -35,9 +35,25 @@
             <NuxtLink to="/register">S'inscrire</NuxtLink>
         </nav>
     </header>
+    <Modal
+    :name="account"
+    >
+            <template #title>Paramètres de compte</template>
+            <template #body>
+                <div>
+                    <div>
+                        <button>Mes informations</button>
+                    </div>
+                    <div>
+                        <button>Notifications</button>
+                    </div>
+                </div>
+            </template>
+        </Modal>
 </template>
 
 <script setup>
+
 const props = defineProps({
     type: {
         type: String,
@@ -57,13 +73,8 @@ let navigationMobile;
 let headerMobile;
 let logo;
 let hamburger;
-
-onMounted(() => {
-    navigationMobile = document.getElementById("navigation-mobile");
-    headerMobile = document.getElementById("header-mobile");
-    logo = document.getElementById("logo");
-    hamburger = document.getElementById("hamburger");
-})
+const me = ref();
+const showModal = useState("accountModal", () => false);
 
 const toggleHeader = () => {
     headerMobile.classList.toggle("full");
@@ -71,4 +82,26 @@ const toggleHeader = () => {
     logo.classList.toggle("d-none");
     hamburger.classList.toggle("active");
 }
+
+const fetchUser = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/users/me`, {
+            credentials: 'include',
+        });
+
+        me.value = response;
+        
+    } catch(error) {
+        console.log("An error occured", error);
+    }
+}
+
+onMounted(() => {
+    navigationMobile = document.getElementById("navigation-mobile");
+    headerMobile = document.getElementById("header-mobile");
+    logo = document.getElementById("logo");
+    hamburger = document.getElementById("hamburger");
+    fetchUser();
+})
+
 </script>
