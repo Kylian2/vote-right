@@ -69,8 +69,8 @@
                 <h3>Action requise</h3>
                 <div>
                     <div v-for="proposal, key in voted" class="proposal-card__wrapper">
-                        <img class="proposal-card__image" src="/images/like.png" alt="like icon" >
-                        <div class="proposal-card" :class="{'proposal-card--action': true}">
+                        <img class="proposal-card__image" src="/images/like.png" alt="like icon" v-if="false">
+                        <div class="proposal-card" :class="{'proposal-card--action': false}">
                             <div>
                                 <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
                                 <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
@@ -88,7 +88,7 @@
                                 <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                             </div>
                         </div>
-                        <div class="proposal-card__btns">
+                        <div class="proposal-card__btns" :class="{'proposal-card__btns': false}">
                             <button class="btn btn--small">Adopter</button>
                             <button class="btn btn--small">Refuser</button>
                         </div>
