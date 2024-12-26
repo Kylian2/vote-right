@@ -59,7 +59,8 @@ class Community extends Model{
     }
 
     public static function communitiesManagedBy(int $user){
-        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_VC
+        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_VC, 
+                    (SELECT COUNT(*) FROM member WHERE MEM_community_NB = CMY_id_NB) as CMY_nb_member_NB
                     FROM community 
                     INNER JOIN member ON MEM_community_NB = CMY_id_NB
                     WHERE MEM_role_NB != 5 AND MEM_user_NB = :user";
