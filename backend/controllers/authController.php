@@ -110,28 +110,6 @@ class AuthController{
     }
 
     /**
-     * Connecte un utilisateur sans qu'il rentre ses identifiants
-     * 
-     * Données attendues : id d'utilisateur
-     * 
-     * REPONSE JSON : true si connexion
-     * @return void Renvoie la réponse en JSON
-     */
-    public function implicitLogin(){
-        $body = file_get_contents('php://input');
-        $body = json_decode($body, true);
-
-        $user = User::getById($body['newMemberId']);
-        if($user){
-            SessionGuard::start($user);
-            echo json_encode(true);
-        }else{
-            echo json_encode(false);
-            SessionGuard::stop();
-        }
-    }
-
-    /**
      * Verifie l'état de la session
      * 
      * REPONSE JSON : true si la session est valide, false sinon

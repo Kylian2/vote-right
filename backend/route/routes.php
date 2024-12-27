@@ -4,7 +4,6 @@
 
 Router::post('/auth/register', 'authController@register');
 Router::post('/auth/login', 'authController@login');
-Router::post('/auth/implicitLogin', 'authController@implicitLogin');
 Router::get('/auth/check', 'authController@check');
 Router::post('/auth/logout', 'authController@logout'); //à implémenter + faire la doc
 
@@ -28,7 +27,6 @@ Router::get('/communities/{id}/budget', 'communityController@budget', true);
 Router::post('/communities/{id}/budget', 'communityController@setBudget', true);
 Router::post('/communities/{id}/themes', 'themeController@store', true);
 Router::get('/communities/managed', 'communityController@managed', true);
-Router::post('/communities/{id}/registration', 'communityController@insertMember', false);
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');

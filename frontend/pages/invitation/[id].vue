@@ -76,33 +76,19 @@ const invitationUnavailable = ref();
 
 const acceptInvitation = async () => {
     try {
-        const response1 = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/accept`, {
+        const response = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/accept`, {
         method: 'POST',
             body: {
                 codeSend: securityCode.value,
+                communityId: invitation.value.INV_community_NB,
+                newMemberId: invitation.value.INV_recipient_NB,
             }
         });
 
-        if(response1["Invalid code"]){
+        if(response["Invalid code"]){
             alert('Le code de validation que vous avez entré est incorrect');
             return ;
-        }
-
-        const response2 = await $fetch(`${config.public.baseUrl}/communities/${invitation.value.INV_community_NB}/registration`, {
-        method: 'POST',
-            body: {
-                newMemberId: invitation.value.INV_recipient_NB,
-            }
-        });
-
-        const response3 = await $fetch(`${config.public.baseUrl}/auth/implicitLogin`, {
-        method: 'POST',
-            body: {
-                newMemberId: invitation.value.INV_recipient_NB,
-            }
-        });
-
-        if(response3){
+        }else{
             navigateTo(`/community/${invitation.value.INV_community_NB}`);
         }
         
