@@ -10,7 +10,7 @@
         <button class="btn btn-small" :disabled="Object.keys(changedRole).length === 0" @click="roleUpdateValidationModal = true">Valider les changements</button>
     </div>
     <div class="members__list">
-        <div v-for="member in members" class="member-card">
+        <div v-for="member, key in members" class="member-card">
             <p><b>{{member['USR_firstname_VC']}}</b> {{ member['USR_lastname_VC'] }}</p>
             <div>
                 <p class="legende">{{member['ROL_label_VC']}}</p>
@@ -23,12 +23,15 @@
                         {{ role["ROL_label_VC"] }}
                     </option>                
                 </select>
-                <button>X</button>
+                <button @click="() => {
+                    userToExclude = member;
+                    userToExcludeIndex = key;
+                    exclusionValidationModal = true;
+                }">X</button>
             </div>
         </div>
     </div>
 </main>
-
 <Modal
 name="roleUpdateValidation"
 cancel-text="Annuler"
@@ -60,6 +63,52 @@ cancel-text="Annuler"
 >
 Impossible de se retrograder
 </Toast>
+
+<Toast 
+    name="roleUpdated" 
+    :type="3" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+Modifications appliquées
+</Toast>
+
+<Modal
+name="exclusionValidation"
+cancel-text="Annuler"
+ok-text="Exclure"
+:before-cancel="() => {
+    userToExclude = {};
+}"
+:before-ok="() => {
+    excludeUser();
+    userToExclude = {}
+}"
+>
+<template #title>Valider l'exclusion du membre ?</template>
+</Modal>  
+
+<Toast 
+    name="impossibleToExcludeUser" 
+    :type="1" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+Impossible de supprimer l'utilisateur
+</Toast>
+
+<Toast 
+    name="userHasBeenExcluded" 
+    :type="3" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+Utilisateur exclu
+</Toast>
+
 </template>
 
 <script setup>
@@ -74,10 +123,18 @@ const members = ref({});
 const roles = ref({});
 const changedRole = ref({});
 const changedUser = ref({});
+const userToExclude = ref({});
+const userToExcludeIndex = ref();
 
 const administratorMissing = useState('administratorMissingUp');
+const impossibleToExcludeUser = useState('impossibleToExcludeUserUp');
+const userHasBeenExcluded = useState('userHasBeenExcludedUp');
+const roleUpdated = useState('roleUpdatedUp');
 
 const roleUpdateValidationModal = useState('roleUpdateValidationModal', () => false);
+
+const exclusionValidationModal = useState('exclusionValidationModal', () => false);
+
 const fetchMembers = async () => {
     try{
 
@@ -135,8 +192,7 @@ const postChanges = async () => {
         fetchMembers();
         changedRole.value = {};
         changedUser.value = {};
-
-
+        roleUpdated.value = true;
 
     }catch (error){
         console.log('An unexptected error occured : ', error);
@@ -144,6 +200,25 @@ const postChanges = async () => {
             administratorMissing.value = true;
             changedRole.value = {};
             changedUser.value = {};
+        }
+    }
+}
+
+const excludeUser = async () => {
+    try{
+        await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/exclude/${userToExclude.value['USR_id_NB']}`, {
+            method: 'POST',
+            credentials: 'include',
+            body: changedRole.value
+        })
+
+        members.value.splice(userToExcludeIndex.value, 1);
+        userHasBeenExcluded.value = true;
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+        if(error.status === 401){
+            impossibleToExcludeUser.value = true;
         }
     }
 }

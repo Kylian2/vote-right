@@ -276,7 +276,7 @@ class CommunityController{
         echo json_encode(true);
     }
 
-    public static function setMembers($params){
+    public static function setMembers(array $params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
@@ -290,6 +290,26 @@ class CommunityController{
         $community = new Community($values);
         try{
             $community->setMembers($body);
+            echo json_encode(true);
+        }catch(Exception $e){
+            http_response_code(401);
+            echo json_encode(array('Error' => $e->getMessage()));
+        }
+    }
+
+    public static function exclude(array $params){
+        $member = $params[1];
+
+        if(!is_numeric($member)){
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"Invalid data"}';
+            return;
+        }
+
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        try{
+            $community->exclude($member);
             echo json_encode(true);
         }catch(Exception $e){
             http_response_code(401);

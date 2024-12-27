@@ -221,7 +221,7 @@ class Community extends Model{
                     throw new Exception('Missing Administrator');
                     return;
                 }
-                throw new Exception($e->errorInfo[0]);
+                throw new Exception($e->errorInfo[2]);
                 return;
             }
         }
@@ -306,6 +306,24 @@ class Community extends Model{
             $values['amount'] = $amount;
             $values['theme'] = $theme;
             $prepare->execute($values);
+        }
+    }
+
+    public function exclude(int $member){
+        $request = 'DELETE FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = :community';
+        $prepare = connexion::pdo()->prepare($request);
+        $values["community"] = $this->CMY_id_NB;    
+        $values["user"] = $member;
+
+        try{
+            $prepare->execute($values);
+        }catch(PDOException $e){
+            if($e->errorInfo[2] === "Erreur : Veuillez nommer au moins un administrateur avant de quitter le groupe."){
+                throw new Exception('Missing Administrator');
+                return;
+            }
+            throw new Exception($e->errorInfo[2]);
+            return;
         }
     }
 

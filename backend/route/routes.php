@@ -24,6 +24,7 @@ Router::get('/communities/{id}/budget', 'communityController@budget', true);
 Router::post('/communities/{id}/budget', 'communityController@setBudget', true);
 Router::post('/communities/{id}/themes', 'themeController@store', true);
 Router::get('/communities/managed', 'communityController@managed', true);
+Router::post('/communities/{id}/exclude/{user}', 'communityController@exclude', true);
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');

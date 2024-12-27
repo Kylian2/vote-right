@@ -2432,6 +2432,31 @@ paths:
       x-stoplight:
         id: ah7deuo8pqrya
       description: 'Renvoie la liste des rôles. '
+  '/communities/{id}/exclude/{user}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: user
+        in: path
+        required: true
+    post:
+      summary: Exclure du groupe un membre
+      tags:
+        - members
+      responses:
+        '200':
+          description: 'OK, renvoie `true` si le membre a été exclu.'
+        '401':
+          description: 'Unauthorized, l''exclusion a été bloquée.'
+      operationId: post-communities-id-exclude-user
+      x-stoplight:
+        id: 5y2sn4la3rkfe
+      description: Permet d'exclure un membre du groupe.
 components:
   securitySchemes: {}
   responses: {}
