@@ -82,7 +82,8 @@ const acceptInvitation = async () => {
                 codeSend: securityCode.value,
                 communityId: invitation.value.INV_community_NB,
                 newMemberId: invitation.value.INV_recipient_NB,
-            }
+            },
+            credentials: 'include',
         });
 
         if(response["Invalid code"]){
@@ -103,7 +104,8 @@ const rejectInvitation = async () => {
         method: 'POST',
             body: {
                 codeSend: securityCode.value,
-            }
+            }, 
+            credentials: 'include',
         });
 
         if(response["Invalid code"]){

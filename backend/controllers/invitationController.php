@@ -39,8 +39,9 @@ class InvitationController{
      * Composition de $params : 
      * - $params[0] = $id, l'identifiant de l'invitation recherchée. 
      * 
-     * La fonction attend l'élément suivant : 
+     * La fonction attend les éléments suivants : 
      * - un code (string)
+     * - un numero de communauté (int)
      * - un numero d'utilisateur (int)
      * 
      * Procède à des vérifications de validité avant de modifier la base
@@ -48,11 +49,12 @@ class InvitationController{
      * ex de données acceptées : 
      * 
      * {
-     *   "codeSend" : "867911",
-     *   "newMemberId" : 78,
+     *  "codeSend" : "744670",
+     *  "communityId" : 12,
+     *  "newMemberId" : 35
      * }
      * 
-     * @return void renvoie true si fonction à été exécutée correctement 
+     * @return void renvoie true si l'objectif de la fonction a été rempli
      */
     public static function accepted(array $params){
         $body = file_get_contents('php://input');
@@ -120,7 +122,7 @@ class InvitationController{
      *   "codeSend" : "867911"
      * }
      * 
-     * @return void renvoie true si fonction à été exécutée correctement
+     * @return void renvoie true si l'objectif de la fonction a été rempli
      */
     public static function rejected(array $params){
         $body = file_get_contents('php://input');
