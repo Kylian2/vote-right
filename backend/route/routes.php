@@ -50,6 +50,8 @@ Router::post('/comments/{id}/report', 'commentController@report', true);
 
 Router::get('/reasons', 'reasonController@index', true);
 
+Router::get('/roles', 'roleController@index', true);
+
 Router::post('/notifications/reactions/comments', 'notificationController@notifyCommentReaction', true);
 Router::post('/notifications/reactions/proposals', 'notificationController@notifyReactionProposal', true);
 
