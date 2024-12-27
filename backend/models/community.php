@@ -187,7 +187,7 @@ class Community extends Model{
 
     public function getMembers(){
         @require_once("models/user.php");
-        $request = "SELECT USR_firstname_VC, USR_lastname_VC, ROL_label_VC, MEM_role_NB FROM members_role WHERE MEM_community_NB = :community";
+        $request = "SELECT USR_id_NB, USR_firstname_VC, USR_lastname_VC, ROL_label_VC, MEM_role_NB FROM members_role WHERE MEM_community_NB = :community";
         $prepare = connexion::pdo()->prepare($request);
         $values["community"] = $this->CMY_id_NB;    
         $prepare->execute($values);
