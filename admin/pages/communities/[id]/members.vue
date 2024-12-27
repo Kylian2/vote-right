@@ -11,7 +11,7 @@
         <button class="btn btn-small" :disabled="Object.keys(changedRole).length === 0" @click="roleUpdateValidationModal = true">Valider les changements</button>
     </div>
     <div class="members__list">
-        <div v-for="member, key in members" :key="key" class="member-card">
+        <div v-for="member in members" class="member-card">
             <p><b>{{member['USR_firstname_VC']}}</b> {{ member['USR_lastname_VC'] }}</p>
             <div>
                 <p class="legende">{{member['ROL_label_VC']}}</p>
@@ -33,6 +33,9 @@
 <Modal
 name="roleUpdateValidation"
 cancel-text="Annuler"
+:before-ok="() => {
+    postChanges();
+}"
 >
 <template #title>Valider les changements</template>
 <template #body>
@@ -108,5 +111,23 @@ onMounted(() => {
     fetchMembers();
     fetchRole();
 })
+
+const postChanges = async () => {
+    try{
+
+        await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/members`, {
+            method: 'POST',
+            credentials: 'include',
+            body: changedRole.value
+        })
+
+        members.value = {};
+        fetchMembers();
+        changedRole.value = {};
+
+        }catch (error){
+            console.log('An unexptected error occured : ', error);
+    }
+}
 
 </script>
