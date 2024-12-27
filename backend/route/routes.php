@@ -16,6 +16,7 @@ Router::get('/communities/{id}/finished', 'communityController@finishedProposals
 Router::get('/communities/{id}/adopted', 'communityController@adoptedProposals', true);
 Router::get('/communities/{id}/voted', 'communityController@votedProposals', true);
 Router::get('/communities/{id}/members', 'communityController@members', true);
+Router::post('/communities/{id}/members', 'communityController@setMembers', true);
 Router::get('/communities/{id}/themes', 'communityController@themes', true);
 Router::get('/communities/{id}/proposals', 'proposalController@allOfCommunity', true);
 Router::get('/communities/{id}/membership', 'communityController@isMember', true);

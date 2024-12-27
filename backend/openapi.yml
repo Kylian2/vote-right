@@ -453,9 +453,9 @@ paths:
     get:
       summary: La liste des membres
       tags:
-        - membre
-        - role
         - communities
+        - members
+        - roles
       responses:
         '200':
           description: La liste renvoyé avec succès
@@ -558,6 +558,56 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+    post:
+      summary: Changer le rôle de membres
+      tags:
+        - communities
+        - members
+        - roles
+      responses:
+        '200':
+          description: 'OK, les roles ont été modifiés. Retourn `true`.'
+        '401':
+          description: 'La modification d''un ou plusieurs roles a été bloqué. Cela peut être dù à différentes raisons, par exemple la retrogradation d''un administrateur sans qu''il en existe un autre.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Example 1:
+                  value:
+                    Error: Missing Administrator
+      operationId: post-communities-id-members
+      x-stoplight:
+        id: wo9e4fs2ykbl5
+      description: Permet de changer le role d'un ou plusieurs membres
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: 'Le cookie d''authentification '
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  '92': '2'
+            examples:
+              Example 1:
+                value:
+                  '92': '2'
+        description: |-
+          Le corps de la requete est un object avec comme clés l'identifiant des utilisateurs dont le role va être changés et en valeur l'identifiant du role. 
+          ```json
+          {
+              "id": "role"
+          }
+          ```
   '/communities/{id}/themes':
     parameters:
       - schema:
@@ -2291,9 +2341,8 @@ paths:
                       CMY_image_VC: 100002.png
                       CMY_emoji_VC: 1F347
                       CMY_color_VC: '#8700CF'
-                      CMY_description_TXT: |+
+                      CMY_description_TXT: |
                         Cette communauté est dédiée à la création d'outils numériques favorisant l'engagement citoyen et la participation active au processus démocratique. Nous travaillons ensemble à développer une application web innovante, permettant aux citoyens de s'impliquer dans les décisions publiques, de partager leurs idées et de participer à des consultations ouvertes. Notre projet vise à démocratiser l'accès à la gouvernance locale et nationale en facilitant les échanges entre citoyens, élus et acteurs institutionnels. Nous mettons en avant la transparence, l'inclusivité et l'égalité dans la participation politique à travers une plateforme simple et intuitive.
-
                 items:
                   type: object
                   properties:
@@ -2335,6 +2384,54 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+  /roles:
+    get:
+      summary: La liste des rôles
+      tags:
+        - roles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ROL_id_NB:
+                      type: integer
+                    ROL_label_VC:
+                      type: string
+                x-examples:
+                  Example 1:
+                    - ROL_id_NB: 1
+                      ROL_label_VC: Administrateur
+                    - ROL_id_NB: 2
+                      ROL_label_VC: Décideur
+                    - ROL_id_NB: 3
+                      ROL_label_VC: Assesseur
+                    - ROL_id_NB: 4
+                      ROL_label_VC: Modérateur
+                    - ROL_id_NB: 5
+                      ROL_label_VC: Membre
+              examples:
+                Example 1:
+                  value:
+                    - ROL_id_NB: 1
+                      ROL_label_VC: Administrateur
+                    - ROL_id_NB: 2
+                      ROL_label_VC: Décideur
+                    - ROL_id_NB: 3
+                      ROL_label_VC: Assesseur
+                    - ROL_id_NB: 4
+                      ROL_label_VC: Modérateur
+                    - ROL_id_NB: 5
+                      ROL_label_VC: Membre
+      operationId: get-roles
+      x-stoplight:
+        id: ah7deuo8pqrya
+      description: 'Renvoie la liste des rôles. '
 components:
   securitySchemes: {}
   responses: {}
