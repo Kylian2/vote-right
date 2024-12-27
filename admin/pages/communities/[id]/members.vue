@@ -4,7 +4,6 @@
 
 <NuxtLink class="back">Retour au groupe</NuxtLink>
 <h1 class="members__title">Gestion des membres</h1>
-
 <main class="members">
     <div class="members__actions-bar">
         <button class="btn btn-small">Inviter un membre</button>
@@ -52,6 +51,15 @@ cancel-text="Annuler"
 </template>
 </Modal>
 
+<Toast 
+    name="administratorMissing" 
+    :type="1" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+Impossible de se retrograder
+</Toast>
 </template>
 
 <script setup>
@@ -66,6 +74,8 @@ const members = ref({});
 const roles = ref({});
 const changedRole = ref({});
 const changedUser = ref({});
+
+const administratorMissing = useState('administratorMissingUp');
 
 const roleUpdateValidationModal = useState('roleUpdateValidationModal', () => false);
 const fetchMembers = async () => {
@@ -124,9 +134,17 @@ const postChanges = async () => {
         members.value = {};
         fetchMembers();
         changedRole.value = {};
+        changedUser.value = {};
 
-        }catch (error){
-            console.log('An unexptected error occured : ', error);
+
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+        if(error.status === 401){
+            administratorMissing.value = true;
+            changedRole.value = {};
+            changedUser.value = {};
+        }
     }
 }
 
