@@ -327,6 +327,22 @@ class Community extends Model{
         }
     }
 
+    public function getPeriods(){
+        $request = "SELECT DISTINCT BUC_period_YEAR FROM community_budget WHERE BUC_community_NB = :community";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["community"] = $this->get('CMY_id_NB');
+        $prepare->execute($values);
+        $result = $prepare->fetchAll();
+
+        //Formattage du resultat
+        $periods = array();
+        foreach($result as $period){
+            $periods[] = $period[0];
+        }
+        
+        return array_reverse($periods);
+    }
+
 }
 
 ?>

@@ -316,6 +316,13 @@ class CommunityController{
             echo json_encode(array('Error' => $e->getMessage()));
         }
     }
+
+    public static function periods(array $params){
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        $periods = $community->getPeriods($params[0]);
+        echo json_encode($periods);
+    }
 }
 
 ?>

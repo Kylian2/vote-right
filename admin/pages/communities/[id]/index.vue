@@ -12,13 +12,7 @@
                     Récapitulatif
                 </h3>
                 <select v-model="period" @change="fetchDataByPeriod()">
-                    <option value="2026">2026</option>
-                    <option value="2025">2025</option>
-                    <option selected value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                    <option value="2020">2020</option>
+                    <option v-for="p in periods" :value="p" :selected="new Date().getFullYear() == p">{{p}}</option>
                 </select>
                 <p><b>Budget Total : </b> {{formatNumber(budget['CMY_budget_NB'])}} € /an max</p>
                 <p><b>Budget Utilisé : </b> {{formatNumber(budget['CMY_used_budget_NB'])}} € /an</p>
@@ -273,6 +267,7 @@ const adopted = ref([]);
 const voted = ref([]);
 const budget = ref({});
 const period = ref('2024');
+const periods = ref([]);
 const role = ref({});
 
 const budgetToastValid = useState('budgetToastValidUp', () => false);
@@ -322,6 +317,12 @@ const fetchData = async () => {
         });
 
         role.value = response6;
+
+        const response7 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/periods`, {
+            credentials: 'include',
+        });
+
+        periods.value = response7;
         
     } catch(error) {
         console.log("An error occured", error);
