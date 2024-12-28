@@ -288,6 +288,7 @@ const validateEmail = (email) => {
     return regex.test(email);
 }
 
+const pendingInvitation = ref(false); //Si on veut faire un loader
 const sendInvitations = async() => {
     try{
         const response = await $fetch(`${config.public.baseUrl}/invitations`, {
@@ -309,6 +310,8 @@ const sendInvitations = async() => {
 
     }catch (error){
         console.log('An unexptected error occured : ', error);
+    }finally{
+        pendingInvitation.value = false;
     }
 }
 

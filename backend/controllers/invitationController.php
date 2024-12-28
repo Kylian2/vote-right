@@ -1,7 +1,9 @@
 <?php
 
 @require_once('models/invitation.php');
+@require_once('models/community.php');
 @require_once('core/sessionGuard.php');
+@require_once('controllers/notificationController.php');
 
 class InvitationController{
 
@@ -26,9 +28,11 @@ class InvitationController{
             return;
         }
 
-        $sender = SessionGuard::getUserId();
-        $values['INV_sender_NB'] = $sender;
+        $sender = SessionGuard::getUser();
+        $values['INV_sender_NB'] = $sender->get('USR_id_NB');
         $values['INV_community_NB'] = $body['community'];
+
+        $community = Community::getById($body['community']);
 
         $invitationSended = 0;
 
@@ -39,7 +43,11 @@ class InvitationController{
             while($result === "Already used id"){
                 $result = $invitation->insert();
             }
-            $invitationSended = $result === true ? $invitationSended+1 : $invitationSended;
+            if($result === true){
+                if(notificationController::sendInvitation($email, $sender, $invitation, $community)){
+                    $invitationSended++;
+                }
+            }
         }
 
         if($invitationSended != count($body["invitations"])){
