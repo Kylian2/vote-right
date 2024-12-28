@@ -4,7 +4,6 @@
 <NuxtLink class="back" :to="`/communities/${proposal['PRO_community_NB']}`">Retour au groupe</NuxtLink>
 <h1>{{ proposal['PRO_title_VC'] }}</h1>
 <main class="proposal">
-
 <section class="section-1">
     <div v-if="initiator" class="proposal__initiator">
         <p class="profil-initials">{{ getInitials(initiator['USR_firstname_VC'], initiator['USR_lastname_VC']) }}</p>
@@ -16,7 +15,7 @@
 
     <div v-if="proposal" class="proposal__informations">
         <p v-if="proposal['PRO_theme_VC']"><img src="/images/icons/theme.svg" alt="icons-theme">{{ proposal['PRO_theme_VC'] }}</p>
-        <div><p v-if="proposal['PRO_budget_NB']"><img src="/images/icons/budget.svg" alt="icons-theme">{{ proposal['PRO_budget_NB'] }} €</p><p class="edit">Modifier</p></div>
+        <div><p v-if="proposal['PRO_budget_NB']"><img src="/images/icons/budget.svg" alt="icons-theme">{{ proposal['PRO_budget_NB'] }} €</p><p class="edit" @click="editBudgetModal = true">Modifier</p></div>
         <p v-if="proposal['PRO_location_VC']"><img src="/images/icons/location.svg" alt="icons-theme">{{ proposal['PRO_location_VC'] }}</p>
         <p v-if="proposal['PRO_period_YEAR']"><img src="/images/icons/date.svg" alt="icons-theme">{{ proposal['PRO_period_YEAR'] }}</p>
     </div>
@@ -33,7 +32,7 @@
             <button class="btn btn--small btn--full">Adopter</button>
             <button class="btn btn--small btn--full">Refuser</button>
         </div>
-        <button class="btn btn--small delete">Supprimer la proposition</button>
+        <button class="btn btn--small delete" @click="deleteModal = true">Supprimer la proposition</button>
     </div>
 
 </section>
@@ -75,6 +74,50 @@
 </section>
 
 </main>
+<Modal
+name="delete"
+ok-text="Supprimer"
+cancel-text="Annuler"
+:disable-valid="!deleteValid"
+>
+<template #title>Supprimer la proposition</template>
+<template #body>
+    <p>Pour confirmer veuillez écrire le nom de la proposition :</p>
+    <Input type="text" :placeholder="proposal['PRO_title_VC'].toUpperCase()" class="inline-input"
+    name="deleteValidation"
+    :rules="[
+        (v) => v === proposal['PRO_title_VC'].toUpperCase() || ''
+    ]"
+    >Réécrivez : </Input>
+</template>
+</Modal>
+
+<Modal
+name="editBudget"
+ok-text="Valider"
+cancel-text="Annuler"
+:disable-valid="!proposalBudgetEditValid"
+>
+<template #title>Modifier le budget</template>
+<template #body>
+
+<div class="budget-infos-container">
+    <p><b>Budget max : </b> {{formatNumber(budget['CMY_budget_NB'])}} € /an</p>
+    <p>Budget utilisé : {{formatNumber(budget['CMY_used_budget_NB'] + budget['CMY_fixed_fees_NB'])}} € /an</p>
+    <p><b>Budget thème max : </b> {{formatNumber(budgetTheme['BUT_amount_NB'])}} € /an</p>
+    <p>Budget thème : {{formatNumber(budgetTheme['BUT_used_budget_NB'])}} € /an</p>
+</div>
+<div class="budget-input-container">
+    <InputNumber type="text" :placeholder="proposal['PRO_budget_NB'] +''" class="inline-input" min="0"
+    name="proposalBudgetEdit"
+    :rules="[
+        (v) => v >= 0 || 'Le montant doit être supérieur à 0'
+    ]"
+    >Entrez le budget : </InputNumber>
+    <p> € /an</p>
+</div>
+</template>
+</Modal>
 </template>
 <script setup>
 
@@ -86,12 +129,22 @@ const proposal = ref({});
 const initiator = ref();
 const reactions = ref();
 const formalRequest = ref({});
+const budget = ref({});
+const budgetTheme = computed(() => {
+    return budget.value['CMY_budget_theme_NB']?.filter((b) => b['THM_name_VC'] === proposal.value['PRO_theme_VC'])[0];
+})
 
 const discussionDate = computed(() => {
     const creationDate = new Date(proposal.value["PRO_creation_DATE"]);
     const adjustedDate = new Date(creationDate.setDate(creationDate.getDate() + proposal.value["PRO_discussion_duration_NB"]));
     return adjustedDate;
 });
+
+const deleteModal = useState('deleteModal', () => false);
+const deleteValid = useState('deleteValidationValid');
+
+const editBudgetModal = useState('editBudgetModal', () => false);
+const proposalBudgetEditValid = useState('proposalBudgetEditValid');
 
 const fetchData = async () => {
     try {
@@ -130,6 +183,12 @@ const fetchData = async () => {
 
         formalRequest.value = form;
 
+        const bud = await $fetch(`${config.public.baseUrl}/communities/${proposal.value['PRO_community_NB']}/budget?period=${proposal.value['PRO_period_YEAR']}`, {
+            credentials: 'include',
+        });
+
+        budget.value = bud;
+
     } catch (error) {
         console.error('An unexpected error occurred:', error);
     }
@@ -149,6 +208,10 @@ const formatDate = (date) => {
     year: "numeric",
   });
 };
+
+const formatNumber = (number) => {
+    return isNaN(number) ? 0 : new Intl.NumberFormat('fr-FR').format(number);
+}
 
 onMounted(() => {
     fetchData();
