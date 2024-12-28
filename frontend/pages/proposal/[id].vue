@@ -492,7 +492,7 @@ const fetchVote = async () => {
             for(let i = 0; i < votes.value.length; i++){
                 let rmt = calculateTimeRemaining(new Date(), new Date(votes.value[i]['VOT_end_DATE']?.replace(" ", "T")));
                 if(rmt === 0){
-                    fetchResult(i+1);
+                    await fetchResult(i+1);
                 }
             }
         }
