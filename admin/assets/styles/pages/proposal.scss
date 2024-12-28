@@ -1,0 +1,165 @@
+.proposal{
+
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    column-gap: 10px;
+    row-gap: 10px;
+
+    @media screen and (max-width: 1000px) {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        font-size: 14px;
+    }
+
+    section{
+        >div{
+            background: $background-light;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    }
+
+    .section-1{
+        grid-column: 1/4;
+        grid-row: 1/4;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .section-2{
+        grid-column: 4/11;
+        grid-row: 1/6;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        > section{
+            display: flex;
+            gap: 10px;
+        }
+    }
+
+    &__initiator{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        grid-column: 6/8;
+        grid-row: 1;
+        @media screen and (max-width: 1000px) {
+            grid-column: 1/4;
+            grid-row: 1;
+        }
+        @media screen and (max-width: 650px) {
+            grid-column: 1/8;
+            grid-row: 1;
+        }
+
+        > div{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        > .profil-initials{
+            background: $dark;
+            padding: 10px;
+            border-radius: 50%;
+            color: $contrast;
+        }
+    }
+
+    &__informations{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        grid-column: 6/8;
+        grid-row: 2;
+        @media screen and (max-width: 1000px) {
+            grid-column: 1/4;
+            grid-row: 2/5;
+        }
+        @media screen and (max-width: 650px) {
+            grid-column: 1/8;
+            grid-row: 2;
+        }
+
+        p{
+            display: flex;
+            align-items: center;
+        }
+
+        img{
+            height: 32px;
+            font-weight: 600;
+            width: auto;
+            margin-right: 15px;
+        }
+
+        > div{
+            display: flex;
+            justify-content: space-between
+        }
+    }
+
+    &__actions{
+        grid-column: 1/4;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: unset !important;
+        padding: 0 20px !important;
+
+        a{
+            text-align: center;
+        }
+
+        > div{
+            display: flex;
+            gap: 10px;
+        }
+
+        .delete{
+            background: #DC2317;
+            &:hover{
+                background: lighten($color: #DC2317, $amount: 10);
+            }
+            &:active{
+                background: lighten($color: #DC2317, $amount: 20);
+            }
+        }
+    }
+
+    &__formal{
+        width: 350px;
+        height: fit-content;
+    }
+
+    &__vote{
+        display: flex;
+        gap: 40px;
+        ul{
+            margin: 10px 20px;
+        }
+        p{
+            margin: 4px 0;
+        }
+        & >div:nth-child(2){
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
+
+    .edit{
+        text-decoration: underline;
+        cursor: pointer;
+        transition: .2s;
+        &:hover{
+            background: darken($color: $background-light, $amount: 20);
+            line-height: 20px;
+        }
+    }
+}

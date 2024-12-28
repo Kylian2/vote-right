@@ -36,7 +36,7 @@
             <div class="community__adopted">
                 <h3>Proposition adoptées</h3>
                 <div>
-                    <div v-for="proposal in adopted" class="proposal-card">
+                    <NuxtLink :to="`/proposals/${proposal['PRO_id_NB']}`" v-for="proposal in adopted" class="proposal-card">
                         <div>
                             <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
                             <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
@@ -53,7 +53,7 @@
                         <div>
                             <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                         </div>
-                    </div>
+                    </NuxtLink>
                     <p v-if="adopted.length === 0">Aucune proposition</p>
                 </div>
             </div>
@@ -61,7 +61,7 @@
             <div class="community__ongoing">
                 <h3>Action requise</h3>
                 <div>
-                    <div v-for="proposal, key in voted" class="proposal-card__wrapper">
+                    <NuxtLink v-for="proposal, key in voted" class="proposal-card__wrapper" :to="`/proposals/${proposal['PRO_id_NB']}`">
                         <img class="proposal-card__image" src="/images/like.png" alt="like icon" v-if="false">
                         <div class="proposal-card" :class="{'proposal-card--action': false}">
                             <div>
@@ -85,7 +85,7 @@
                             <button class="btn btn--small">Adopter</button>
                             <button class="btn btn--small">Refuser</button>
                         </div>
-                    </div>
+                    </NuxtLink>
                     <p v-if="voted.length === 0">Aucune proposition</p>
                 </div>
             </div>
@@ -93,7 +93,7 @@
             <div class="community__ongoing">
                 <h3>Proposition en cours</h3>
                 <div>
-                    <div v-for="proposal in ongoing" class="proposal-card">
+                    <NuxtLink v-for="proposal in ongoing" class="proposal-card" :to="`/proposals/${proposal['PRO_id_NB']}`">
                         <div>
                             <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
                             <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
@@ -110,7 +110,7 @@
                         <div>
                             <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                         </div>
-                    </div>
+                    </NuxtLink>
                     <p v-if="ongoing.length === 0">Aucune proposition</p>
                 </div>
             </div>
