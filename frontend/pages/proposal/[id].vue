@@ -76,10 +76,10 @@
 
             <div class="proposal__opinions" v-if="reactions && reactions['hasReacted']">
                 <h3>Avis</h3>
-                <p v-if="reactions['hasReacted'] === LOVE  || reactions['hasReacted'] === LIKE">Vous et {{ (reactions["nblove"] + reactions["nblike"]) }} personnes 
-                    <span :style="{color: communityColor}">aiment</span> cette proposition.</p>
-                <p v-if="reactions['hasReacted'] === HATE  || reactions['hasReacted'] === DISLIKE">Vous et {{ (reactions["nbhate"] +  reactions["nbdislike"]) }} personnes 
-                    <span :style="{color: communityColor}">n'aiment pas</span> cette proposition.</p>
+                <p v-if="reactions['hasReacted'] === LOVE  || reactions['hasReacted'] === LIKE">Vous et {{ (reactions["nblove"] + reactions["nblike"]) -1 }} personnes 
+                    <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">aiment</span> cette proposition.</p>
+                <p v-if="reactions['hasReacted'] === HATE  || reactions['hasReacted'] === DISLIKE">Vous et {{ (reactions["nbhate"] +  reactions["nbdislike"]) -1 }} personnes 
+                    <span :style="{color: (community ? community['CMY_color_VC'] : '#222222')}">n'aiment pas</span> cette proposition.</p>
             </div>
 
             <!-- Système de vote -->
@@ -354,6 +354,18 @@ const react = async (reaction) => {
                 default:
                     break;
             }
+
+            await $fetch(`${config.public.baseUrl}/notifications/reactions/proposals/`, {
+                method: 'POST',
+                credentials: 'include',
+                body: {
+                    proposal: route.params.id,
+                    firstname: me.value["USR_firstname_VC"],
+                    lastname: me.value["USR_lastname_VC"],
+                    initiator: initiator.value["USR_email_VC"],
+                    reaction : reaction
+                }
+            })
         }
 
         }catch (error){

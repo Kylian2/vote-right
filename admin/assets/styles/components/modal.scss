@@ -43,18 +43,14 @@
         margin-top: 50px;
         @media screen and (max-width: 600px) {
             margin-top: 20px;
-            flex-direction: column-reverse;
+            flex-direction: column;
             gap: 10px;
+            flex-direction: column-reverse;
         }
         > button{
             @media screen and (max-width: 600px) {
                 width: 100%;
             }
-        }
-        .btn--full{
-            background: $dark;
-            padding-left: 40px;
-            padding-right: 40px;
         }
     }
 
