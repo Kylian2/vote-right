@@ -54,6 +54,8 @@ Router::get('/reasons', 'reasonController@index', true);
 
 Router::get('/roles', 'roleController@index', true);
 
+Router::post('/invitations', 'invitationController@store', true);
+
 Router::post('/notifications/reactions/comments', 'notificationController@notifyCommentReaction', true);
 Router::post('/notifications/reactions/proposals', 'notificationController@notifyReactionProposal', true);
 

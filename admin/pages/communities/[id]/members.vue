@@ -6,7 +6,7 @@
 <h1 class="members__title">Gestion des membres</h1>
 <main class="members">
     <div class="members__actions-bar">
-        <button class="btn btn-small">Inviter un membre</button>
+        <button class="btn btn-small" @click="invitationModal = true">Inviter un membre</button>
         <button class="btn btn-small" :disabled="Object.keys(changedRole).length === 0" @click="roleUpdateValidationModal = true">Valider les changements</button>
     </div>
     <div class="members__list">
@@ -109,6 +109,51 @@ Impossible de supprimer l'utilisateur
 Utilisateur exclu
 </Toast>
 
+<Modal
+name="invitation"
+ok-text="Envoyer les invitations"
+cancel-text="Annuler"
+:disable-valid="!invitationTextValid"
+:before-ok="() => {
+    invitations = emailList(invitationText);
+    invitationText = '';
+    sendInvitations();
+}"
+>
+<template #title>Inviter des membres</template>
+<template #body>
+    <TextArea
+    name="invitationText"
+    placeholder="ex: laurent@gmail.com;valentin@madouas.com"
+    :rules="[
+        (v) => Boolean(v) || 'Veuillez entrez des emails'
+    ]"
+    :rows="10">
+    Entrez des emails
+    </TextArea>
+</template>
+</Modal>
+
+<Toast 
+    name="notEveryInvitations" 
+    :type="2" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+{{ nbNotSended > 1 ? nbNotSended+" invitations n'ont pas été envoyées" : "1 invitation n'a pas été envoyée"}} 
+</Toast>
+
+<Toast 
+    name="allInvitations" 
+    :type="3" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+Envoyées !
+</Toast>
+
 </template>
 
 <script setup>
@@ -132,8 +177,17 @@ const userHasBeenExcluded = useState('userHasBeenExcludedUp');
 const roleUpdated = useState('roleUpdatedUp');
 
 const roleUpdateValidationModal = useState('roleUpdateValidationModal', () => false);
-
 const exclusionValidationModal = useState('exclusionValidationModal', () => false);
+const invitationModal = useState('invitationModal', () => false);
+
+const invitations = useState('invitations', ()=> []);
+const invitationText = useState('invitationText');
+const invitationTextValid = useState('invitationTextValid');
+
+const notEveryInvitations = useState('notEveryInvitationsUp');
+const allInvitations = useState('allInvitationsUp');
+
+const nbNotSended = ref();
 
 const fetchMembers = async () => {
     try{
@@ -173,11 +227,6 @@ const changeRole = (member, role) => {
         delete changedUser.value[member['USR_id_NB']];
     }
 }
-
-onMounted(() => {
-    fetchMembers();
-    fetchRole();
-})
 
 const postChanges = async () => {
     try{
@@ -223,4 +272,48 @@ const excludeUser = async () => {
     }
 }
 
+const emailList = (text) => {
+    const invitations =   text.split(';')               
+                            .map(email => email.trim()) // Supprimer les espaces autour de chaque email
+                            .filter(email => email) // Retirer les entrées vides (au cas où il y ;;)
+                            .filter((i) => validateEmail(i));
+    return invitations;
+}
+
+const validateEmail = (email) => {
+    // Expression régulière pour vérifier une adresse e-mail
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    // Teste si l'e-mail correspond à l'expression régulière
+    return regex.test(email);
+}
+
+const sendInvitations = async() => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/invitations`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {
+                community: route.params.id,
+                invitations: invitations.value
+            }
+        })
+
+        invitations.value = [];
+        if (response.message && response.message === 'Some invitations could not be sent') {
+            notEveryInvitations.value = true;
+            nbNotSended.value = response.expected - response.sent;
+            return;
+        }
+        allInvitations.value = true;
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
+onMounted(() => {
+    fetchMembers();
+    fetchRole();
+})
 </script>
