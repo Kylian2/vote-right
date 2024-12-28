@@ -452,7 +452,6 @@ const vote = async (possibility) => {
 const startVoting = () => {
     isVoting.value = true;
     votingTimer = setTimeout(() => {
-        console.log('VOTE');
         vote(selectedVoteOption.value);
         hasVoted.value = true;
     }, requiredHoldTime);
@@ -461,7 +460,6 @@ const startVoting = () => {
 const stopVoting = () => {
     isVoting.value = false;
     clearTimeout(votingTimer);
-    console.log('STOP VOTE');
 }
 
 const fetchResult = async (round) => {
