@@ -20,7 +20,7 @@ h1{
     margin: 20px 40px 30px 40px;
     @media screen and (max-width: 600px) {
         font-size: 36px;
-        margin: 0 20px 40px 20px;
+        margin: 20px 20px 40px 20px;
     }
 }
 
@@ -110,4 +110,8 @@ a.back{
     font-weight: 600;
     margin: 20px 40px;
     display: block;
+
+    @media screen and (max-width: 600px) {
+        margin: 20px 20px 10px 20px;        
+    }
 }

@@ -4,6 +4,10 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
+        @media screen and (max-width: 600px){
+            flex-direction: column;
+            gap: 10px;
+        }
     }
 
     &__list{
@@ -21,10 +25,22 @@
     background: $background-light;
     padding: 15px 20px;
     border-radius: 5px;
+
+    @media screen and (max-width: 600px){
+        flex-direction: column;
+        align-items: start;
+        gap: 10px;
+        
+    }
+
     > div{
         display: flex;
         align-items: center;
         gap: 15px;
+        @media screen and (max-width: 600px){
+            width: 100%;
+            justify-content: space-between;
+        }
     }
     button{
         color: red;
@@ -36,7 +52,6 @@
         &:hover{
             color: rgb(199, 16, 16);
         }
-
     }
 }
 
