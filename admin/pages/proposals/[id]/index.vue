@@ -47,27 +47,30 @@
         <p v-if="proposal['PRO_description_TXT'] != ''">{{ proposal['PRO_description_TXT'] }}</p>
         <p v-else>La proposition n'a pas de description</p>
     </div>
-    <section>
-        <div class="proposal__formal">
-            <h3>Demandes formelles</h3>
-            <p v-if="formalRequest['PRO_request_count_NB'] === 0">Il n'y a aucune demande</p>
-            <p v-if="formalRequest['PRO_request_count_NB'] === 1">Il y a une demande</p>
-            <p v-if="formalRequest['PRO_request_count_NB'] > 1">Il y a {{ formalRequest['PRO_request_count_NB'] }} demandes</p>
-        </div>
-        <div class="proposal__vote">
-            <div>
-                <h3>Vote</h3>
-                <p class="legende">Le vote est terminé</p>
-                <p><b>Résultat:</b></p>
-                <ul>
-                    <li class="legende">463 POUR</li>
-                    <li class="legende">33 CONTRE</li>
-                </ul>
+    <div class="proposal__formal">
+        <h3>Demandes formelles</h3>
+        <p v-if="formalRequest['PRO_request_count_NB'] === 0">Il n'y a aucune demande</p>
+        <p v-if="formalRequest['PRO_request_count_NB'] === 1">Il y a une demande</p>
+        <p v-if="formalRequest['PRO_request_count_NB'] > 1">Il y a {{ formalRequest['PRO_request_count_NB'] }} demandes</p>
+    </div>
+    <section class="vote-section">
+        <div class="vote__results"v-if="results.length > 0 && currentVote" v-for="result, key in results">
+            <h3>{{ (currentVote['VOT_type_NB'] === 1 || currentVote['VOT_type_NB'] === 2) ? 'Résultat' : `Résultat - Tour ${key+1}`}}</h3>
+            <div class="vote__results__container">
+                <div v-for="possibility, key in result" class="result">
+                    <p>{{ possibility['POS_label_VC'] }}</p>
+                    <div class="result__stat">
+                        <span class="result__stat__bar" 
+                        :style="{
+                                width: `${possibility['POS_percentNbVotes_NB']}%`
+                            }"></span>
+                        <span class="result__stat__value legende">{{ possibility['POS_percentNbVotes_NB'] }}%</span>
+                    </div>
+                </div>
             </div>
-            <div>
-                <p class="legende">Veuillez valider ou refuser le vote</p>
-                <button class="btn btn-small btn--full">Valider</button>
-                <button class="btn btn-small btn--full">Refuser</button>
+            <div class="vote__results__actions">
+                <button class="btn btn--small btn--full">Valider</button>
+                <button class="btn btn--small btn--full">Refuser</button>
             </div>
         </div>
     </section>
@@ -146,6 +149,13 @@ const deleteValid = useState('deleteValidationValid');
 const editBudgetModal = useState('editBudgetModal', () => false);
 const proposalBudgetEditValid = useState('proposalBudgetEditValid');
 
+const votes = ref();
+const currentVote = ref();
+const results = ref([]);
+const timeRemaining = ref(0);
+const nbRounds = ref();
+const classicSystem = ref();
+
 const fetchData = async () => {
     try {
 
@@ -194,6 +204,42 @@ const fetchData = async () => {
     }
 };
 
+const fetchResult = async (round) => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/${round}/vote`, {
+            credentials: 'include',
+        })
+
+        results.value.push(response);
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
+const fetchVote = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/votes`, {
+            credentials: 'include',
+        })
+
+        votes.value = response;
+        if(votes.value.length > 0){
+            currentVote.value = votes.value[votes.value.length-1];
+
+            for(let i = 0; i < votes.value.length; i++){
+                let rmt = calculateTimeRemaining(new Date(), new Date(votes.value[i]['VOT_end_DATE']?.replace(" ", "T")));
+                if(rmt === 0){
+                    fetchResult(i+1);
+                }
+            }
+        }
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
 function getInitials(string1, string2) {
     const initial1 = string1.trim().charAt(0).toUpperCase();
     const initial2 = string2.trim().charAt(0).toUpperCase();
@@ -201,19 +247,29 @@ function getInitials(string1, string2) {
 }
 
 const formatDate = (date) => {
-  if (!date) return "";
-  return date.toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+    if (!date) return "";
+    return date.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
 };
 
 const formatNumber = (number) => {
     return isNaN(number) ? 0 : new Intl.NumberFormat('fr-FR').format(number);
 }
 
+const calculateTimeRemaining = (date1, date2) => {
+    const diffMs = date2 - date1;
+    if(diffMs < 0){
+        return 0;
+    }else{
+        return diffMs;
+    }
+}
+
 onMounted(() => {
     fetchData();
+    fetchVote();
 })
 </script>

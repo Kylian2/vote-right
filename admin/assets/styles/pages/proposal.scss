@@ -164,6 +164,50 @@
     }
 }
 
+.vote-section{
+    display: flex;
+    flex-wrap: wrap;
+    .vote__results{
+        grid-column: 6/8;
+        height: fit-content;
+        &__container{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 310px;
+            @media screen and (max-width: 800px) {
+                width: calc(100vw - 120px);
+            }
+            .result{
+                display: flex;
+                flex-direction: column;
+                &__stat{
+                    margin-top: 3px;
+                    display: flex;
+                    align-items: center;
+                    &__value{
+                        display: block;
+                    }
+                    &__bar{
+                        display: block;
+                        height: 7px;
+                        width: 100%;
+                        margin-right: 15px;
+                        border-radius: 20px;
+                        background: $dark;
+                    }
+                }
+            }
+        }
+        &__actions{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    }
+}
+
 .inline-input{
     flex-direction: row;
     align-items: center;
