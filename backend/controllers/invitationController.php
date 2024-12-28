@@ -45,7 +45,6 @@ class InvitationController{
         if($invitationSended != count($body["invitations"])){
             http_response_code(206);
             echo json_encode([
-                "success" => false,
                 "message" => "Some invitations could not be sent",
                 "sent" => $invitationSended,
                 "expected" => count($body["invitations"])

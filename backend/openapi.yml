@@ -2456,7 +2456,82 @@ paths:
       operationId: post-communities-id-exclude-user
       x-stoplight:
         id: 5y2sn4la3rkfe
-      description: Permet d'exclure un membre du groupe.
+      description: ''
+  /invitations:
+    post:
+      summary: Inviter des membres
+      tags:
+        - invitations
+      responses:
+        '200':
+          description: 'OK, toutes les invitations ont été envoyées. Renvoie `true`.'
+          headers:
+            header-0:
+              schema:
+                type: string
+        '206':
+          description: |-
+            Partial Content, certaines invitations n'ont pas été envoyées. 
+            - `sent` : le nombre d'invitation envoyées
+            - `expected` : le nombre de mail fournis
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  sent:
+                    type: integer
+                  expected:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    message: Some invitations could not be sent
+                    sent: 12
+                    expected: 14
+              examples:
+                Example 1:
+                  value:
+                    message: Some invitations could not be sent
+                    sent: 10
+                    expected: 12
+      operationId: post-invitations
+      x-stoplight:
+        id: tp3ufafk2uz2o
+      description: Envoie des invitations.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                community:
+                  type: string
+                invitations:
+                  type: array
+                  items:
+                    type: string
+              x-examples:
+                Example 1:
+                  community: '13'
+                  invitations:
+                    - kylian.richard@gmail.co
+            examples:
+              Example 1:
+                value:
+                  community: '13'
+                  invitations:
+                    - hello@gmail.com
+                    - usermail@mail.fr
+        description: ''
 components:
   securitySchemes: {}
   responses: {}
