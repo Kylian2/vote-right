@@ -2,7 +2,7 @@
 
 <Header></Header>
 
-<NuxtLink class="back">Retour au groupe</NuxtLink>
+<NuxtLink class="back" :to="`/communities/${$route.params.id}`">Retour au groupe</NuxtLink>
 <h1 class="members__title">Gestion des membres</h1>
 <main class="members">
     <div class="members__actions-bar">
