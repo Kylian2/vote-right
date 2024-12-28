@@ -161,7 +161,7 @@ const config = useRuntimeConfig();
 const route = useRoute();
 
 definePageMeta({
-    middleware: ["auth"]
+    middleware: ["auth", "decider"]
 })
 
 const members = ref({});
