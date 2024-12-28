@@ -268,6 +268,8 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+      tags:
+        - communities
   '/communities/{id}/ongoing':
     parameters:
       - schema:
@@ -928,7 +930,7 @@ paths:
       summary: Le rôle de l'utilisateur
       tags:
         - users
-        - role
+        - roles
       responses:
         '200':
           description: OK
@@ -2532,7 +2534,60 @@ paths:
                     - hello@gmail.com
                     - usermail@mail.fr
         description: ''
+  '/communities/{id}/periods':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: La liste des périodes traitées par la communauté
+      tags:
+        - communities
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                x-examples:
+                  Example 1:
+                    - '2025'
+                    - '2024'
+              examples:
+                Example 1:
+                  value:
+                    - '2025'
+                    - '2024'
+      operationId: get-communities-id-periods
+      x-stoplight:
+        id: 77meertdhf592
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
 components:
   securitySchemes: {}
   responses: {}
 x-internal: true
+tags:
+  - name: authentification
+  - name: budget
+  - name: comments
+  - name: communities
+  - name: invitations
+  - name: members
+  - name: proposals
+  - name: reactions
+  - name: reasons
+  - name: roles
+  - name: themes
+  - name: users
+  - name: votes
