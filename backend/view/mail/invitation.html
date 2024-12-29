@@ -1,0 +1,30 @@
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <table style="max-width: 600px; margin: auto; font-family: 'Inter', Arial, Helvetica, sans-serif;">
+        <tr>
+            <td>
+                <p style="padding: 16px 30px; background-color: [backgroundColor]; display: block; width: 125px; font-weight: bold; font-size: 22px; text-align: center; color: #fff;">
+                    VoteRight
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td style="display: block; margin: auto; max-width: 600px;">
+                <h1>Nouvelle invitation</h1>
+                <p> {{firstname}} {{lastname}} vous a invité à rejoindre la communauté
+                    <span style="text-decoration: underline;">{{community}}</span>
+                </p>
+                <p style="font-weight: 700;">Code de sécurité</p>
+                <p style="border: 1px solid rgb(160, 160, 160); display: block; width: min-content; padding: 5px;">
+                    {{code}}
+                </p>
+                <p>Entrez ce code au moment d'accepter ou de refuser cette invitation</p>
+            </td>
+        </tr>
+        <tr>
+            <td><a style="text-align: center; padding: 10px 40px; background: [backgroundColor]; color: #fff; border-radius: 10px; text-decoration: unset; margin-top: 20px; display: block; max-width: 150px;" href="https://voteright.fr/invitation/{{invitationId}}">Voir l'invitation</a></td>
+        </tr>
+    </table>
+</body>

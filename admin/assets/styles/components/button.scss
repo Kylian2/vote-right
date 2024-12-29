@@ -43,4 +43,8 @@
     &:active{
         background: lighten($color: $dark, $amount: 20);
     }
+    &:disabled{
+        background: darken($color: $background-light, $amount: 10);
+        color: darken($color: $background-light, $amount: 50);
+    }
 }

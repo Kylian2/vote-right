@@ -477,3 +477,4 @@ Dans l'application, il y a des middlewares permettant de restreindre l'accès à
 1. *auth* : autorisant l'accès d'une page uniquement aux personnes connectés. Redirige vers */*
 2. *guest* : bloquant l'accès d'une page aux personnes connectés. Redirige vers */home*.
 3. *managed* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de gestion. Redirige vers */home*.
+3. *decider* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de decideur (ou d'administrateur) dans la communauté (se base sur le paramètre de l'url). Redirige vers */home*.

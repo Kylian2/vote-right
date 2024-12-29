@@ -1,4 +1,5 @@
 <?php
+    ob_start();
     header('Content-Type: application/json'); // pour préciser que le contenu renvoyé est du json
 
     $allowed_origins = [

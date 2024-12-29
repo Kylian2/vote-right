@@ -4,7 +4,7 @@
     align-items: center;
     background: darken($color: $background-light, $amount: 5);
     padding: 25px 50px;
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 600px) {
         padding: 10px 20px;
     }
     >p{
@@ -13,13 +13,13 @@
         font-family: $exotic-font;
         &.mobile{
             display: none;
-            @media screen and (max-width: 400px) {
+            @media screen and (max-width: 600px) {
                 display: block;
             }
         }
 
         &.desktop{
-            @media screen and (max-width: 400px) {
+            @media screen and (max-width: 600px) {
                 display: none;
             }
         }
@@ -28,7 +28,7 @@
         display: flex;
         gap: 20px;
 
-        @media screen and (max-width: 400px) {
+        @media screen and (max-width: 600px) {
             gap: 10px;
         }
         

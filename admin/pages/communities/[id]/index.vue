@@ -12,13 +12,7 @@
                     Récapitulatif
                 </h3>
                 <select v-model="period" @change="fetchDataByPeriod()">
-                    <option value="2026">2026</option>
-                    <option value="2025">2025</option>
-                    <option selected value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                    <option value="2020">2020</option>
+                    <option v-for="p in periods" :value="p" :selected="new Date().getFullYear() == p">{{p}}</option>
                 </select>
                 <p><b>Budget Total : </b> {{formatNumber(budget['CMY_budget_NB'])}} € /an max</p>
                 <p><b>Budget Utilisé : </b> {{formatNumber(budget['CMY_used_budget_NB'])}} € /an</p>
@@ -126,7 +120,7 @@
                 <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="addThemeModal = true"> Ajouter un thème</button>
                 <button class="btn btn--small"> Voir toutes les propositions</button>
                 <button v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small"> Modifier le groupe</button>
-                <button v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small"> Gérer les membres</button>
+                <NuxtLink v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small" :to="`/communities/${$route.params.id}/members`"> Gérer les membres</NuxtLink>
                 <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == MODERATOR" class="btn btn--small"> Accéder aux outils de modérations</button>
             </div>
 
@@ -273,6 +267,7 @@ const adopted = ref([]);
 const voted = ref([]);
 const budget = ref({});
 const period = ref('2024');
+const periods = ref([]);
 const role = ref({});
 
 const budgetToastValid = useState('budgetToastValidUp', () => false);
@@ -322,6 +317,12 @@ const fetchData = async () => {
         });
 
         role.value = response6;
+
+        const response7 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/periods`, {
+            credentials: 'include',
+        });
+
+        periods.value = response7;
         
     } catch(error) {
         console.log("An error occured", error);
