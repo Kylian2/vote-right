@@ -4,8 +4,8 @@
 
 class Invitation extends Model{
 
-    public int $INV_id_VC;
-    public string $INV_code_VC;
+    public string $INV_id_VC;
+    public int $INV_code_NB;
     public DateTime $INV_issue_DATE;
     public DateTime $INV_acceptance_DATE;
     public int $INV_sender_NB;
@@ -24,8 +24,8 @@ class Invitation extends Model{
                     AND INV_acceptance_DATE IS NULL';
         $prepare = connexion::pdo()->prepare($request);
 
-        $values['id'] = $id;
-        $prepare->execute($values);
+        $value['id'] = $id;
+        $prepare->execute($value);
         $prepare->setFetchmode(PDO::FETCH_CLASS, "invitation");
         $invitation = $prepare->fetch();
 
@@ -33,13 +33,13 @@ class Invitation extends Model{
     }
 
     public static function getCodeById(string $id){
-        $request = 'SELECT INV_code_VC
+        $request = 'SELECT INV_code_NB
                     FROM invitation I 
                     WHERE INV_id_VC = :id';
         $prepare = connexion::pdo()->prepare($request);
 
-        $values['id'] = $id;
-        $prepare->execute($values);
+        $value['id'] = $id;
+        $prepare->execute($value);
         $code = $prepare->fetch();
 
         return $code;

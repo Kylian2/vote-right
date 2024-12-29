@@ -40,7 +40,7 @@ class InvitationController{
      * - $params[0] = $id, l'identifiant de l'invitation recherchée. 
      * 
      * La fonction attend les éléments suivants : 
-     * - un code (string)
+     * - un code (int)
      * - un numero de communauté (int)
      * - un numero d'utilisateur (int)
      * 
@@ -49,7 +49,7 @@ class InvitationController{
      * ex de données acceptées : 
      * 
      * {
-     *  "codeSend" : "744670",
+     *  "codeSend" : 744670,
      *  "communityId" : 12,
      *  "newMemberId" : 35
      * }
@@ -74,19 +74,18 @@ class InvitationController{
             return ;
         }
 
-        $confirmCode["INV_id_VC"] = $params[0];
-        $confirmCode["INV_code_VC"] = $body["codeSend"];
+        $IdInvitation["INV_id_VC"] = $params[0];
+        $codeUtilisateur["INV_code_NB"] = $body["codeSend"];
 
-        $verifCode = Invitation::getCodeById($params[0]);
-        json_encode($verifCode);
+        $codeInvitation = Invitation::getCodeById($IdInvitation["INV_id_VC"]);
 
-        if($verifCode === null || $confirmCode["INV_code_VC"] != $verifCode['INV_code_VC']){
+        if($codeInvitation === null || $codeUtilisateur["INV_code_NB"] != $codeInvitation["INV_code_NB"]){
             $return["Invalid code"] = 'The code entered by the user is invalid';
             echo json_encode($return);
             return ;
         }
 
-        Invitation::accept($confirmCode);
+        Invitation::accept($IdInvitation);
 
         $member["CMY_id_NB"] = $body["communityId"];
         $member["CMY_member_NB"] = $body["newMemberId"];
@@ -112,14 +111,14 @@ class InvitationController{
      * - $params[0] = $id, l'identifiant de l'invitation recherchée. 
      * 
      * La fonction attend l'élément suivant : 
-     * - un code (string)
+     * - un code (int)
      * 
      * Procède à des vérifications de validité avant de modifier la base
      * 
      * ex de données acceptées : 
      * 
      * {
-     *   "codeSend" : "867911"
+     *   "codeSend" : 867911
      * }
      * 
      * @return void renvoie true si l'objectif de la fonction a été rempli
@@ -142,19 +141,18 @@ class InvitationController{
             return ;
         }
 
-        $values["INV_id_VC"] = $params[0];
-        $values["INV_code_VC"] = $body["codeSend"];
+        $IdInvitation["INV_id_VC"] = $params[0];
+        $codeUtilisateur["INV_code_NB"] = $body["codeSend"];
 
-        $verifCode = Invitation::getCodeById($params[0]);
-        json_encode($verifCode);
+        $codeInvitation = Invitation::getCodeById($IdInvitation["INV_id_VC"]);
 
-        if($verifCode === null || $values["INV_code_VC"] != $verifCode['INV_code_VC']){
+        if($codeInvitation === null || $codeUtilisateur["INV_code_NB"] != $codeInvitation["INV_code_NB"]){
             $return["Invalid code"] = 'The code entered by the user is invalid';
             echo json_encode($return);
             return ;
         }
 
-        Invitation::reject($values);
+        Invitation::reject($IdInvitation);
         echo json_encode(true);
     }
 }
