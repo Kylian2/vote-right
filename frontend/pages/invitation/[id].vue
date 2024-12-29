@@ -76,7 +76,7 @@ const invitationUnavailable = ref();
 
 const acceptInvitation = async () => {
     try {
-        const response = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/accept`, {
+        const response = await $fetch(`${config.public.baseUrl}/invitations/${route.params.id}/accept`, {
         method: 'POST',
             body: {
                 codeSend: securityCode.value,
@@ -98,7 +98,7 @@ const acceptInvitation = async () => {
 
 const rejectInvitation = async () => {
     try {
-        const response = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}/reject`, {
+        const response = await $fetch(`${config.public.baseUrl}/invitations/${route.params.id}/reject`, {
         method: 'POST',
             body: {
                 codeSend: securityCode.value,
@@ -118,7 +118,7 @@ const rejectInvitation = async () => {
 
 const fetchData = async () => {
     try {
-        const response1 = await $fetch(`${config.public.baseUrl}/invitation/${route.params.id}`, {
+        const response1 = await $fetch(`${config.public.baseUrl}/invitations/${route.params.id}`, {
             credentials: 'include',
         });
 

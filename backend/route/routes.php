@@ -56,9 +56,9 @@ Router::get('/reasons', 'reasonController@index', true);
 Router::get('/roles', 'roleController@index', true);
 
 Router::post('/invitations', 'invitationController@store', true);
-Router::get('/invitation/{id}', 'invitationController@show');
-Router::post('/invitation/{id}/accept', 'invitationController@accepted');
-Router::post('/invitation/{id}/reject', 'invitationController@rejected');
+Router::get('/invitations/{id}', 'invitationController@show');
+Router::post('/invitations/{id}/accept', 'invitationController@accepted');
+Router::post('/invitations/{id}/reject', 'invitationController@rejected');
 
 Router::post('/notifications/reactions/comments', 'notificationController@notifyCommentReaction', true);
 Router::post('/notifications/reactions/proposals', 'notificationController@notifyReactionProposal', true);
