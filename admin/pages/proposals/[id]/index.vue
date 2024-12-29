@@ -100,6 +100,9 @@ name="editBudget"
 ok-text="Valider"
 cancel-text="Annuler"
 :disable-valid="!proposalBudgetEditValid"
+:before-ok="() => {
+    updateBudget();
+}"
 >
 <template #title>Modifier le budget</template>
 <template #body>
@@ -108,10 +111,10 @@ cancel-text="Annuler"
     <p><b>Budget max : </b> {{formatNumber(budget['CMY_budget_NB'])}} € /an</p>
     <p>Budget utilisé : {{formatNumber(budget['CMY_used_budget_NB'] + budget['CMY_fixed_fees_NB'])}} € /an</p>
     <p><b>Budget thème max : </b> {{formatNumber(budgetTheme['BUT_amount_NB'])}} € /an</p>
-    <p>Budget thème : {{formatNumber(budgetTheme['BUT_used_budget_NB'])}} € /an</p>
+    <p>Budget thème utilisé : {{formatNumber(budgetTheme['BUT_used_budget_NB'])}} € /an</p>
 </div>
 <div class="budget-input-container">
-    <InputNumber type="text" :placeholder="proposal['PRO_budget_NB'] +''" class="inline-input" min="0"
+    <InputNumber type="text" :placeholder="proposal['PRO_budget_NB'] +''" class="inline-input" :min="0"
     name="proposalBudgetEdit"
     :rules="[
         (v) => v >= 0 || 'Le montant doit être supérieur à 0'
@@ -148,6 +151,7 @@ const deleteValid = useState('deleteValidationValid');
 
 const editBudgetModal = useState('editBudgetModal', () => false);
 const proposalBudgetEditValid = useState('proposalBudgetEditValid');
+const proposalBudgetEdit = useState('proposalBudgetEdit');
 
 const votes = ref();
 const currentVote = ref();
@@ -265,6 +269,23 @@ const calculateTimeRemaining = (date1, date2) => {
         return 0;
     }else{
         return diffMs;
+    }
+}
+
+const updateBudget = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}`, {
+            method: 'PATCH',
+            credentials: 'include',
+            body: {
+                budget: proposalBudgetEdit.value
+            }
+        })
+
+        proposal.value['PRO_budget_NB'] = proposalBudgetEdit.value;
+
+        }catch (error){
+        console.log('An unexptected error occured : ', error);
     }
 }
 
