@@ -2,6 +2,7 @@
 
 @require_once('models/invitation.php');
 @require_once('models/community.php');
+@require_once('models/user.php');
 @require_once('core/sessionGuard.php');
 @require_once('controllers/notificationController.php');
 
@@ -62,15 +63,6 @@ class InvitationController{
 
         echo json_encode(true);
     }
-}
-?> <?php
-
-@require_once('models/invitation.php');
-@require_once('models/user.php');
-@require_once('models/community.php');
-@require_once('core/sessionGuard.php');
-
-class InvitationController{
 
     /**
      * Affiche un json contenant les données de l'invitation passée dans l'URL
@@ -82,7 +74,7 @@ class InvitationController{
      * 
      * @return void renvoie des éléments concernant l'invitation
      */
-    public static function show(array $params){
+    public static function show($params){
         $invitation = Invitation::getById($params[0]);
 
         if(empty($invitation)){
@@ -121,7 +113,7 @@ class InvitationController{
      * 
      * @return void renvoie true si l'objectif de la fonction a été rempli
      */
-    public static function accepted(array $params){
+    public static function accepted($params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
@@ -188,7 +180,7 @@ class InvitationController{
      * 
      * @return void renvoie true si l'objectif de la fonction a été rempli
      */
-    public static function rejected(array $params){
+    public static function rejected($params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
@@ -221,5 +213,4 @@ class InvitationController{
         echo json_encode(true);
     }
 }
-
 ?>

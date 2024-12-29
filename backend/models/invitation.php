@@ -55,25 +55,6 @@ class Invitation extends Model{
             return false;
         }
     }
-}
-
-?><?php 
-
-@require_once('models/model.php');
-
-class Invitation extends Model{
-
-    public string $INV_id_VC;
-    public int $INV_code_NB;
-    public DateTime $INV_issue_DATE;
-    public DateTime $INV_acceptance_DATE;
-    public int $INV_sender_NB;
-    public string $INV_recipient_NB;
-    public int $INV_community_NB;
-
-    public int $INV_joursDepuisInvitation_NB;
-    public string $INV_sender_firstname_VC;
-    public string $INV_sender_lastname_VC;
 
     public static function getById(string $id){
         $request = 'SELECT INV_recipient_NB, INV_community_NB, USR_firstname_VC AS INV_sender_firstname_VC, USR_lastname_VC AS INV_sender_lastname_VC, DATEDIFF(CURRENT_DATE, INV_issue_DATE) AS INV_joursDepuisInvitation_NB

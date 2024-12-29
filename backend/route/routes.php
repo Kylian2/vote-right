@@ -7,10 +7,6 @@ Router::post('/auth/login', 'authController@login');
 Router::get('/auth/check', 'authController@check');
 Router::post('/auth/logout', 'authController@logout'); //à implémenter + faire la doc
 
-Router::get('/invitation/{id}', 'invitationController@show');
-Router::post('/invitation/{id}/accept', 'invitationController@accepted');
-Router::post('/invitation/{id}/reject', 'invitationController@rejected');
-
 Router::get('/communities', 'communityController@index', true);
 Router::get('/communities/{id}', 'communityController@show', false);
 Router::post('/communities', 'communityController@store', true);
@@ -60,6 +56,9 @@ Router::get('/reasons', 'reasonController@index', true);
 Router::get('/roles', 'roleController@index', true);
 
 Router::post('/invitations', 'invitationController@store', true);
+Router::get('/invitation/{id}', 'invitationController@show', false);
+Router::post('/invitation/{id}/accept', 'invitationController@accepted', false);
+Router::post('/invitation/{id}/reject', 'invitationController@rejected', false);
 
 Router::post('/notifications/reactions/comments', 'notificationController@notifyCommentReaction', true);
 Router::post('/notifications/reactions/proposals', 'notificationController@notifyReactionProposal', true);
