@@ -4,6 +4,7 @@
 
 define("ROLE_ADMIN",1);
 define("ROLE_DECIDER",2);
+define("ROLE_ASSESSOR",3);
 
 class Community extends Model{
     

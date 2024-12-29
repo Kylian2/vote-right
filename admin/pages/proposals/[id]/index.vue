@@ -19,7 +19,8 @@
     <div v-if="proposal" class="proposal__informations">
         <p v-if="proposal['PRO_theme_VC']"><img src="/images/icons/theme.svg" alt="icons-theme">{{ proposal['PRO_theme_VC'] }}</p>
         <div v-if="budgetTheme">
-            <p :class="{error: (proposal['PRO_budget_NB'] > (budgetTheme['BUT_amount_NB'] - budgetTheme['BUT_used_budget_NB']))}">
+            <!-- Indique une erreur quand le bugdet d'une proposition dépasse le budget du thème (en prenant en compte le budget consommée par elle-même lorsqu'elle est validée)-->
+            <p :class="{error: (proposal['PRO_budget_NB'] > (budgetTheme['BUT_amount_NB'] - (proposal['PRO_status_VC'] == 'Validée' ? 0 : budgetTheme['BUT_used_budget_NB'])))}">
                 <img src="/images/icons/budget.svg" alt="icons-theme">
                 {{ proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '- - -'}} €
             </p>
@@ -77,9 +78,10 @@
                     </div>
                 </div>
             </div>
-            <div class="vote__results__actions">
-                <button class="btn btn--small btn--full">Valider</button>
-                <button class="btn btn--small btn--full">Refuser</button>
+            
+            <div class="vote__results__actions" v-if="votes.filter((v) => v['VOT_round_NB'] == key+1)[0]['VOT_valid_BOOL'] === 'null'">
+                <button class="btn btn--small btn--full" @click="validateVote(key+1, true)">Valider</button>
+                <button class="btn btn--small btn--full" @click="validateVote(key+1, false)">Refuser</button>
             </div>
         </div>
     </section>
@@ -146,6 +148,16 @@ cancel-text="Annuler"
 </div>
 </template>
 </Modal>
+
+<Toast 
+    name="forbidden" 
+    :type="1" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+Vous n'avez pas les droits pour effectuer cette action
+</Toast>
 </template>
 <script setup>
 
@@ -187,6 +199,8 @@ const votesAreFinished = computed(() => {
     const lastVote = votes.value[votes.value?.length - 1];
     return lastVote?.['VOT_nb_rounds_NB'] == lastVote?.['VOT_round_NB'];
 });
+
+const forbidden = useState('forbiddenUp');
 
 const fetchData = async () => {
     try {
@@ -353,6 +367,26 @@ const approveProposal = async (status) => {
 
     }catch (error){
             console.log('An unexptected error occured : ', error);
+    }
+}
+
+const validateVote = async (vote, answer) => {
+    try{
+        await $fetch(`${config.public.baseUrl}/proposals/${proposal.value['PRO_id_NB']}/${vote}/vote/valid`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {
+                valid: answer
+            }
+        })
+
+        fetchVote();
+
+    }catch (error){
+        console.log('An unexpected error occured : ', error);
+        if(error.status === 403){
+            forbidden.value = true;
+        }
     }
 }
 

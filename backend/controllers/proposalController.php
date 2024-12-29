@@ -329,6 +329,39 @@ class ProposalController{
 
     }
 
+    /**
+     * Valide ou refuse un vote
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la proposition
+     * - Indice 1 = $round, le tour du vote
+     * 
+     * Body : 
+     * - valid : `bool` `true` si le vote est validé, `false` sinon
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function validateVote($params){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body['valid']) || !is_bool($body['valid'])){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Invalid data';
+            echo json_encode($return);
+            return;
+        }
+
+        $return = Vote::validateVote($params[0], $params[1], SessionGuard::getUserId(), $body['valid']);
+
+        if(!$return){
+            http_response_code(403);
+        }
+        json_encode($return);
+    }
+
     public static function patch(array $params){
         $values["PRO_id_NB"] = $params[0];
         $proposal = new Proposal($values);

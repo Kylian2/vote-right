@@ -48,6 +48,7 @@ Router::get('/proposals/{id}/membership', 'proposalController@isMember', true);
 Router::get('/proposals/{id}/votes', 'proposalController@voteInfos', true);
 Router::get('/proposals/{id}/{round}/vote', 'proposalController@voteResult', true);
 Router::post('/proposals/{id}/{round}/vote', 'proposalController@saveVote', true);
+Router::post('/proposals/{id}/{round}/vote/valid', 'proposalController@validateVote', true);
 
 Router::post('/comments', 'commentController@store', true);
 Router::get('/comments/{id}/reactions', 'commentController@reactions', true);

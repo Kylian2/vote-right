@@ -325,6 +325,7 @@ const communityBudget = useState('budget');
 const communityBudgetValid = useState('budgetValid', ()=>true);
 const feesBudgetValid = useState('feesBudgetValid');
 
+//verifie l'ensemble des budgets entrés par l'utilisateur
 const budgetValid = computed(() => {
     let valid = true;
     valid = valid && feesBudgetValid.value && communityBudgetValid.value;
