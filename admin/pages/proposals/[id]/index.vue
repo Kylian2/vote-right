@@ -82,6 +82,13 @@ name="delete"
 ok-text="Supprimer"
 cancel-text="Annuler"
 :disable-valid="!deleteValid"
+:before-ok="() => {
+    deleteProposal();
+    deleteValidation = '';
+}"
+:before-cancel=" () => {
+    deleteValidation = '';
+}"
 >
 <template #title>Supprimer la proposition</template>
 <template #body>
@@ -102,6 +109,9 @@ cancel-text="Annuler"
 :disable-valid="!proposalBudgetEditValid"
 :before-ok="() => {
     updateBudget();
+}"
+:before-cancel=" () => {
+    proposalBudgetEdit = null;
 }"
 >
 <template #title>Modifier le budget</template>
@@ -147,6 +157,7 @@ const discussionDate = computed(() => {
 });
 
 const deleteModal = useState('deleteModal', () => false);
+const deleteValidation = useState('deleteValidationValid');
 const deleteValid = useState('deleteValidationValid');
 
 const editBudgetModal = useState('editBudgetModal', () => false);
@@ -284,8 +295,22 @@ const updateBudget = async () => {
 
         proposal.value['PRO_budget_NB'] = proposalBudgetEdit.value;
 
-        }catch (error){
+    }catch (error){
         console.log('An unexptected error occured : ', error);
+    }
+}
+
+const deleteProposal = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        })
+
+        navigateTo(`/communities/${proposal.value['PRO_community_NB']}`);
+
+    }catch (error){
+            console.log('An unexptected error occured : ', error);
     }
 }
 

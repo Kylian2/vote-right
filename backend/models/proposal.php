@@ -265,6 +265,29 @@ class Proposal extends Model{
 
         return true;
     }
+
+    public function delete(int $user){
+        $request = "SELECT MEM_role_NB FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['user'] = $user;
+        $values['proposal'] = $this->get('PRO_id_NB');
+        $prepare->execute($values);
+        $role = $prepare->fetch();
+        if($role[0] != ROLE_ADMIN){
+            return false;
+        }
+
+        $request = "UPDATE proposal SET PRO_deleter_NB = :user WHERE PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        try{
+            $prepare->execute($values);
+        }catch(PDOException $e){
+            http_response_code(403);
+            return false;
+        }
+
+        return true;
+    }
 }
 
 

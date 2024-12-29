@@ -354,5 +354,18 @@ class ProposalController{
         echo json_encode(true);
     }
 
+    public static function delete(array $params){
+        $values["PRO_id_NB"] = $params[0];
+        $proposal = new Proposal($values);
+        $userId = SessionGuard::getUserId();
+        $result = $proposal->delete($userId);
+        if(!$result){
+            http_response_code(403);
+            echo json_encode($result);
+            return;
+        }
+        echo json_encode(false);
+    }
+
 }
 ?>
