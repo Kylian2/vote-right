@@ -393,7 +393,7 @@ Crée une modale. Le modale est composé d'un titre, d'un corps et de deux bouto
 | name          | Oui       |                   | Permet d'identifier la modal.                                                                                                        |
 | placeholder   | Non       |                   | Le placeholder                                                                                                                       |
 | required      | Non       | false             | Indique si le champs est obligatoire                                                                                                 |
-| disabledValid | Non       | false             | Indique si le bouton Ok doit être désactiver
+| disableValid  | Non       | false             | Indique si le bouton Ok doit être désactiver
 
 La props `name` doit toujours être définie, c'est elle qui permet d'identifier la modal et de gérer sont statut ouvert/fermé. Quand cette props est définie, vous avez accès à une variable réactive booléenne `{name}Modal`. 
 Lorsque cette variable est `true` la modal est ouverte, `false` la modal est fermée. 

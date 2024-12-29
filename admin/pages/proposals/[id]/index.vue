@@ -1,5 +1,4 @@
 <template>
-
 <Header></Header>
 <NuxtLink class="back" :to="`/communities/${proposal['PRO_community_NB']}`">Retour au groupe</NuxtLink>
 <h1>{{ proposal['PRO_title_VC'] }}</h1>
@@ -12,10 +11,20 @@
             <p class="legende">le {{ formatDate(new Date(proposal['PRO_creation_DATE'])) }}</p>
         </div>
     </div>
-
+    <div v-if="proposal['PRO_status_VC'] != 'En cours'">
+        <p>
+            La proposition a été {{ proposal['PRO_status_VC']?.toLowerCase() }}.
+        </p>
+    </div>
     <div v-if="proposal" class="proposal__informations">
         <p v-if="proposal['PRO_theme_VC']"><img src="/images/icons/theme.svg" alt="icons-theme">{{ proposal['PRO_theme_VC'] }}</p>
-        <div><p v-if="proposal['PRO_budget_NB']"><img src="/images/icons/budget.svg" alt="icons-theme">{{ proposal['PRO_budget_NB'] }} €</p><p class="edit" @click="editBudgetModal = true">Modifier</p></div>
+        <div v-if="budgetTheme">
+            <p :class="{error: (proposal['PRO_budget_NB'] > (budgetTheme['BUT_amount_NB'] - budgetTheme['BUT_used_budget_NB']))}">
+                <img src="/images/icons/budget.svg" alt="icons-theme">
+                {{ proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '- - -'}} €
+            </p>
+                <p class="edit" @click="editBudgetModal = true">Modifier</p>
+        </div>
         <p v-if="proposal['PRO_location_VC']"><img src="/images/icons/location.svg" alt="icons-theme">{{ proposal['PRO_location_VC'] }}</p>
         <p v-if="proposal['PRO_period_YEAR']"><img src="/images/icons/date.svg" alt="icons-theme">{{ proposal['PRO_period_YEAR'] }}</p>
     </div>
@@ -28,9 +37,9 @@
     </div>
     <div class="proposal__actions">
         <button class="btn btn--small">Plannification du vote</button>
-        <div>
-            <button class="btn btn--small btn--full">Adopter</button>
-            <button class="btn btn--small btn--full">Refuser</button>
+        <div v-if="proposal['PRO_status_VC'] ==='En cours' && votesAreFinished && budgetTheme">
+            <button class="btn btn--small btn--full" @click="approveProposal(true)" :disabled="(proposal['PRO_budget_NB'] > (budgetTheme['BUT_amount_NB'] - budgetTheme['BUT_used_budget_NB']))">Adopter</button>
+            <button class="btn btn--small btn--full" @click="approveProposal(false)">Refuser</button>
         </div>
         <button class="btn btn--small delete" @click="deleteModal = true">Supprimer la proposition</button>
     </div>
@@ -124,12 +133,15 @@ cancel-text="Annuler"
     <p>Budget thème utilisé : {{formatNumber(budgetTheme['BUT_used_budget_NB'])}} € /an</p>
 </div>
 <div class="budget-input-container">
-    <InputNumber type="text" :placeholder="proposal['PRO_budget_NB'] +''" class="inline-input" :min="0"
-    name="proposalBudgetEdit"
+    <p>Entrez le budget :</p>
+    <InputNumber type="text" :placeholder="proposal['PRO_budget_NB'] +''" :min="0"
+    name="proposalBudgetEdit" no-label
     :rules="[
-        (v) => v >= 0 || 'Le montant doit être supérieur à 0'
+        (v) => v >= 0 || 'Le montant doit être supérieur à 0',
+        (v) => (v <= budgetTheme['BUT_amount_NB'] - budgetTheme['BUT_used_budget_NB'] + proposal['PRO_budget_NB']) || 'Le budget ne doit pas dépasser le budget du thème',
+        (v) => (v <= budget['CMY_budget_NB'] - budget['CMY_used_budget_NB'] + proposal['PRO_budget_NB']) || 'Le budget ne doit pas dépasser le budget du groupe'
     ]"
-    >Entrez le budget : </InputNumber>
+    > </InputNumber>
     <p> € /an</p>
 </div>
 </template>
@@ -167,9 +179,14 @@ const proposalBudgetEdit = useState('proposalBudgetEdit');
 const votes = ref();
 const currentVote = ref();
 const results = ref([]);
-const timeRemaining = ref(0);
-const nbRounds = ref();
-const classicSystem = ref();
+
+const votesAreFinished = computed(() => {
+    if(!votes.value || votes.value.length === 0){
+        return false;
+    }
+    const lastVote = votes.value[votes.value?.length - 1];
+    return lastVote?.['VOT_nb_rounds_NB'] == lastVote?.['VOT_round_NB'];
+});
 
 const fetchData = async () => {
     try {
@@ -285,7 +302,7 @@ const calculateTimeRemaining = (date1, date2) => {
 
 const updateBudget = async () => {
     try{
-        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}`, {
+        await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}`, {
             method: 'PATCH',
             credentials: 'include',
             body: {
@@ -302,12 +319,37 @@ const updateBudget = async () => {
 
 const deleteProposal = async () => {
     try{
-        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}`, {
+        await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}`, {
             method: 'DELETE',
             credentials: 'include',
         })
 
         navigateTo(`/communities/${proposal.value['PRO_community_NB']}`);
+
+    }catch (error){
+            console.log('An unexptected error occured : ', error);
+    }
+}
+
+const approveProposal = async (status) => {
+    try{
+        await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/approve`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {
+                approve: status
+            }
+        })
+
+        proposal.value['PRO_status_VC'] = status ? 'Validée' : 'Rejetée';
+
+        if(status){
+            const bud = await $fetch(`${config.public.baseUrl}/communities/${proposal.value['PRO_community_NB']}/budget?period=${proposal.value['PRO_period_YEAR']}`, {
+                credentials: 'include',
+            });
+
+            budget.value = bud;
+        }
 
     }catch (error){
             console.log('An unexptected error occured : ', error);
