@@ -3,6 +3,7 @@
 @require_once('models/model.php');
 
 define("ROLE_ADMIN",1);
+define('ROLE_MEMBER', 5);
 
 class Community extends Model{
     
@@ -98,6 +99,23 @@ class Community extends Model{
         $prepare->execute($member);
 
         return true;
+    }
+
+    public function addMember($member){
+        $request = 'INSERT INTO member(MEM_community_NB, MEM_user_NB, MEM_role_NB) 
+                    VALUES (:community, :user, :role)';
+        $prepare = connexion::pdo()->prepare($request);
+        $values = array(
+            "community" => $this->get('CMY_id_NB'),
+            "user" => $member,
+            "role" => ROLE_MEMBER,
+        );
+        try{
+            $prepare->execute($values);
+            return true;
+        }catch (PDOException $e){
+            return false;
+        }
     }
 
     public function getOngoingProposals(){

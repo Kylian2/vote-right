@@ -88,8 +88,8 @@ class User extends Model{
         $request = "SELECT USR_id_NB, USR_lastname_VC, USR_firstname_VC, USR_email_VC FROM user WHERE USR_id_NB = :id";
         $prepare = connexion::pdo()->prepare($request);
         $values["id"] = $id;    
-        $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_CLASS, "user");
+        $prepare->execute($values);
         $user = $prepare->fetch();
         return $user;
     }

@@ -8,7 +8,7 @@ Router::get('/auth/check', 'authController@check');
 Router::post('/auth/logout', 'authController@logout'); //à implémenter + faire la doc
 
 Router::get('/communities', 'communityController@index', true);
-Router::get('/communities/{id}', 'communityController@show', true);
+Router::get('/communities/{id}', 'communityController@show');
 Router::post('/communities', 'communityController@store', true);
 Router::get('/communities/administered', 'communityController@administered', true);
 Router::get('/communities/{id}/ongoing', 'communityController@ongoingProposals', true);
@@ -17,7 +17,7 @@ Router::get('/communities/{id}/adopted', 'communityController@adoptedProposals',
 Router::get('/communities/{id}/voted', 'communityController@votedProposals', true);
 Router::get('/communities/{id}/members', 'communityController@members', true);
 Router::post('/communities/{id}/members', 'communityController@setMembers', true);
-Router::get('/communities/{id}/themes', 'communityController@themes', true);
+Router::get('/communities/{id}/themes', 'communityController@themes', false);
 Router::get('/communities/{id}/proposals', 'proposalController@allOfCommunity', true);
 Router::get('/communities/{id}/membership', 'communityController@isMember', true);
 Router::get('/communities/{id}/budget', 'communityController@budget', true);
@@ -56,6 +56,9 @@ Router::get('/reasons', 'reasonController@index', true);
 Router::get('/roles', 'roleController@index', true);
 
 Router::post('/invitations', 'invitationController@store', true);
+Router::get('/invitations/{id}', 'invitationController@show');
+Router::post('/invitations/{id}/accept', 'invitationController@accepted');
+Router::post('/invitations/{id}/reject', 'invitationController@rejected');
 
 Router::post('/notifications/reactions/comments', 'notificationController@notifyCommentReaction', true);
 Router::post('/notifications/reactions/proposals', 'notificationController@notifyReactionProposal', true);
