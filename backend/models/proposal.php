@@ -312,6 +312,24 @@ class Proposal extends Model{
 
         return true;
     }
+
+    /**
+     * Renvoie un boolean indiquant si l'utilisateur peut gérer cette proposition
+     * 
+     * @param int $proposal l'identifiant de la proposition
+     * @param int $user l'identifiant de l'utilisateur
+     * @return bool 
+     */
+    public static function canManage(int $proposal, int $user){
+        $request="SELECT MEM_role_NB FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['user'] = $user;
+        $values['proposal'] = $proposal;
+        $prepare->execute($values);
+        $role = $prepare->fetch();
+
+        return $role ? $role[0] != ROLE_MEMBER : $role;
+    }
 }
 
 

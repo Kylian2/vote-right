@@ -478,3 +478,4 @@ Dans l'application, il y a des middlewares permettant de restreindre l'accès à
 2. *guest* : bloquant l'accès d'une page aux personnes connectés. Redirige vers */home*.
 3. *managed* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de gestion. Redirige vers */home*.
 3. *decider* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de decideur (ou d'administrateur) dans la communauté (se base sur le paramètre de l'url). Redirige vers */home*.
+3. *proposal* : bloque l'accès aux pages aux utilisateurs n'ayant pas un de gestion dans la communauté (pour les page ayant comme paramètre un identifiant de proposition). Redirige vers */home*.

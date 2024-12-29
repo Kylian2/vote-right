@@ -437,5 +437,19 @@ class ProposalController{
         echo json_encode(true);
     }
 
+    /**
+     * Affiche renvoie un boolean indiquant si l'utilisateur peut gerer cette proposition
+     * (admin, modérateur, décideur, assesseur)
+     * 
+     * @param array $params les paramètres de l'url
+     * 
+     * @return void retourne le resultat sous forme de JSON
+     */
+    public static function managed($params){
+        $userId = SessionGuard::getUserId();
+        $result = Proposal::canManage($params[0], $userId);
+        echo json_encode($result);
+    }
+
 }
 ?>

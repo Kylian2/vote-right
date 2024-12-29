@@ -166,14 +166,17 @@ Vous n'avez pas les droits pour effectuer cette action
 </template>
 <script setup>
 
+const config = useRuntimeConfig();
+const route = useRoute();
+
+definePageMeta({
+  middleware: ["auth", "proposal"]
+})
+
 const ADMIN = 1;
 const DECIDER = 2;
 const ASSESSOR = 3;
 const role = ref({});
-
-
-const config = useRuntimeConfig();
-const route = useRoute();
 
 const community = useState("community");
 const proposal = ref({});
