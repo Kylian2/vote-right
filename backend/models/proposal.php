@@ -267,6 +267,7 @@ class Proposal extends Model{
     }
 
     public function delete(int $user){
+        //Verification pas faite en base de données
         $request = "SELECT MEM_role_NB FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
         $prepare = connexion::pdo()->prepare($request);
         $values['user'] = $user;
@@ -282,8 +283,31 @@ class Proposal extends Model{
         try{
             $prepare->execute($values);
         }catch(PDOException $e){
-            http_response_code(403);
             return false;
+        }
+
+        return true;
+    }
+
+    public function approve(int $user, bool $status){
+        //Vérification faite aussi en base de données avec le trigger
+        $request = "SELECT MEM_role_NB FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['user'] = $user;
+        $values['proposal'] = $this->get('PRO_id_NB');
+        $prepare->execute($values);
+        $role = $prepare->fetch();
+        if(!($role[0] == ROLE_ADMIN || $role[0] == ROLE_DECIDER)){
+            return false;
+        }
+
+        $request = "UPDATE proposal SET PRO_approver_NB = :user, PRO_status_VC = :status WHERE PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['status'] = $status ? 'Validée' : 'Rejetée';
+        try{
+            $prepare->execute($values);
+        }catch(PDOException $e){
+            return $e;
         }
 
         return true;

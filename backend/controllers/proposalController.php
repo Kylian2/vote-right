@@ -364,7 +364,44 @@ class ProposalController{
             echo json_encode($result);
             return;
         }
-        echo json_encode(false);
+        echo json_encode(true);
+    }
+
+    public static function approve(array $params){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body['approve']) || !is_bool($body['approve'])){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Invalid data';
+            echo json_encode($return);
+            return;
+        }
+
+        $values["PRO_id_NB"] = $params[0];
+        $proposal = new Proposal($values);
+        $userId = SessionGuard::getUserId();
+        $result = $proposal->approve($userId, $body['approve']);
+        if($result !== true){
+            if(!$result){
+                http_response_code(403);
+                echo json_encode(false);
+                return;
+            }
+            if($result->errorInfo[2] === "Erreur : Le budget de cette proposition fait dépasser le budget total alloué pour son thème."){
+                http_response_code(400);
+                echo json_encode(false);
+                return;
+            }
+            if($result->errorInfo[2] === "Erreur : Le budget de cette proposition fait dépasser le budget total alloué pour son thème."){
+                http_response_code(403);
+                echo json_encode(false);
+                return;
+            }
+            echo json_encode(false);
+            return;
+        }
+        echo json_encode(true);
     }
 
 }

@@ -3,6 +3,7 @@
 @require_once('models/model.php');
 
 define("ROLE_ADMIN",1);
+define("ROLE_DECIDER",2);
 
 class Community extends Model{
     
