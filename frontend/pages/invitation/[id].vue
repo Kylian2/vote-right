@@ -45,8 +45,8 @@
                     </div>
                         
                     <div class="invitation__show__actions__button">
-                        <Button class="btn btn--full" :disabled="!validCode" @click="acceptInvitation()"> Accepter </Button>
-                        <Button class="btn btn--cancel" :disabled="!validCode" @click="rejectInvitation()"> Refuser </Button>
+                        <button class="btn btn--full" :disabled="!validCode" @click="acceptInvitation()"> Accepter </button>
+                        <button class="btn btn--cancel" :disabled="!validCode" @click="rejectInvitation()"> Refuser </button>
                     </div>
                 </div>
             </div>
@@ -80,8 +80,6 @@ const acceptInvitation = async () => {
         method: 'POST',
             body: {
                 codeSend: securityCode.value,
-                communityId: invitation.value.INV_community_NB,
-                newMemberId: invitation.value.INV_recipient_NB,
             },
             credentials: 'include',
         });

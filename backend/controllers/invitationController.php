@@ -107,8 +107,6 @@ class InvitationController{
      * 
      * {
      *  "codeSend" : 744670,
-     *  "communityId" : 12,
-     *  "newMemberId" : 35
      * }
      * 
      * @return void renvoie true si l'objectif de la fonction a été rempli
@@ -124,32 +122,31 @@ class InvitationController{
             return ;
         }
 
-        if(!isset($body["codeSend"]) || !isset($body["newMemberId"])  || !isset($body["communityId"]) ||!isset($params[0])){
+        if(!isset($body["codeSend"]) ||!isset($params[0])){
             http_response_code(422);
             $return["Unprocessable Entity"] = 'Missing data for processing';
             echo json_encode($return);
             return ;
         }
 
-        $IdInvitation["INV_id_VC"] = $params[0];
-        $codeUtilisateur["INV_code_NB"] = $body["codeSend"];
+        $invitationId = $params[0];
 
-        $codeInvitation = Invitation::getCodeById($IdInvitation["INV_id_VC"]);
+        $invitationCode = Invitation::getCodeById($invitationId);
+        $invitation = Invitation::getById($invitationId);
 
-        if($codeInvitation === null || $codeUtilisateur["INV_code_NB"] != $codeInvitation["INV_code_NB"]){
+        if($invitationCode === null || $body["codeSend"] != $invitationCode){
             $return["Invalid code"] = 'The code entered by the user is invalid';
             echo json_encode($return);
             return ;
         }
 
-        Invitation::accept($IdInvitation);
+        Invitation::accept($invitationId);
 
-        $member["CMY_id_NB"] = $body["communityId"];
-        $member["CMY_member_NB"] = $body["newMemberId"];
+        $community = new Community(array('CMY_id_NB' => $invitation->get('INV_community_NB')));
 
-        Community::addMember($member);
+        $community->addMember($invitation->get('INV_recipient_NB'));
+        $user = User::getById($invitation->get('INV_recipient_NB'));
 
-        $user = User::getById($member["CMY_member_NB"]);
         if($user){
             SessionGuard::start($user);
             echo json_encode(true);
@@ -198,18 +195,17 @@ class InvitationController{
             return ;
         }
 
-        $IdInvitation["INV_id_VC"] = $params[0];
-        $codeUtilisateur["INV_code_NB"] = $body["codeSend"];
+        $invitationId = $params[0];
 
-        $codeInvitation = Invitation::getCodeById($IdInvitation["INV_id_VC"]);
+        $invitationCode = Invitation::getCodeById($invitationId);
 
-        if($codeInvitation === null || $codeUtilisateur["INV_code_NB"] != $codeInvitation["INV_code_NB"]){
+        if($invitationCode === null || $body["codeSend"] != $invitationCode){
             $return["Invalid code"] = 'The code entered by the user is invalid';
             echo json_encode($return);
             return ;
         }
 
-        Invitation::reject($IdInvitation);
+        Invitation::reject($invitationId);
         echo json_encode(true);
     }
 }

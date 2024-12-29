@@ -57,7 +57,7 @@ class Invitation extends Model{
     }
 
     public static function getById(string $id){
-        $request = 'SELECT INV_recipient_NB, INV_community_NB, USR_firstname_VC AS INV_sender_firstname_VC, USR_lastname_VC AS INV_sender_lastname_VC, DATEDIFF(CURRENT_DATE, INV_issue_DATE) AS INV_joursDepuisInvitation_NB
+        $request = 'SELECT INV_id_VC, INV_recipient_NB, INV_community_NB, USR_firstname_VC AS INV_sender_firstname_VC, USR_lastname_VC AS INV_sender_lastname_VC, DATEDIFF(CURRENT_DATE, INV_issue_DATE) AS INV_joursDepuisInvitation_NB
                     FROM invitation I 
                     INNER JOIN user U ON I.INV_sender_NB = U.USR_id_NB
                     WHERE INV_id_VC = :id
@@ -82,32 +82,25 @@ class Invitation extends Model{
         $prepare->execute($value);
         $code = $prepare->fetch();
 
-        return $code;
+        return $code[0];
     }
 
-    public static function accept(array $params){
-        $currentDate = date('Y-m-d');
-        $request = 'UPDATE invitation 
-                SET INV_acceptance_DATE = :currentDate 
-                WHERE INV_id_VC = :invitationId';
+    public static function accept(string $invitation){
+        $request = 'UPDATE invitation SET INV_acceptance_DATE = CURRENT_DATE() WHERE INV_id_VC = :invitationId';
         $prepare = connexion::pdo()->prepare($request);
 
         $values = array(
-            "currentDate" => $currentDate,
-            "invitationId" => $params["INV_id_VC"],
+            "invitationId" => $invitation,
         );
         $prepare->execute($values);
     }
 
-    public static function reject(array $params){
-        $currentDate = date('Y-m-d');
-        $request = 'DELETE 
-                FROM invitation
-                WHERE INV_id_VC = :invitationId';
+    public static function reject(string $invitation){
+        $request = 'DELETE FROM invitation WHERE INV_id_VC = :invitationId';
         $prepare = connexion::pdo()->prepare($request);
 
         $values = array(
-            "invitationId" => $params["INV_id_VC"],
+            "invitationId" => $invitation,
         );
         $prepare->execute($values);
     }
