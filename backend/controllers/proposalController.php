@@ -328,5 +328,31 @@ class ProposalController{
         }
 
     }
+
+    public static function patch(array $params){
+        $values["PRO_id_NB"] = $params[0];
+        $proposal = new Proposal($values);
+
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(isset($body['budget'])){
+            if(!is_numeric($body['budget']) || $body['budget'] < 0){
+                http_response_code(422);
+                $return["Unprocessable Entity"] = 'Budget is not valid';
+                echo json_encode($return);
+                return;
+            }
+            try{
+                $proposal->setBudget($body['budget']);
+            }catch(PDOException $e){
+                $return["Error"] = $e->errorInfo[2];
+                echo json_encode($return);
+                return;
+            }
+        }
+        echo json_encode(true);
+    }
+
 }
 ?>

@@ -248,6 +248,23 @@ class Proposal extends Model{
         $result = $prepare->fetch();
         return boolval($result[0]);
     }
+
+    /**
+     * Modifie en base de données le budget d'une proposition
+     * 
+     * @param int $budget le montant
+     * 
+     * @return bool `true` si la modification a été effectuée avec succès
+     */
+    public function setBudget(float $budget){
+        $request = "UPDATE proposal SET PRO_budget_NB = :budget WHERE PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['budget'] = $budget;
+        $values['proposal'] = $this->get('PRO_id_NB');
+        $prepare->execute($values);
+
+        return true;
+    }
 }
 
 

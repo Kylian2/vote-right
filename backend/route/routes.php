@@ -35,6 +35,7 @@ Router::get('/users/me/role/{community}', 'userController@role', true);
 Router::get('/proposals/ongoing', 'proposalController@ongoing', true);
 Router::get('/proposals/finished', 'proposalController@finished', true);
 Router::post('/proposals', 'proposalController@store', true);
+Router::patch('/proposals/{id}', 'proposalController@patch', true);
 Router::get('/proposals/{id}', 'proposalController@show', true);
 Router::get('/proposals/{id}/comments', 'proposalController@comments', true);
 Router::get('/proposals/{id}/reactions', 'proposalController@reactions', true);
