@@ -53,7 +53,18 @@ class Router{
     public static function patch(string $uri, string $actionController, bool $protected = false){
         self::addRoute('PATCH', $uri, $actionController, $protected);
     }
-    
+
+    /**
+     * Défini une route DELETE
+     * 
+     * @param string $uri L'uri de la route
+     * @param string $actionController Le controller et l'action à effectuer, ils doivent etre de la forme controller@action
+     * @param bool $protected true si la route doit être protégée, false sinon (par défaut = false).
+     */
+    public static function delete(string $uri, string $actionController, bool $protected = false){
+        self::addRoute('DELETE', $uri, $actionController, $protected);
+    }
+
     /**
      * Lance une action d'un controller
      * 
