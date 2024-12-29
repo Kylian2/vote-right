@@ -24,7 +24,7 @@
                 <img src="/images/icons/budget.svg" alt="icons-theme">
                 {{ proposal['PRO_budget_NB'] ? proposal['PRO_budget_NB'] : '- - -'}} €
             </p>
-                <p class="edit" @click="editBudgetModal = true">Modifier</p>
+                <p v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="edit" @click="editBudgetModal = true">Modifier</p>
         </div>
         <p v-if="proposal['PRO_location_VC']"><img src="/images/icons/location.svg" alt="icons-theme">{{ proposal['PRO_location_VC'] }}</p>
         <p v-if="proposal['PRO_period_YEAR']"><img src="/images/icons/date.svg" alt="icons-theme">{{ proposal['PRO_period_YEAR'] }}</p>
@@ -37,12 +37,15 @@
         </p>
     </div>
     <div class="proposal__actions">
-        <button class="btn btn--small">Plannification du vote</button>
-        <div v-if="proposal['PRO_status_VC'] ==='En cours' && votesAreFinished && budgetTheme">
+        <button class="btn btn--small" v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == ASSESSOR">Plannification du vote</button>
+        <div v-if="proposal['PRO_status_VC'] ==='En cours' && votesAreFinished && budgetTheme && (role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER)">
             <button class="btn btn--small btn--full" @click="approveProposal(true)" :disabled="(proposal['PRO_budget_NB'] > (budgetTheme['BUT_amount_NB'] - budgetTheme['BUT_used_budget_NB']))">Adopter</button>
             <button class="btn btn--small btn--full" @click="approveProposal(false)">Refuser</button>
         </div>
-        <button class="btn btn--small delete" @click="deleteModal = true">Supprimer la proposition</button>
+        <button 
+            class="btn btn--small delete" @click="deleteModal = true"
+            v-if="role['MEM_role_NB'] == ADMIN"
+        >Supprimer la proposition</button>
     </div>
 
 </section>
@@ -78,8 +81,10 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="vote__results__actions" v-if="votes.filter((v) => v['VOT_round_NB'] == key+1)[0]['VOT_valid_BOOL'] === 'null'">
+            <p class="legende" v-if="votes.filter((v) => v['VOT_round_NB'] == key+1)[0]['VOT_valid_BOOL'] == 'null'">Le vote n'a pas encore été validé</p>
+            <p class="legende" v-else>{{ votes.filter((v) => v['VOT_round_NB'] == key+1)[0]['VOT_valid_BOOL'] ? 'Le vote a été validé' : 'Le vote a été refusé' }}</p>
+            <div class="vote__results__actions" 
+                v-if="votes.filter((v) => v['VOT_round_NB'] == key+1)[0]['VOT_valid_BOOL'] === 'null' && role['MEM_role_NB'] == ASSESSOR">
                 <button class="btn btn--small btn--full" @click="validateVote(key+1, true)">Valider</button>
                 <button class="btn btn--small btn--full" @click="validateVote(key+1, false)">Refuser</button>
             </div>
@@ -160,6 +165,12 @@ Vous n'avez pas les droits pour effectuer cette action
 </Toast>
 </template>
 <script setup>
+
+const ADMIN = 1;
+const DECIDER = 2;
+const ASSESSOR = 3;
+const role = ref({});
+
 
 const config = useRuntimeConfig();
 const route = useRoute();
@@ -245,10 +256,17 @@ const fetchData = async () => {
 
         budget.value = bud;
 
+        const rol = await $fetch(`${config.public.baseUrl}/users/me/role/${proposal.value['PRO_community_NB']}/`, {
+            credentials: 'include',
+        });
+
+        role.value = rol;
+
     } catch (error) {
         console.error('An unexpected error occurred:', error);
     }
 };
+
 
 const fetchResult = async (round) => {
     try{
@@ -259,7 +277,7 @@ const fetchResult = async (round) => {
         results.value.push(response);
 
         }catch (error){
-        console.log('An unexptected error occured : ', error);
+        console.log('An unexpected error occured : ', error);
     }
 }
 
@@ -282,7 +300,7 @@ const fetchVote = async () => {
         }
 
         }catch (error){
-        console.log('An unexptected error occured : ', error);
+        console.log('An unexpected error occured : ', error);
     }
 }
 
@@ -327,7 +345,7 @@ const updateBudget = async () => {
         proposal.value['PRO_budget_NB'] = proposalBudgetEdit.value;
 
     }catch (error){
-        console.log('An unexptected error occured : ', error);
+        console.log('An unexpected error occured : ', error);
     }
 }
 
@@ -341,7 +359,7 @@ const deleteProposal = async () => {
         navigateTo(`/communities/${proposal.value['PRO_community_NB']}`);
 
     }catch (error){
-            console.log('An unexptected error occured : ', error);
+            console.log('An unexpected error occured : ', error);
     }
 }
 
@@ -366,7 +384,7 @@ const approveProposal = async (status) => {
         }
 
     }catch (error){
-            console.log('An unexptected error occured : ', error);
+            console.log('An unexpected error occured : ', error);
     }
 }
 

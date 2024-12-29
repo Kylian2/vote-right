@@ -170,6 +170,9 @@
     .vote__results{
         grid-column: 6/8;
         height: fit-content;
+        >p{
+            margin-top: 10px;
+        }
         &__container{
             display: flex;
             flex-direction: column;
