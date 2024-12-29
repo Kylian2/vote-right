@@ -8,6 +8,10 @@
             <slot name="title"></slot>
         </h3>
 
+        <h4>
+            <slot name="subtitles"></slot>
+        </h4>
+
         <div class="modal__body">
             <slot name="body"></slot>
         </div>

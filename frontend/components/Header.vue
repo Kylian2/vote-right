@@ -16,8 +16,100 @@
             <div class="wrapper" :class="{'active' : actif === 'groupes'}"><NuxtLink class="logged__link" to="/communities">Groupes</NuxtLink></div>
         </nav>
         <div v-if="type === 'logged'" class="logged">
-            <button @click="showModal = !showModal">Mon Compte</button>
+            <button @click="settingsModal = !settingsModal">Mon compte</button>
         </div>
+        <Modal
+        name="settings"
+        cancel-text="Quitter"
+        :disable-valid="true"
+        :before-ok="() => {editButton = !editButton}"
+        >
+            <template #title>Paramètres de compte</template>
+
+            <template #subtitles>
+                <div>
+                    <p @click="MyInformationSection = true" :style="{fontWeight: MyInformationSection ? 'bold' : 'normal' }">Mes informations</p>
+                    <p @click="MyInformationSection = false" :style="{fontWeight: !MyInformationSection ? 'bold' : 'normal' }">Notifications</p>
+                </div>
+            </template>
+
+            <template #body>
+                
+                <div>
+                    <Profile :style="{background: 'black'}" :user="user"/>
+                    <div>
+                        <p>{{ user['USR_firstname_VC'] }}</p>
+                        <p>{{ user['USR_lastname_VC'] }}</p>
+                    </div>
+                </div>
+
+
+                <div v-if="MyInformationSection">
+                    <div>
+                        <p @click="editChange">{{ allowedChanges ? 'Annuler' : 'Modifier' }}</p>
+                    </div>
+                    <div>
+                        <p>Date de naissance :</p>
+                        <p v-if="!allowedChanges">{{ birthdate }}</p>
+                        <Input v-else id="userBirthdate" :value="birthdate"></Input>
+                    </div>
+
+                    <div>
+                        <p>Adresse :</p>
+                        <p v-if="!allowedChanges">{{ address }}</p>
+                        <Input v-else id="userAddress"></Input>
+                    </div>
+
+                    <div>
+                        <p>Code postal :</p>
+                        <p v-if="!allowedChanges">{{ zipcode }}</p>
+                        <Input v-else id="userZipcode"></Input>
+                    </div>
+
+                    <div>
+                        <p>Mail :</p>
+                        <p v-if="!allowedChanges">{{ email }}</p>
+                        <Input v-else id="userEmail"></Input>
+                    </div>
+                    
+                    <div>
+                        <p>Mot de passe :</p>
+                        <p v-if="!allowedChanges">********</p>
+                        <Input v-else id="userPassword"></Input>
+                    </div>
+                </div>
+
+
+                <div v-else>
+                    <div>
+                        <p>Sélectionnez les notifications qui vous intéressent</p>
+                    </div>
+
+                    <div>
+                        <div>
+                            <input type="checkbox" :id="newProposal">
+                            <label :for="newProposal">Nouvelle proposition :</label>
+                        </div>
+
+                        <div>
+                            <input type="checkbox" :id="startOfVoting">
+                            <label :for="startOfVoting">Début de vote :</label>
+                        </div>
+
+                        <div>
+                            <input type="checkbox" :id="reactionToTheProposals">
+                            <label :for="reactionToTheProposals">Réaction aux propositions :</label>
+                        </div>
+
+                        <div> 
+                            <input type="checkbox" :id="notificationFrequency">
+                            <label :for="notificationFrequency">Fréquence des notifications :</label>                           
+                        </div>
+                    </div>
+                </div>
+
+            </template>
+        </Modal>
     </header>
 
     <header class="header--mobile" id="header-mobile" :class="{[`color-${color}`]: color}">
@@ -35,24 +127,11 @@
             <NuxtLink to="/register">S'inscrire</NuxtLink>
         </nav>
     </header>
-    <Modal
-    :name="account"
-    >
-            <template #title>Paramètres de compte</template>
-            <template #body>
-                <div>
-                    <div>
-                        <button>Mes informations</button>
-                    </div>
-                    <div>
-                        <button>Notifications</button>
-                    </div>
-                </div>
-            </template>
-        </Modal>
 </template>
 
 <script setup>
+
+const config = useRuntimeConfig();
 
 const props = defineProps({
     type: {
@@ -73,28 +152,6 @@ let navigationMobile;
 let headerMobile;
 let logo;
 let hamburger;
-const me = ref();
-const showModal = useState("accountModal", () => false);
-
-const toggleHeader = () => {
-    headerMobile.classList.toggle("full");
-    navigationMobile.classList.toggle("d-none");
-    logo.classList.toggle("d-none");
-    hamburger.classList.toggle("active");
-}
-
-const fetchUser = async () => {
-    try{
-        const response = await $fetch(`${config.public.baseUrl}/users/me`, {
-            credentials: 'include',
-        });
-
-        me.value = response;
-        
-    } catch(error) {
-        console.log("An error occured", error);
-    }
-}
 
 onMounted(() => {
     navigationMobile = document.getElementById("navigation-mobile");
@@ -103,5 +160,55 @@ onMounted(() => {
     hamburger = document.getElementById("hamburger");
     fetchUser();
 })
+
+const toggleHeader = () => {
+    headerMobile.classList.toggle("full");
+    navigationMobile.classList.toggle("d-none");
+    logo.classList.toggle("d-none");
+    hamburger.classList.toggle("active");
+}
+
+const user = useState("user");
+const settingsModal = useState(`settingsModal`, () => false);
+
+const MyInformationSection = ref(true);
+const allowedChanges = ref(false);
+
+const birthdate = ref("");
+const address = ref("");
+const zipcode = ref("");
+const email = ref("");
+const password = ref("");
+
+const fetchUser = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/users/me`, {
+            credentials: 'include',
+        });
+
+        user.value = response;
+
+        setInformation();
+        
+    } catch(error) {
+        console.log("An error occured", error);
+    }
+}
+
+const setInformation = () => {
+    birthdate.value = user.value['USR_birthdate_DATE'];
+    address.value =  user.value['USR_address_VC'];
+    zipcode.value = user.value['USR_zipcode_CH'];
+    email.value = user.value['USR_email_VC'];
+    password.value = "";
+}
+
+const editChange = () => {
+    allowedChanges.value = !allowedChanges.value;
+
+    if(allowedChanges.value == false){
+        setInformation();
+    }
+}
 
 </script>
