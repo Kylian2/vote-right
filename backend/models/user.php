@@ -81,6 +81,20 @@ class User extends Model{
         return $result;
     }
 
+    public function getRoleProposal(int $proposal){
+        $request = "SELECT MEM_role_NB, ROL_label_VC FROM members_role WHERE USR_id_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
+        $prepare = connexion::pdo()->prepare($request);
+
+        $values["user"] = $this->USR_id_NB;
+        $values["proposal"] = $proposal;
+
+        $prepare -> execute($values);
+        $prepare->setFetchmode(PDO::FETCH_OBJ);
+        $result = $prepare->fetch();
+        
+        return $result;
+    }
+
     public static function getById(int $id){
         $request = "SELECT USR_id_NB, USR_lastname_VC, USR_firstname_VC, USR_email_VC FROM user WHERE USR_id_NB = :id";
         $prepare = connexion::pdo()->prepare($request);
