@@ -361,6 +361,27 @@ class Community extends Model{
         return array_reverse($periods);
     }
 
+    public static function updateCommunity(array $values){
+        $request = 'UPDATE community 
+                    SET 
+                        CMY_name_VC = :name,
+                        CMY_color_VC = :color,
+                        CMY_image_VC = :image,
+                        CMY_description_TXT = :description,
+                        CMY_emoji_VC = :emoji
+                    WHERE CMY_id_NB = :id';
+        $prepare = connexion::pdo()->prepare($request);
+
+        $values = array(
+            "id" => $values["CMY_id_NB"],
+            "name" => $values["CMY_name_VC"],
+            "color" => $values["CMY_color_VC"],
+            "image" => $values["CMY_image_VC"],
+            "description" => $values["CMY_description_TXT"],
+            "emoji" => $values["CMY_emoji_VC"],
+        );
+        $prepare->execute($values);
+    }
 }
 
 ?>

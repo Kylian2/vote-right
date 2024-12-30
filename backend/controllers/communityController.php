@@ -324,6 +324,74 @@ class CommunityController{
         $periods = $community->getPeriods($params[0]);
         echo json_encode($periods);
     }
+
+    /**
+     * Modifie une communauté existante dans la base de données
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la communauté à modifier. 
+     * 
+     * La fonctions attends les éléments suivant : 
+     * - un nom (string)
+     * - une image (string correspondant au nom de l'image)
+     * - un emoji (string correspondant au code ascii)
+     * - une couleur (string correpondant au code HEX) au format #XXXXXX
+     * - une description (string)
+     * 
+     * Procède à des vérifications de validité avant d'insérer
+     * 
+     * ex de données acceptées : 
+     * 
+     * {
+     *   "name": "Voyage en Laponie",
+     *   "image": "100001.png",
+     *   "description": "Lorem ipsum dolor sit amet sen",
+     *   "emoji": "1F385",
+     *   "color": "#DE3D59"
+     * }
+     * 
+     * @return void renvoie true si la modification a bien été effecttué
+     */
+    public static function update(array $params){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if($body === null){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Missing data';
+            echo json_encode($return);
+            return ;
+        }
+
+        if(!isset($body["name"]) || !isset($body["color"]) || !isset($body["emoji"]) 
+        || !isset($body["description"]) || !isset($body["image"])){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'missing data for processing';
+            echo json_encode($return);
+            return;
+        }
+
+        try{
+            CommunityValidator::storeDataValidator($body);
+        } catch (Error $e){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = $e->getMessage();
+            echo json_encode($return);
+            return;
+        }
+
+        $values["CMY_id_NB"] = $params[0];
+        $values["CMY_name_VC"] = $body["name"];
+        $values["CMY_color_VC"] = $body["color"];
+        $values["CMY_image_VC"] = $body["image"];
+        $values["CMY_description_TXT"] = $body["description"];
+        $values["CMY_emoji_VC"] = $body["emoji"];
+
+        Community::updateCommunity($values);
+        echo json_encode(true);
+    }
 }
 
 ?>
