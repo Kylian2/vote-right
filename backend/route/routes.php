@@ -68,4 +68,6 @@ Router::post('/invitations/{id}/reject', 'invitationController@rejected');
 Router::post('/notifications/reactions/comments', 'notificationController@notifyCommentReaction', true);
 Router::post('/notifications/reactions/proposals', 'notificationController@notifyReactionProposal', true);
 
+Router::get('/votes/systems', 'voteController@systems', true);
+
 ?>

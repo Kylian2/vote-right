@@ -98,6 +98,16 @@ class Vote extends Model{
         return true;
     }
 
+    /**
+     * Recupere la liste des types de vote
+     */
+    public static function voteSystem(){
+        $request = "SELECT * FROM voting_system";
+        $result = connexion::pdo()->query($request);
+        $result->setFetchmode(PDO::FETCH_OBJ);
+        $systems = $result->fetchAll();
+        return $systems;
+    }
 }
 
 ?>
