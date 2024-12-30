@@ -266,6 +266,13 @@ class Proposal extends Model{
         return true;
     }
 
+     /**
+     * Supprimer une proposition
+     * 
+     * @param int $user l'utilisateur qui supprime
+     * 
+     * @return bool un `boolean` indiquant si la requete s'est bien passée.
+     */
     public function delete(int $user){
         //Verification pas faite en base de données
         $request = "SELECT MEM_role_NB FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
@@ -289,6 +296,14 @@ class Proposal extends Model{
         return true;
     }
 
+    /**
+     * Approuve une proposition
+     * 
+     * @param int $user l'utilisateur qui approuve
+     * @param bool $status `true` si acceptée, `false` sinon
+     * 
+     * @return mixed un `boolean` indiquant si la requete s'est bien passée ou les informations de l'erreur. 
+     */
     public function approve(int $user, bool $status){
         //Vérification faite aussi en base de données avec le trigger
         $request = "SELECT MEM_role_NB FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";

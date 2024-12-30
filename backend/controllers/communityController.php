@@ -54,19 +54,16 @@ class CommunityController{
     }
 
     /**
-     * Insère dans la base de données une nouvelle communauté
-     * 
-     * La fonctions attends les éléments suivant : 
-     * - un nom (string)
-     * - une image (string correspondant au nom de l'image)
-     * - un emoji (string correspondant au code ascii)
-     * - une couleur (string correpondant au code HEX) au format #XXXXXX
-     * - une description (string)
-     * 
-     * Procède à des vérifications de validité avant d'insérer
-     * 
-     * ex de données acceptées : 
-     * 
+     * Insère une nouvelle communauté dans la base de données.
+     *
+     * La méthode attend un corps de requête JSON contenant les éléments suivants :
+     * - `name` (string) : Nom de la communauté.
+     * - `image` (string) : Nom du fichier image.
+     * - `emoji` (string) : Code ASCII de l'emoji.
+     * - `color` (string) : Code HEX de la couleur au format `#XXXXXX`.
+     * - `description` (string) : Description de la communauté.
+     *
+     * Exemple de données acceptées :
      * {
      *   "name": "Voyage en Laponie",
      *   "image": "100001.png",
@@ -74,8 +71,16 @@ class CommunityController{
      *   "emoji": "1F385",
      *   "color": "#DE3D59"
      * }
-     * 
-     * @return void renvoie la communauté au format json si l'insertion réussi
+     *
+     * Procède aux étapes suivantes :
+     * - Vérifie la présence et la validité des données dans le corps de la requête.
+     * - Valide les données via `CommunityValidator::storeDataValidator`.
+     * - Insère les données dans la base de données.
+     * - Renvoie la communauté nouvellement créée au format JSON.
+     *
+     * @return void
+     * - 422 avec un message JSON si des données sont manquantes ou invalides.
+     * - La communauté au format JSON si l'insertion réussit.
      */
     public static function store(){
         $body = file_get_contents('php://input');
@@ -239,6 +244,15 @@ class CommunityController{
         echo json_encode($result);
     }
 
+    /**
+     * Récupère les budgets d'une communauté pour une période donnée.
+     *
+     * @param array $params Contient l'identifiant de la communauté ($params[0]).
+     *
+     * @return void
+     * - 422 avec un message JSON si la période (`period`) n'est pas spécifiée ou invalide.
+     * - Les budgets (JSON) par thème pour la période spécifiée si succès.
+     */
     public static function budget($params){
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
@@ -251,6 +265,15 @@ class CommunityController{
         echo json_encode($themes);
     }
 
+    /**
+     * Définit les budgets des thèmes pour une communauté et une période.
+     *
+     * @param array $params Contient l'identifiant de la communauté ($params[0]).
+     *
+     * @return void
+     * - 422 avec un message JSON si la période n'est pas spécifiée ou si le corps de la requête contient des données invalides.
+     * - true (JSON) si les budgets sont définis avec succès.
+     */
     public static function setBudget($params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
@@ -276,6 +299,16 @@ class CommunityController{
         echo json_encode(true);
     }
 
+    /**
+     * Définit les membres d'une communauté.
+     *
+     * @param array $params Contient l'identifiant de la communauté ($params[0]).
+     *
+     * @return void
+     * - 422 avec un message JSON si le corps de la requête est manquant.
+     * - 401 avec un message JSON en cas d'erreur lors de la mise à jour des membres.
+     * - true (JSON) si les membres sont définis avec succès.
+     */
     public static function setMembers(array $params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
@@ -297,6 +330,18 @@ class CommunityController{
         }
     }
 
+    /**
+     * Exclut un membre d'une communauté.
+     *
+     * @param array $params Contient :
+     *  - L'identifiant de la communauté ($params[0]).
+     *  - L'identifiant du membre à exclure ($params[1]).
+     *
+     * @return void
+     * - 422 avec un message JSON si l'identifiant du membre est invalide.
+     * - 401 avec un message JSON en cas d'erreur lors de l'exclusion.
+     * - true (JSON) si l'exclusion réussit.
+     */
     public static function exclude(array $params){
         $member = $params[1];
 
@@ -317,6 +362,14 @@ class CommunityController{
         }
     }
 
+    /**
+     * Récupère les périodes associées à une communauté.
+     *
+     * @param array $params Contient l'identifiant de la communauté ($params[0]).
+     *
+     * @return void
+     * - Les périodes disponibles (JSON) pour la communauté si succès.
+     */
     public static function periods(array $params){
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);

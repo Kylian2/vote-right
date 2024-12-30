@@ -362,6 +362,17 @@ class ProposalController{
         json_encode($return);
     }
 
+    /**
+     * Met à jour les informations d'une proposition (ex. : budget).
+     *
+     * @param array $params Contient l'identifiant de la proposition ($params[0]).
+     *
+     * @return void
+     * - 422 avec un message JSON si l'entrée est invalide
+     * - 400 avec un message JSON en cas d'erreur lors de la mise à jour d'une donnée.
+     * - true (JSON) si la mise à jour réussit.
+     */
+
     public static function patch(array $params){
         $values["PRO_id_NB"] = $params[0];
         $proposal = new Proposal($values);
@@ -388,6 +399,15 @@ class ProposalController{
         echo json_encode(true);
     }
 
+    /**
+     * Supprime une proposition.
+     *
+     * @param array $params Contient l'identifiant de la proposition ($params[0]).
+     *
+     * @return void
+     * - 403 avec un message JSON si l'utilisateur n'est pas autorisé.
+     * - true (JSON) si la suppression réussit.
+     */
     public static function delete(array $params){
         $values["PRO_id_NB"] = $params[0];
         $proposal = new Proposal($values);
@@ -401,6 +421,18 @@ class ProposalController{
         echo json_encode(true);
     }
 
+    /**
+     * Gère l'approbation ou le rejet d'une proposition.
+     *
+     * @param array $params Contient l'identifiant de la proposition ($params[0]).
+     *
+     * @return void
+     * - 422 avec un message JSON si `approve` est invalide.
+     * - 403 avec un message JSON en cas d'erreur d'autorisation ou de budget dépassé.
+     * - 400 avec un message JSON si le budget dépasse les limites allouées.
+     * - true (JSON) si l'opération réussit.
+     * - false (JSON) en cas d'échec.
+     */
     public static function approve(array $params){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
