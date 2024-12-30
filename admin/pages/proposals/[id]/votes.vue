@@ -9,7 +9,7 @@
 <main class="vote">
     <section class="vote__informations">
         <h3>Informations du vote</h3>
-        <Select v-if="(votes.length > 0 ? !hasPassed(votes[0]['VOT_start_DATE']) : true)" name="votingType" :options="systems.map((s)=> [s['SYS_label_VC'], s['SYS_id_NB']])" 
+        <Select v-if="!votes.length > 0" name="system" :options="systems.map((s)=> [s['SYS_label_VC'], s['SYS_id_NB']])" 
             placeholder="Selectionner" 
             >Selectionnez un mode de scrutin</Select>
         <p v-else><b>Type de scrution :</b> {{ votes[0]['VOT_type_VC'] }}</p>
@@ -47,7 +47,7 @@
             {{ hasPassed(votes[0]['VOT_start_DATE']) ? 'Le vote a commencé le ' + formatDate(new Date(votes[0]['VOT_start_DATE'])) : 'Le vote commence le ' + formatDate(new Date(votes[0]['VOT_start_DATE'])) }}
         </p>
     </section>
-    <section v-if="!(votingType == 1 || votingType == 2) && votes.length === 0" class="vote__possibilities">
+    <section v-if="!(system == 1 || system == 2) && (votes.length > 0 ? !hasPassed(votes[0]['VOT_start_DATE']) : true)" class="vote__possibilities">
         <h3>Possibilités</h3>
         <p>Composez la liste de possibilité du vote</p>
 
@@ -66,10 +66,11 @@
     <section class="vote__actions" v-if="(votes.length > 0 ? !hasPassed(votes[0]['VOT_start_DATE']) : true)">
         <button class="btn btn--small btn--valid"
         :disabled="!(voteDurationValid || discussionDurationValid)"
+        @click="sendData"
         >Valider</button>
     </section>
     <!--Affichage de la liste des possibilités quand le vote a déjà commencé -->
-    <section v-if="!(votingType == 1 || votingType == 2) && (votes.length > 0 ? hasPassed(votes[0]['VOT_start_DATE']) : false)" class="vote__possibilities">
+    <section v-if="!(system == 1 || system == 2) && (votes.length > 0 ? hasPassed(votes[0]['VOT_start_DATE']) : false)" class="vote__possibilities">
         <h3>Possibilités</h3>
         <p>Voici la liste des possibilités du vote : </p>
 
@@ -79,8 +80,37 @@
             </ul> 
         </div>
     </section>
-
 </main>
+
+<Toast 
+    name="forbidden" 
+    :type="1" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+Vous n'avez pas les droits pour effectuer cette action
+</Toast>
+
+<Toast 
+    name="errorSendingData" 
+    :type="1" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+Une erreur est survenue
+</Toast>
+
+<Toast 
+    name="dataIsSend" 
+    :type="3" 
+    :time="5" 
+    :loader="true"
+    class="toast"
+>
+Paramètres enregistrés
+</Toast>
 
 </template>
 
@@ -103,7 +133,7 @@ const voteDurationValid = useState('voteDurationValid', () => null);
 const discussionDuration = useState('discussionDuration', () => null);
 const discussionDurationValid = useState('discussionDurationValid', () => null);
 
-const votingType = useState("votingType");
+const system = useState("system");
 
 const fetchData = async () => {
     try{
@@ -125,6 +155,7 @@ const fetchData = async () => {
         if (votes.value.length > 0){
             voteDuration.value = timeBetween(votes.value[0]['VOT_start_DATE'], votes.value[0]['VOT_end_DATE']);
             discussionDuration.value = proposal.value['PRO_discussion_duration_NB'];
+            possibilities.value = votes.value[0]['VOT_possibilities_TAB'].map((p) => p[0])
         }
 
     }catch(error){
@@ -166,6 +197,48 @@ const formatDate = (date) => {
         year: "numeric",
     });
 };
+
+const forbidden = useState('forbiddenUp');
+const errorSendingData = useState('errorSendingDataUp');
+const dataIsSend = useState('dataIsSendUp');
+const sendData = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/votes`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {
+                system: system.value,
+                discussionDuration: discussionDuration.value,
+                voteDuration: voteDuration.value,
+                possibilities: possibilities.value,
+            }
+        });
+
+        if(response == true){
+            dataIsSend.value = true;
+        }else{
+            errorSendingData.value = true;
+        }
+
+        const vot = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/votes`, {
+            credentials: 'include',
+        });
+        votes.value = vot;
+    }catch (error){
+        console.log('An unexpected error occured : ', error);
+        if(error.status === 403){
+            forbidden.value = true;
+        }
+        if(error.status === 422){
+            errorSendingData.value = true;
+        }
+        if(error.status === 400){
+            errorSendingData.value = true;
+        }
+    }
+
+    
+}
 
 onMounted(() => {
     fetchData();
