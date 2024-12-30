@@ -7,11 +7,14 @@
     <h4>Modalité de vote</h4>
 </div>
 <main class="vote">
-
     <section class="vote__informations">
         <h3>Informations du vote</h3>
-        <Select name="votingType" :options="systems.map((s)=> [s['SYS_label_VC'], s['SYS_id_NB']])" placeholder="Selectionner">Selectionnez un mode de scrutin</Select>
-        <div class="duration">
+        <Select v-if="(votes.length > 0 ? !hasPassed(votes[0]['VOT_start_DATE']) : true)" name="votingType" :options="systems.map((s)=> [s['SYS_label_VC'], s['SYS_id_NB']])" 
+            placeholder="Selectionner" 
+            >Selectionnez un mode de scrutin</Select>
+        <p v-else><b>Type de scrution :</b> {{ votes[0]['VOT_type_VC'] }}</p>
+
+        <div v-if="(votes.length > 0 ? !hasPassed(votes[0]['VOT_start_DATE']) : true)" class="duration">
             <InputNumber 
             name="discussionDuration"
             placeholder="ex : 4"
@@ -21,10 +24,12 @@
                 (v) => Boolean(v) || 'Champ requis',
                 (v) => v > 0 || 'La discussion doit durer au moins 1 jour'
             ]"
-            >Durée de discution</InputNumber>
+            >Durée de discussion</InputNumber>
             <p class="duration__unit">jours</p>
         </div>
-        <div class="duration">
+        <p v-else><b>Durée des discussions :</b> {{ proposal['PRO_discussion_duration_NB'] }} jours</p>
+
+        <div v-if="(votes.length > 0 ? !hasPassed(votes[0]['VOT_start_DATE']) : true)" class="duration">
             <InputNumber 
             name="voteDuration"
             placeholder="ex : 4"
@@ -37,8 +42,12 @@
             >Durée de vote</InputNumber>
             <p class="duration__unit">jours</p>
         </div>
+        <p v-else><b>Durée des votes :</b> {{ timeBetween(votes[0]['VOT_start_DATE'], votes[0]['VOT_end_DATE']) }} jours</p>
+        <p v-if="!(votes.length > 0 ? !hasPassed(votes[0]['VOT_start_DATE']) : true)" >
+            {{ hasPassed(votes[0]['VOT_start_DATE']) ? 'Le vote a commencé le ' + formatDate(new Date(votes[0]['VOT_start_DATE'])) : 'Le vote commence le ' + formatDate(new Date(votes[0]['VOT_start_DATE'])) }}
+        </p>
     </section>
-    <section v-if="!(votingType == 1 || votingType == 2)" class="vote__possibilities">
+    <section v-if="!(votingType == 1 || votingType == 2) && votes.length === 0" class="vote__possibilities">
         <h3>Possibilités</h3>
         <p>Composez la liste de possibilité du vote</p>
 
@@ -53,11 +62,22 @@
         </div>
         <button class="btn btn--small" @click="addPossibility()">Ajouter une possibilité</button>
     </section>
-    <section class="vote__actions">
-        <button class="btn btn--small"
+
+    <section class="vote__actions" v-if="(votes.length > 0 ? !hasPassed(votes[0]['VOT_start_DATE']) : true)">
+        <button class="btn btn--small btn--valid"
         :disabled="!(voteDurationValid || discussionDurationValid)"
         >Valider</button>
-        <button class="btn btn--cancel btn--small">Annuler</button>
+    </section>
+    <!--Affichage de la liste des possibilités quand le vote a déjà commencé -->
+    <section v-if="!(votingType == 1 || votingType == 2) && (votes.length > 0 ? hasPassed(votes[0]['VOT_start_DATE']) : false)" class="vote__possibilities">
+        <h3>Possibilités</h3>
+        <p>Voici la liste des possibilités du vote : </p>
+
+        <div v-if="votes[0]" class="vote__possibilities__container">
+            <ul v-for="possibility, key in votes[0]['VOT_possibilities_TAB']">
+                <li>{{ possibility[0] }}</li>
+            </ul> 
+        </div>
     </section>
 
 </main>
@@ -74,12 +94,14 @@ definePageMeta({
 })
 
 const proposal = ref({});
-const types = ref([]);
 const possibilities = ref(['']);
-const systems = ref(['']);
+const systems = ref([]);
+const votes = ref([]);
 
-const voteDurationValid = useState('voteDurationValid');
-const discussionDurationValid = useState('discussionDurationValid');
+const voteDuration = useState('voteDuration', () => null);
+const voteDurationValid = useState('voteDurationValid', () => null);
+const discussionDuration = useState('discussionDuration', () => null);
+const discussionDurationValid = useState('discussionDurationValid', () => null);
 
 const votingType = useState("votingType");
 
@@ -94,6 +116,17 @@ const fetchData = async () => {
             credentials: 'include',
         });
         systems.value = sys;
+
+        const vot = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/votes`, {
+            credentials: 'include',
+        });
+        votes.value = vot;
+
+        if (votes.value.length > 0){
+            voteDuration.value = timeBetween(votes.value[0]['VOT_start_DATE'], votes.value[0]['VOT_end_DATE']);
+            discussionDuration.value = proposal.value['PRO_discussion_duration_NB'];
+        }
+
     }catch(error){
         console.error('An unexpected error occurred:', error);
     }
@@ -106,6 +139,33 @@ const addPossibility = () => {
 const removePossibility = (index) => {
     possibilities.value.splice(index, 1);
 }
+
+const timeBetween = (date1, date2) => {
+
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    
+    if (isNaN(d1) || isNaN(d2)) {
+        return "Invalid dates";
+    }
+
+    let diff = d2 - d1;
+    diff = diff / (1000 * 60 * 60 * 24);
+    return Math.abs(Math.floor(diff)); // Math.abs pour ne pas avoir de valeur négative
+}
+
+const hasPassed = (date) => {
+    return new Date() > new Date(date);
+}
+
+const formatDate = (date) => {
+    if (!date) return "";
+    return date.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+};
 
 onMounted(() => {
     fetchData();
