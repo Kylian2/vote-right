@@ -10,12 +10,12 @@
 
     <section class="vote__informations">
         <h3>Informations du vote</h3>
-        <Select name="votingType" :options="types">Selectionnez un mode de scrutin</Select>
+        <Select name="votingType" :options="systems.map((s)=> [s['SYS_label_VC'], s['SYS_id_NB']])" placeholder="Selectionner">Selectionnez un mode de scrutin</Select>
         <div class="duration">
             <InputNumber 
             name="discussionDuration"
             placeholder="ex : 4"
-            min="1"
+            :min="1"
             required
             :rules="[
                 (v) => Boolean(v) || 'Champ requis',
@@ -28,7 +28,7 @@
             <InputNumber 
             name="voteDuration"
             placeholder="ex : 4"
-            min="1"
+            :min="1"
             required
             :rules="[
                 (v) => Boolean(v) || 'Champ requis',
@@ -38,7 +38,7 @@
             <p class="duration__unit">jours</p>
         </div>
     </section>
-    <section class="vote__possibilities">
+    <section v-if="!(votingType == 1 || votingType == 2)" class="vote__possibilities">
         <h3>Possibilités</h3>
         <p>Composez la liste de possibilité du vote</p>
 
@@ -76,15 +76,24 @@ definePageMeta({
 const proposal = ref({});
 const types = ref([]);
 const possibilities = ref(['']);
+const systems = ref(['']);
 
 const voteDurationValid = useState('voteDurationValid');
 const discussionDurationValid = useState('discussionDurationValid');
+
+const votingType = useState("votingType");
+
 const fetchData = async () => {
     try{
         const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}`, {
             credentials: 'include',
         });
         proposal.value = response;
+
+        const sys = await $fetch(`${config.public.baseUrl}/votes/systems`, {
+            credentials: 'include',
+        });
+        systems.value = sys;
     }catch(error){
         console.error('An unexpected error occurred:', error);
     }
