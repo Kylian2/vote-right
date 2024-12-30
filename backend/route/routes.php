@@ -36,6 +36,9 @@ Router::get('/users/me/role/{community}', 'userController@role', true);
 Router::get('/proposals/ongoing', 'proposalController@ongoing', true);
 Router::get('/proposals/finished', 'proposalController@finished', true);
 Router::post('/proposals', 'proposalController@store', true);
+Router::patch('/proposals/{id}', 'proposalController@patch', true);
+Router::delete('/proposals/{id}', 'proposalController@delete', true);
+Router::post('/proposals/{id}/approve', 'proposalController@approve', true);
 Router::get('/proposals/{id}', 'proposalController@show', true);
 Router::get('/proposals/{id}/comments', 'proposalController@comments', true);
 Router::get('/proposals/{id}/reactions', 'proposalController@reactions', true);
@@ -46,6 +49,8 @@ Router::get('/proposals/{id}/membership', 'proposalController@isMember', true);
 Router::get('/proposals/{id}/votes', 'proposalController@voteInfos', true);
 Router::get('/proposals/{id}/{round}/vote', 'proposalController@voteResult', true);
 Router::post('/proposals/{id}/{round}/vote', 'proposalController@saveVote', true);
+Router::post('/proposals/{id}/{round}/vote/valid', 'proposalController@validateVote', true);
+Router::get('/proposals/{id}/managed', 'proposalController@managed', true);
 
 Router::post('/comments', 'commentController@store', true);
 Router::get('/comments/{id}/reactions', 'commentController@reactions', true);

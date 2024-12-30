@@ -76,6 +76,28 @@ class Vote extends Model{
         return true;
     }
 
+    public static function validateVote(int $proposal, int $round, int $user, bool $valid){
+        //Vérification faite aussi en base de données avec le trigger
+        $request = "SELECT MEM_role_NB FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['user'] = $user;
+        $values['proposal'] = $proposal;
+        $prepare->execute($values);
+        $role = $prepare->fetch();
+        if($role[0] != ROLE_ASSESSOR){
+            return false;
+        }
+        
+        $request = 'UPDATE vote
+                    SET VOT_assessor_NB = :user, VOT_valid_BOOL = :valid
+                    WHERE VOT_proposal_NB = :proposal AND VOT_round_NB = :round;';
+        $prepare = connexion::pdo()->prepare($request);
+        $values['round'] = $round;
+        $values['valid'] = $valid;
+        $prepare->execute($values);
+        return true;
+    }
+
 }
 
 ?>
