@@ -38,15 +38,14 @@ BEGIN
 
         SELECT COUNT(*) > 0 INTO majority
         FROM (
-            SELECT POS_id_NB, POS_round_NB, COUNT(*) AS nb_votes
-            FROM possibility
-            INNER JOIN vote_detail ON DET_choice_NB = POS_id_NB
-            WHERE POS_proposal_NB = proposal AND POS_round_NB = round
-            GROUP BY POS_id_NB, POS_round_NB
+            SELECT DET_choice_NB, DET_round_NB, COUNT(*) AS nb_votes
+            FROM vote_detail
+            WHERE DET_proposal_NB = 49 AND DET_round_NB = 1
+            GROUP BY DET_choice_NB, DET_round_NB
             HAVING COUNT(*) > (
                 SELECT COUNT(*) / 2 
                 FROM vote_detail 
-                WHERE DET_proposal_NB = proposal AND DET_round_NB = round
+                WHERE DET_proposal_NB = 49 AND DET_round_NB = 1
             )
         ) AS majority;
 
