@@ -328,5 +328,161 @@ class ProposalController{
         }
 
     }
+
+    /**
+     * Valide ou refuse un vote
+     * 
+     * @param $params Une liste contenant les paramètres de la requêtes
+     * 
+     * Compositon de $params : 
+     * - Indice 0 = $id, l'identifiant de la proposition
+     * - Indice 1 = $round, le tour du vote
+     * 
+     * Body : 
+     * - valid : `bool` `true` si le vote est validé, `false` sinon
+     * 
+     * @return void le resultat est affiché au format JSON
+     */
+    public static function validateVote($params){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body['valid']) || !is_bool($body['valid'])){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Invalid data';
+            echo json_encode($return);
+            return;
+        }
+
+        $return = Vote::validateVote($params[0], $params[1], SessionGuard::getUserId(), $body['valid']);
+
+        if(!$return){
+            http_response_code(403);
+        }
+        json_encode($return);
+    }
+
+    /**
+     * Met à jour les informations d'une proposition (ex. : budget).
+     *
+     * @param array $params Contient l'identifiant de la proposition ($params[0]).
+     *
+     * @return void
+     * - 422 avec un message JSON si l'entrée est invalide
+     * - 400 avec un message JSON en cas d'erreur lors de la mise à jour d'une donnée.
+     * - true (JSON) si la mise à jour réussit.
+     */
+
+    public static function patch(array $params){
+        $values["PRO_id_NB"] = $params[0];
+        $proposal = new Proposal($values);
+
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(isset($body['budget'])){
+            if(!is_numeric($body['budget']) || $body['budget'] < 0){
+                http_response_code(422);
+                $return["Unprocessable Entity"] = 'Budget is not valid';
+                echo json_encode($return);
+                return;
+            }
+            try{
+                $proposal->setBudget($body['budget']);
+            }catch(PDOException $e){
+                http_response_code(400);
+                $return["Error"] = $e->errorInfo[2];
+                echo json_encode($return);
+                return;
+            }
+        }
+        echo json_encode(true);
+    }
+
+    /**
+     * Supprime une proposition.
+     *
+     * @param array $params Contient l'identifiant de la proposition ($params[0]).
+     *
+     * @return void
+     * - 403 avec un message JSON si l'utilisateur n'est pas autorisé.
+     * - true (JSON) si la suppression réussit.
+     */
+    public static function delete(array $params){
+        $values["PRO_id_NB"] = $params[0];
+        $proposal = new Proposal($values);
+        $userId = SessionGuard::getUserId();
+        $result = $proposal->delete($userId);
+        if(!$result){
+            http_response_code(403);
+            echo json_encode($result);
+            return;
+        }
+        echo json_encode(true);
+    }
+
+    /**
+     * Gère l'approbation ou le rejet d'une proposition.
+     *
+     * @param array $params Contient l'identifiant de la proposition ($params[0]).
+     *
+     * @return void
+     * - 422 avec un message JSON si `approve` est invalide.
+     * - 403 avec un message JSON en cas d'erreur d'autorisation ou de budget dépassé.
+     * - 400 avec un message JSON si le budget dépasse les limites allouées.
+     * - true (JSON) si l'opération réussit.
+     * - false (JSON) en cas d'échec.
+     */
+    public static function approve(array $params){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body['approve']) || !is_bool($body['approve'])){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Invalid data';
+            echo json_encode($return);
+            return;
+        }
+
+        $values["PRO_id_NB"] = $params[0];
+        $proposal = new Proposal($values);
+        $userId = SessionGuard::getUserId();
+        $result = $proposal->approve($userId, $body['approve']);
+        if($result !== true){
+            if(!$result){
+                http_response_code(403);
+                echo json_encode(false);
+                return;
+            }
+            if($result->errorInfo[2] === "Erreur : Le budget de cette proposition fait dépasser le budget total alloué pour son thème."){
+                http_response_code(400);
+                echo json_encode(false);
+                return;
+            }
+            if($result->errorInfo[2] === "Erreur : Le budget de cette proposition fait dépasser le budget total alloué pour son thème."){
+                http_response_code(403);
+                echo json_encode(false);
+                return;
+            }
+            echo json_encode(false);
+            return;
+        }
+        echo json_encode(true);
+    }
+
+    /**
+     * Affiche renvoie un boolean indiquant si l'utilisateur peut gerer cette proposition
+     * (admin, modérateur, décideur, assesseur)
+     * 
+     * @param array $params les paramètres de l'url
+     * 
+     * @return void retourne le resultat sous forme de JSON
+     */
+    public static function managed($params){
+        $userId = SessionGuard::getUserId();
+        $result = Proposal::canManage($params[0], $userId);
+        echo json_encode($result);
+    }
+
 }
 ?>

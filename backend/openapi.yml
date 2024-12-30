@@ -1202,6 +1202,13 @@ paths:
         name: id
         in: path
         required: true
+        description: L'identifiant de la proposition
+      - schema:
+          type: string
+        in: cookie
+        name: PHPSESSID
+        description: Le cookie d'authentification
+        required: true
     get:
       summary: Récupérer les informations d'une proposition
       responses:
@@ -1277,6 +1284,73 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+    patch:
+      summary: Mettre à jour une donnée
+      tags:
+        - proposals
+      responses:
+        '200':
+          description: 'OK, un boolean `true` si la requete s''est bien déroulée.'
+        '400':
+          description: 'Bad Request, une erreur est survenue. Peut provenir d''un dépassement de budget'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: string
+                x-examples:
+                  Example 1:
+                    Error: 'Erreur : Le budget de cette proposition fait dépasser le budget total alloué pour son thème.'
+              examples:
+                Example 1:
+                  value:
+                    Error: 'Erreur : Le budget de cette proposition fait dépasser le budget total alloué pour son thème.'
+      operationId: patch-proposals-id
+      x-stoplight:
+        id: 11v2pp9xg52p4
+      description: 'Mets à jour les données de proposals, il n''est pas nécessaire de mettre à joute toutes les données, une seule suffit. '
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: |-
+          Les éléments à modifier ainsi que leur nouvelle valeur. 
+          Voici la liste des éléments modifiables
+          - `budget` : `float`.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples:
+              Example 1:
+                value:
+                  budget: 12000
+    delete:
+      summary: Supprimer une proposition
+      tags:
+        - proposals
+      responses:
+        '200':
+          description: 'OK, la proposition a été supprimée `true`.'
+        '403':
+          description: 'Forbidden, vous n''avez pas les droits sur la proposition. Renvoie `false`.'
+      operationId: delete-proposals-id
+      x-stoplight:
+        id: 2crq6q895xu2f
+      description: Permet de supprimer une proposition
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
   '/proposals/{id}/comment':
     parameters:
       - schema:
@@ -2605,6 +2679,119 @@ paths:
         name: id
         in: path
         required: true
+  '/proposals/{id}/{round}/vote/valid':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: round
+        in: path
+        required: true
+    post:
+      summary: Valide le résultat d'un vote
+      tags:
+        - votes
+        - proposals
+      responses:
+        '200':
+          description: 'OK, le vote  été validé. Renvoie `true`.'
+        '403':
+          description: 'Forbidden, vous n''avez pas les droits pour valider le vote.'
+      operationId: post-proposals-id-round-vote-valid
+      x-stoplight:
+        id: auwranvrfvauk
+      description: Permet de valider ou refuser le résultat d'un vote.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: '`valid` est `true` si le vote est accepté, `false` sinon.'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                valid:
+                  type: boolean
+              x-examples:
+                Example 1:
+                  valid: true
+            examples:
+              Example 1:
+                value:
+                  valid: true
+  '/proposals/{id}/approve':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: Approuver une proposition
+      tags:
+        - proposals
+      responses:
+        '200':
+          description: OK
+        '403':
+          description: 'Forbidden, vous n''avez pas les droits.'
+      operationId: post-proposals-id-approve
+      x-stoplight:
+        id: x7vzoaaw1bf97
+      description: Permet d'approuver une proposition.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: '`approve` est `true` si la proposition est approuvée, `false` sinon.'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                approve:
+                  type: boolean
+                  x-stoplight:
+                    id: 8ht8gpibx6ruv
+  '/proposals/{id}/manage':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Indique si l'utilisateur a des droits de gestion
+      tags:
+        - proposals
+        - roles
+      responses:
+        '200':
+          description: 'OK, `true` si l''utilisateur à des droits, `false` sinon.'
+      operationId: get-proposals-id-manage
+      x-stoplight:
+        id: 6v6cgnxm0oh5v
+      description: Indique si l'utilisateur a des droits de gestion sur la proposition.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
   '/invitations/{id}/reject':
     parameters:
       - schema:
