@@ -75,11 +75,8 @@ class User extends Model{
         $values["community"] = $community;
 
         $prepare -> execute($values);
+        $prepare->setFetchmode(PDO::FETCH_OBJ);
         $result = $prepare->fetch();
-
-        //Retirer les éléments inutiles
-        unset($result[0]);
-        unset($result[1]);
         
         return $result;
     }

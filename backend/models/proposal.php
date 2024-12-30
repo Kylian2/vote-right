@@ -135,12 +135,8 @@ class Proposal extends Model{
         $prepare = connexion::pdo()->prepare($request);
         $values["proposal"] = $this->PRO_id_NB;
         $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_OBJ);
         $reactions = $prepare->fetch();
-
-        unset($reactions[0]);
-        unset($reactions[1]);
-        unset($reactions[2]);
-        unset($reactions[3]);
 
         $reactions['nblove'] = (int) $reactions['nblove'];
         $reactions['nblike'] = (int) $reactions['nblike'];
