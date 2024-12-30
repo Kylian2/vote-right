@@ -21,8 +21,6 @@
         <Modal
         name="settings"
         cancel-text="Quitter"
-        :disable-valid="true"
-        :before-ok="() => {editButton = !editButton}"
         >
             <template #title>Paramètres de compte</template>
 
@@ -46,36 +44,16 @@
 
                 <div v-if="MyInformationSection">
                     <div>
-                        <p @click="editChange">{{ allowedChanges ? 'Annuler' : 'Modifier' }}</p>
+                        <button @click="editChange">{{ allowedChanges ? 'Annuler' : 'Modifier' }}</button>
                     </div>
                     <div>
-                        <p>Date de naissance :</p>
-                        <p v-if="!allowedChanges">{{ birthdate }}</p>
-                        <Input v-else id="userBirthdate" :value="birthdate"></Input>
-                    </div>
-
-                    <div>
-                        <p>Adresse :</p>
-                        <p v-if="!allowedChanges">{{ address }}</p>
-                        <Input v-else id="userAddress"></Input>
+                        <p v-if="!allowedChanges">Date de naissance<span>{{ user['USR_birthdate_DATE'] }}</span></p>
+                        <input v-else type="date" name="userBirthdate" v-model="birthdate">Date de naissance</input>
                     </div>
 
                     <div>
-                        <p>Code postal :</p>
-                        <p v-if="!allowedChanges">{{ zipcode }}</p>
-                        <Input v-else id="userZipcode"></Input>
-                    </div>
-
-                    <div>
-                        <p>Mail :</p>
-                        <p v-if="!allowedChanges">{{ email }}</p>
-                        <Input v-else id="userEmail"></Input>
-                    </div>
-                    
-                    <div>
-                        <p>Mot de passe :</p>
-                        <p v-if="!allowedChanges">********</p>
-                        <Input v-else id="userPassword"></Input>
+                        <p v-if="!allowedChanges">Adresse<span>{{ user['USR_address_VC'] }}</span></p>
+                        <input v-else type="text" name="userAddress" v-model="address">Adresse</input>
                     </div>
                 </div>
 
