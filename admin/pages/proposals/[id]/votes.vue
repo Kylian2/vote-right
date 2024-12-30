@@ -15,6 +15,12 @@
             <InputNumber 
             name="discussionDuration"
             placeholder="ex : 4"
+            min="1"
+            required
+            :rules="[
+                (v) => Boolean(v) || 'Champ requis',
+                (v) => v > 0 || 'La discussion doit durer au moins 1 jour'
+            ]"
             >Durée de discution</InputNumber>
             <p class="duration__unit">jours</p>
         </div>
@@ -22,28 +28,35 @@
             <InputNumber 
             name="voteDuration"
             placeholder="ex : 4"
+            min="1"
+            required
+            :rules="[
+                (v) => Boolean(v) || 'Champ requis',
+                (v) => v > 0 || 'Le vote doit durer au moins 1 jour'
+            ]"
             >Durée de vote</InputNumber>
             <p class="duration__unit">jours</p>
         </div>
     </section>
     <section class="vote__possibilities">
-
         <h3>Possibilités</h3>
         <p>Composez la liste de possibilité du vote</p>
 
         <div class="vote__possibilities__container">
-            <div v-for="key in 5">
-                <Input 
+            <div v-for="possibility, key in possibilities">
+                <input class="input--classique"
                 type="text" placeholder="Indiquer une possibilité" no-label
-                :name="'possibility'+key">
-                </Input>
-                <button class="error btn">X</button>
-            </div>
+                :name="'possibility'+key" v-model="possibilities[key]">
+                </input>
+                <button tabindex="-1" class="error btn"@click="removePossibility(key)">X</button>
+            </div> 
         </div>
-        <button class="btn btn--small">Ajouter une possibilité</button>
+        <button class="btn btn--small" @click="addPossibility()">Ajouter une possibilité</button>
     </section>
     <section class="vote__actions">
-        <button class="btn btn--small">Valider</button>
+        <button class="btn btn--small"
+        :disabled="!(voteDurationValid || discussionDurationValid)"
+        >Valider</button>
         <button class="btn btn--cancel btn--small">Annuler</button>
     </section>
 
@@ -62,7 +75,10 @@ definePageMeta({
 
 const proposal = ref({});
 const types = ref([]);
+const possibilities = ref(['']);
 
+const voteDurationValid = useState('voteDurationValid');
+const discussionDurationValid = useState('discussionDurationValid');
 const fetchData = async () => {
     try{
         const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}`, {
@@ -72,6 +88,14 @@ const fetchData = async () => {
     }catch(error){
         console.error('An unexpected error occurred:', error);
     }
+}
+
+const addPossibility = () => {
+    possibilities.value.push('');
+}
+
+const removePossibility = (index) => {
+    possibilities.value.splice(index, 1);
 }
 
 onMounted(() => {

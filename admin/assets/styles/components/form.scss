@@ -1,3 +1,22 @@
+.input--classique{
+    background: $background-light;
+    padding: 15px 10px;
+    border: 2px solid $background-light;
+    border-radius: 10px;
+    width: 400px;
+
+    @media screen and (max-width: 600px) {
+        width: auto;
+    }
+
+    &::placeholder{
+        color: rgba($color: $default, $alpha: 0.6)
+    }
+    &:focus, &:focus-visible, &:active{
+        border: 2px solid $color-5 !important;
+    }
+}
+
 .base{
     display: flex;
     flex-direction: column;

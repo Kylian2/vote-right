@@ -75,6 +75,14 @@
                     background: unset;
                     font-size: 20px;
                     padding: 0;
+                    &:hover{
+                        background: unset;
+                        color: darken($color: $error, $amount: 10);
+                    }
+                    &:active{
+                        background: unset;
+                        color: darken($color: $error, $amount: 10);
+                    }
                 }
             }
             
