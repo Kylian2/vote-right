@@ -8,16 +8,16 @@ BEGIN
     DECLARE sumBudgetsProposals INT;
     DECLARE maximumBudgetTheme INT;
 
-    IF NEW.PRO_approver_NB IS NOT NULL
-    AND NEW.PRO_budget_NB IS NOT NULL
-    AND (OLD.PRO_budget_NB IS NULL OR NEW.PRO_budget_NB > OLD.PRO_budget_NB) THEN
+    IF NEW.PRO_status_VC = 'Validée'
+    AND NEW.PRO_budget_NB IS NOT NULL THEN
 
         SELECT COALESCE(SUM(PRO_budget_NB), 0) + NEW.PRO_budget_NB INTO sumBudgetsProposals
         FROM proposal
         WHERE PRO_id_NB != NEW.PRO_id_NB
         AND PRO_theme_NB = NEW.PRO_theme_NB
         AND PRO_community_NB = NEW.PRO_community_NB
-        AND PRO_period_YEAR = NEW.PRO_period_YEAR;
+        AND PRO_period_YEAR = NEW.PRO_period_YEAR
+        AND PRO_status_VC = 'Validée';
 
         SELECT BUT_amount_NB INTO maximumBudgetTheme
         FROM theme_budget

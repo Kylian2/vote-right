@@ -1,9 +1,19 @@
 .index{
 
+    @media screen and (max-width: 600px) {
+        width: 100vw;
+        margin: 0;
+        padding: 20px;
+
+        input, button{
+            width: 100%
+        }
+    }
+
     h1{
         margin: 30px 0;
 
-        @media screen and (max-width: 400px) {
+        @media screen and (max-width: 600px) {
             text-align: center;
         }
     }
@@ -14,6 +24,11 @@
         width: 400px;
         align-content: center;
         height: 80vh;
+
+        @media screen and (max-width: 600px) {
+            width: calc(100vw - 40px);
+            margin: 0;
+        }
         
         > form{
             display: flex;

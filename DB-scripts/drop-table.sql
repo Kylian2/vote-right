@@ -7,7 +7,6 @@ DROP TABLE IF EXISTS vote;
 DROP TABLE IF EXISTS proposal_reaction;
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS proposal;
-DROP TABLE IF EXISTS theme;
 DROP TABLE IF EXISTS community_budget;
 DROP TABLE IF EXISTS theme_budget;
 DROP TABLE IF EXISTS theme;

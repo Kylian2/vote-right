@@ -261,6 +261,44 @@ class notificationController{
         }
     }
 
+    public static function sendInvitation(string $recipientMail, User $sender, Invitation $invitation, Community $community){
+
+        $mail = Mailer::init();
+        $mail->Subject = "Vous avez reçu une invitation";
+
+        $htmlBody = file_get_contents('./view/mail/invitation.html');
+        $htmlBody = str_replace(
+            [
+                '[backgroundColor]', 
+                '{{firstname}}', 
+                '{{lastname}}', 
+                '{{community}}', 
+                '{{code}}', 
+                '{{invitationId}}'
+            ],
+            [
+                $community->get("CMY_color_VC"), 
+                $sender->get('USR_firstname_VC'),
+                $sender->get('USR_lastname_VC'),
+                $community->get("CMY_name_VC"),
+                $invitation->get('INV_code_NB'),
+                $invitation->get('INV_id_VC'),
+            ],
+            $htmlBody
+        );
+        $mail->Body = $htmlBody;
+        $mail->SMTPKeepAlive = true;
+
+        try{
+            $mail->addAddress($recipientMail);
+            $return = Mailer::send($mail);
+            $mail->SmtpClose();
+            return $return;
+        }catch (Exception $e) {
+            echo "Erreur d'envoi : {$mail->ErrorInfo}";
+        }
+    }
+
 }
 
 ?>

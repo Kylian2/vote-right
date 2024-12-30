@@ -3,6 +3,7 @@
 @require_once('models/model.php');
 
 define("ROLE_ADMIN",1);
+define('ROLE_MEMBER', 5);
 
 class Community extends Model{
     
@@ -100,6 +101,23 @@ class Community extends Model{
         return true;
     }
 
+    public function addMember($member){
+        $request = 'INSERT INTO member(MEM_community_NB, MEM_user_NB, MEM_role_NB) 
+                    VALUES (:community, :user, :role)';
+        $prepare = connexion::pdo()->prepare($request);
+        $values = array(
+            "community" => $this->get('CMY_id_NB'),
+            "user" => $member,
+            "role" => ROLE_MEMBER,
+        );
+        try{
+            $prepare->execute($values);
+            return true;
+        }catch (PDOException $e){
+            return false;
+        }
+    }
+
     public function getOngoingProposals(){
         @require_once("models/proposal.php");
         $request = "SELECT p.PRO_id_NB, p.PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC, PRO_budget_NB, PRO_period_YEAR,
@@ -187,7 +205,7 @@ class Community extends Model{
 
     public function getMembers(){
         @require_once("models/user.php");
-        $request = "SELECT USR_firstname_VC, USR_lastname_VC, ROL_label_VC, MEM_role_NB FROM members_role WHERE MEM_community_NB = :community";
+        $request = "SELECT USR_id_NB, USR_firstname_VC, USR_lastname_VC, ROL_label_VC, MEM_role_NB FROM members_role WHERE MEM_community_NB = :community";
         $prepare = connexion::pdo()->prepare($request);
         $values["community"] = $this->CMY_id_NB;    
         $prepare->execute($values);
@@ -200,6 +218,33 @@ class Community extends Model{
         }
         return $result;
     }
+
+    public function setMembers(array $members){
+        @require_once("models/user.php");
+        $request = 'UPDATE member SET MEM_role_NB = :role WHERE MEM_user_NB = :user AND MEM_community_NB = :community';
+        $prepare = connexion::pdo()->prepare($request);
+        $values['community'] = $this->get('CMY_id_NB');
+
+        foreach($members as $user => $role){
+            if(!is_numeric($user) || !is_numeric($role)){
+                throw new Exception('Invalid value');
+                return;
+            }
+            $values['user'] = $user;
+            $values['role'] = $role;
+            try{
+                $prepare->execute($values);
+            }catch(PDOException $e){
+                if($e->errorInfo[2] === "Erreur : Veuillez nommer au moins un administrateur avant de vous rétrograder."){
+                    throw new Exception('Missing Administrator');
+                    return;
+                }
+                throw new Exception($e->errorInfo[2]);
+                return;
+            }
+        }
+    }
+
 
     public function getThemes(){
         @require_once("models/theme.php");
@@ -280,6 +325,40 @@ class Community extends Model{
             $values['theme'] = $theme;
             $prepare->execute($values);
         }
+    }
+
+    public function exclude(int $member){
+        $request = 'DELETE FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = :community';
+        $prepare = connexion::pdo()->prepare($request);
+        $values["community"] = $this->CMY_id_NB;    
+        $values["user"] = $member;
+
+        try{
+            $prepare->execute($values);
+        }catch(PDOException $e){
+            if($e->errorInfo[2] === "Erreur : Veuillez nommer au moins un administrateur avant de quitter le groupe."){
+                throw new Exception('Missing Administrator');
+                return;
+            }
+            throw new Exception($e->errorInfo[2]);
+            return;
+        }
+    }
+
+    public function getPeriods(){
+        $request = "SELECT DISTINCT BUC_period_YEAR FROM community_budget WHERE BUC_community_NB = :community";
+        $prepare = connexion::pdo()->prepare($request);
+        $values["community"] = $this->get('CMY_id_NB');
+        $prepare->execute($values);
+        $result = $prepare->fetchAll();
+
+        //Formattage du resultat
+        $periods = array();
+        foreach($result as $period){
+            $periods[] = $period[0];
+        }
+        
+        return array_reverse($periods);
     }
 
 }
