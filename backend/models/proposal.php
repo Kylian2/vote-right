@@ -274,7 +274,7 @@ class Proposal extends Model{
         $values['proposal'] = $this->get('PRO_id_NB');
         $prepare->execute($values);
         $role = $prepare->fetch();
-        if($role[0] != ROLE_ADMIN){
+        if(!$role || $role[0] != ROLE_ADMIN){
             return false;
         }
 
@@ -297,7 +297,7 @@ class Proposal extends Model{
         $values['proposal'] = $this->get('PRO_id_NB');
         $prepare->execute($values);
         $role = $prepare->fetch();
-        if(!($role[0] == ROLE_ADMIN || $role[0] == ROLE_DECIDER)){
+        if(!$role || !($role[0] == ROLE_ADMIN || $role[0] == ROLE_DECIDER)){
             return false;
         }
 

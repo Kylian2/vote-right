@@ -379,6 +379,7 @@ class ProposalController{
             try{
                 $proposal->setBudget($body['budget']);
             }catch(PDOException $e){
+                http_response_code(400);
                 $return["Error"] = $e->errorInfo[2];
                 echo json_encode($return);
                 return;
