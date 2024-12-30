@@ -9,7 +9,7 @@
 <main class="vote">
     <section class="vote__informations">
         <h3>Informations du vote</h3>
-        <Select v-if="!votes.length > 0" name="system" :options="systems.map((s)=> [s['SYS_label_VC'], s['SYS_id_NB']])" 
+        <Select v-if="(votes.length > 0 ? !hasPassed(votes[0]['VOT_start_DATE']) : true)" name="system" :options="systems.map((s)=> [s['SYS_label_VC'], s['SYS_id_NB']])" 
             placeholder="Selectionner" 
             >Selectionnez un mode de scrutin</Select>
         <p v-else><b>Type de scrution :</b> {{ votes[0]['VOT_type_VC'] }}</p>
@@ -156,6 +156,7 @@ const fetchData = async () => {
             voteDuration.value = timeBetween(votes.value[0]['VOT_start_DATE'], votes.value[0]['VOT_end_DATE']);
             discussionDuration.value = proposal.value['PRO_discussion_duration_NB'];
             possibilities.value = votes.value[0]['VOT_possibilities_TAB'].map((p) => p[0])
+            system.value = votes.value[0]['VOT_type_NB']
         }
 
     }catch(error){
@@ -204,7 +205,7 @@ const dataIsSend = useState('dataIsSendUp');
 const sendData = async () => {
     try{
         const response = await $fetch(`${config.public.baseUrl}/proposals/${route.params.id}/votes`, {
-            method: 'POST',
+            method: `${votes.value.length === 0 ? 'POST' : 'PUT'}`,
             credentials: 'include',
             body: {
                 system: system.value,

@@ -77,4 +77,58 @@ class voteController{
             return;
         }
     }
+    
+    /**
+     * Met à jour un vote existant pour une proposition.
+     *
+     * @param array $params Contient l'identifiant de la proposition ($params[0]).
+     *
+     * @return void
+     * - 422 avec un message JSON si les données sont manquantes ou invalides.
+     * - 400 avec un message JSON si le vote a déjà commencé et ne peut être modifié.
+     * - 403 avec un message JSON si l'utilisateur n'a pas les droits sur la proposition.
+     * - true (JSON) si la mise à jour est effectuée avec succès.
+     */
+    public static function put(array $params){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body)){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Missing data';
+            echo json_encode($return);
+            return;
+        }
+        try{
+            VoteValidator::validateVoteData($body);
+        } catch (Error $e){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = $e->getMessage();
+            echo json_encode($return);
+            return;
+        }
+
+        $values['VOT_proposal_NB'] = $params[0];
+        $values['VOT_duration_NB'] = $body['voteDuration'];
+        $values['VOT_discussion_duration_NB'] = $body['discussionDuration'];
+        $values['VOT_type_NB'] = $body['system'];
+        $values['VOT_possibilities_TAB'] = $body['possibilities'];
+
+        $vote = new Vote($values);
+        try{
+            $result = $vote->edit();
+            if($result === false){
+                http_response_code(400);
+                $return["Error"] = 'Vote has already started';
+                echo json_encode($return);
+                return;
+            }
+            echo json_encode(true);
+        }catch (PDOException $e){
+            http_response_code(403);
+            $return["Error"] = 'You have no rights on this proposal';
+            echo json_encode($e);
+            return;
+        }
+    }
 }

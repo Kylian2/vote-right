@@ -127,7 +127,7 @@ cancel-text="Annuler"
     updateBudget();
 }"
 :before-cancel=" () => {
-    proposalBudgetEdit = null;
+    proposalBudgetEdit = 0;
 }"
 >
 <template #title>Modifier le budget</template>

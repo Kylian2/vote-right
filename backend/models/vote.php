@@ -28,7 +28,7 @@ class Vote extends Model{
      * 2. Met à jour la durée de discussion de la proposition dans la table `proposal`.
      * 3. Insère le vote dans la table `vote` avec les informations suivantes :
      *    - Proposition, numéro de tour, date de début et de fin, type de vote.
-     * 4. Détermine les possibilités de vote en fonction du type (`POUR` ou `OUI` par défaut).
+     * 4. Détermine les possibilités de vote en fonction du type (`POUR/CONTRE` ou `OUI/NON` par défaut).
      * 5. Insère chaque possibilité dans la table `possibility`.
      *
      * @return bool
@@ -81,6 +81,74 @@ class Vote extends Model{
         }
 
         $request = 'INSERT INTO possibility(POS_label_VC, POS_proposal_NB, POS_round_NB) VALUES (:possibility, :proposal, :round)';
+        $prepare = connexion::pdo()->prepare($request);
+        unset($values['system']);
+        unset($values['duration']);
+        unset($values['discussion']);
+        
+        foreach ($possibilities as $possibility){
+            $values['possibility'] = $possibility;
+            $prepare->execute($values);
+        }
+        return true;
+    }
+
+    /**
+     * Modifie un vote existant si le vote n'a pas encore commencé.
+     *
+     * Processus :
+     * 1. Vérifie s'il existe un vote futur pour la proposition (`VOT_start_DATE > CURRENT_DATE()`).
+     *    - Si aucun vote n'est trouvé, retourne `false`.
+     * 2. Supprime les anciennes possibilités associées à la proposition.
+     * 3. Met à jour la durée de discussion dans la table `proposal`.
+     * 4. Met à jour les détails du vote dans la table `vote` (dates de début/fin et type de vote).
+     * 5. Détermine les nouvelles possibilités de vote en fonction du type (`POUR/CONTRE` ou `OUI/NON` par défaut).
+     * 6. Insère les nouvelles possibilités dans la table `possibility`.
+     * 
+     * @return bool
+     * - `true` si la modification est effectuée avec succès.
+     * - `false` si aucun vote futur n'est trouvé pour la proposition.
+     */
+    public function edit(){
+        $request = 'SELECT COUNT(*) FROM vote WHERE VOT_proposal_NB = :proposal AND VOT_start_DATE > CURRENT_DATE()';
+        $prepare = connexion::pdo()->prepare($request);
+        $values['proposal'] = $this->get('VOT_proposal_NB');
+        $prepare->execute($values);
+        $round = $prepare->fetch();
+        
+        if(!$round){
+            return false;
+        }
+
+        $request = 'DELETE FROM possibility WHERE POS_proposal_NB = :proposal';
+        $prepare = connexion::pdo()->prepare($request);
+        $prepare->execute($values);
+
+        $request = 'UPDATE proposal SET PRO_discussion_duration_NB = :discussion WHERE PRO_id_NB = :proposal';
+        $prepare = connexion::pdo()->prepare($request);
+        $values['discussion'] = $this->get('VOT_discussion_duration_NB');
+        $prepare->execute($values);
+
+        $request = 'UPDATE vote SET VOT_start_DATE = DATE_ADD((SELECT PRO_creation_DATE FROM proposal WHERE PRO_id_NB = :proposal), INTERVAL :discussion DAY),
+                                    VOT_end_DATE = DATE_ADD( DATE_ADD((SELECT PRO_creation_DATE FROM proposal WHERE PRO_id_NB = :proposal), INTERVAL :discussion DAY), INTERVAL :duration DAY),
+                                    VOT_type_NB = :system 
+                    WHERE VOT_proposal_NB = :proposal AND VOT_round_NB = 1 AND VOT_start_DATE > CURRENT_DATE();';
+        $prepare = connexion::pdo()->prepare($request);
+        $values['duration'] = $this->get('VOT_duration_NB');
+        $values['system'] = $this->get('VOT_type_NB');
+        $prepare->execute($values);
+        
+        $possibilities = $this->get('VOT_possibilities_TAB');
+
+        if($this->get('VOT_type_NB') == POUR){
+            $possibilities = ['POUR', 'CONTRE'];
+        }
+
+        if($this->get('VOT_type_NB') == OUI){
+            $possibilities = ['OUI', 'NON'];
+        }
+
+        $request = 'INSERT INTO possibility(POS_label_VC, POS_proposal_NB, POS_round_NB) VALUES (:possibility, :proposal, 1)';
         $prepare = connexion::pdo()->prepare($request);
         unset($values['system']);
         unset($values['duration']);
