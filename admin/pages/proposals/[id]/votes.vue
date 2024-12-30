@@ -1,7 +1,7 @@
 <template>
 
 <Header></Header>
-<NuxtLink class="back" :to="`/communities/${proposal['PRO_community_NB']}`">Retour au groupe</NuxtLink>
+<NuxtLink class="back" :to="`/proposals/${$route.params.id}`">Retour à la proposition</NuxtLink>
 <div class="vote__title">
     <h1>{{ proposal['PRO_title_VC'] }}</h1>
     <h4>Modalité de vote</h4>
@@ -120,7 +120,7 @@ const config = useRuntimeConfig();
 const route = useRoute();
 
 definePageMeta({
-  middleware: ["auth", "proposal"]
+  middleware: ["auth", "assessor"]
 })
 
 const proposal = ref({});
