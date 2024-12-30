@@ -104,6 +104,23 @@ class Community extends Model{
         return true;
     }
 
+    public function addMember($member){
+        $request = 'INSERT INTO member(MEM_community_NB, MEM_user_NB, MEM_role_NB) 
+                    VALUES (:community, :user, :role)';
+        $prepare = connexion::pdo()->prepare($request);
+        $values = array(
+            "community" => $this->get('CMY_id_NB'),
+            "user" => $member,
+            "role" => ROLE_MEMBER,
+        );
+        try{
+            $prepare->execute($values);
+            return true;
+        }catch (PDOException $e){
+            return false;
+        }
+    }
+
     public function getOngoingProposals(){
         @require_once("models/proposal.php");
         $request = "SELECT p.PRO_id_NB, p.PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC, PRO_budget_NB, PRO_period_YEAR,

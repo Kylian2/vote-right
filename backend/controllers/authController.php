@@ -98,7 +98,6 @@ class AuthController{
 
         $email = $body["email"];
         $clearPassword = $body["password"];
-
         
         $user = SessionGuard::verifyCredentials($email, $clearPassword);
         if($user){

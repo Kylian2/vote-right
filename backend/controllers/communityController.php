@@ -1,6 +1,7 @@
 <?php
 
 @require_once('models/community.php');
+@require_once('models/user.php');
 @require_once('core/sessionGuard.php');
 @require_once('validators/communityValidator.php');
 

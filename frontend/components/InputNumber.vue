@@ -41,7 +41,7 @@ min: {
     type: Number,
     required: false,
 },
-min: {
+max: {
     type: Number,
     required: false,
 },

@@ -55,6 +55,55 @@ class Invitation extends Model{
             return false;
         }
     }
+
+    public static function getById(string $id){
+        $request = 'SELECT INV_id_VC, INV_recipient_NB, INV_community_NB, USR_firstname_VC AS INV_sender_firstname_VC, USR_lastname_VC AS INV_sender_lastname_VC, DATEDIFF(CURRENT_DATE, INV_issue_DATE) AS INV_joursDepuisInvitation_NB
+                    FROM invitation I 
+                    INNER JOIN user U ON I.INV_sender_NB = U.USR_id_NB
+                    WHERE INV_id_VC = :id
+                    AND INV_acceptance_DATE IS NULL';
+        $prepare = connexion::pdo()->prepare($request);
+
+        $value['id'] = $id;
+        $prepare->execute($value);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "invitation");
+        $invitation = $prepare->fetch();
+
+        return $invitation;
+    }
+
+    public static function getCodeById(string $id){
+        $request = 'SELECT INV_code_NB
+                    FROM invitation I 
+                    WHERE INV_id_VC = :id';
+        $prepare = connexion::pdo()->prepare($request);
+
+        $value['id'] = $id;
+        $prepare->execute($value);
+        $code = $prepare->fetch();
+
+        return $code[0];
+    }
+
+    public static function accept(string $invitation){
+        $request = 'UPDATE invitation SET INV_acceptance_DATE = CURRENT_DATE() WHERE INV_id_VC = :invitationId';
+        $prepare = connexion::pdo()->prepare($request);
+
+        $values = array(
+            "invitationId" => $invitation,
+        );
+        $prepare->execute($values);
+    }
+
+    public static function reject(string $invitation){
+        $request = 'DELETE FROM invitation WHERE INV_id_VC = :invitationId';
+        $prepare = connexion::pdo()->prepare($request);
+
+        $values = array(
+            "invitationId" => $invitation,
+        );
+        $prepare->execute($values);
+    }
 }
 
 ?>
