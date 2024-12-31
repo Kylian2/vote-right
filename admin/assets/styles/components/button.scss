@@ -23,6 +23,10 @@
         border-radius: 5px;
     }
 
+    &--valid{
+        padding: 10px 50px;
+    }
+
     &--cancel{
         background: $neutral;
         color: $default;

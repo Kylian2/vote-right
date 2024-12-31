@@ -212,13 +212,8 @@ class Community extends Model{
         $prepare = connexion::pdo()->prepare($request);
         $values["community"] = $this->CMY_id_NB;    
         $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_OBJ);
         $result = $prepare->fetchAll();
-        for($i = 0; $i < count($result); $i++){
-            unset($result[$i][0]);
-            unset($result[$i][1]);
-            unset($result[$i][2]);
-            unset($result[$i][3]);
-        }
         return $result;
     }
 
@@ -278,14 +273,11 @@ class Community extends Model{
         $values['community'] = $this->get('CMY_id_NB');
         $values['period'] = $period;
         $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_ASSOC);
         $budgetThemes = $prepare->fetchAll();
 
         $usedBudget = 0;
         for($i = 0; $i < count($budgetThemes); $i++){
-            unset($budgetThemes[$i][0]);
-            unset($budgetThemes[$i][1]);
-            unset($budgetThemes[$i][2]);
-            unset($budgetThemes[$i][3]);
             $usedBudget += $budgetThemes[$i]['BUT_used_budget_NB'];
         }
 

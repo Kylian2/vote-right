@@ -31,6 +31,7 @@ Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');
 Router::get('/users/me', 'userController@me', true);
 Router::get('/users/me/role/{community}', 'userController@role', true);
+Router::get('/users/me/role/{community}/proposals', 'userController@roleProposal', true);
 
 Router::get('/proposals/ongoing', 'proposalController@ongoing', true);
 Router::get('/proposals/finished', 'proposalController@finished', true);
@@ -46,6 +47,8 @@ Router::get('/proposals/{id}/requests', 'proposalController@getRequest', true);
 Router::post('/proposals/{id}/requests', 'proposalController@postRequest', true);
 Router::get('/proposals/{id}/membership', 'proposalController@isMember', true);
 Router::get('/proposals/{id}/votes', 'proposalController@voteInfos', true);
+Router::post('/proposals/{id}/votes', 'voteController@store', true);
+Router::put('/proposals/{id}/votes', 'voteController@put', true);
 Router::get('/proposals/{id}/{round}/vote', 'proposalController@voteResult', true);
 Router::post('/proposals/{id}/{round}/vote', 'proposalController@saveVote', true);
 Router::post('/proposals/{id}/{round}/vote/valid', 'proposalController@validateVote', true);
@@ -67,5 +70,7 @@ Router::post('/invitations/{id}/reject', 'invitationController@rejected');
 
 Router::post('/notifications/reactions/comments', 'notificationController@notifyCommentReaction', true);
 Router::post('/notifications/reactions/proposals', 'notificationController@notifyReactionProposal', true);
+
+Router::get('/votes/systems', 'voteController@systems', true);
 
 ?>
