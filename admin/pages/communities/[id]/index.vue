@@ -120,7 +120,7 @@
                 <button class="btn btn--small"> Voir toutes les propositions</button>
                 <button v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small"> Modifier le groupe</button>
                 <NuxtLink v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small" :to="`/communities/${$route.params.id}/members`"> Gérer les membres</NuxtLink>
-                <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == MODERATOR" class="btn btn--small"> Accéder aux outils de modérations</button>
+                <NuxtLink v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == MODERATOR" class="btn btn--small" :to="`/communities/${$route.params.id}/moderation`"> Accéder aux outils de modérations</NuxtLink>
             </div>
 
             <div class="community__actions__legend">
