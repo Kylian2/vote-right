@@ -149,7 +149,7 @@
                     <div>
                         <InputNumber name="budget" :placeholder="budget['CMY_budget_NB']+''" :step="100"
                         :rules="[
-                            (v) => (v > budget['CMY_fixed_fees_NB'] + budget['CMY_used_budget_NB']) || 'Budget trop bas'
+                            (v) => (v >= budget['CMY_fixed_fees_NB'] + budgetTotalTheme) || 'Budget trop bas'
                         ]"
                         ></InputNumber>
                         <p> € /an</p>
@@ -160,7 +160,7 @@
                     <div>
                         <InputNumber name="feesBudget" :placeholder="budget['CMY_fixed_fees_NB']+''" :step="100"
                         :rules="[
-                            (v) => (v < budget['CMY_budget_NB'] - budget['CMY_used_budget_NB']) || 'Frais trop haut'
+                            (v) => (v <= budget['CMY_budget_NB'] - budget['CMY_used_budget_NB']) || 'Frais trop haut'
                         ]"
                         ></InputNumber>
                         <p> € /an</p>
@@ -174,7 +174,7 @@
                     <div>
                         <InputNumber :name="theme['THM_name_VC']+'Budget'" :placeholder="theme['BUT_amount_NB']+''" :step="100"
                         :rules="[
-                            (v) => (v < budgetTotalTheme - theme['BUT_amount_NB']) || 'Le budget est trop élévé'
+                            (v) => (v <= budgetTotalTheme - theme['BUT_amount_NB']) || 'Le budget est trop élévé'
                         ]"></InputNumber>
                         <p> € /an</p>
                     </div>
@@ -245,7 +245,7 @@
                 <div class="ajouter-theme__budget">
                     <InputNumber class="ajouter-theme__budget__input" type="text" name="budgetNewTheme" no-label placeholder="Entrez le budget" :step="100" :min="0"
                     :rules="[
-                        (v) => v < budget['CMY_budget_NB']  - budgetTotalTheme - budget['CMY_fixed_fees_NB'] || 'Le budget est trop élevé'
+                        (v) => v <= budget['CMY_budget_NB']  - budgetTotalTheme - budget['CMY_fixed_fees_NB'] || 'Le budget est trop élevé'
                     ]"
                     ></InputNumber>
                     <p> € /an</p>

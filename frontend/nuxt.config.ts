@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseUrl: process.env.NODE_ENV === "production" ? "https://api.voteright.fr" : "http://localhost:3333",
+      adminUrl: process.env.NODE_ENV === "production" ? "https://admin.voteright.fr" : "http://localhost:3001",
     },
   },
   css: [
