@@ -12,7 +12,7 @@
             <NuxtLink :to="`${$route.params.id}/members`" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">Voir les membres</NuxtLink>
-            <NuxtLink v-if="role && role['MEM_role_NB'] != 5" to="#" class="btn--full btn--block" :style="{ 
+            <NuxtLink v-if="role && role['MEM_role_NB'] != 5" :to="`${config.public.adminUrl}/communities/${route.params.id}`" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">ADMINPANEL</NuxtLink>
         </div>
