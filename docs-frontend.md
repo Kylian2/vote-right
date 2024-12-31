@@ -393,7 +393,7 @@ Crée une modale. Le modale est composé d'un titre, d'un corps et de deux bouto
 | name          | Oui       |                   | Permet d'identifier la modal.                                                                                                        |
 | placeholder   | Non       |                   | Le placeholder                                                                                                                       |
 | required      | Non       | false             | Indique si le champs est obligatoire                                                                                                 |
-| disabledValid | Non       | false             | Indique si le bouton Ok doit être désactiver
+| disableValid  | Non       | false             | Indique si le bouton Ok doit être désactiver
 
 La props `name` doit toujours être définie, c'est elle qui permet d'identifier la modal et de gérer sont statut ouvert/fermé. Quand cette props est définie, vous avez accès à une variable réactive booléenne `{name}Modal`. 
 Lorsque cette variable est `true` la modal est ouverte, `false` la modal est fermée. 
@@ -469,12 +469,14 @@ Dans l'application, il y a des middlewares permettant de restreindre l'accès à
 
 1. *auth* : autorisant l'accès d'une page uniquement aux personnes connectés. Redirige vers */login*
 2. *guest* : bloquant l'accès d'une page aux personnes connectés. Redirige vers */home*.
-2. *community-member* : bloquant l'accès d'une page aux membres de faisant pas partie de la communautée. Redirige vers */home*.
-2. *proposal-access* : bloquant l'accès d'une page aux personnes n'étant pas membre de la communauté rattachée à la proposition. Redirige vers */home*.
+3. *community-member* : bloquant l'accès d'une page aux membres de faisant pas partie de la communautée. Redirige vers */home*.
+4. *proposal-access* : bloquant l'accès d'une page aux personnes n'étant pas membre de la communauté rattachée à la proposition. Redirige vers */home*.
 
 **Application Administrateur**:
 
 1. *auth* : autorisant l'accès d'une page uniquement aux personnes connectés. Redirige vers */*
 2. *guest* : bloquant l'accès d'une page aux personnes connectés. Redirige vers */home*.
 3. *managed* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de gestion. Redirige vers */home*.
-3. *decider* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de decideur (ou d'administrateur) dans la communauté (se base sur le paramètre de l'url). Redirige vers */home*.
+4. *decider* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de decideur (ou d'administrateur) dans la communauté (se base sur le paramètre de l'url). Redirige vers */home*.
+5. *proposal* : bloque l'accès aux pages aux utilisateurs n'ayant pas un de gestion dans la communauté (pour les pages ayant comme paramètre un identifiant de proposition). Redirige vers */home*.
+6. *assessor* : bloque l'accès aux pages aux utilisateurs n'ayant pas un de gestion dans la communauté **de la proposition** (**pour les pages ayant comme paramètre un identifiant de proposition**). Redirige vers */home*.

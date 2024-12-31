@@ -1,7 +1,6 @@
 <template>
 
     <Header></Header>
-
     <h1>{{community["CMY_name_VC"]}}</h1>
     <main class="community">
 
@@ -36,7 +35,7 @@
             <div class="community__adopted">
                 <h3>Proposition adoptées</h3>
                 <div>
-                    <div v-for="proposal in adopted" class="proposal-card">
+                    <NuxtLink :to="`/proposals/${proposal['PRO_id_NB']}`" v-for="proposal in adopted" class="proposal-card">
                         <div>
                             <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
                             <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
@@ -53,7 +52,7 @@
                         <div>
                             <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                         </div>
-                    </div>
+                    </NuxtLink>
                     <p v-if="adopted.length === 0">Aucune proposition</p>
                 </div>
             </div>
@@ -63,7 +62,7 @@
                 <div>
                     <div v-for="proposal, key in voted" class="proposal-card__wrapper">
                         <img class="proposal-card__image" src="/images/like.png" alt="like icon" v-if="false">
-                        <div class="proposal-card" :class="{'proposal-card--action': false}">
+                        <NuxtLink class="proposal-card" :class="{'proposal-card--action': false}" :to="`/proposals/${proposal['PRO_id_NB']}`">
                             <div>
                                 <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
                                 <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
@@ -80,10 +79,10 @@
                             <div>
                                 <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                             </div>
-                        </div>
+                        </NuxtLink>
                         <div v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER"  class="proposal-card__btns" :class="{'proposal-card__btns': false}">
-                            <button class="btn btn--small">Adopter</button>
-                            <button class="btn btn--small">Refuser</button>
+                            <button class="btn btn--small" @click="approveProposal(true, proposal['PRO_id_NB'])">Adopter</button>
+                            <button class="btn btn--small" @click="approveProposal(false, proposal['PRO_id_NB'])">Refuser</button>
                         </div>
                     </div>
                     <p v-if="voted.length === 0">Aucune proposition</p>
@@ -93,7 +92,7 @@
             <div class="community__ongoing">
                 <h3>Proposition en cours</h3>
                 <div>
-                    <div v-for="proposal in ongoing" class="proposal-card">
+                    <NuxtLink v-for="proposal in ongoing" class="proposal-card" :to="`/proposals/${proposal['PRO_id_NB']}`">
                         <div>
                             <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
                             <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
@@ -110,7 +109,7 @@
                         <div>
                             <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                         </div>
-                    </div>
+                    </NuxtLink>
                     <p v-if="ongoing.length === 0">Aucune proposition</p>
                 </div>
             </div>
@@ -137,25 +136,33 @@
     name="editBudget"
     ok-text="Valider les changements"
     cancel-text="Annuler"
+    :disable-valid="!budgetValid"
     :before-ok="() => {
         updateBudget();
-        }"
+    }"
     >
         <template #title>Modifier les budgets</template>
         <template #body>
-
             <div class="edit-budget">
                 <div>
                     <p><b>Budget max :</b></p>
                     <div>
-                        <InputNumber :name="'budget'" :placeholder="budget['CMY_budget_NB']+''" :step="100"></InputNumber>
+                        <InputNumber name="budget" :placeholder="budget['CMY_budget_NB']+''" :step="100"
+                        :rules="[
+                            (v) => (v > budget['CMY_fixed_fees_NB'] + budget['CMY_used_budget_NB']) || 'Budget trop bas'
+                        ]"
+                        ></InputNumber>
                         <p> € /an</p>
                     </div>
                 </div>
                 <div>
                     <p>Frais fixes :</p>
                     <div>
-                        <InputNumber :name="'feesBudget'" :placeholder="budget['CMY_fixed_fees_NB']+''" :step="100"></InputNumber>
+                        <InputNumber name="feesBudget" :placeholder="budget['CMY_fixed_fees_NB']+''" :step="100"
+                        :rules="[
+                            (v) => (v < budget['CMY_budget_NB'] - budget['CMY_used_budget_NB']) || 'Frais trop haut'
+                        ]"
+                        ></InputNumber>
                         <p> € /an</p>
                     </div>
                 </div>
@@ -165,7 +172,10 @@
                 <div v-for="theme, key in budget['CMY_budget_theme_NB']">
                     <p><b>{{theme["THM_name_VC"]}} :</b></p>
                     <div>
-                        <InputNumber :name="theme['THM_name_VC']+'Budget'" :placeholder="theme['BUT_amount_NB']+''" :step="100"></InputNumber>
+                        <InputNumber :name="theme['THM_name_VC']+'Budget'" :placeholder="theme['BUT_amount_NB']+''" :step="100"
+                        :rules="[
+                            (v) => (v < budgetTotalTheme - theme['BUT_amount_NB']) || 'Le budget est trop élévé'
+                        ]"></InputNumber>
                         <p> € /an</p>
                     </div>
                 </div>
@@ -209,7 +219,7 @@
     :before-ok="() => {
         addTheme();
         }"
-    >
+    :disable-valid="!budgetNewThemeValid"
     >
         <template #title>Ajouter un thème</template>
         <template #body>
@@ -223,13 +233,21 @@
                     <p>Budget utilisé :</p>
                     <p><b>{{ budget['CMY_used_budget_NB'] }}</b> € /an</p>
                 </div>
+                <div>
+                    <p>Budget restant non attribué :</p>
+                    <p><b>{{ budget['CMY_budget_NB']  - budgetTotalTheme - budget['CMY_fixed_fees_NB'] }}</b> € /an</p>
+                </div>
             </div>
 
             <div class="ajouter-theme">
                 <p>Nom du thème :</p>
                 <Input class="ajouter-theme__name" type="text" name="nameNewTheme" no-label placeholder="Entrez le nom"></Input>
                 <div class="ajouter-theme__budget">
-                    <InputNumber class="ajouter-theme__budget__input" type="text" name="budgetNewTheme" no-label placeholder="Entrez le budget" :step="100" :min="0"></InputNumber>
+                    <InputNumber class="ajouter-theme__budget__input" type="text" name="budgetNewTheme" no-label placeholder="Entrez le budget" :step="100" :min="0"
+                    :rules="[
+                        (v) => v < budget['CMY_budget_NB']  - budgetTotalTheme - budget['CMY_fixed_fees_NB'] || 'Le budget est trop élevé'
+                    ]"
+                    ></InputNumber>
                     <p> € /an</p>
                 </div>
             </div>
@@ -246,6 +264,26 @@
         class="toast"
     >
     Thème ajouté
+    </Toast>
+
+    <Toast 
+        name="forbidden" 
+        :type="1" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Vous n'avez pas les droits pour effectuer cette action
+    </Toast>
+
+    <Toast 
+        name="limit" 
+        :type="1" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Le budget de la proposition est superieur à celui de son thème
     </Toast>
 </template>
 <script setup>
@@ -275,6 +313,29 @@ const budgetToastError = useState('budgetToastErrorUp', () => false);
 const budgetToastAlert = useState('budgetToastAlertUp', () => false);
 
 const editBudgetModale = useState('editBudgetModal', () => false);
+const budgetTotalTheme = computed(() => {
+    let somme = 0;
+    for (let i = 0; i < budget.value['CMY_budget_theme_NB']?.length; i++){
+        somme+=budget.value['CMY_budget_theme_NB'][i]['BUT_amount_NB'];
+    }
+    return somme;
+})
+
+const communityBudget = useState('budget');
+const communityBudgetValid = useState('budgetValid', ()=>true);
+const feesBudgetValid = useState('feesBudgetValid');
+
+//verifie l'ensemble des budgets entrés par l'utilisateur
+const budgetValid = computed(() => {
+    let valid = true;
+    valid = valid && feesBudgetValid.value && communityBudgetValid.value;
+    for (let i = 0; i < budget.value['CMY_budget_theme_NB']?.length; i++){
+        const bud = useState(budget.value['CMY_budget_theme_NB'][i]['THM_name_VC']+'BudgetValid');
+        valid = valid && bud.value;
+    }
+    return valid;
+}) 
+
 
 const formatNumber = (number) => {
     return isNaN(number) ? 0 : new Intl.NumberFormat('fr-FR').format(number);
@@ -311,6 +372,7 @@ const fetchData = async () => {
         });
 
         budget.value = response5;
+        communityBudget.value = budget.value['CMY_budget_NB']
 
         const response6 = await $fetch(`${config.public.baseUrl}/users/me/role/${route.params.id}/`, {
             credentials: 'include',
@@ -395,6 +457,7 @@ const addThemeModal = useState('addThemeModal', () => false);
 const addThemeToast = useState('addThemeValidUp', () => false);
 const nameNewTheme = useState('nameNewTheme');
 const budgetNewTheme = useState('budgetNewTheme');
+const budgetNewThemeValid = useState('budgetNewThemeValid');
 
 const addTheme = async () => {
     try{
@@ -417,6 +480,47 @@ const addTheme = async () => {
         
     } catch(error) {
         console.log("An error occured", error);
+    }
+}
+
+const limit = useState('limitUp');
+const forbidden = useState('forbiddenUp');
+
+const approveProposal = async (status, proposal) => {
+    try{
+        await $fetch(`${config.public.baseUrl}/proposals/${proposal}/approve`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {
+                approve: status
+            }
+        })
+
+        if(status){
+            const bud = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
+                credentials: 'include',
+            });
+
+            budget.value = bud;
+        }
+
+        const v = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/voted`, {
+            credentials: 'include',
+        });
+        voted.value = v;
+
+        const a = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/adopted?period=${period.value}`, {
+            credentials: 'include',
+        });
+        adopted.value = a;
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+        if(error.status === 403){
+            forbidden.value = true;
+        }
+        if(error.status === 400){
+            limit.value = true;
+        }
     }
 }
 
