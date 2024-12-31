@@ -70,12 +70,8 @@ class Comment extends Model{
         $prepare = connexion::pdo()->prepare($request);
         $values["comment"] = $this->COM_id_NB;
         $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_ASSOC);
         $reactions = $prepare->fetch();
-
-        unset($reactions[0]);
-        unset($reactions[1]);
-        unset($reactions[2]);
-        unset($reactions[3]);
 
         $reactions['nblove'] = (int) $reactions['nblove'];
         $reactions['nblike'] = (int) $reactions['nblike'];
