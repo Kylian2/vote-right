@@ -14,6 +14,162 @@ servers:
   - url: 'http://localhost:3333'
     description: Serveur local de développement
 paths:
+  /auth/register:
+    post:
+      summary: Créer un compte
+      tags:
+        - authentification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  USR_id_NB:
+                    type: integer
+                  USR_lastname_VC:
+                    type: string
+                  USR_firstname_VC:
+                    type: string
+                  USR_email_VC:
+                    type: string
+                  USR_password_VC:
+                    type: string
+                  USR_address_VC:
+                    type: string
+                  USR_zipcode_CH:
+                    type: string
+                  USR_birthdate_DATE:
+                    type: string
+                  USR_notification_frequency_CH:
+                    type: string
+                  USR_notify_proposal_BOOL:
+                    type: integer
+                  USR_notify_vote_BOOL:
+                    type: integer
+                  USR_notify_reaction_BOOL:
+                    type: integer
+                  USR_newsletter_BOOL:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    USR_id_NB: 104
+                    USR_lastname_VC: Athan
+                    USR_firstname_VC: John
+                    USR_email_VC: johnathan@gmail.com
+                    USR_password_VC: '$argon2id$v=19$m=65536,t=4,p=1$MVhlRVFOVXJ1QWhvMDNSWQ$0s4oYr327cjxPIon10lHlUEdX2LZpwE1BJs+TXDpwuo'
+                    USR_address_VC: Rue du blé
+                    USR_zipcode_CH: '78300'
+                    USR_birthdate_DATE: '2005-10-10'
+                    USR_notification_frequency_CH: H
+                    USR_notify_proposal_BOOL: 0
+                    USR_notify_vote_BOOL: 0
+                    USR_notify_reaction_BOOL: 0
+                    USR_newsletter_BOOL: 0
+              examples:
+                Example 1:
+                  value:
+                    USR_id_NB: 104
+                    USR_lastname_VC: Athan
+                    USR_firstname_VC: John
+                    USR_email_VC: johnathan@gmail.com
+                    USR_password_VC: '$argon2id$v=19$m=65536,t=4,p=1$MVhlRVFOVXJ1QWhvMDNSWQ$0s4oYr327cjxPIon10lHlUEdX2LZpwE1BJs+TXDpwuo'
+                    USR_address_VC: Rue du blé
+                    USR_zipcode_CH: '78300'
+                    USR_birthdate_DATE: '2005-10-10'
+                    USR_notification_frequency_CH: H
+                    USR_notify_proposal_BOOL: 0
+                    USR_notify_vote_BOOL: 0
+                    USR_notify_reaction_BOOL: 0
+                    USR_newsletter_BOOL: 0
+      operationId: post-auth-register
+      x-stoplight:
+        id: 1b6npyrgcq80b
+      description: 'Destiné à la création d''un compte sur l''application. '
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                lastname:
+                  type: string
+                firstname:
+                  type: string
+                address:
+                  type: string
+                zipcode:
+                  type: string
+                birthdate:
+                  type: string
+              x-examples:
+                Example 1:
+                  email: johnathan@gmail.com
+                  password: unmotdepasse
+                  lastname: Athan
+                  firstname: John
+                  address: Rue du blé
+                  zipcode: '78300'
+                  birthdate: '2005-10-10'
+            examples:
+              Example 1:
+                value:
+                  email: johnathan@gmail.com
+                  password: password
+                  lastname: Athan
+                  firstname: John
+                  address: Rue du blé
+                  zipcode: '78300'
+                  birthdate: '2005-10-10'
+  /auth/login:
+    post:
+      summary: S'authentifier
+      tags:
+        - authentification
+      responses:
+        '200':
+          description: 'OK, renvoie `true`sur l''authentification à réussi, `faux`sinon.'
+      operationId: post-auth-login
+      x-stoplight:
+        id: w454jqbrrnwef
+      description: Si valide la requête authentifie l'utilisateur
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              x-examples:
+                Example 1:
+                  email: lshower2j@springer.com
+                  password: monmotdepasse
+            examples:
+              Example 1:
+                value:
+                  email: johnathan@gmail.com
+                  password: password
+  /auth/check:
+    get:
+      summary: Vérifier la validité de la session
+      tags:
+        - authentification
+      responses:
+        '200':
+          description: OK
+      operationId: get-auth-check
+      x-stoplight:
+        id: 11aex930ha0l6
+      description: 'Renvoie `true` si la session est valide, `false` sinon.'
   /communities:
     get:
       summary: Liste des communautés
@@ -727,11 +883,17 @@ paths:
                 value:
                   name: Animation
                   budget: 2300
-  /auth/register:
-    post:
-      summary: Créer un compte
+  '/users/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Les informations d'un utilisateur
       tags:
-        - authentification
+        - users
       responses:
         '200':
           description: OK
@@ -748,141 +910,30 @@ paths:
                     type: string
                   USR_email_VC:
                     type: string
-                  USR_password_VC:
-                    type: string
-                  USR_address_VC:
-                    type: string
-                  USR_zipcode_CH:
-                    type: string
-                  USR_birthdate_DATE:
-                    type: string
-                  USR_notification_frequency_CH:
-                    type: string
-                  USR_notify_proposal_BOOL:
-                    type: integer
-                  USR_notify_vote_BOOL:
-                    type: integer
-                  USR_notify_reaction_BOOL:
-                    type: integer
-                  USR_newsletter_BOOL:
-                    type: integer
                 x-examples:
                   Example 1:
-                    USR_id_NB: 104
-                    USR_lastname_VC: Athan
-                    USR_firstname_VC: John
-                    USR_email_VC: johnathan@gmail.com
-                    USR_password_VC: '$argon2id$v=19$m=65536,t=4,p=1$MVhlRVFOVXJ1QWhvMDNSWQ$0s4oYr327cjxPIon10lHlUEdX2LZpwE1BJs+TXDpwuo'
-                    USR_address_VC: Rue du blé
-                    USR_zipcode_CH: '78300'
-                    USR_birthdate_DATE: '2005-10-10'
-                    USR_notification_frequency_CH: H
-                    USR_notify_proposal_BOOL: 0
-                    USR_notify_vote_BOOL: 0
-                    USR_notify_reaction_BOOL: 0
-                    USR_newsletter_BOOL: 0
+                    USR_id_NB: 12
+                    USR_lastname_VC: Aymes
+                    USR_firstname_VC: Linzy
+                    USR_email_VC: laymesb@mayoclinic.com
               examples:
                 Example 1:
                   value:
-                    USR_id_NB: 104
-                    USR_lastname_VC: Athan
-                    USR_firstname_VC: John
-                    USR_email_VC: johnathan@gmail.com
-                    USR_password_VC: '$argon2id$v=19$m=65536,t=4,p=1$MVhlRVFOVXJ1QWhvMDNSWQ$0s4oYr327cjxPIon10lHlUEdX2LZpwE1BJs+TXDpwuo'
-                    USR_address_VC: Rue du blé
-                    USR_zipcode_CH: '78300'
-                    USR_birthdate_DATE: '2005-10-10'
-                    USR_notification_frequency_CH: H
-                    USR_notify_proposal_BOOL: 0
-                    USR_notify_vote_BOOL: 0
-                    USR_notify_reaction_BOOL: 0
-                    USR_newsletter_BOOL: 0
-      operationId: post-auth-register
+                    USR_id_NB: 12
+                    USR_lastname_VC: Aymes
+                    USR_firstname_VC: Linzy
+                    USR_email_VC: laymesb@mayoclinic.com
+      operationId: get-users-id
       x-stoplight:
-        id: 1b6npyrgcq80b
-      description: 'Destiné à la création d''un compte sur l''application. '
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-                lastname:
-                  type: string
-                firstname:
-                  type: string
-                address:
-                  type: string
-                zipcode:
-                  type: string
-                birthdate:
-                  type: string
-              x-examples:
-                Example 1:
-                  email: johnathan@gmail.com
-                  password: unmotdepasse
-                  lastname: Athan
-                  firstname: John
-                  address: Rue du blé
-                  zipcode: '78300'
-                  birthdate: '2005-10-10'
-            examples:
-              Example 1:
-                value:
-                  email: johnathan@gmail.com
-                  password: password
-                  lastname: Athan
-                  firstname: John
-                  address: Rue du blé
-                  zipcode: '78300'
-                  birthdate: '2005-10-10'
-  /auth/login:
-    post:
-      summary: S'authentifier
-      tags:
-        - authentification
-      responses:
-        '200':
-          description: 'OK, renvoie `true`sur l''authentification à réussi, `faux`sinon.'
-      operationId: post-auth-login
-      x-stoplight:
-        id: w454jqbrrnwef
-      description: Si valide la requête authentifie l'utilisateur
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-              x-examples:
-                Example 1:
-                  email: lshower2j@springer.com
-                  password: monmotdepasse
-            examples:
-              Example 1:
-                value:
-                  email: johnathan@gmail.com
-                  password: password
-  /auth/check:
-    get:
-      summary: Vérifier la validité de la session
-      tags:
-        - authentification
-      responses:
-        '200':
-          description: OK
-      operationId: get-auth-check
-      x-stoplight:
-        id: 11aex930ha0l6
-      description: 'Renvoie `true` si la session est valide, `false` sinon.'
+        id: 6e6vbwt06rq5l
+      description: 'Récupère le nom, prénom et mail d''un utilisateur.'
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
   /users/me:
     get:
       summary: Renvoie le nom de l'utilisateur connecté
@@ -1437,57 +1488,6 @@ paths:
           in: cookie
           name: PHPSESSID
           description: Le cookie d'authentification
-  '/users/{id}':
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-    get:
-      summary: Les informations d'un utilisateur
-      tags:
-        - users
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  USR_id_NB:
-                    type: integer
-                  USR_lastname_VC:
-                    type: string
-                  USR_firstname_VC:
-                    type: string
-                  USR_email_VC:
-                    type: string
-                x-examples:
-                  Example 1:
-                    USR_id_NB: 12
-                    USR_lastname_VC: Aymes
-                    USR_firstname_VC: Linzy
-                    USR_email_VC: laymesb@mayoclinic.com
-              examples:
-                Example 1:
-                  value:
-                    USR_id_NB: 12
-                    USR_lastname_VC: Aymes
-                    USR_firstname_VC: Linzy
-                    USR_email_VC: laymesb@mayoclinic.com
-      operationId: get-users-id
-      x-stoplight:
-        id: 6e6vbwt06rq5l
-      description: 'Récupère le nom, prénom et mail d''un utilisateur.'
-      parameters:
-        - schema:
-            type: string
-          in: cookie
-          name: PHPSESSID
-          description: Le cookie d'authentification
-          required: true
   '/proposals/{id}/reactions':
     parameters:
       - schema:
@@ -1823,53 +1823,6 @@ paths:
         description: '`reason` est en entier contenant un des motifs de signalement définis. '
       tags:
         - comments
-  /reasons:
-    get:
-      summary: Les motifs de signalement
-      tags:
-        - reasons
-      responses:
-        '200':
-          description: 'OK, la liste est renvoyée avec succès'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    RES_id_NB:
-                      type: integer
-                    RES_label_VC:
-                      type: string
-                x-examples:
-                  Example 1:
-                    - RES_id_NB: 1
-                      RES_label_VC: Motif 1
-                    - RES_id_NB: 2
-                      RES_label_VC: Motif 2
-                    - RES_id_NB: 3
-                      RES_label_VC: Motif 3
-              examples:
-                Example 1:
-                  value:
-                    - RES_id_NB: 1
-                      RES_label_VC: Motif 1
-                    - RES_id_NB: 2
-                      RES_label_VC: Motif 2
-                    - RES_id_NB: 3
-                      RES_label_VC: Motif 3
-      operationId: get-reasons
-      x-stoplight:
-        id: ahkgv9b9ov4hx
-      description: Renvoie la liste des motifs de signalement.
-      parameters:
-        - schema:
-            type: string
-          in: cookie
-          name: PHPSESSID
-          description: Le cookie d'authentification
-          required: true
   '/proposals/{id}/votes':
     parameters:
       - schema:
@@ -2460,54 +2413,6 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
-  /roles:
-    get:
-      summary: La liste des rôles
-      tags:
-        - roles
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    ROL_id_NB:
-                      type: integer
-                    ROL_label_VC:
-                      type: string
-                x-examples:
-                  Example 1:
-                    - ROL_id_NB: 1
-                      ROL_label_VC: Administrateur
-                    - ROL_id_NB: 2
-                      ROL_label_VC: Décideur
-                    - ROL_id_NB: 3
-                      ROL_label_VC: Assesseur
-                    - ROL_id_NB: 4
-                      ROL_label_VC: Modérateur
-                    - ROL_id_NB: 5
-                      ROL_label_VC: Membre
-              examples:
-                Example 1:
-                  value:
-                    - ROL_id_NB: 1
-                      ROL_label_VC: Administrateur
-                    - ROL_id_NB: 2
-                      ROL_label_VC: Décideur
-                    - ROL_id_NB: 3
-                      ROL_label_VC: Assesseur
-                    - ROL_id_NB: 4
-                      ROL_label_VC: Modérateur
-                    - ROL_id_NB: 5
-                      ROL_label_VC: Membre
-      operationId: get-roles
-      x-stoplight:
-        id: ah7deuo8pqrya
-      description: 'Renvoie la liste des rôles. '
   '/communities/{id}/exclude/{user}':
     parameters:
       - schema:
@@ -2533,81 +2438,6 @@ paths:
       x-stoplight:
         id: 5y2sn4la3rkfe
       description: ''
-  /invitations:
-    post:
-      summary: Inviter des membres
-      tags:
-        - invitations
-      responses:
-        '200':
-          description: 'OK, toutes les invitations ont été envoyées. Renvoie `true`.'
-          headers:
-            header-0:
-              schema:
-                type: string
-        '206':
-          description: |-
-            Partial Content, certaines invitations n'ont pas été envoyées. 
-            - `sent` : le nombre d'invitation envoyées
-            - `expected` : le nombre de mail fournis
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                  sent:
-                    type: integer
-                  expected:
-                    type: integer
-                x-examples:
-                  Example 1:
-                    message: Some invitations could not be sent
-                    sent: 12
-                    expected: 14
-              examples:
-                Example 1:
-                  value:
-                    message: Some invitations could not be sent
-                    sent: 10
-                    expected: 12
-      operationId: post-invitations
-      x-stoplight:
-        id: tp3ufafk2uz2o
-      description: Envoie des invitations.
-      parameters:
-        - schema:
-            type: string
-          in: cookie
-          name: PHPSESSID
-          description: Le cookie d'authentification
-          required: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                community:
-                  type: string
-                invitations:
-                  type: array
-                  items:
-                    type: string
-              x-examples:
-                Example 1:
-                  community: '13'
-                  invitations:
-                    - kylian.richard@gmail.co
-            examples:
-              Example 1:
-                value:
-                  community: '13'
-                  invitations:
-                    - hello@gmail.com
-                    - usermail@mail.fr
-        description: ''
   '/communities/{id}/periods':
     parameters:
       - schema:
@@ -2696,6 +2526,32 @@ paths:
               Example 1:
                 value:
                   valid: true
+  '/proposals/{id}/manage':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Indique si l'utilisateur a des droits de gestion
+      tags:
+        - proposals
+        - roles
+      responses:
+        '200':
+          description: 'OK, `true` si l''utilisateur à des droits, `false` sinon.'
+      operationId: get-proposals-id-manage
+      x-stoplight:
+        id: 6v6cgnxm0oh5v
+      description: Indique si l'utilisateur a des droits de gestion sur la proposition.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
   '/proposals/{id}/approve':
     parameters:
       - schema:
@@ -2734,7 +2590,177 @@ paths:
                   type: boolean
                   x-stoplight:
                     id: 8ht8gpibx6ruv
-  '/proposals/{id}/manage':
+  /reasons:
+    get:
+      summary: Les motifs de signalement
+      tags:
+        - reasons
+      responses:
+        '200':
+          description: 'OK, la liste est renvoyée avec succès'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    RES_id_NB:
+                      type: integer
+                    RES_label_VC:
+                      type: string
+                x-examples:
+                  Example 1:
+                    - RES_id_NB: 1
+                      RES_label_VC: Motif 1
+                    - RES_id_NB: 2
+                      RES_label_VC: Motif 2
+                    - RES_id_NB: 3
+                      RES_label_VC: Motif 3
+              examples:
+                Example 1:
+                  value:
+                    - RES_id_NB: 1
+                      RES_label_VC: Motif 1
+                    - RES_id_NB: 2
+                      RES_label_VC: Motif 2
+                    - RES_id_NB: 3
+                      RES_label_VC: Motif 3
+      operationId: get-reasons
+      x-stoplight:
+        id: ahkgv9b9ov4hx
+      description: Renvoie la liste des motifs de signalement.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  /roles:
+    get:
+      summary: La liste des rôles
+      tags:
+        - roles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ROL_id_NB:
+                      type: integer
+                    ROL_label_VC:
+                      type: string
+                x-examples:
+                  Example 1:
+                    - ROL_id_NB: 1
+                      ROL_label_VC: Administrateur
+                    - ROL_id_NB: 2
+                      ROL_label_VC: Décideur
+                    - ROL_id_NB: 3
+                      ROL_label_VC: Assesseur
+                    - ROL_id_NB: 4
+                      ROL_label_VC: Modérateur
+                    - ROL_id_NB: 5
+                      ROL_label_VC: Membre
+              examples:
+                Example 1:
+                  value:
+                    - ROL_id_NB: 1
+                      ROL_label_VC: Administrateur
+                    - ROL_id_NB: 2
+                      ROL_label_VC: Décideur
+                    - ROL_id_NB: 3
+                      ROL_label_VC: Assesseur
+                    - ROL_id_NB: 4
+                      ROL_label_VC: Modérateur
+                    - ROL_id_NB: 5
+                      ROL_label_VC: Membre
+      operationId: get-roles
+      x-stoplight:
+        id: ah7deuo8pqrya
+      description: 'Renvoie la liste des rôles. '
+  /invitations:
+    post:
+      summary: Inviter des membres
+      tags:
+        - invitations
+      responses:
+        '200':
+          description: 'OK, toutes les invitations ont été envoyées. Renvoie `true`.'
+          headers:
+            header-0:
+              schema:
+                type: string
+        '206':
+          description: |-
+            Partial Content, certaines invitations n'ont pas été envoyées. 
+            - `sent` : le nombre d'invitation envoyées
+            - `expected` : le nombre de mail fournis
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  sent:
+                    type: integer
+                  expected:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    message: Some invitations could not be sent
+                    sent: 12
+                    expected: 14
+              examples:
+                Example 1:
+                  value:
+                    message: Some invitations could not be sent
+                    sent: 10
+                    expected: 12
+      operationId: post-invitations
+      x-stoplight:
+        id: tp3ufafk2uz2o
+      description: Envoie des invitations.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                community:
+                  type: string
+                invitations:
+                  type: array
+                  items:
+                    type: string
+              x-examples:
+                Example 1:
+                  community: '13'
+                  invitations:
+                    - kylian.richard@gmail.co
+            examples:
+              Example 1:
+                value:
+                  community: '13'
+                  invitations:
+                    - hello@gmail.com
+                    - usermail@mail.fr
+        description: ''
+  '/invitations/{id}':
     parameters:
       - schema:
           type: string
@@ -2742,23 +2768,198 @@ paths:
         in: path
         required: true
     get:
-      summary: Indique si l'utilisateur a des droits de gestion
+      summary: afficher l'invitation
       tags:
-        - proposals
-        - roles
-      responses:
+        - invitations
+      responses: 
         '200':
-          description: 'OK, `true` si l''utilisateur à des droits, `false` sinon.'
-      operationId: get-proposals-id-manage
+          description: L'invitation est renvoyée avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  INV_id_VC:
+                    type: string
+                  INV_recipient_NB:
+                    type: integer
+                  INV_community_NB:
+                    type: integer
+                  INV_sender_firstname_VC:
+                    type: string
+                  INV_sender_lastname_VC:
+                    type: string
+                  INV_joursDepuisInvitation_NB:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    INV_id_VC: 0nRyc3ZXbG
+                    INV_recipient_NB: 92
+                    INV_community_NB: 9
+                    INV_sender_firstname_VC: Isidora
+                    INV_sender_lastname_VC: Lamberton
+                    INV_joursDepuisInvitation_NB: 118
+              examples:
+                Example 1:
+                  value:
+                    INV_id_VC: 0nRyc3ZXbG
+                    INV_recipient_NB: 92
+                    INV_community_NB: 9
+                    INV_sender_firstname_VC: Isidora
+                    INV_sender_lastname_VC: Lamberton
+                    INV_joursDepuisInvitation_NB: 1
+      operationId: get-invitations-id
       x-stoplight:
-        id: 6v6cgnxm0oh5v
-      description: Indique si l'utilisateur a des droits de gestion sur la proposition.
+        id: uun66r1ccrj8z
+      description: "Renvoie les informations relatives à une invitation (le groupe, l'utilisateur qui invite, les thèmes).\r\n"
       parameters:
         - schema:
             type: string
-          in: cookie
-          name: PHPSESSID
-          description: Le cookie d'authentification
+          name: id
+          in: path
+          required: true
+  '/invitations/{id}/accept':
+    post:
+      summary: accepter une invitation
+      tags:
+        - invitations
+      responses: 
+        '200':
+          description: 'OK, `true` si l''invitation à pu être acceptée, `false` sinon.'
+      operationId: post-invitations-id-accept
+      x-stoplight:
+        id: x4pqty55x1eze
+      description: Accepte l'invitation si le code entré par l'utilisateur est le bon.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codeSend:
+                  type: integer
+              required:
+                - codeSend
+              x-examples:
+                Example 1:
+                  codeSend: 987102
+            examples:
+              Example 1:
+                value:
+                  codeSend: 987102
+      parameters:
+        - schema:
+            type: string
+          name: id
+          in: path
+          required: true
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+  '/invitations/{id}/reject':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: refuser une invitation
+      tags:
+        - invitations
+      responses: 
+        '200':
+          description: 'OK, `true` si l''invitation à pu être refusée, `false` sinon.'
+      operationId: get-invitations-id-reject
+      x-stoplight:
+        id: t0fza8gckqx74
+      description: Refuse l'invitation si le code entré par l'utilisateur est le bon.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codeSend:
+                  type: integer
+              required:
+                - codeSend
+              x-examples:
+                Example 1:
+                  codeSend: 432890
+            examples:
+              Example 1:
+                value:
+                  codeSend: 432890
+      parameters:
+        - schema:
+            type: string
+          name: id
+          in: path
+          required: true
+  '/communities/{id}/update':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: Mettre à jour une communauté
+      tags:
+        - communities
+      responses: 
+        '200':
+          description: 'OK, `true` si la communauté à pu être mise à jour'
+      operationId: get-communities-id-update
+      x-stoplight:
+        id: 7vasxizai8cis
+      description: Mets à jour une communauté avec les nouvelles entrées utilisateurs.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                color:
+                  type: string
+                emoji:
+                  type: string
+                image:
+                  type: string
+              required:
+                - name
+                - image
+                - description
+                - emoji
+                - color
+              x-examples:
+                Example 1:
+                  name: Club de baseBall
+                  description: Organisation des activités, échange, partage
+                  color: '#5AB7EE'
+                  emoji: 1F389
+                  image: 100001.png
+            examples:
+              Example 1:
+                value:
+                  name: Club de baseBall
+                  description: Organisation des activités, échange, partage
+                  color: '#5AB7EE'
+                  emoji: 1F389
+                  image: 100001.png
+      parameters:
+        - schema:
+            type: integer
+          name: id
+          in: path
           required: true
 components:
   securitySchemes: {}
