@@ -173,6 +173,15 @@
 
         </template>
     </Modal>
+    <Toast 
+        name="settingsValid" 
+        :type="3" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Votre/vos modification(s) ont été prises en compte !
+    </Toast>
 </template>
 
 <script setup>
@@ -242,6 +251,8 @@ const newProposal = ref(false);
 const startOfVoting = ref(false);
 const reactionToTheProposals = ref(false);
 const notificationFrequencyCH = ref('');
+
+const settingsValid = useState('settingsValidUp', ()=>false);
 
 const settingsIsValid  = computed(() => {
     if(allowedInformationChanges.value && allowedPasswordChange.value){
@@ -428,6 +439,7 @@ const beforeOk = () => {
         validateNotification();
     }
     fetchUser();
+    settingsValid.value = true;
 }
 
 const beforeClose = () => {
