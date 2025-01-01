@@ -143,6 +143,50 @@ header{
     }
 }
 
+.header-settings-modal{
+    &__section{
+        display: flex;
+        flex-direction: row;
+        gap: 25px;
+        cursor: pointer; 
+    }
+    &__profile{
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        gap: 25px;
+    }
+    &__name{
+        margin-top:7px;
+        font-weight: bold;
+    }
+    &__info{
+        margin-top: 50px;
+        margin-bottom: 20px;
+    }
+    &__settings-list{
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        p{
+            font-weight: bold;
+        }
+        span{
+            font-weight: normal;
+            margin-left: 7px;
+        }
+        div{
+            display: flex;
+            gap: 10px;
+            
+        }
+    }
+    &__allowedChanges{
+        margin-top: 10px;
+    }
+}
+
 /* Adaptation des couleurs en fonction de la couleur du groupe */
 
 .color-5AB7EE{

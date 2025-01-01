@@ -87,6 +87,43 @@ class User extends Model{
         return true;
     }
 
+    public function updatePassword() {
+
+        $request = "UPDATE user
+                    SET USR_password_VC = :USR_password_VC
+                    WHERE USR_id_NB = :USR_id_NB;";
+
+        $prepare = connexion::pdo()->prepare($request);
+
+        $values = array();
+
+        $values["USR_password_VC"] = $this->USR_password_VC;
+        $values["USR_id_NB"] = $this->USR_id_NB;     
+
+        $prepare->execute($values);
+        return true;
+    }
+
+    public function updateNotification() {
+
+        $request = "UPDATE user
+                    SET USR_notify_proposal_BOOL = :USR_notify_proposal_BOOL, USR_notify_vote_BOOL = :USR_notify_vote_BOOL, USR_notify_reaction_BOOL = :USR_notify_reaction_BOOL, USR_notification_frequency_CH = :USR_notification_frequency_CH
+                    WHERE USR_id_NB = :USR_id_NB;";
+
+        $prepare = connexion::pdo()->prepare($request);
+
+        $values = array();
+
+        $values["USR_notify_proposal_BOOL"] = $this->USR_notify_proposal_BOOL;  
+        $values["USR_notify_vote_BOOL"] = $this->USR_notify_vote_BOOL;  
+        $values["USR_notify_reaction_BOOL"] = $this->USR_notify_reaction_BOOL;  
+        $values["USR_notification_frequency_CH"] = $this->USR_notification_frequency_CH;  
+        $values["USR_id_NB"] = $this->USR_id_NB;     
+
+        $prepare->execute($values);
+        return true;
+    }
+
     public function getRole(int $community){
         $request = "SELECT MEM_role_NB, ROL_label_VC FROM members_role WHERE USR_id_NB = :user AND MEM_community_NB = :community";
         $prepare = connexion::pdo()->prepare($request);
