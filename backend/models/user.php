@@ -132,11 +132,22 @@ class User extends Model{
         $values["community"] = $community;
 
         $prepare -> execute($values);
+        $prepare->setFetchmode(PDO::FETCH_OBJ);
         $result = $prepare->fetch();
+        
+        return $result;
+    }
 
-        //Retirer les éléments inutiles
-        unset($result[0]);
-        unset($result[1]);
+    public function getRoleProposal(int $proposal){
+        $request = "SELECT MEM_role_NB, ROL_label_VC FROM members_role WHERE USR_id_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
+        $prepare = connexion::pdo()->prepare($request);
+
+        $values["user"] = $this->USR_id_NB;
+        $values["proposal"] = $proposal;
+
+        $prepare -> execute($values);
+        $prepare->setFetchmode(PDO::FETCH_OBJ);
+        $result = $prepare->fetch();
         
         return $result;
     }

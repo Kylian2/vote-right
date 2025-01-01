@@ -135,12 +135,8 @@ class Proposal extends Model{
         $prepare = connexion::pdo()->prepare($request);
         $values["proposal"] = $this->PRO_id_NB;
         $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_ASSOC);
         $reactions = $prepare->fetch();
-
-        unset($reactions[0]);
-        unset($reactions[1]);
-        unset($reactions[2]);
-        unset($reactions[3]);
 
         $reactions['nblove'] = (int) $reactions['nblove'];
         $reactions['nblike'] = (int) $reactions['nblike'];
@@ -247,6 +243,103 @@ class Proposal extends Model{
         $prepare->execute($values);
         $result = $prepare->fetch();
         return boolval($result[0]);
+    }
+
+    /**
+     * Modifie en base de données le budget d'une proposition
+     * 
+     * @param int $budget le montant
+     * 
+     * @return bool `true` si la modification a été effectuée avec succès
+     */
+    public function setBudget(float $budget){
+        $request = "UPDATE proposal SET PRO_budget_NB = :budget WHERE PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['budget'] = $budget;
+        $values['proposal'] = $this->get('PRO_id_NB');
+        $prepare->execute($values);
+
+        return true;
+    }
+
+     /**
+     * Supprimer une proposition
+     * 
+     * @param int $user l'utilisateur qui supprime
+     * 
+     * @return bool un `boolean` indiquant si la requete s'est bien passée.
+     */
+    public function delete(int $user){
+        //Verification pas faite en base de données
+        $request = "SELECT MEM_role_NB FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['user'] = $user;
+        $values['proposal'] = $this->get('PRO_id_NB');
+        $prepare->execute($values);
+        $role = $prepare->fetch();
+        if(!$role || $role[0] != ROLE_ADMIN){
+            return false;
+        }
+
+        $request = "UPDATE proposal SET PRO_deleter_NB = :user WHERE PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        try{
+            $prepare->execute($values);
+        }catch(PDOException $e){
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Approuve une proposition
+     * 
+     * @param int $user l'utilisateur qui approuve
+     * @param bool $status `true` si acceptée, `false` sinon
+     * 
+     * @return mixed un `boolean` indiquant si la requete s'est bien passée ou les informations de l'erreur. 
+     */
+    public function approve(int $user, bool $status){
+        //Vérification faite aussi en base de données avec le trigger
+        $request = "SELECT MEM_role_NB FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['user'] = $user;
+        $values['proposal'] = $this->get('PRO_id_NB');
+        $prepare->execute($values);
+        $role = $prepare->fetch();
+        if(!$role || !($role[0] == ROLE_ADMIN || $role[0] == ROLE_DECIDER)){
+            return false;
+        }
+
+        $request = "UPDATE proposal SET PRO_approver_NB = :user, PRO_status_VC = :status WHERE PRO_id_NB = :proposal";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['status'] = $status ? 'Validée' : 'Rejetée';
+        try{
+            $prepare->execute($values);
+        }catch(PDOException $e){
+            return $e;
+        }
+
+        return true;
+    }
+
+    /**
+     * Renvoie un boolean indiquant si l'utilisateur peut gérer cette proposition
+     * 
+     * @param int $proposal l'identifiant de la proposition
+     * @param int $user l'identifiant de l'utilisateur
+     * @return bool 
+     */
+    public static function canManage(int $proposal, int $user){
+        $request="SELECT MEM_role_NB FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = (SELECT PRO_community_NB FROM proposal WHERE PRO_id_NB = :proposal)";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['user'] = $user;
+        $values['proposal'] = $proposal;
+        $prepare->execute($values);
+        $role = $prepare->fetch();
+
+        return $role ? $role[0] != ROLE_MEMBER : $role;
     }
 }
 

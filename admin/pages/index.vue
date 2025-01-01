@@ -50,7 +50,23 @@ const handleForm = async () => {
     } catch (error) {
         console.error('An unexpected error occurred:', error);
     }
-
 }
 
+const validateVote = async (vote, answer) => {
+    try{
+        await $fetch(`${config.public.baseUrl}/proposals/${proposal}/${vote}/vote`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {
+                valid: answer
+            }
+        })
+
+    }catch (error){
+        console.log('An unexpected error occured : ', error);
+        if(error.status === 403){
+            forbidden.value = true;
+        }
+    }
+}
 </script>
