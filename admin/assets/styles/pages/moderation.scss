@@ -1,0 +1,71 @@
+.moderate-community {
+    &__no-report {
+      text-align: center;
+      margin-top: 100px;
+      margin-bottom: 100px;
+    }  
+  
+    &__title {
+      margin-left: 0;
+      margin-bottom: 0;
+    }
+  }
+  
+  .reports {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .report {
+    padding: 1rem;
+    border-radius: 4px;
+    background-color: #c4c3c3;
+  
+    &__summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &__toggle-summary {
+      background: none;
+      border: none;
+      text-decoration: underline;
+      font-weight: bold;
+      color: #000;
+      font-size: 17px;
+    }
+  
+    &__content {
+      color: #333;
+    }
+  
+    &__details {
+      display: flex;
+      gap: 39%;
+    }
+
+    &__toggle-details {
+      background: none;
+      border: none;
+      text-decoration: underline;
+      font-weight: bold;
+      color: #000;
+      font-size: 17px;
+      margin-left: 57%
+    }
+
+    &__informations{
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    &__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }

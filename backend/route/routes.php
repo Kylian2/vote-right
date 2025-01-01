@@ -74,7 +74,6 @@ Router::post('/notifications/reactions/proposals', 'notificationController@notif
 Router::get('/votes/systems', 'voteController@systems', true);
 
 Router::get('/reports/{id}', 'reportController@show');
-Router::post('/reports/resolv', 'reportController@resolv');
-Router::post('/reports/delete', 'reportController@delete');
+Router::post('/reports/{comment}/{community}', 'reportController@solvReport');
 
 ?>

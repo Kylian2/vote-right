@@ -15,6 +15,17 @@ class Report extends Model{
     public string $RPT_message_VC; 
     public string $RPT_label_VC; 
     public string $RPT_commentId_NB; 
+
+    public static function deleteById(array $id){
+        $request = 'CALL delete_comment_and_resolve_reports (:commentId, :userId)';
+        $prepare = connexion::pdo()->prepare($request);
+
+        $values = array(
+            "userId" => $id['RPT_user_NB'],
+            "commentId" => $id['RPT_comment_NB'],
+        );
+        $prepare->execute($values);
+    }
     
     public static function resolveById(array $id){
         $request = 'UPDATE report 
@@ -30,7 +41,7 @@ class Report extends Model{
         $prepare->execute($values);
     }
 
-    public static function getByProposal($proposal){
+    public static function getByProposal(int $proposal){
         $request = 'SELECT COM_id_NB AS RPT_commentId_NB, RPT_user_NB, USR_firstname_VC AS RPT_firstname_VC, USR_lastname_VC AS RPT_lastname_VC, COM_message_VC AS RPT_message_VC, RES_label_VC AS RPT_label_VC 
                     FROM comment C
                     INNER JOIN report R1 ON C.COM_id_NB = R1.RPT_comment_NB
@@ -40,7 +51,7 @@ class Report extends Model{
                     AND RPT_status_VC = "En attente"';
         $prepare = connexion::pdo()->prepare($request);
 
-        $values["proposalId"] = $proposal['PRO_id_NB'];
+        $values["proposalId"] = $proposal;
         $prepare->execute($values);
         $reports = $prepare->fetchAll();
         return $reports;

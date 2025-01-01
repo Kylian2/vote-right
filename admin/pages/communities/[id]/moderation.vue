@@ -1,13 +1,45 @@
 <template>
     <Header></Header>
-    <NuxtLink class="back" :to="`/communities/${numberGroup}`">Retour au groupe</NuxtLink>
+    <NuxtLink class="back" :to="`/communities/${groupeId}`">Retour au groupe</NuxtLink>
     <main class="moderate-community">
-        <div v-if="noReport">
-            <h3 style="text-align: center; margin-top: 100px; margin-bottom: 100px;"> Aucun commentaire n'a été signalé </h3>
+        <div v-if="noReport" class="__title">
+            <h3 class="moderate-community__no-report"> Aucun commentaire n'a été signalé </h3>
         </div>
 
         <div v-else>
-            <h1> {{ nameGroup }} </h1>
+        <h1 class="moderate-community__title">{{ groupeName }}</h1>
+            <div class="reports">
+                <div class="report" v-for="(report, index) in reports" :key="index">
+                    <div v-if="!report.expanded" class="report__summary">
+                        <p><strong> {{ report['RPT_label_VC'] }} </strong></p>
+                        <p class="report__content"> {{ report['RPT_message_VC'] }} </p>
+                        <button class="report__toggle-summary" @click="toggle(index)"> Voir plus </button>
+                    </div>
+
+                    <div v-else class="report__details">
+                        <div class="report__informations">
+                            <p><strong> {{ report['RPT_label_VC'] }} </strong></p>
+                            <p><strong> Commenté par {{ report['RPT_firstname_VC'] }} {{ report['RPT_lastname_VC'] }} </strong></p>
+                            <p class="report__content"> {{ report['RPT_message_VC'] }} </p>
+                        </div>
+                        
+                        <div class="report__actions">
+                            <button class="report__toggle-details" @click="toggle(index)"> Voir moins </button>
+                            <button 
+                                class="btn btn--small"
+                                @click="deleteComment(report['RPT_commentId_NB'])">
+                                Supprimer le commentaire
+                            </button>
+
+                            <button
+                                class="btn btn--small"
+                                @click="resolvComment(report['RPT_commentId_NB'])">
+                                Clore le signalement
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 </template>
@@ -25,24 +57,47 @@
         fetchData();
     })
 
-    const nameGroup = ref();
-    const numberGroup = ref();
+    const groupeName = ref();
+    const groupeId = ref();
     const reports = ref();
 
     const noReport = ref();
+    const wantToDelete = ref();
 
-    const deleteComment = async () => {
-        const response = await $fetch(`${config.public.baseUrl}/reports/resolv`, {
-        method: 'POST',
+    const toggle = (index) => {
+        reports.value[index].expanded = !reports.value[index].expanded;
+    };
+
+    const deleteComment = async (reportId) => {
+        wantToDelete.value = true;
+
+        const response = await $fetch(`${config.public.baseUrl}/reports/${reportId}/${groupeId.value}`, {
+        method: 'POST', 
+        body: {
+                delete: wantToDelete.value,
+            },
         credentials: 'include',
         });
+        
+        if(response['Ok']){
+            console.log("ok1");
+        }
     }
 
-    const resolvComment = async () => {
-        const response = await $fetch(`${config.public.baseUrl}/reports/delete`, {
-        method: 'POST',
+    const resolvComment = async (reportId) => {
+        wantToDelete.value = false;
+
+        const response = await $fetch(`${config.public.baseUrl}/reports/${reportId}/${groupeId.value}`, {
+        method: 'POST', 
+        body: {
+                delete: wantToDelete.value,
+            },
         credentials: 'include',
         });
+
+        if(response['Ok']){
+            console.log("ok2");
+        }
     }
 
     const fetchData = async () => {
@@ -51,19 +106,22 @@
                 credentials: 'include',
             });
 
-            nameGroup.value = response1.CMY_name_VC;
-            numberGroup.value = response1.CMY_id_NB;
+            groupeName.value = response1.CMY_name_VC;
+            groupeId.value = response1.CMY_id_NB;
 
-            const response2 = await $fetch(`${config.public.baseUrl}/reports/${numberGroup.value}`, {
+            const response2 = await $fetch(`${config.public.baseUrl}/reports/${groupeId.value}`, {
                 credentials: 'include',
             });
 
-            if(!response2['RPT_commentId_NB']){
+            if(!response2){
                 noReport.value = true;
-                return ;
+                return;
             }
-            
-            reports.value = response2;
+
+            reports.value = response2.map((report) => ({
+                ...report,
+                expanded: false,
+            }));
         
         } catch (error) {
             console.error("An error occurred : ", error);
