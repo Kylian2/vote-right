@@ -2,7 +2,7 @@
     <Header></Header>
     <NuxtLink class="back" :to="`/communities/${groupeId}`">Retour au groupe</NuxtLink>
     <main class="moderate-community">
-        <div v-if="noReport" class="__title">
+        <div v-if="noReport">
             <h3 class="moderate-community__no-report"> Aucun commentaire n'a été signalé </h3>
         </div>
 
@@ -78,10 +78,6 @@
             },
         credentials: 'include',
         });
-        
-        if(response['Ok']){
-            console.log("ok1");
-        }
     }
 
     const resolvComment = async (reportId) => {
@@ -94,10 +90,6 @@
             },
         credentials: 'include',
         });
-
-        if(response['Ok']){
-            console.log("ok2");
-        }
     }
 
     const fetchData = async () => {

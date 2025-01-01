@@ -33,7 +33,9 @@ class reportController{
                 $allReports = array_merge($allReports, $reports);
             }
         }
-        echo json_encode($allReports);
+        
+        if(!empty($allReports))
+            echo json_encode($allReports);
     }
 
     /**
@@ -64,9 +66,6 @@ class reportController{
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
-        $return["Ok"] = 'mission accomplish';
-        echo json_encode($return);
-
         if($body === null){
             http_response_code(422);
             $return["Unprocessable Entity"] = 'Missing data';
@@ -80,7 +79,7 @@ class reportController{
             echo json_encode($return);
             return ;
         }
-        
+
         $commentId = intval($params[0]);
         $communityId = intval($params[1]);
         $userId = SessionGuard::getUserId();
@@ -88,7 +87,7 @@ class reportController{
         $user = SessionGuard::getUser();
         $userInformation = $user->getRole($communityId);
 
-        if($userInformation['MEM_role_NB'] != (ROLE_ADMIN || ROLE_MODERATOR)){
+        if($userInformation->MEM_role_NB != (ROLE_ADMIN || ROLE_MODERATOR)){
             http_response_code(403);
             $return["Error"] = 'You have no rights on this action';
             echo json_encode($return);
@@ -105,8 +104,7 @@ class reportController{
             Report::resolveById($values);
         }
 
-        $return["Ok"] = 'mission accomplish';
-        echo json_encode($return);
+        echo json_encode(true);
     }
 }
 
