@@ -29,10 +29,16 @@
                 <span class="header__hamburger__bar"></span>
             </div>
         </div>
-        <nav class="d-none" id="navigation-mobile">
+        <nav v-if="type === 'not-logged'" class="d-none" id="navigation-mobile">
             <NuxtLink to="/" class="logo--mobile"><b>Vote</b>Right</NuxtLink>
             <NuxtLink to="/login">Se connecter</NuxtLink>
             <NuxtLink to="/register">S'inscrire</NuxtLink>
+        </nav>
+        <nav v-if="type === 'logged'" class="logged d-none" id="navigation-mobile">
+            <NuxtLink to="/" class="logo--mobile"><b>Vote</b>Right</NuxtLink>
+            <NuxtLink to="/login">Accueil</NuxtLink>
+            <NuxtLink to="/register">Groupes</NuxtLink>
+            <button @click="settingsModal = !settingsModal">Mon compte</button>
         </nav>
     </header>
 
