@@ -1,6 +1,6 @@
 DELIMITER //
 
-CREATE EVENT traiter_votes
+CREATE EVENT launch_round
 ON SCHEDULE EVERY 1 DAY
 DO
 BEGIN
