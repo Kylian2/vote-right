@@ -145,3 +145,11 @@ FROM proposal
 INNER JOIN vote ON VOT_proposal_NB = PRO_id_NB
 INNER JOIN voting_system ON VOT_type_NB = SYS_id_NB
 WHERE VOT_assessor_NB IS NOT NULL AND pro_status_VC = 'En cours';
+
+--remplir les demandes formelles 
+
+INSERT INTO formal_request (FOR_user_NB, FOR_proposal_NB)
+SELECT m.MEM_user_NB, p.PRO_id_NB
+FROM proposal p
+JOIN member m ON m.MEM_community_NB = p.PRO_community_NB
+WHERE RAND() < 0.4 AND MEM_user_NB NOT IN (SELECT FOR_user_NB FROM formal_request WHERE FOR_proposal_NB = p.PRO_id_NB);
