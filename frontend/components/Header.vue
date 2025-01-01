@@ -182,7 +182,7 @@
         :loader="true"
         class="toast"
     >
-    Votre/vos modification(s) ont été prises en compte !
+    Vos modification ont été prises en compte !
     </Toast>
 </template>
 
