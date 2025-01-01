@@ -8,7 +8,7 @@
             <slot name="title"></slot>
         </h3>
 
-        <h4>
+        <h4 v-if="subtitles">
             <slot name="subtitles"></slot>
         </h4>
 
@@ -77,6 +77,11 @@ const props = defineProps({
     },
     disableValid: {
         type: Boolean, 
+        required: false,
+        default: false,
+    },
+    subtitles: {
+        type: Boolean,
         required: false,
         default: false,
     }

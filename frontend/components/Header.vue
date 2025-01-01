@@ -16,7 +16,7 @@
             <div class="wrapper" :class="{'active' : actif === 'groupes'}"><NuxtLink class="logged__link" to="/communities">Groupes</NuxtLink></div>
         </nav>
         <div v-if="type === 'logged'" class="logged">
-            <button class="logged__link"  @click="settingsModal = !settingsModal">Mon compte</button>
+            <button class="logged__link shine"  @click="settingsModal = !settingsModal">Mon compte</button>
         </div>
     </header>
 
@@ -43,6 +43,8 @@
     :before-cancel="() => {beforeCancel()}"
     :before-ok="() => {beforeOk()}"
     :before-close="() => {beforeClose()}"
+    class="account-settings-modal"
+    subtitles
     >
         <template #title>Paramètres de compte</template>
 
@@ -83,7 +85,7 @@
                         </div>
                     </div>
                 </div>
-                <p v-else>Sélectionnez les notifications qui vous intéressent !</p>
+                <p v-else>Sélectionnez les notifications qui vous intéressent</p>
             </div>
 
             <form v-if="MyInformationSection" class="header-settings-modal__settings-list">
