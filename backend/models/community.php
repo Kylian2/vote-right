@@ -76,6 +76,20 @@ class Community extends Model{
         return $communities;
     }
 
+    public static function communitiesDecidedBy(int $user){
+        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_VC, 
+                    (SELECT COUNT(*) FROM member WHERE MEM_community_NB = CMY_id_NB) as CMY_nb_member_NB
+                    FROM community 
+                    INNER JOIN member ON MEM_community_NB = CMY_id_NB
+                    WHERE (MEM_role_NB = 1 OR MEM_role_NB = 2) AND MEM_user_NB = :user";
+        $prepare = connexion::pdo()->prepare($request);
+        $values['user'] = $user;
+        $prepare->execute($values);
+        $prepare->setFetchmode(PDO::FETCH_CLASS, "community");
+        $communities = $prepare->fetchAll();
+        return $communities;
+    }
+
     public function insert(){
         $request = 'INSERT INTO community (CMY_name_VC, CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_creator_NB)
                     VALUES (:name, :image, :emoji, :color, :description, :creator);';
