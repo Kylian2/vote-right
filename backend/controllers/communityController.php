@@ -50,6 +50,14 @@ class CommunityController{
      */
     public static function managed(){
         $userId = SessionGuard::getUserId();
+
+        $role = isset($_GET["role"]) ? $_GET["role"] : null;
+        if($role === 'decider'){
+            $communities = Community::communitiesDecidedBy($userId);
+            echo json_encode($communities);
+            return;
+        }
+
         $communities = Community::communitiesManagedBy($userId);
         echo json_encode($communities);
     }

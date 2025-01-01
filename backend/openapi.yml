@@ -1830,6 +1830,12 @@ paths:
         name: id
         in: path
         required: true
+      - schema:
+          type: string
+        in: cookie
+        name: PHPSESSID
+        description: Le cookie d'authentification
+        required: true
     get:
       summary: Récupère les informations des votes
       tags:
@@ -1958,6 +1964,120 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+    post:
+      summary: Enregistrer les paramètres d'un vote
+      tags:
+        - votes
+        - proposals
+      responses:
+        '200':
+          description: 'OK, un boolean indiquant si le vote a été crée'
+        '400':
+          description: 'Bad Request, le vote existe déjà'
+        '403':
+          description: 'Forbidden, vous n''avez pas le droit de créer un vote dans cette communauté'
+        '422':
+          description: 'Unprocessable Entity (WebDAV), le corps de la requete est invalide.'
+      operationId: post-proposals-id-votes
+      x-stoplight:
+        id: 6zqbvkfz9vkn4
+      requestBody:
+        description: |-
+          - `system`: le type de scrutin
+          - `discussionDuration`: la durée de discussion
+          - `voteDuration`: la durée du voteDuration
+          - `possibilities`: un tableau contenant les choix du vote (que si le vote n'est pas un POUR/CONTRE ou OUI/NON)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                system:
+                  type: integer
+                discussionDuration:
+                  type: integer
+                voteDuration:
+                  type: integer
+                possibilities:
+                  type: array
+                  items:
+                    type: string
+              x-examples:
+                Example 1:
+                  system: 4
+                  discussionDuration: 4
+                  voteDuration: 4
+                  possibilities:
+                    - choix 1
+                    - choix 2
+                    - choix 3
+            examples:
+              Example 1:
+                value:
+                  system: 4
+                  discussionDuration: 4
+                  voteDuration: 4
+                  possibilities:
+                    - choix 1
+                    - choix 2
+                    - choix 3
+    put:
+      summary: Modifier les paramètres d'un vote
+      tags:
+        - votes
+        - proposals
+      responses:
+        '200':
+          description: 'OK, un boolean indiquant si le vote a été modifié'
+        '400':
+          description: 'Bad Request, le vote a déjà commencé, impossible de le modifier'
+        '403':
+          description: 'Forbidden, vous n''avez pas les droits pour manipuler les votes sur cette proposition'
+        '422':
+          description: 'Unprocessable Entity (WebDAV), le corps de la requete est invalide.'
+      operationId: put-proposals-id-votes
+      x-stoplight:
+        id: pilejvcil1389
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                system:
+                  type: integer
+                discussionDuration:
+                  type: integer
+                voteDuration:
+                  type: integer
+                possibilities:
+                  type: array
+                  items:
+                    type: string
+              x-examples:
+                Example 1:
+                  system: 4
+                  discussionDuration: 4
+                  voteDuration: 4
+                  possibilities:
+                    - choix 1
+                    - choix 2
+                    - choix 3
+            examples:
+              Example 1:
+                value:
+                  system: 4
+                  discussionDuration: 4
+                  voteDuration: 4
+                  possibilities:
+                    - choix 1
+                    - choix 2
+                    - choix 3
+        description: |-
+          - `system`: le type de scrutin
+          - `discussionDuration`: la durée de discussion
+          - `voteDuration`: la durée du voteDuration
+          - `possibilities`: un tableau contenant les choix du vote (que si le vote n'est pas un POUR/CONTRE ou OUI/NON)
   '/proposals/{id}/{round}/vote':
     parameters:
       - schema:
@@ -2413,6 +2533,11 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+        - schema:
+            type: string
+          in: query
+          name: role
+          description: Le type de role de l'utilisateur dans la communauté
   '/communities/{id}/exclude/{user}':
     parameters:
       - schema:
@@ -2771,7 +2896,7 @@ paths:
       summary: afficher l'invitation
       tags:
         - invitations
-      responses: 
+      responses:
         '200':
           description: L'invitation est renvoyée avec succès
           content:
@@ -2823,7 +2948,7 @@ paths:
       summary: accepter une invitation
       tags:
         - invitations
-      responses: 
+      responses:
         '200':
           description: 'OK, `true` si l''invitation à pu être acceptée, `false` sinon.'
       operationId: post-invitations-id-accept
@@ -2870,7 +2995,7 @@ paths:
       summary: refuser une invitation
       tags:
         - invitations
-      responses: 
+      responses:
         '200':
           description: 'OK, `true` si l''invitation à pu être refusée, `false` sinon.'
       operationId: get-invitations-id-reject
@@ -2911,7 +3036,7 @@ paths:
       summary: Mettre à jour une communauté
       tags:
         - communities
-      responses: 
+      responses:
         '200':
           description: 'OK, `true` si la communauté à pu être mise à jour'
       operationId: get-communities-id-update
@@ -2943,7 +3068,7 @@ paths:
               x-examples:
                 Example 1:
                   name: Club de baseBall
-                  description: Organisation des activités, échange, partage
+                  description: 'Organisation des activités, échange, partage'
                   color: '#5AB7EE'
                   emoji: 1F389
                   image: 100001.png
@@ -2951,7 +3076,7 @@ paths:
               Example 1:
                 value:
                   name: Club de baseBall
-                  description: Organisation des activités, échange, partage
+                  description: 'Organisation des activités, échange, partage'
                   color: '#5AB7EE'
                   emoji: 1F389
                   image: 100001.png
@@ -2961,21 +3086,122 @@ paths:
           name: id
           in: path
           required: true
+  /votes/systems:
+    get:
+      summary: La liste des modes de scrutin
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    SYS_id_NB:
+                      type: integer
+                    SYS_label_VC:
+                      type: string
+                    SYS_nb_rounds_NB:
+                      type: integer
+                x-examples:
+                  Example 1:
+                    - SYS_id_NB: 1
+                      SYS_label_VC: Pour / Contre
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 2
+                      SYS_label_VC: Oui / Non
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 3
+                      SYS_label_VC: Scrutin majoritaire (un tour)
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 4
+                      SYS_label_VC: Scrutin majoritaire (deux tours)
+                      SYS_nb_rounds_NB: 2
+                    - SYS_id_NB: 5
+                      SYS_label_VC: Scrutin proportionnel
+                      SYS_nb_rounds_NB: 1
+              examples:
+                Example 1:
+                  value:
+                    - SYS_id_NB: 1
+                      SYS_label_VC: Pour / Contre
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 2
+                      SYS_label_VC: Oui / Non
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 3
+                      SYS_label_VC: Scrutin majoritaire (un tour)
+                      SYS_nb_rounds_NB: 1
+      operationId: get-votes-systems
+      x-stoplight:
+        id: xhsri844y6w7v
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/users/me/roles/{proposal}/proposal':
+    parameters:
+      - schema:
+          type: string
+        name: proposal
+        in: path
+        required: true
+    get:
+      summary: Le role de l'utilisateur dans la communauté associé à la proposition
+      tags:
+        - roles
+      responses:
+        '200':
+          description: 'OK, un boolean `false` si le membre ne fait pas parti de la communauté, si le membre en fait parti un JSON comprenant les infos du role.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  MEM_role_NB:
+                    type: integer
+                  ROL_label_VC:
+                    type: string
+                x-examples:
+                  Example 1:
+                    MEM_role_NB: 1
+                    ROL_label_VC: Administrateur
+              examples:
+                Example 1:
+                  value:
+                    MEM_role_NB: 1
+                    ROL_label_VC: Administrateur
+      operationId: get-users-me-roles-proposal-proposal
+      x-stoplight:
+        id: 1b6fvafre5qxp
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
 components:
   securitySchemes: {}
   responses: {}
 x-internal: true
 tags:
   - name: authentification
-  - name: budget
-  - name: comments
-  - name: communities
-  - name: invitations
-  - name: members
-  - name: proposals
-  - name: reactions
-  - name: reasons
-  - name: roles
-  - name: themes
   - name: users
+  - name: communities
+  - name: themes
+  - name: proposals
+  - name: comments
+  - name: reactions
+  - name: members
+  - name: invitations
+  - name: budget
   - name: votes
+  - name: roles
+  - name: reasons
