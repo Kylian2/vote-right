@@ -21,12 +21,14 @@
                     :rules="[
                             (v) => Boolean(v) || 'Une couleur est requise', 
                     ]"
+                    v-model="color"
                 >Couleur</ColorPicker>
                 <EmojiPicker 
                     name="emoji"
                     :rules="[
                             (v) => Boolean(v) || 'Une couleur est requise', 
                     ]"
+                    v-model="emoji"
                 >Emoji</EmojiPicker>
             </div>    
             <div>
@@ -116,9 +118,11 @@
             emoji.value = response.CMY_emoji_VC;
             image.value = response.CMY_image_VC;
 
-            console.log(color);
-            console.log(emoji);
-            console.log(image);
+            console.log(name.value);
+            console.log(description.value);
+            console.log(color.value);
+            console.log(emoji.value);
+            console.log(image.value);
         
         } catch (error) {
             console.error("An error occurred : ", error);
