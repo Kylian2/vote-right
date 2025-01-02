@@ -2810,6 +2810,107 @@ paths:
       x-stoplight:
         id: ah7deuo8pqrya
       description: 'Renvoie la liste des rôles. '
+  /votes/systems:
+    get:
+      summary: La liste des modes de scrutin
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    SYS_id_NB:
+                      type: integer
+                    SYS_label_VC:
+                      type: string
+                    SYS_nb_rounds_NB:
+                      type: integer
+                x-examples:
+                  Example 1:
+                    - SYS_id_NB: 1
+                      SYS_label_VC: Pour / Contre
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 2
+                      SYS_label_VC: Oui / Non
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 3
+                      SYS_label_VC: Scrutin majoritaire (un tour)
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 4
+                      SYS_label_VC: Scrutin majoritaire (deux tours)
+                      SYS_nb_rounds_NB: 2
+                    - SYS_id_NB: 5
+                      SYS_label_VC: Scrutin proportionnel
+                      SYS_nb_rounds_NB: 1
+              examples:
+                Example 1:
+                  value:
+                    - SYS_id_NB: 1
+                      SYS_label_VC: Pour / Contre
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 2
+                      SYS_label_VC: Oui / Non
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 3
+                      SYS_label_VC: Scrutin majoritaire (un tour)
+                      SYS_nb_rounds_NB: 1
+      operationId: get-votes-systems
+      x-stoplight:
+        id: xhsri844y6w7v
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/users/me/roles/{proposal}/proposal':
+    get:
+      summary: Le role de l'utilisateur dans la communauté associé à la proposition
+      tags:
+        - roles
+      responses:
+        '200':
+          description: 'OK, un boolean `false` si le membre ne fait pas parti de la communauté, si le membre en fait parti un JSON comprenant les infos du role.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  MEM_role_NB:
+                    type: integer
+                  ROL_label_VC:
+                    type: string
+                x-examples:
+                  Example 1:
+                    MEM_role_NB: 1
+                    ROL_label_VC: Administrateur
+              examples:
+                Example 1:
+                  value:
+                    MEM_role_NB: 1
+                    ROL_label_VC: Administrateur
+      operationId: get-users-me-roles-proposal-proposal
+      x-stoplight:
+        id: 1b6fvafre5qxp
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+    parameters:
+      - schema:
+          type: string
+        name: proposal
+        in: path
+        required: true
   /invitations:
     post:
       summary: Inviter des membres
@@ -2978,12 +3079,6 @@ paths:
           name: id
           in: path
           required: true
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
   '/invitations/{id}/reject':
     parameters:
       - schema:
@@ -3086,106 +3181,114 @@ paths:
           name: id
           in: path
           required: true
-  /votes/systems:
-    get:
-      summary: La liste des modes de scrutin
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    SYS_id_NB:
-                      type: integer
-                    SYS_label_VC:
-                      type: string
-                    SYS_nb_rounds_NB:
-                      type: integer
-                x-examples:
-                  Example 1:
-                    - SYS_id_NB: 1
-                      SYS_label_VC: Pour / Contre
-                      SYS_nb_rounds_NB: 1
-                    - SYS_id_NB: 2
-                      SYS_label_VC: Oui / Non
-                      SYS_nb_rounds_NB: 1
-                    - SYS_id_NB: 3
-                      SYS_label_VC: Scrutin majoritaire (un tour)
-                      SYS_nb_rounds_NB: 1
-                    - SYS_id_NB: 4
-                      SYS_label_VC: Scrutin majoritaire (deux tours)
-                      SYS_nb_rounds_NB: 2
-                    - SYS_id_NB: 5
-                      SYS_label_VC: Scrutin proportionnel
-                      SYS_nb_rounds_NB: 1
-              examples:
-                Example 1:
-                  value:
-                    - SYS_id_NB: 1
-                      SYS_label_VC: Pour / Contre
-                      SYS_nb_rounds_NB: 1
-                    - SYS_id_NB: 2
-                      SYS_label_VC: Oui / Non
-                      SYS_nb_rounds_NB: 1
-                    - SYS_id_NB: 3
-                      SYS_label_VC: Scrutin majoritaire (un tour)
-                      SYS_nb_rounds_NB: 1
-      operationId: get-votes-systems
-      x-stoplight:
-        id: xhsri844y6w7v
-      parameters:
-        - schema:
-            type: string
-          in: cookie
-          name: PHPSESSID
-          description: Le cookie d'authentification
-          required: true
-  '/users/me/roles/{proposal}/proposal':
+  '/reports/{id}':
     parameters:
       - schema:
           type: string
-        name: proposal
+        name: id
         in: path
         required: true
     get:
-      summary: Le role de l'utilisateur dans la communauté associé à la proposition
+      summary: afficher les signalements
       tags:
-        - roles
+        - reports
       responses:
         '200':
-          description: 'OK, un boolean `false` si le membre ne fait pas parti de la communauté, si le membre en fait parti un JSON comprenant les infos du role.'
+          description: Les signalements sont renvoyés avec succès
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  MEM_role_NB:
+                  RPT_commentId_NB:
                     type: integer
-                  ROL_label_VC:
+                  RPT_user_NB:
+                    type: integer
+                  RPT_firstname_VC:
+                    type: string
+                  RPT_lastname_VC:
+                    type: string
+                  RPT_message_VC:
+                    type: string
+                  RPT_label_VC:
                     type: string
                 x-examples:
                   Example 1:
-                    MEM_role_NB: 1
-                    ROL_label_VC: Administrateur
+                    RPT_commentId_NB: 103
+                    RPT_user_NB: 21
+                    RPT_firstname_VC: Billi
+                    RPT_lastname_VC: Alesio
+                    RPT_message_VC: something bad
+                    RPT_label_VC: Sexuel
               examples:
                 Example 1:
                   value:
-                    MEM_role_NB: 1
-                    ROL_label_VC: Administrateur
-      operationId: get-users-me-roles-proposal-proposal
+                    RPT_commentId_NB: 103
+                    RPT_user_NB: 21
+                    RPT_firstname_VC: Billi
+                    RPT_lastname_VC: Alesio
+                    RPT_message_VC: something bad
+                    RPT_label_VC: Sexuel
+      operationId: get-reports-id
       x-stoplight:
-        id: 1b6fvafre5qxp
+        id: fabiv2p7u3hw9
+      description: Renvoie tous les signalements "En Attente" du groupe.
       parameters:
         - schema:
-            type: string
-          in: cookie
-          name: PHPSESSID
-          description: Le cookie d'authentification
+            type: integer
+          name: id
+          in: path
+          required: true
+  '/reports/{id}/{community}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: community
+        in: path
+        required: true
+    post:
+      summary: résoudre un signalement
+      tags:
+        - reports
+      responses: 
+        '200':
+          description: 'OK, `true` si la modification sur le signalement a pu être effectuée'
+      operationId: post-reports-id-community
+      x-stoplight:
+        id: mjoxormu97mo5
+      description: Résout un signalement et/ou supprime le commentaire associé.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                wantToDelete:
+                  type: boolean
+              required:
+                - wantToDelete
+              x-examples:
+                Example 1:
+                  wantToDelete: true
+            examples:
+              Example 1:
+                value:
+                  wantToDelete: true
+      parameters:
+        - schema:
+            type: integer
+          name: id
+          in: path
+          required: true
+        - schema:
+            type: integer
+          name: community
+          in: path
           required: true
 components:
   securitySchemes: {}
@@ -3205,3 +3308,4 @@ tags:
   - name: votes
   - name: roles
   - name: reasons
+  - name: reports
