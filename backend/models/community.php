@@ -370,6 +370,17 @@ class Community extends Model{
         return array_reverse($periods);
     }
 
+    public function getFormattedProposals(int $period){
+        $request = 'SELECT proposal_formatted(:community, :period);';
+        $prepare = connexion::pdo()->prepare($request);
+        $values['community'] = $this->get('CMY_id_NB');
+        $values['period'] = $period;
+        $prepare->execute($values);
+        $result = $prepare->fetch();
+
+        return json_decode($result[0]);
+    }
+
 }
 
 ?>
