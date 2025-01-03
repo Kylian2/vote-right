@@ -153,7 +153,6 @@ cancel-text="Annuler"
 </div>
 </template>
 </Modal>
-
 <Toast 
     name="forbidden" 
     :type="1" 
@@ -401,7 +400,7 @@ const validateVote = async (vote, answer) => {
             }
         })
 
-        fetchVote();
+        votes.value[vote-1]['VOT_valid_BOOL'] = answer;
 
     }catch (error){
         console.log('An unexpected error occured : ', error);

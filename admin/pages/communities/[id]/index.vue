@@ -58,7 +58,7 @@
             </div>
 
             <div class="community__ongoing">
-                <h3>Action requise</h3>
+                <h3>En attente d'adoption</h3>
                 <div>
                     <div v-for="proposal, key in voted" class="proposal-card__wrapper">
                         <img class="proposal-card__image" src="/images/like.png" alt="like icon" v-if="false">
