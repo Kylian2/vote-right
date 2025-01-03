@@ -59,11 +59,9 @@ BEGIN
 
     RETURN CONCAT(
         '{',
-        '"vote": {',
         '"system": ', system, ', ',
         '"positive": ', positive_list, ', ',
         '"negative": ', negative_list,
-        '}',
         '}'
     );
 END //

@@ -1,66 +1,64 @@
 DELIMITER //
 
-CREATE OR REPLACE FUNCTION proposal_formatted(VARCHAR year)
+CREATE OR REPLACE FUNCTION reaction_formatted(proposal INT) 
 RETURNS TEXT
 NOT DETERMINISTIC
 BEGIN
     DECLARE fin_cursor INT DEFAULT 0;
-    DECLARE json_result TEXT DEFAULT '[';
-    DECLARE first_entry INT DEFAULT 1;
-    DECLARE proposal_id INT;
-    DECLARE title VARCHAR(255);
-    DECLARE budget DECIMAL(10, 2);
-    DECLARE theme INT;
-    DECLARE vote_json TEXT;
-    DECLARE reaction_json TEXT;
+    DECLARE like_list TEXT DEFAULT '[';
+    DECLARE dislike_list TEXT DEFAULT '[';
+    DECLARE first_like INT DEFAULT 1;
+    DECLARE first_dislike INT DEFAULT 1;
+    DECLARE user_id INT;
+    DECLARE reaction INT;
 
-    DECLARE proposals CURSOR FOR 
-    SELECT PRO_id_NB, PRO_title_VC, PRO_budget_NB, PRO_theme_NB
-    FROM proposal
-    INNER JOIN vote ON VOT_proposal_NB = PRO_id_NB
-    INNER JOIN voting_system ON VOT_type_NB = SYS_id_NB
-    WHERE VOT_round_NB = SYS_nb_rounds_NB AND VOT_valid_BOOL = TRUE AND PRO_community_NB = 13 AND PRO_period_YEAR = year;
+    DECLARE reactions CURSOR FOR 
+    SELECT REP_user_NB, REP_reaction_NB 
+    FROM proposal_reaction
+    WHERE REP_proposal_NB = proposal;
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin_cursor = 1;
 
     -- Open the cursor
-    OPEN proposals;
+    OPEN reactions;
 
-    fetchproposals: LOOP
-        FETCH proposals INTO proposal_id, title, budget, theme;
+    fetchreactions: LOOP
+        FETCH reactions INTO user_id, reaction;
 
-        IF fin_cursor THEN
-            LEAVE fetchproposals;
+        IF fin_cursor THEN 
+            LEAVE fetchreactions;
         END IF;
 
-        -- Get vote details
-        SET vote_json = vote_formatted(proposal_id);
-
-        -- Get reaction details
-        SET reaction_json = reaction_formatted(proposal_id);
-
-        -- Append to JSON result
-        IF first_entry = 0 THEN
-            SET json_result = CONCAT(json_result, ', ');
+        -- Add user_id to like or dislike list based on the reaction
+        IF reaction = 1 OR reaction = 3 THEN
+            IF first_like = 0 THEN
+                SET like_list = CONCAT(like_list, ', ');
+            END IF;
+            SET like_list = CONCAT(like_list, user_id);
+            SET first_like = 0;
+        ELSEIF reaction = 2 OR reaction = 4 THEN
+            IF first_dislike = 0 THEN
+                SET dislike_list = CONCAT(dislike_list, ', ');
+            END IF;
+            SET dislike_list = CONCAT(dislike_list, user_id);
+            SET first_dislike = 0;
         END IF;
-        SET json_result = CONCAT(json_result, '{',
-            '"PRO_id_NB": ', proposal_id, ', ',
-            '"PRO_title_VC": "', title, '", ',
-            '"PRO_budget_NB": ', budget, ', ',
-            '"PRO_theme_NB": ', theme, ', ',
-            '"vote": ', vote_json, ', ',
-            '"reaction": ', reaction_json,
-            '}');
-        SET first_entry = 0;
     END LOOP;
 
     -- Close the cursor
-    CLOSE proposals;
+    CLOSE reactions;
 
-    -- Finalize JSON result
-    SET json_result = CONCAT(json_result, ']');
+    -- Finalize the lists
+    SET like_list = CONCAT(like_list, ']');
+    SET dislike_list = CONCAT(dislike_list, ']');
 
-    RETURN json_result;
+    -- Construct the JSON result
+    RETURN CONCAT(
+        '{',
+        '"like": ', like_list, ', ',
+        '"dislike": ', dislike_list,
+        '}'
+    );
 END //
 
 DELIMITER ;
