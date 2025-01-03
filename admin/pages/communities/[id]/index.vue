@@ -11,7 +11,7 @@
                     Récapitulatif
                 </h3>
                 <select v-model="period" @change="fetchDataByPeriod()">
-                    <option v-for="p in periods" :value="p" :selected="new Date().getFullYear() == p">{{p}}</option>
+                    <option v-for="p in periods" :value="p">{{p}}</option>
                 </select>
                 <p><b>Budget Total : </b> {{formatNumber(budget['CMY_budget_NB'])}} € /an max</p>
                 <p><b>Budget Utilisé : </b> {{formatNumber(budget['CMY_used_budget_NB'])}} € /an</p>
@@ -304,7 +304,7 @@ const ongoing = ref([]);
 const adopted = ref([]);
 const voted = ref([]);
 const budget = ref({});
-const period = ref('2024');
+const period = ref(new Date().getFullYear());
 const periods = ref([]);
 const role = ref({});
 
@@ -385,6 +385,11 @@ const fetchData = async () => {
         });
 
         periods.value = response7;
+        periods.value.forEach(p => {
+            if(new Date().getFullYear() == p){
+                period.value = p;
+            }
+        });
         
     } catch(error) {
         console.log("An error occured", error);
