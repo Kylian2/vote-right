@@ -26,6 +26,7 @@ Router::post('/communities/{id}/themes', 'themeController@store', true);
 Router::get('/communities/managed', 'communityController@managed', true);
 Router::post('/communities/{id}/exclude/{user}', 'communityController@exclude', true);
 Router::get('/communities/{id}/periods', 'communityController@periods', true);
+Router::get('/communities/{id}/proposals/formatted', 'communityController@formattedProposals', true);
 Router::post('/communities/{id}/update', 'communityController@update');
 
 Router::get('/users', 'userController@index');

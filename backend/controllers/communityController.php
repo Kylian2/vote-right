@@ -387,6 +387,29 @@ class CommunityController{
     }
 
     /**
+     * Récupere la liste des propositions dont les votes sont finis et validés. Les propositions récupérées
+     * sont mise dans un format permettant leur utilisation au sein de l'application Java.
+     * 
+     * @param array $params l'identifiant de la communauté ($params[0])
+     * 
+     * @return void
+     * - Les propositions au format JSON
+     */
+    public static function formattedProposals(array $params){
+
+        if(!isset($_GET['period'])){
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"undefined period"}';
+            return;
+        }
+
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+        $proposals = $community->getFormattedProposals($_GET['period']);
+        echo json_encode($proposals);
+    }
+
+    /**
      * Modifie une communauté existante dans la base de données
      * 
      * @param $params Une liste contenant les paramètres de la requêtes
