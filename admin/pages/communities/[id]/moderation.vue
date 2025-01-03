@@ -10,21 +10,21 @@
         <h1 class="moderate-community__title">{{ groupeName }}</h1>
             <div class="reports">
                 <div class="report" v-for="(report, index) in reports" :key="index">
-                    <div v-if="!report.expanded" class="report__summary">
-                        <p><strong> {{ report['RPT_label_VC'] }} {{ report['RPT_labels_TAB'].length > 1 ? " et " + (report['RPT_labels_TAB'].length-1) + " autres" : ""}} </strong></p>
-                        <p class="report__content"> {{ report['RPT_message_VC'] }} </p>
-                        <button class="report__toggle-summary" @click="toggle(index)"> Voir plus </button>
+                    <div class="report__summary" @click="toggle(index)">
+                        <div>
+                            <p><strong> {{ report['RPT_label_VC'] }} {{ report['RPT_labels_TAB'].length > 1 ? " et " + (report['RPT_labels_TAB'].length-1) + " autres" : ""}} </strong></p>
+                            <p v-if="!report.expanded" class="report__content"> {{ report['RPT_message_VC'] }} </p>
+                        </div>
+                        <button class="report__toggle-summary"> {{ report.expanded ? 'Voir moins' : 'Voir plus'}} </button>
                     </div>
 
-                    <div v-else class="report__details">
+                    <div v-if="report.expanded" class="report__details">
                         <div class="report__informations">
-                            <p><strong> {{ report['RPT_label_VC'] }} </strong></p>
                             <p><strong> Commenté par {{ report['RPT_firstname_VC'] }} {{ report['RPT_lastname_VC'] }} </strong></p>
                             <p class="report__content"> {{ report['RPT_message_VC'] }} </p>
                         </div>
                         
                         <div class="report__actions">
-                            <button class="report__toggle-details" @click="toggle(index)"> Voir moins </button>
                             <button 
                                 class="btn btn--small"
                                 @click="handleReport(report, true)">
@@ -89,7 +89,7 @@
             const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/reports`, {
                 credentials: 'include',
             });
-
+            reports.value = [];
             response.forEach(report => {
                 const existing = reports.value.find(item => item['RPT_comment_NB'] === report['RPT_comment_NB']);
 
