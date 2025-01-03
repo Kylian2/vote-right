@@ -1,6 +1,6 @@
 <template>
     <Header></Header>
-    <NuxtLink class="back" :to="`/communities/${groupeId}`">Retour au groupe</NuxtLink>
+    <NuxtLink class="back" :to="`/communities/${$route.params.id}`">Retour au groupe</NuxtLink>
 
     <main class="moderate-community">
         <div v-if="noReport">
@@ -39,6 +39,7 @@
                         </div>
                     </div>
                 </div>
+                <p class="legende" v-if="reports.length === 0"> Tout va bien, il n'y a aucun signalement !</p>
             </div>
         </div>
     </main>
