@@ -1,6 +1,6 @@
 CREATE OR REPLACE VIEW waiting_report AS
-SELECT RES_label_VC, COM_id_NB, COM_message_VC, USR_id_NB, USR_firstname_VC, USR_lastname_VC, RPT_creation_DATE , COM_proposal_NB, PRO_community_NB, RPT_status_VC
-FROM report
+SELECT RES_label_VC, COM_id_NB, COM_message_VC, RPT_user_NB, USR_firstname_VC, USR_lastname_VC, RPT_creation_DATE , COM_proposal_NB, PRO_community_NB, RPT_status_VC
+FROM report r
 INNER JOIN comment ON COM_id_NB = RPT_comment_NB
 INNER JOIN reason ON RPT_reason_NB = RES_id_NB
 INNER JOIN user ON COM_sender_NB = USR_id_NB
