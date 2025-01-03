@@ -2999,7 +2999,7 @@ paths:
         - invitations
       responses:
         '200':
-          description: L'invitation est renvoyée avec succès
+          description: L'invitation est renvoyée avec succès.
           content:
             application/json:
               schema:
@@ -3195,7 +3195,7 @@ paths:
         - communities
       responses:
         '200':
-          description: 'OK, `true` si la communauté à pu être mise à jour'
+          description: Les signalements de la communauté sont renvoyés avec succès.
           content:
             application/json:
               schema:
@@ -3241,16 +3241,16 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
-  '/reports/{comment}/{community}':
+  '/reports/{user}/{comment}':
     parameters:
       - schema:
           type: string
-        name: community
+        name: comment
         in: path
         required: true
       - schema:
           type: string
-        name: comment
+        name: user
         in: path
         required: true
     patch:
@@ -3259,7 +3259,7 @@ paths:
         - reports
       responses:
         '200':
-          description: 'OK, `true` si la modification sur le signalement a pu être effectuée'
+          description: 'OK, `true` si le signalement a pu être modifié'
       operationId: patch-reports-id-community
       x-stoplight:
         id: mjoxormu97mo5
@@ -3270,17 +3270,17 @@ paths:
             schema:
               type: object
               properties:
-                wantToDelete:
+                delete:
                   type: boolean
               required:
-                - wantToDelete
+                - delete
               x-examples:
                 Example 1:
-                  wantToDelete: true
+                  delete: true
             examples:
               Example 1:
                 value:
-                  wantToDelete: true
+                  delete: true
       parameters:
         - schema:
             type: string
