@@ -301,9 +301,9 @@ class Community extends Model{
         $communityBudget = $prepare->fetch();
 
         $budget = array(
-           "CMY_budget_NB" => $communityBudget['BUC_amount_NB'],
+           "CMY_budget_NB" => $communityBudget ? $communityBudget['BUC_amount_NB'] : 0,
            "CMY_used_budget_NB" => $usedBudget,
-           "CMY_fixed_fees_NB" => $communityBudget['BUC_fixed_fees_NB'],
+           "CMY_fixed_fees_NB" => $communityBudget ? $communityBudget['BUC_fixed_fees_NB'] : 0,
            "CMY_budget_theme_NB" => $budgetThemes
         );
 
