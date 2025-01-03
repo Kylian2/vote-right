@@ -18,24 +18,9 @@ class reportController{
      * 
      * @return void les données des signalements sont renvoyées en JSON par echo
      */
-    public static function show($params){
-        $allProposal = Proposal::allOfCommunity($params[0]);
-
-        $proposalArray = array ();
-        foreach ($allProposal as $proposal) {
-            $proposalArray[] = get_object_vars($proposal);
-        }
-
-        $allReports = array();
-        foreach ($proposalArray as $proposal) {
-            if (isset($proposal['PRO_id_NB'])) {
-                $reports = Report::getByProposal($proposal['PRO_id_NB']);
-                $allReports = array_merge($allReports, $reports);
-            }
-        }
-        
-        if(!empty($allReports))
-            echo json_encode($allReports);
+    public static function index($params){
+        $reports = Report::getAllOf($params[0]);
+        echo json_encode($reports);
     }
 
     /**

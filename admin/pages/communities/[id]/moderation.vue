@@ -72,7 +72,7 @@
         wantToDelete.value = true;
 
         const response = await $fetch(`${config.public.baseUrl}/reports/${reportId}/${groupeId.value}`, {
-        method: 'POST', 
+        method: 'PATCH', 
         body: {
                 delete: wantToDelete.value,
             },
@@ -84,7 +84,7 @@
         wantToDelete.value = false;
 
         const response = await $fetch(`${config.public.baseUrl}/reports/${reportId}/${groupeId.value}`, {
-        method: 'POST', 
+        method: 'PATCH', 
         body: {
                 delete: wantToDelete.value,
             },
@@ -94,26 +94,11 @@
 
     const fetchData = async () => {
         try {
-            const response1 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}`, {
+            const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/reports`, {
                 credentials: 'include',
             });
 
-            groupeName.value = response1.CMY_name_VC;
-            groupeId.value = response1.CMY_id_NB;
-
-            const response2 = await $fetch(`${config.public.baseUrl}/reports/${groupeId.value}`, {
-                credentials: 'include',
-            });
-
-            if(!response2){
-                noReport.value = true;
-                return;
-            }
-
-            reports.value = response2.map((report) => ({
-                ...report,
-                expanded: false,
-            }));
+            reports.value = response;
         
         } catch (error) {
             console.error("An error occurred : ", error);
