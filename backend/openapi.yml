@@ -3033,7 +3033,7 @@ paths:
                     INV_community_NB: 9
                     INV_sender_firstname_VC: Isidora
                     INV_sender_lastname_VC: Lamberton
-                    INV_joursDepuisInvitation_NB: 1
+                    INV_joursDepuisInvitation_NB: 118
       operationId: get-invitations-id
       x-stoplight:
         id: uun66r1ccrj8z
@@ -3181,7 +3181,7 @@ paths:
           name: id
           in: path
           required: true
-  '/reports/{id}':
+  '/communities/{id}/reports':
     parameters:
       - schema:
           type: string
@@ -3189,18 +3189,19 @@ paths:
         in: path
         required: true
     get:
-      summary: afficher les signalements
+      summary: donner les signalements
       tags:
         - reports
+        - communities
       responses:
         '200':
-          description: Les signalements sont renvoyés avec succès
+          description: 'OK, `true` si la communauté à pu être mise à jour'
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  RPT_commentId_NB:
+                  RPT_comment_NB:
                     type: integer
                   RPT_user_NB:
                     type: integer
@@ -3214,51 +3215,52 @@ paths:
                     type: string
                 x-examples:
                   Example 1:
-                    RPT_commentId_NB: 103
-                    RPT_user_NB: 21
-                    RPT_firstname_VC: Billi
-                    RPT_lastname_VC: Alesio
+                    RPT_comment_NB: 103
+                    RPT_user_NB: 92
+                    RPT_firstname_VC: Isidora
+                    RPT_lastname_VC: Lamberton
                     RPT_message_VC: something bad
-                    RPT_label_VC: Sexuel
+                    RPT_label_VC: Autre
               examples:
                 Example 1:
                   value:
-                    RPT_commentId_NB: 103
-                    RPT_user_NB: 21
-                    RPT_firstname_VC: Billi
-                    RPT_lastname_VC: Alesio
+                    RPT_comment_NB: 103
+                    RPT_user_NB: 92
+                    RPT_firstname_VC: Isidora
+                    RPT_lastname_VC: Lamberton
                     RPT_message_VC: something bad
-                    RPT_label_VC: Sexuel
-      operationId: get-reports-id
+                    RPT_label_VC: Autre
+      operationId: get-communities-id-reports
       x-stoplight:
-        id: fabiv2p7u3hw9
-      description: Renvoie tous les signalements "En Attente" du groupe.
+        id: su4dtdly1vzkj
+      description: Donne tous les signalements "En Attente" d'un groupe.
       parameters:
         - schema:
-            type: integer
-          name: id
-          in: path
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
           required: true
-  '/reports/{id}/{community}':
+  '/reports/{comment}/{community}':
     parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
       - schema:
           type: string
         name: community
         in: path
         required: true
-    post:
+      - schema:
+          type: string
+        name: comment
+        in: path
+        required: true
+    patch:
       summary: résoudre un signalement
       tags:
         - reports
-      responses: 
+      responses:
         '200':
           description: 'OK, `true` si la modification sur le signalement a pu être effectuée'
-      operationId: post-reports-id-community
+      operationId: patch-reports-id-community
       x-stoplight:
         id: mjoxormu97mo5
       description: Résout un signalement et/ou supprime le commentaire associé.
@@ -3281,14 +3283,10 @@ paths:
                   wantToDelete: true
       parameters:
         - schema:
-            type: integer
-          name: id
-          in: path
-          required: true
-        - schema:
-            type: integer
-          name: community
-          in: path
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
           required: true
 components:
   securitySchemes: {}
