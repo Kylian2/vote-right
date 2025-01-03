@@ -75,6 +75,6 @@ Router::post('/notifications/reactions/proposals', 'notificationController@notif
 
 Router::get('/votes/systems', 'voteController@systems', true);
 
-Router::patch('/reports/{comment}/{community}', 'reportController@solvReport');
+Router::patch('/reports/{user}/{comment}', 'reportController@solvReport', true);
 
 ?>

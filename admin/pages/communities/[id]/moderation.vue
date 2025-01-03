@@ -27,13 +27,13 @@
                             <button class="report__toggle-details" @click="toggle(index)"> Voir moins </button>
                             <button 
                                 class="btn btn--small"
-                                @click="deleteComment(report['RPT_commentId_NB'])">
+                                @click="handleReport(report, true)">
                                 Supprimer le commentaire
                             </button>
 
                             <button
                                 class="btn btn--small"
-                                @click="resolvComment(report['RPT_commentId_NB'])">
+                                @click="handleReport(report, false)">
                                 Clore le signalement
                             </button>
                         </div>
@@ -62,22 +62,26 @@
     const reports = ref();
 
     const noReport = ref();
-    const wantToDelete = ref();
 
     const toggle = (index) => {
         reports.value[index].expanded = !reports.value[index].expanded;
     };
 
-    const deleteComment = async (reportId) => {
-        wantToDelete.value = true;
+    const handleReport = async (report, del) => {
 
-        const response = await $fetch(`${config.public.baseUrl}/reports/${reportId}/${groupeId.value}`, {
-        method: 'PATCH', 
-        body: {
-                delete: wantToDelete.value,
-            },
-        credentials: 'include',
-        });
+        try{
+            await $fetch(`${config.public.baseUrl}/reports/${report['RPT_user_NB']}/${report['RPT_comment_NB']}`, {
+                method: 'PATCH', 
+                body: {
+                        delete: del,
+                    },
+                credentials: 'include',
+            });
+
+            fetchData();
+        }catch(e){
+            console.error("An error occurred : ", error);
+        }
     }
 
     const resolvComment = async (reportId) => {

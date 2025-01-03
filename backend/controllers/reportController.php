@@ -28,11 +28,11 @@ class reportController{
      *      - Le signalement est résolu
      *      - Le commentaire pointé par le signalement est supprimé
      * 
-     * @param $params, un tableau correspondant aux paramètres attendus dans l'URL. 
+     * @param $params, un tableau correspondant aux paramètres attendus dans l'URL (la double clé primaire identifiant un report). 
      * 
      * Composition de $params : 
-     * - $params[0] = $comment, l'identifiant du commentaire signalé. 
-     * - $params[1] = $community, l'identifiant de la communauté dans laquelle le commentaire est signalé. 
+     * - $params[0] = $user, l'identifiant de l'utilisateur ayant signalé. 
+     * - $params[1] = $comment, l'identifiant du commentaire signalé. 
      * 
      * La fonction attend l'élément suivant : 
      * - une information sur le type d'action à effectuer (bool)
@@ -58,35 +58,27 @@ class reportController{
             return ;
         }
 
-        if(!isset($body["delete"]) || !isset($params[0]) || !isset($params[0])){
+        if(!isset($body["delete"]) || !isset($params[0]) || !isset($params[0]) || !is_bool($body['delete'])){
             http_response_code(422);
             $return["Unprocessable Entity"] = 'Missing data for processing';
             echo json_encode($return);
             return ;
         }
 
-        $commentId = intval($params[0]);
-        $communityId = intval($params[1]);
-        $userId = SessionGuard::getUserId();
+        $moderator = SessionGuard::getUserId();
 
-        $user = SessionGuard::getUser();
-        $userInformation = $user->getRole($communityId);
+        $values['RPT_user_NB'] = intval($params[0]);
+        $values['RPT_comment_NB'] = intval($params[1]);
 
-        if($userInformation->MEM_role_NB != (ROLE_ADMIN || ROLE_MODERATOR)){
+        $report = new Report($values);
+        
+        $result = $body['delete'] ? $report->delete($moderator) : $report->close($moderator);
+
+        if($result == false){
             http_response_code(403);
             $return["Error"] = 'You have no rights on this action';
             echo json_encode($return);
             return ;
-        }
-
-        if($body["delete"] == true){
-            $values['RPT_user_NB'] = $userId;
-            $values['RPT_comment_NB'] = $commentId;
-            Report::deleteById($values);
-        }else{
-            $values['RPT_user_NB'] = $userId;
-            $values['RPT_comment_NB'] = $commentId;
-            Report::resolveById($values);
         }
 
         echo json_encode(true);
