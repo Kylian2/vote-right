@@ -34,6 +34,9 @@ Router::get('/users/{id}', 'userController@show');
 Router::get('/users/me', 'userController@me', true);
 Router::get('/users/me/role/{community}', 'userController@role', true);
 Router::get('/users/me/role/{community}/proposals', 'userController@roleProposal', true);
+Router::post('/users/me/information', 'userController@editInformation', true);
+Router::post('/users/me/password', 'userController@editPassword', true);
+Router::post('/users/me/notification', 'userController@editNotification', true);
 
 Router::get('/proposals/ongoing', 'proposalController@ongoing', true);
 Router::get('/proposals/finished', 'proposalController@finished', true);
