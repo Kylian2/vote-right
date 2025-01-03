@@ -19,7 +19,7 @@ BEGIN
     FROM proposal
     INNER JOIN vote ON VOT_proposal_NB = PRO_id_NB
     INNER JOIN voting_system ON VOT_type_NB = SYS_id_NB
-    WHERE VOT_round_NB = SYS_nb_rounds_NB AND VOT_valid_BOOL = TRUE AND PRO_community_NB = community AND PRO_period_YEAR = input_year;
+    WHERE VOT_round_NB = SYS_nb_rounds_NB AND VOT_valid_BOOL = TRUE AND PRO_community_NB = community AND PRO_period_YEAR = input_year AND PRO_status_VC = 'En cours';
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin_cursor = 1;
 
