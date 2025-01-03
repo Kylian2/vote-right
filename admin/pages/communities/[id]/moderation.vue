@@ -51,7 +51,7 @@
     const route = useRoute();
     
     definePageMeta({
-        middleware: ["auth", "managed"]
+        middleware: ["auth", "moderator"]
     })
     
     onMounted(() => {
