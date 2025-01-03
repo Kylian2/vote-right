@@ -3260,6 +3260,8 @@ paths:
       responses:
         '200':
           description: 'OK, `true` si le signalement a pu être modifié'
+        '403':
+          description: 'Forbidden, vous n''avez pas les droits de modération'
       operationId: patch-reports-id-community
       x-stoplight:
         id: mjoxormu97mo5
