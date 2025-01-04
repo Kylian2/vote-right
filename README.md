@@ -6,6 +6,8 @@
 - **Rodriguez Esteban** as Laren21
 - **Guiborat--Bost** Mathieu as mguiborat
 
+## Installer l'environnement de dévelopement
+
 ## Conventions et règles 
 
 ### 1. Convention de commit 
