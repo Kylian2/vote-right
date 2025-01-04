@@ -18,9 +18,11 @@
             </div>
             <div class="filter-container__block">
                 <p>Statut : </p>
-                <div class="filter-container__checkboxes" v-for="status in statuses">
-                    <input type="checkbox" :id="status" :value="status" v-model="checkedStatus" @change="updateFilteredProposals">
-                    <label :for="status">{{ status }}</label>
+                <div>
+                    <div class="filter-container__checkboxes" v-for="status in statuses">
+                        <input type="checkbox" :id="status" :value="status" v-model="checkedStatus" @change="updateFilteredProposals">
+                        <label :for="status">{{ status }}</label>
+                    </div>
                 </div>
             </div>
         </div>
