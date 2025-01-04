@@ -1,0 +1,60 @@
+.proposals{
+    margin: 20px 5% 20px 5%;
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (max-width: 875px) {
+        margin: 20px 2% 20px 2%;
+    }
+
+    .filter{
+        float: right;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .filter-container {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        &__block{
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        &__checkboxes{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media screen and (max-width: 875px) {
+            flex-direction: column;
+            align-items: start;
+            gap: 20px;
+        }
+    }
+
+    .list-proposals {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .proposal-card{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 65px;
+        border-radius: 5px;
+        padding: 0 20px;
+        background: darken($color: $background-light, $amount: 5);
+        cursor: pointer;
+    }
+    
+    &__return {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
