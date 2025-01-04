@@ -480,3 +480,4 @@ Dans l'application, il y a des middlewares permettant de restreindre l'accès à
 4. *decider* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de decideur (ou d'administrateur) dans la communauté (se base sur le paramètre de l'url). Redirige vers */home*.
 5. *proposal* : bloque l'accès aux pages aux utilisateurs n'ayant pas un de gestion dans la communauté (pour les pages ayant comme paramètre un identifiant de proposition). Redirige vers */home*.
 6. *assessor* : bloque l'accès aux pages aux utilisateurs n'ayant pas un de gestion dans la communauté **de la proposition** (**pour les pages ayant comme paramètre un identifiant de proposition**). Redirige vers */home*.
+7. *moderator* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de modérateur (ou d'administrateur) dans la communauté (se base sur le paramètre de l'url). Redirige vers */home*.

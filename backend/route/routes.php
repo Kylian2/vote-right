@@ -26,6 +26,8 @@ Router::post('/communities/{id}/themes', 'themeController@store', true);
 Router::get('/communities/managed', 'communityController@managed', true);
 Router::post('/communities/{id}/exclude/{user}', 'communityController@exclude', true);
 Router::get('/communities/{id}/periods', 'communityController@periods', true);
+Router::get('/communities/{id}/proposals/formatted', 'communityController@formattedProposals', true);
+Router::get('/communities/{id}/reports', 'reportController@index', true);
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');
@@ -75,5 +77,7 @@ Router::post('/notifications/reactions/comments', 'notificationController@notify
 Router::post('/notifications/reactions/proposals', 'notificationController@notifyReactionProposal', true);
 
 Router::get('/votes/systems', 'voteController@systems', true);
+
+Router::patch('/reports/{user}/{comment}', 'reportController@solvReport', true);
 
 ?>
