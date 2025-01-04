@@ -8,6 +8,10 @@
             <slot name="title"></slot>
         </h3>
 
+        <h4 v-if="subtitles">
+            <slot name="subtitles"></slot>
+        </h4>
+
         <div class="modal__body">
             <slot name="body"></slot>
         </div>
@@ -73,6 +77,11 @@ const props = defineProps({
     },
     disableValid: {
         type: Boolean, 
+        required: false,
+        default: false,
+    },
+    subtitles: {
+        type: Boolean,
         required: false,
         default: false,
     }

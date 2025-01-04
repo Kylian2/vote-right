@@ -1020,6 +1020,150 @@ paths:
         name: community
         in: path
         required: true
+  /users/me/information:
+    parameters: []
+    patch:
+      summary: Mettre à jour les informations de l'utilisateur connecté
+      tags:
+        - users
+      responses:
+        '200':
+          description: 'OK, un boolean `true` si la requete s''est bien déroulée.'
+        '400':
+          description: 'Bad Request, en cas d''erreur lors de la mise à jour d''une donnée.'
+        '422':
+          description: Unprocessable Entity (WebDAV) si l'entrée est invalide.
+      operationId: patch-users-me-information
+      x-stoplight:
+        id: si9wp7uka4duw
+      description: Mets à jour les informations de l'utilisateur connecté.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: "Les nouvelles informations de l'utilisateur.\r\nVoici la liste des éléments du body :\r\n- `birthdate` : `string`.\r\n- `address` : `string`.\r\n- `zipcode` : `string`.\r\n- `email` : `string`."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                birthdate:
+                  type: string
+                address:
+                  type: string
+                zipcode:
+                  type: string
+                email:
+                  type: string
+              x-examples:
+                Example 1:
+                  birthdate: '2000-10-02'
+                  address: 40 rue de la paix
+                  zipcode: '75001'
+                  email: exampleOfEmail@email.com
+            examples:
+              Example 1:
+                value:
+                  birthdate: '2000-10-02'
+                  address: 40 rue de la paix
+                  zipcode: '75001'
+                  email: exampleOfEmail@email.com
+  /users/me/password:
+    parameters: []
+    patch:
+      summary: Mettre à jour le mot de passe de l'utilisateur connecté
+      tags:
+        - users
+      responses:
+        '200':
+          description: 'OK, un boolean `true` si la requete s''est bien déroulée.'
+        '400':
+          description: 'Bad Request, en cas d''erreur lors de la mise à jour d''une donnée.'
+        '422':
+          description: Unprocessable Entity (WebDAV) si l'entrée est invalide.
+      operationId: patch-users-me-password
+      description: Mets à jour le mot de passe de l'utilisateur connecté.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: "Les nouvelles informations de l'utilisateur.\r\nVoici l'élement contenu dans le body :\r\n- `password` : `string`."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+              x-examples:
+                Example 1:
+                  password: exampleOfPassword
+            examples:
+              Example 1:
+                value:
+                  password: exampleOfPassword
+      x-stoplight:
+        id: rkysea2k9fn7c
+  /users/me/notification:
+    patch:
+      summary: Mettre à jour les paramètres de notification de l'utilisateur connecté
+      tags:
+        - users
+      responses:
+        '200':
+          description: 'OK, un boolean `true` si la requete s''est bien déroulée.'
+        '400':
+          description: 'Bad Request, en cas d''erreur lors de la mise à jour d''une donnée.'
+        '422':
+          description: Unprocessable Entity (WebDAV) si l'entrée est invalide.
+      operationId: patch-users-me-notification
+      description: Mets à jour les paramètres de notification de l'utilisateur connecté.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: "Les nouveaux paramètres de notification de l'utilisateur.\r\nVoici la liste des éléments du body :\r\n- `newProposal` : `int`.\r\n- `startOfVoting` : `int`.\r\n- `reactionToTheProposals` : `int`.\r\n- `notificationFrequency` : `string`."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newProposal:
+                  type: integer
+                startOfVoting:
+                  type: integer
+                reactionToTheProposals:
+                  type: integer
+                notificationFrequency:
+                  type: string
+              x-examples:
+                Example 1:
+                  newProposal: 1
+                  startOfVoting: 1
+                  reactionToTheProposals: 0
+                  notificationFrequency: Q
+            examples:
+              Example 1:
+                value:
+                  newProposal: 1
+                  startOfVoting: 1
+                  reactionToTheProposals: 0
+                  notificationFrequency: Q
+      x-stoplight:
+        id: ug8a1z65ft778
+    parameters: []
   /proposals/ongoing:
     get:
       summary: La liste des propositions

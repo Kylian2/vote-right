@@ -83,7 +83,6 @@ class SessionGuard{
     public static function stop(){
         session_destroy();
     }
-
 }
 
 ?>
