@@ -6,7 +6,175 @@
 - **Rodriguez Esteban** as Laren21
 - **Guiborat--Bost** Mathieu as mguiborat
 
-## Installer l'environnement de dévelopement
+Voici une documentation détaillée en markdown expliquant comment mettre en place l'environnement de développement d'un projet composé de deux frontends NUXTJS 3 et d'un backend PHP avec Docker, ainsi que les variables d'environnement nécessaires.
+
+
+## Installer l'environnement de développement
+
+## Prérequis
+
+Avant de commencer, assurez-vous d'avoir installé les outils suivants :
+
+- **Docker** : pour gérer les conteneurs.
+- **Git** : pour cloner les dépôts de projet.
+- **Node.js** et **npm** : pour le développement des frontends NuxtJs.
+- **PHP** : pour le développement du backend.
+- **composer** : pour la gestion des dépendances php.
+
+## Structure du Projet
+
+Le projet se compose de plusieurs services définis dans un fichier `docker-compose.yml` :
+
+- **Base de données MariaDB** : utilisée pour stocker les données du backend.
+- **phpMyAdmin** : pour gérer la base de données via une interface web.
+- **Backend PHP** : le serveur NGINX qui exécute le backend.
+- **Frontend NUXTJS** : deux applications front-end distinctes (non incluses dans le fichier `docker-compose.yml`).
+
+## Installation
+
+### 1. Cloner le Dépôt Git
+
+Commencez par cloner le dépôt contenant le code source du projet.
+
+```bash
+git clone https://github.com/Kylian2/vote-right
+cd <nom_du_dossier>
+```
+
+### 2. Configuration du Fichier `ompose.yml`
+
+Lors du clone de l'application vous avez récupéré un fichier `compose.yml`. Ce fichier permet d'orchester la base de données et le service phpmyadmin associé ainsi que de faire tourner un serveur nginx local servant le backend.
+
+```yaml
+version: "3.1"
+
+services:
+  db:
+    image: mariadb:10.3
+    container_name: voterigth_db
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8888:80
+    environment:
+      - PMA_ARBITRARY=1
+  
+  backend:
+    image: nginx:1.22-alpine
+    ports:
+      - "3333:80"
+    volumes: 
+      - ./backend:/backend
+      - ./backend/config/nginx.conf:/etc/nginx/nginx.conf
+
+  php:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes: 
+      - ./backend:/backend
+
+volumes:
+  dbdata:
+```
+
+### 3. Configurer le Backend PHP
+
+Le backend PHP est servi par NGINX. Assurez-vous que votre code PHP est bien dans le dossier `./backend`. Vous pouvez également configurer NGINX à l'aide du fichier `./backend/config/nginx.conf`.
+
+Créez un fichier `.env` dans le dossier config contenant les variables suivantes  :
+
+```ini
+DB_HOST=db
+DB_NAME=voterigth_db
+DB_USER=root
+DB_PASS=root
+EMAIL_USER=your-email@example.com
+EMAIL_PASS=your-email-password
+IMAGE_URL=url-du-frontend
+```
+
+Ensuite installez les dépendances php à l'aide de composer (assurez vous d'être dans le dossier `./backend`). 
+
+```
+composer install
+```
+
+### 4. Installation des Frontends NUXTJS 3
+
+Le projet est composé de deux frontend : 
+ - `frontend`: le frontend de base destiné aux utilisateurs classiques de l'application
+ - `admin`: le frontend de l'application d'administration
+
+Pour les frontends, vous devez configurer les environnements de développement séparément.
+
+- **Installation des dépendances** :
+  Allez dans les répertoires des frontend et installez les dépendances Node.js via npm.
+
+```bash
+cd ./frontend
+npm install
+```
+
+- **Lancer l'application frontend** :
+
+```bash
+npm run dev
+```
+
+Cela lancera le serveur de développement sur `http://localhost:3000` pour le premier frontend et sur un autre port pour le second, selon la configuration de votre projet.
+
+Vous pour choisir les ports exposés par les frontends en ajoutant à la racine de chacunes des applications une variable d'environnement `PORT=XXXX` (dans un fichier `.env`).
+
+### 5. Démarrer les Services Docker
+
+Une fois le fichier `compose.yml` configuré et le fichier `.env` créé, vous pouvez démarrer l'ensemble des services Docker avec la commande suivante :
+
+```bash
+docker compose up -d
+```
+
+Cela démarrera tous les services en arrière-plan :
+
+- La base de données `MariaDB`.
+- Le service `phpmyadmin` pour accéder à la base de données via une interface web.
+- Le serveur backend PHP avec nginx.
+  
+### 6. Accéder à phpMyAdmin
+
+Une fois les services démarrés, vous pouvez accéder à **phpMyAdmin** en ouvrant un navigateur et en vous rendant à l'URL suivante :
+
+```
+http://localhost:8888
+```
+
+Utilisez les informations suivantes pour vous connecter à la base de données MariaDB :
+
+- **Utilisateur** : `root`
+- **Mot de passe** : `root` (comme défini dans les variables d'environnement).
+
+### Arrêter l'Environnement
+
+Pour arrêter l'environnement Docker, utilisez la commande suivante :
+
+```bash
+docker compose down
+```
+
+Cela arrêtera tous les services Docker et supprimera les conteneurs, mais conservera les volumes de données persistants.
+
 
 ## Conventions et règles 
 
