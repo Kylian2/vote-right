@@ -1,12 +1,12 @@
 <template>
-    <Header type="logged"   :color="community && community['CMY_color_VC'] ? community['CMY_color_VC'].slice(-6) : '000000'"></Header>
-
-    <Banner :community="community" :themes="communityThemes" back>{{ community["CMY_name_VC"] }}</Banner>
-
-    <main class="community-proposals" v-if="proposals && proposals.length">
+    <Header></Header>
+    <div class="proposals">
+        <NuxtLink class="proposals__return" :to="`/communities/${community['CMY_id_NB']}`">Retour au groupe</NuxtLink>
+    </div>
+    <h1 class="proposals">Liste des propositions</h1>
+    <main class="proposals" v-if="proposals && proposals.length">
         <div>
-            <p class="filter" @click="updateFilter" @mouseover="hover = true" @mouseleave="hover = false" :style="{
-                color: hover ? community['CMY_color_VC'] : 'inherit' }">{{ hideFilter ? 'Filtrer' : 'Masquer' }}</p>
+            <p class="filter" @click="updateFilter" @mouseover="hover = true" @mouseleave="hover = false">{{ hideFilter ? 'Filtrer' : 'Masquer' }}</p>
         </div>
         <div class="filter-container" v-if="!hideFilter">
             <div class="filter-container__block">
@@ -27,27 +27,26 @@
             </div>
         </div>
         <div class="list-proposals">
-            <NuxtLink :to="`/proposal/${proposal['PRO_id_NB']}`" class="proposal-card" v-if="selectedProposals && selectedProposals.length" v-for="proposal in selectedProposals" :style="{ 
-                background: community['CMY_color_VC']}">
-                <p><span class="proposal-card__theme">{{ proposal["PRO_theme_VC"] }}</span>
-                <span class="proposal-card__title">{{ proposal["PRO_title_VC"] }}</span></p>
-                <p><span>{{ proposal["PRO_status_VC"] }}</span></p>
+            <NuxtLink :to="`/proposals/${proposal['PRO_id_NB']}`" class="proposal-card" v-if="selectedProposals && selectedProposals.length" v-for="proposal in selectedProposals">
+                <p><span class="proposal-card__theme">{{ proposal["PRO_theme_VC"] }}</span> - <span class="proposal-card__title">{{ proposal["PRO_title_VC"] }}</span></p>
+                <p><b>{{ proposal["PRO_status_VC"] }}</b></p>
             </NuxtLink>
             <p class="error" v-else-if="!hideFilter">Aucune proposition</p>
         </div>
     </main>
 </template>
+
 <script setup>
 
-const config = useRuntimeConfig();
-
 definePageMeta({
-    middleware: ["auth", "community-member"]
-});
+  middleware: ["auth", "managed"]
+})
 
+const config = useRuntimeConfig();
 const route = useRoute();
-const community = useState("community");
-const communityThemes = useState("communityThemes");
+
+const community = ref({});
+const communityThemes = ref();
 const proposals = ref();
 const selectedProposals = ref();
 const filter = ref('');
@@ -55,6 +54,26 @@ const statuses = ["Validée", "Refusée", "En cours"];
 const checkedStatus = ref([]);
 const hideFilter = ref(true);
 const hover = ref(false);
+
+const fetchData = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}`, {
+            credentials: 'include',
+        });
+
+        community.value = response;
+
+        const response2 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/themes`, {
+            credentials: 'include',
+        });
+
+        communityThemes.value = response2;
+        
+    } catch(error) {
+        console.log("An error occured", error);
+    }
+
+}
 
 const updateFilteredProposals = () => {
     let filtered = proposals.value;
@@ -80,41 +99,6 @@ const updateFilter = () => {
     }
 }
 
-const fetchData = async () => {
-    try{
-
-        //Grace a useState, si le valeur à déja été chargée (dans le cas où il arrive depuis une autre page, pas besoin de refaire une requête)
-        if(community.value){
-            return;
-        }
-
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}`, {
-            credentials: 'include',
-        })
-
-        community.value = response;
-
-    }catch (error){
-        console.log('An unexptected error occured : ', error);
-    }
-
-    try{
-
-        if(communityThemes.value){
-            return;
-        }
-
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/themes`, {
-            credentials: 'include',
-        })
-
-        communityThemes.value = response;
-
-    }catch (error){
-        console.log('An unexptected error occured : ', error);
-    }
-}
-
 const fetchProposals = async () => {
     try{
 
@@ -134,5 +118,4 @@ onMounted(() => {
     fetchData();
     fetchProposals();
 })
-
 </script>
