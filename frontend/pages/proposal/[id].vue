@@ -41,7 +41,7 @@
             </section>
 
             <div v-if="initiator" class="proposal__initiator">
-                <p :style="{background: communityColor}" class="profile-initials">{{ getInitials(initiator['USR_firstname_VC'], initiator['USR_lastname_VC']) }}</p>
+                <Profile :style="{background: communityColor}" :user="initiator"/>
                 <div>
                     <p>{{ initiator['USR_firstname_VC'] }} <b>{{ initiator['USR_lastname_VC'] }}</b></p>
                     <p class="legende">le {{ formatDate(new Date(proposal['PRO_creation_DATE'])) }}</p>
@@ -229,12 +229,6 @@ const formatDate = (date) => {
     month: "long",
     year: "numeric",
   });
-};
-
-function getInitials(string1, string2) {
-    const initial1 = string1.trim().charAt(0).toUpperCase();
-    const initial2 = string2.trim().charAt(0).toUpperCase();
-    return initial1 + initial2;
 }
 
 const sendMessage = async () => {

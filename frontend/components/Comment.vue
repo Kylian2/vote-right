@@ -154,7 +154,7 @@ const report = async () => {
             method: 'POST',
             credentials: 'include',
             body:{
-                reason: 1
+                reason: reportReason.value
             }
         })
 

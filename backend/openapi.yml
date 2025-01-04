@@ -1020,6 +1020,150 @@ paths:
         name: community
         in: path
         required: true
+  /users/me/information:
+    parameters: []
+    patch:
+      summary: Mettre à jour les informations de l'utilisateur connecté
+      tags:
+        - users
+      responses:
+        '200':
+          description: 'OK, un boolean `true` si la requete s''est bien déroulée.'
+        '400':
+          description: 'Bad Request, en cas d''erreur lors de la mise à jour d''une donnée.'
+        '422':
+          description: Unprocessable Entity (WebDAV) si l'entrée est invalide.
+      operationId: patch-users-me-information
+      x-stoplight:
+        id: si9wp7uka4duw
+      description: Mets à jour les informations de l'utilisateur connecté.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: "Les nouvelles informations de l'utilisateur.\r\nVoici la liste des éléments du body :\r\n- `birthdate` : `string`.\r\n- `address` : `string`.\r\n- `zipcode` : `string`.\r\n- `email` : `string`."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                birthdate:
+                  type: string
+                address:
+                  type: string
+                zipcode:
+                  type: string
+                email:
+                  type: string
+              x-examples:
+                Example 1:
+                  birthdate: '2000-10-02'
+                  address: 40 rue de la paix
+                  zipcode: '75001'
+                  email: exampleOfEmail@email.com
+            examples:
+              Example 1:
+                value:
+                  birthdate: '2000-10-02'
+                  address: 40 rue de la paix
+                  zipcode: '75001'
+                  email: exampleOfEmail@email.com
+  /users/me/password:
+    parameters: []
+    patch:
+      summary: Mettre à jour le mot de passe de l'utilisateur connecté
+      tags:
+        - users
+      responses:
+        '200':
+          description: 'OK, un boolean `true` si la requete s''est bien déroulée.'
+        '400':
+          description: 'Bad Request, en cas d''erreur lors de la mise à jour d''une donnée.'
+        '422':
+          description: Unprocessable Entity (WebDAV) si l'entrée est invalide.
+      operationId: patch-users-me-password
+      description: Mets à jour le mot de passe de l'utilisateur connecté.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: "Les nouvelles informations de l'utilisateur.\r\nVoici l'élement contenu dans le body :\r\n- `password` : `string`."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+              x-examples:
+                Example 1:
+                  password: exampleOfPassword
+            examples:
+              Example 1:
+                value:
+                  password: exampleOfPassword
+      x-stoplight:
+        id: rkysea2k9fn7c
+  /users/me/notification:
+    patch:
+      summary: Mettre à jour les paramètres de notification de l'utilisateur connecté
+      tags:
+        - users
+      responses:
+        '200':
+          description: 'OK, un boolean `true` si la requete s''est bien déroulée.'
+        '400':
+          description: 'Bad Request, en cas d''erreur lors de la mise à jour d''une donnée.'
+        '422':
+          description: Unprocessable Entity (WebDAV) si l'entrée est invalide.
+      operationId: patch-users-me-notification
+      description: Mets à jour les paramètres de notification de l'utilisateur connecté.
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+      requestBody:
+        description: "Les nouveaux paramètres de notification de l'utilisateur.\r\nVoici la liste des éléments du body :\r\n- `newProposal` : `int`.\r\n- `startOfVoting` : `int`.\r\n- `reactionToTheProposals` : `int`.\r\n- `notificationFrequency` : `string`."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newProposal:
+                  type: integer
+                startOfVoting:
+                  type: integer
+                reactionToTheProposals:
+                  type: integer
+                notificationFrequency:
+                  type: string
+              x-examples:
+                Example 1:
+                  newProposal: 1
+                  startOfVoting: 1
+                  reactionToTheProposals: 0
+                  notificationFrequency: Q
+            examples:
+              Example 1:
+                value:
+                  newProposal: 1
+                  startOfVoting: 1
+                  reactionToTheProposals: 0
+                  notificationFrequency: Q
+      x-stoplight:
+        id: ug8a1z65ft778
+    parameters: []
   /proposals/ongoing:
     get:
       summary: La liste des propositions
@@ -2810,6 +2954,107 @@ paths:
       x-stoplight:
         id: ah7deuo8pqrya
       description: 'Renvoie la liste des rôles. '
+  /votes/systems:
+    get:
+      summary: La liste des modes de scrutin
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    SYS_id_NB:
+                      type: integer
+                    SYS_label_VC:
+                      type: string
+                    SYS_nb_rounds_NB:
+                      type: integer
+                x-examples:
+                  Example 1:
+                    - SYS_id_NB: 1
+                      SYS_label_VC: Pour / Contre
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 2
+                      SYS_label_VC: Oui / Non
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 3
+                      SYS_label_VC: Scrutin majoritaire (un tour)
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 4
+                      SYS_label_VC: Scrutin majoritaire (deux tours)
+                      SYS_nb_rounds_NB: 2
+                    - SYS_id_NB: 5
+                      SYS_label_VC: Scrutin proportionnel
+                      SYS_nb_rounds_NB: 1
+              examples:
+                Example 1:
+                  value:
+                    - SYS_id_NB: 1
+                      SYS_label_VC: Pour / Contre
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 2
+                      SYS_label_VC: Oui / Non
+                      SYS_nb_rounds_NB: 1
+                    - SYS_id_NB: 3
+                      SYS_label_VC: Scrutin majoritaire (un tour)
+                      SYS_nb_rounds_NB: 1
+      operationId: get-votes-systems
+      x-stoplight:
+        id: xhsri844y6w7v
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/users/me/roles/{proposal}/proposal':
+    get:
+      summary: Le role de l'utilisateur dans la communauté associé à la proposition
+      tags:
+        - roles
+      responses:
+        '200':
+          description: 'OK, un boolean `false` si le membre ne fait pas parti de la communauté, si le membre en fait parti un JSON comprenant les infos du role.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  MEM_role_NB:
+                    type: integer
+                  ROL_label_VC:
+                    type: string
+                x-examples:
+                  Example 1:
+                    MEM_role_NB: 1
+                    ROL_label_VC: Administrateur
+              examples:
+                Example 1:
+                  value:
+                    MEM_role_NB: 1
+                    ROL_label_VC: Administrateur
+      operationId: get-users-me-roles-proposal-proposal
+      x-stoplight:
+        id: 1b6fvafre5qxp
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+    parameters:
+      - schema:
+          type: string
+        name: proposal
+        in: path
+        required: true
   /invitations:
     post:
       summary: Inviter des membres
@@ -2898,7 +3143,7 @@ paths:
         - invitations
       responses:
         '200':
-          description: L'invitation est renvoyée avec succès
+          description: L'invitation est renvoyée avec succès.
           content:
             application/json:
               schema:
@@ -2932,7 +3177,7 @@ paths:
                     INV_community_NB: 9
                     INV_sender_firstname_VC: Isidora
                     INV_sender_lastname_VC: Lamberton
-                    INV_joursDepuisInvitation_NB: 1
+                    INV_joursDepuisInvitation_NB: 118
       operationId: get-invitations-id
       x-stoplight:
         id: uun66r1ccrj8z
@@ -2978,12 +3223,6 @@ paths:
           name: id
           in: path
           required: true
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
   '/invitations/{id}/reject':
     parameters:
       - schema:
@@ -3086,58 +3325,59 @@ paths:
           name: id
           in: path
           required: true
-  /votes/systems:
+  '/communities/{id}/reports':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     get:
-      summary: La liste des modes de scrutin
-      tags: []
+      summary: donner les signalements
+      tags:
+        - reports
+        - communities
       responses:
         '200':
-          description: OK
+          description: Les signalements de la communauté sont renvoyés avec succès.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    SYS_id_NB:
-                      type: integer
-                    SYS_label_VC:
-                      type: string
-                    SYS_nb_rounds_NB:
-                      type: integer
+                type: object
+                properties:
+                  RPT_comment_NB:
+                    type: integer
+                  RPT_user_NB:
+                    type: integer
+                  RPT_firstname_VC:
+                    type: string
+                  RPT_lastname_VC:
+                    type: string
+                  RPT_message_VC:
+                    type: string
+                  RPT_label_VC:
+                    type: string
                 x-examples:
                   Example 1:
-                    - SYS_id_NB: 1
-                      SYS_label_VC: Pour / Contre
-                      SYS_nb_rounds_NB: 1
-                    - SYS_id_NB: 2
-                      SYS_label_VC: Oui / Non
-                      SYS_nb_rounds_NB: 1
-                    - SYS_id_NB: 3
-                      SYS_label_VC: Scrutin majoritaire (un tour)
-                      SYS_nb_rounds_NB: 1
-                    - SYS_id_NB: 4
-                      SYS_label_VC: Scrutin majoritaire (deux tours)
-                      SYS_nb_rounds_NB: 2
-                    - SYS_id_NB: 5
-                      SYS_label_VC: Scrutin proportionnel
-                      SYS_nb_rounds_NB: 1
+                    RPT_comment_NB: 103
+                    RPT_user_NB: 92
+                    RPT_firstname_VC: Isidora
+                    RPT_lastname_VC: Lamberton
+                    RPT_message_VC: something bad
+                    RPT_label_VC: Autre
               examples:
                 Example 1:
                   value:
-                    - SYS_id_NB: 1
-                      SYS_label_VC: Pour / Contre
-                      SYS_nb_rounds_NB: 1
-                    - SYS_id_NB: 2
-                      SYS_label_VC: Oui / Non
-                      SYS_nb_rounds_NB: 1
-                    - SYS_id_NB: 3
-                      SYS_label_VC: Scrutin majoritaire (un tour)
-                      SYS_nb_rounds_NB: 1
-      operationId: get-votes-systems
+                    RPT_comment_NB: 103
+                    RPT_user_NB: 92
+                    RPT_firstname_VC: Isidora
+                    RPT_lastname_VC: Lamberton
+                    RPT_message_VC: something bad
+                    RPT_label_VC: Autre
+      operationId: get-communities-id-reports
       x-stoplight:
-        id: xhsri844y6w7v
+        id: su4dtdly1vzkj
+      description: Donne tous les signalements "En Attente" d'un groupe.
       parameters:
         - schema:
             type: string
@@ -3145,41 +3385,48 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
-  '/users/me/roles/{proposal}/proposal':
+  '/reports/{user}/{comment}':
     parameters:
       - schema:
           type: string
-        name: proposal
+        name: comment
         in: path
         required: true
-    get:
-      summary: Le role de l'utilisateur dans la communauté associé à la proposition
+      - schema:
+          type: string
+        name: user
+        in: path
+        required: true
+    patch:
+      summary: résoudre un signalement
       tags:
-        - roles
+        - reports
       responses:
         '200':
-          description: 'OK, un boolean `false` si le membre ne fait pas parti de la communauté, si le membre en fait parti un JSON comprenant les infos du role.'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  MEM_role_NB:
-                    type: integer
-                  ROL_label_VC:
-                    type: string
-                x-examples:
-                  Example 1:
-                    MEM_role_NB: 1
-                    ROL_label_VC: Administrateur
-              examples:
-                Example 1:
-                  value:
-                    MEM_role_NB: 1
-                    ROL_label_VC: Administrateur
-      operationId: get-users-me-roles-proposal-proposal
+          description: 'OK, `true` si le signalement a pu être modifié'
+        '403':
+          description: 'Forbidden, vous n''avez pas les droits de modération'
+      operationId: patch-reports-id-community
       x-stoplight:
-        id: 1b6fvafre5qxp
+        id: mjoxormu97mo5
+      description: Résout un signalement et/ou supprime le commentaire associé.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delete:
+                  type: boolean
+              required:
+                - delete
+              x-examples:
+                Example 1:
+                  delete: true
+            examples:
+              Example 1:
+                value:
+                  delete: true
       parameters:
         - schema:
             type: string
@@ -3205,3 +3452,4 @@ tags:
   - name: votes
   - name: roles
   - name: reasons
+  - name: reports
