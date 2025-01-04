@@ -27,7 +27,7 @@
         <div class="list-proposals">
             <NuxtLink :to="`/proposals/${proposal['PRO_id_NB']}`" class="proposal-card" v-if="selectedProposals && selectedProposals.length" v-for="proposal in selectedProposals">
                 <p><span class="proposal-card__theme">{{ proposal["PRO_theme_VC"] }}</span> - <span class="proposal-card__title">{{ proposal["PRO_title_VC"] }}</span></p>
-                <p><span>{{ proposal["PRO_status_VC"] }}</span></p>
+                <p><b>{{ proposal["PRO_status_VC"] }}</b></p>
             </NuxtLink>
             <p class="error" v-else-if="!hideFilter">Aucune proposition</p>
         </div>
