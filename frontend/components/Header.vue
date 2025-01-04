@@ -36,8 +36,8 @@
         </nav>
         <nav v-if="type === 'logged'" class="logged d-none" id="navigation-mobile">
             <NuxtLink to="/" class="logo--mobile"><b>Vote</b>Right</NuxtLink>
-            <NuxtLink to="/login">Accueil</NuxtLink>
-            <NuxtLink to="/register">Groupes</NuxtLink>
+            <NuxtLink to="/home">Accueil</NuxtLink>
+            <NuxtLink to="/communities">Groupes</NuxtLink>
             <button @click="settingsModal = !settingsModal">Mon compte</button>
         </nav>
     </header>
@@ -221,7 +221,9 @@ onMounted(() => {
     headerMobile = document.getElementById("header-mobile");
     logo = document.getElementById("logo");
     hamburger = document.getElementById("hamburger");
-    fetchUser(true);
+    if(props.type === 'logged'){
+        fetchUser();
+    } 
 })
 
 const toggleHeader = () => {
@@ -255,10 +257,10 @@ const passwordValid = useState("passwordValid");
 const checkedNotification = ref([]);
 const notificationChanged = ref(false);
 
-const newProposal = ref(false);
-const startOfVoting = ref(false);
-const reactionToTheProposals = ref(false);
-const notificationFrequencyCH = ref('');
+let newProposal = false;
+let startOfVoting = false;
+let reactionToTheProposals = false;
+let notificationFrequencyCH = 'H';
 
 const settingsValid = useState('settingsValidUp', ()=>false);
 
@@ -272,7 +274,7 @@ const settingsIsValid  = computed(() => {
     return passwordValid.value;
 })
 
-const fetchUser = async (updateSettings = false) => {
+const fetchUser = async () => {
     try{
         const response = await $fetch(`${config.public.baseUrl}/users/me`, {
             credentials: 'include'
@@ -280,10 +282,9 @@ const fetchUser = async (updateSettings = false) => {
 
         user.value = response;
 
-        if(updateSettings){
-            setInformation();
-            setCheckedNotification();
-        }
+        setInformation();
+        setCheckedNotification();
+
     } catch(error) {
         console.log("An error occured", error);
     }
@@ -357,34 +358,34 @@ const checkEmail = (email) => {
 
 const beforeValidateNotification = () => {
     if(checkedNotification.value.includes("newProposal")){
-        newProposal.value = true;
+        newProposal = true;
     } else {
-        newProposal.value = false;
+        newProposal = false;
     }
 
     if(checkedNotification.value.includes("startOfVoting")){
-        startOfVoting.value = true;
+        startOfVoting = true;
     } else {
-        startOfVoting.value = false;
+        startOfVoting = false;
     }
 
     if(checkedNotification.value.includes("reactionToTheProposals")){
-        reactionToTheProposals.value = true;
+        reactionToTheProposals = true;
     } else {
-        reactionToTheProposals.value = false;
+        reactionToTheProposals = false;
     }
 
     if(checkedNotification.value.includes("notificationFrequency")){
-        notificationFrequencyCH.value = 'Q';
+        notificationFrequencyCH = 'Q';
     } else {
-        notificationFrequencyCH.value = 'H';
+        notificationFrequencyCH = 'H';
     }
 }
 
 const validateInformation = async () => {
     try{
         const response = await $fetch(`${config.public.baseUrl}/users/me/information`, {
-            method: 'POST',
+            method: 'PATCH',
             credentials: 'include',
             body: {
                 birthdate: birthdate.value,
@@ -401,7 +402,7 @@ const validateInformation = async () => {
 const validatePassword = async () => {
     try{
         const response = await $fetch(`${config.public.baseUrl}/users/me/password`, {
-            method: 'POST',
+            method: 'PATCH',
             credentials: 'include',
             body: {
                 password: password.value
@@ -415,13 +416,13 @@ const validatePassword = async () => {
 const validateNotification = async () => {
     try{
         const response = await $fetch(`${config.public.baseUrl}/users/me/notification`, {
-            method: 'POST',
+            method: 'PATCH',
             credentials: 'include',
             body: {
-                newProposal: newProposal.value,
-                startOfVoting: startOfVoting.value,
-                reactionToTheProposals: reactionToTheProposals.value,
-                notificationFrequency: notificationFrequencyCH.value
+                newProposal: newProposal,
+                startOfVoting: startOfVoting,
+                reactionToTheProposals: reactionToTheProposals,
+                notificationFrequency: notificationFrequencyCH
             }
         });
     } catch (error){
@@ -430,25 +431,32 @@ const validateNotification = async () => {
 }
 
 const beforeCancel = () => {
-    resetInformation();
-    resetNotification();
+    if(MyInformationSection.value){
+        resetInformation();
+    } else {
+        resetNotification();
+    }
 }
 
-const beforeOk = () => {
-    if (allowedInformationChanges.value){
-        validateInformation();  
+const beforeOk = async () => {
+    settingsValid.value = true;
+    const promises = [];
+
+    if (allowedInformationChanges.value) {
+        promises.push(validateInformation());
     }
-    if(allowedPasswordChange.value){
-        validatePassword();
+    if (allowedPasswordChange.value) {
+        promises.push(validatePassword());
         password.value = "";
     }
-    if(notificationChanged.value){
+    if (notificationChanged.value) {
         beforeValidateNotification();
-        validateNotification();
+        promises.push(validateNotification());
     }
+
+    await Promise.all(promises);
     fetchUser();
-    settingsValid.value = true;
-}
+};
 
 const beforeClose = () => {
     allowedInformationChanges.value = false;

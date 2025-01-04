@@ -32,16 +32,19 @@ class UserController{
         echo json_encode($userInfos);
     }
 
-    /**
-     * Modifier les informations d'un utilisateur avec les données passées dans la requête 
-     * 
+     /**
+     * Met à jour les informations d'un utilisateur
+     *
      * Données attendues : birthdate (Y-m-d), address, zipcode, email
+     *
+     * @return void
+     * - 422 avec un message JSON si l'entrée est invalide
+     * - 400 avec un message JSON en cas d'erreur lors de la mise à jour d'une donnée.
+     * - true (JSON) si la mise à jour réussit.
      */
     public function editInformation(){
 
         $body = file_get_contents('php://input');
-
-        // Décoder le JSON en tableau associatif
         $body = json_decode($body, true);
 
         // Vérifier que toutes les données sont reçues
@@ -61,13 +64,12 @@ class UserController{
             return;
         }
 
-        $values["USR_birthdate_DATE"] = $body["birthdate"];
-        $values["USR_address_VC"] = $body["address"];
-        $values["USR_zipcode_CH"] = $body["zipcode"];
-        $values["USR_email_VC"] = $body["email"];
-        $values["USR_id_NB"] = SessionGuard::getUserId();
+        $user = SessionGuard::getUser();
 
-        $user = new User($values);
+        $user->USR_birthdate_DATE = $body["birthdate"];
+        $user->USR_address_VC = $body["address"];
+        $user->USR_zipcode_CH = $body["zipcode"];
+        $user->USR_email_VC = $body["email"];
 
         try{
             $user->updateInformation();
@@ -78,13 +80,18 @@ class UserController{
             return;
         }
 
-        SessionGuard::updateUser($values["USR_email_VC"]);
+        echo json_encode(true);
     }
 
     /**
-     * Modifier le mot de passe d'un utilisateur avec la donnée passée dans la requête 
-     * 
+     * Met à jour le mot de passe d'un utilisateur avec la donnée passée dans la requête 
+     *
      * Donnée attendue : password
+     *
+     * @return void
+     * - 422 avec un message JSON si l'entrée est invalide
+     * - 400 avec un message JSON en cas d'erreur lors de la mise à jour d'une donnée.
+     * - true (JSON) si la mise à jour réussit.
      */
     public function editPassword(){
 
@@ -100,10 +107,9 @@ class UserController{
             return;
         }
 
-        $values["USR_password_VC"] = password_hash($body["password"], PASSWORD_ARGON2ID);
-        $values["USR_id_NB"] = SessionGuard::getUserId();
+        $user = SessionGuard::getUser();
 
-        $user = new User($values);
+        $user->USR_password_VC = password_hash($body["password"], PASSWORD_ARGON2ID);
 
         try{
             $user->updatePassword();
@@ -113,12 +119,19 @@ class UserController{
             echo json_encode($return);
             return;
         }
+
+        echo json_encode(true);
     }
 
     /**
-     * Modifier les paramètres de notification d'un utilisateur avec les données passées dans la requête 
-     * 
+     * Met à jour les paramètres de notification d'un utilisateur avec les données passées dans la requête
+     *
      * Donnée attendue : newProposal, startOfVoting, reactionToTheProposals, notificationFrequency
+     *
+     * @return void
+     * - 422 avec un message JSON si l'entrée est invalide
+     * - 400 avec un message JSON en cas d'erreur lors de la mise à jour d'une donnée.
+     * - true (JSON) si la mise à jour réussit.
      */
     public function editNotification(){
 
@@ -134,13 +147,12 @@ class UserController{
             return;
         }
 
-        $values["USR_notify_proposal_BOOL"] = $body["newProposal"];
-        $values["USR_notify_vote_BOOL"] = $body["startOfVoting"];
-        $values["USR_notify_reaction_BOOL"] = $body["reactionToTheProposals"];
-        $values["USR_notification_frequency_CH"] = $body["notificationFrequency"];
-        $values["USR_id_NB"] = SessionGuard::getUserId();
+        $user = SessionGuard::getUser();
 
-        $user = new User($values);
+        $user->USR_notify_proposal_BOOL = $body["newProposal"];
+        $user->USR_notify_vote_BOOL = $body["startOfVoting"];
+        $user->USR_notify_reaction_BOOL = $body["reactionToTheProposals"];
+        $user->USR_notification_frequency_CH = $body["notificationFrequency"];
 
         try{
             $user->updateNotification();
@@ -151,7 +163,7 @@ class UserController{
             return;
         }
 
-        SessionGuard::updateUser(SessionGuard::getUser()->get('USR_email_VC'));
+        echo json_encode(true);
     }
 
     public static function role($params){

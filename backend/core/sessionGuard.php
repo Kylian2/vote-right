@@ -83,16 +83,6 @@ class SessionGuard{
     public static function stop(){
         session_destroy();
     }
-
-    /**
-     * Met à jour l'utilisateur
-     * 
-     * @param string $id
-     */
-    public static function updateUser($email){
-        $_SESSION["user"] = User::getByEmail($email);
-    }
-
 }
 
 ?>
