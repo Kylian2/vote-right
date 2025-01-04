@@ -461,6 +461,24 @@ ex:
 const up = useState('ToastUp');
 ```
 
+### Profile
+
+Composant affichant un cercle avec en son centre les initiales de l'utilisateur passé dans la props.
+
+| Nom    | Requise ? | Valeur par défaut | Effet                                                                       |
+|--------|-----------|-------------------|-----------------------------------------------------------------------------|
+| user | Oui       |              | L'utilisateur pour lequel on veut afficher le profil                                       |
+
+ex:
+
+```html
+<Profile :user="user"/>
+```
+
+```js
+const user = useState('user');
+```
+
 ### Les middleware
 
 Dans l'application, il y a des middlewares permettant de restreindre l'accès à des ressources :
