@@ -78,6 +78,16 @@
             <img class="illustration" src="~/public/images/illustration-1.png" alt="illustration">
         </div>
     </main>
+
+<Toast 
+name="sameEmail" 
+:type="1" 
+:time="5" 
+:loader="true"
+class="toast"
+>
+Email déjà utilisé
+</Toast>
 </template>
 <script setup>
 
@@ -106,6 +116,8 @@ const addressValid = useState("addressValid");
 const cityValid = useState("cityValid");
 const zipcodeValid = useState("zipcodeValid");
 const birthdateValid = useState("birthdateValid");
+
+const sameEmail = useState("sameEmailUp", () => false);
 
 const stepOneIsValid  = computed(() => {
     return firstnameValid.value && lastnameValid.value && emailValid.value && passwordValid.value;
@@ -136,7 +148,9 @@ const handleForm = async () => {
         }
 
     } catch (error) {
-        console.error('An unexpected error occurred:', error);
+        if(error.status === 400){
+            sameEmail.value = true;
+        }
     }
 
 }
