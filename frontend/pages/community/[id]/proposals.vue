@@ -102,8 +102,6 @@ const fetchData = async () => {
         proposals.value = pro;
         selectedProposals.value = pro;
 
-        console.log(selectedProposals.value);
-
     }catch (error){
         console.log('An unexptected error occured : ', error);
     }
