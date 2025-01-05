@@ -195,6 +195,24 @@ header{
             gap: 10px;
             
         }
+        .disconnect{
+            margin: 0;
+            display: block;
+            color: red;
+            appearance: unset;
+            background: none;
+            border: none;
+            text-decoration: underline;
+            text-align: left;
+            cursor: pointer;
+            transition: .2s;
+            &:hover{
+                color: darken($color: red, $amount: 10);
+            }
+            &:active{
+                color: darken($color: red, $amount: 20);
+            }
+        }
     }
     &__allowedChanges{
         margin-top: 10px;

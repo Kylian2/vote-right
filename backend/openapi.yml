@@ -2554,7 +2554,7 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
-    post:
+    patch:
       summary: Modifier les informations budgétaire du groupe
       tags:
         - budget
@@ -2957,7 +2957,8 @@ paths:
   /votes/systems:
     get:
       summary: La liste des modes de scrutin
-      tags: []
+      tags:
+        - votes
       responses:
         '200':
           description: OK
@@ -3271,7 +3272,7 @@ paths:
         name: id
         in: path
         required: true
-    post:
+    patch:
       summary: Mettre à jour une communauté
       tags:
         - communities
@@ -3427,6 +3428,223 @@ paths:
               Example 1:
                 value:
                   delete: true
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+  '/communities/{id}/proposals/formatted':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Récupérer la liste des propositions formatées pour les algorithmes
+      tags:
+        - proposals
+      responses:
+        '200':
+          description: |-
+            OK, la liste des propositions formatées. 
+
+            Explications sur les différents éléments : 
+
+            - `vote` : contient les informations relatives au vote, avec `system` correspondant au mode de scrutin, `positive` et `negative` : correspondent respectivement à la liste des utilisateurs (id) ayant exprimé leur satisfaction ou leur mécontentement envers la proposition.  
+
+            - `reaction` : contient les listes des utilisateurs (id) ayant aimé `like` ou n'ayant pas aimé `dislike` la proposition.  
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PRO_id_NB:
+                      type: integer
+                    PRO_title_VC:
+                      type: string
+                    PRO_budget_NB:
+                      type: integer
+                    PRO_theme_NB:
+                      type: integer
+                    vote:
+                      type: object
+                      properties:
+                        system:
+                          type: integer
+                        positive:
+                          type: array
+                          items:
+                            type: integer
+                        negative:
+                          type: array
+                          items:
+                            type: object
+                            properties: {}
+                    reaction:
+                      type: object
+                      properties:
+                        like:
+                          type: array
+                          items:
+                            type: integer
+                        dislike:
+                          type: array
+                          items:
+                            type: integer
+                x-examples:
+                  Example 1:
+                    - PRO_id_NB: 1
+                      PRO_title_VC: Proposition 1
+                      PRO_budget_NB: 2240
+                      PRO_theme_NB: 1
+                      vote:
+                        system: 4
+                        positive: []
+                        negative: []
+                      reaction:
+                        like:
+                          - 14
+                          - 16
+                          - 10
+                          - 3
+                        dislike:
+                          - 7
+                          - 15
+                          - 12
+                          - 6
+                    - PRO_id_NB: 2
+                      PRO_title_VC: Proposition 2
+                      PRO_budget_NB: 14761
+                      PRO_theme_NB: 3
+                      vote:
+                        system: 4
+                        positive: []
+                        negative: []
+                      reaction:
+                        like:
+                          - 1
+                          - 14
+                          - 12
+                        dislike:
+                          - 18
+                    - PRO_id_NB: 3
+                      PRO_title_VC: Proposition 3
+                      PRO_budget_NB: 28835
+                      PRO_theme_NB: 4
+                      vote:
+                        system: 1
+                        positive:
+                          - 6
+                          - 4
+                          - 8
+                          - 15
+                          - 5
+                        negative: []
+                      reaction:
+                        like:
+                          - 13
+                          - 1
+                          - 8
+                        dislike:
+                          - 3
+                          - 6
+                          - 10
+                          - 20
+                          - 16
+              examples:
+                Example 1:
+                  value:
+                    - PRO_id_NB: 1
+                      PRO_title_VC: Proposition 1
+                      PRO_budget_NB: 2240
+                      PRO_theme_NB: 1
+                      vote:
+                        system: 4
+                        positive: []
+                        negative: []
+                      reaction:
+                        like:
+                          - 14
+                          - 5
+                          - 3
+                        dislike:
+                          - 7
+                          - 11
+                          - 2
+                          - 15
+                          - 12
+                          - 6
+                    - PRO_id_NB: 2
+                      PRO_title_VC: Proposition 2
+                      PRO_budget_NB: 14761
+                      PRO_theme_NB: 3
+                      vote:
+                        system: 4
+                        positive: []
+                        negative: []
+                      reaction:
+                        like:
+                          - 1
+                          - 14
+                          - 9
+                          - 8
+                        dislike:
+                          - 18
+                    - PRO_id_NB: 3
+                      PRO_title_VC: Proposition 3
+                      PRO_budget_NB: 28835
+                      PRO_theme_NB: 4
+                      vote:
+                        system: 1
+                        positive:
+                          - 6
+                          - 4
+                          - 8
+                          - 15
+                          - 9
+                          - 12
+                          - 7
+                        negative: []
+                      reaction:
+                        like:
+                          - 13
+                          - 1
+                          - 18
+                        dislike:
+                          - 3
+                          - 6
+      operationId: get-communities-id-proposals-formatted
+      x-stoplight:
+        id: alzp1ypwaau14
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: period
+          description: La période des propositions
+          required: true
+  /auth/logout:
+    post:
+      summary: Déconnecter un utilisateur
+      tags:
+        - authentification
+      responses:
+        '200':
+          description: 'OK, un boolean `true` si la déconnexion a réussi'
+      operationId: post-auth-logout
+      x-stoplight:
+        id: c603t1hl7y5qx
       parameters:
         - schema:
             type: string

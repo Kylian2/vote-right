@@ -439,7 +439,7 @@ const updateBudget = async () => {
     }
     try{
         const response1 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
-            method: 'POST',
+            method: 'PATCH',
             credentials: 'include',
             body: raw
         });

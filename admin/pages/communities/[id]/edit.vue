@@ -84,7 +84,7 @@
     const handleData = async () => {
         try{                                       
             const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/update`, {
-                method: 'POST',                 
+                method: 'PATCH',                 
                 body: {
                     name: name.value,
                     description: description.value,

@@ -21,14 +21,14 @@ Router::get('/communities/{id}/themes', 'communityController@themes', false);
 Router::get('/communities/{id}/proposals', 'proposalController@allOfCommunity', true);
 Router::get('/communities/{id}/membership', 'communityController@isMember', true);
 Router::get('/communities/{id}/budget', 'communityController@budget', true);
-Router::post('/communities/{id}/budget', 'communityController@setBudget', true);
+Router::patch('/communities/{id}/budget', 'communityController@setBudget', true);
 Router::post('/communities/{id}/themes', 'themeController@store', true);
 Router::get('/communities/managed', 'communityController@managed', true);
 Router::post('/communities/{id}/exclude/{user}', 'communityController@exclude', true);
 Router::get('/communities/{id}/periods', 'communityController@periods', true);
 Router::get('/communities/{id}/proposals/formatted', 'communityController@formattedProposals', true);
 Router::get('/communities/{id}/reports', 'reportController@index', true);
-Router::post('/communities/{id}/update', 'communityController@update');
+Router::patch('/communities/{id}/update', 'communityController@update');
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');
