@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div class="list-proposals">
+        <div v-if="proposals" class="list-proposals">
             <NuxtLink :to="`/proposal/${proposal['PRO_id_NB']}`" class="proposal-card" v-if="selectedProposals && selectedProposals.length" v-for="proposal in selectedProposals" :style="{ 
                 background: community['CMY_color_VC']}">
                 <p><span class="proposal-card__theme">{{ proposal["PRO_theme_VC"] }}</span>
@@ -83,47 +83,24 @@ const updateFilter = () => {
 const fetchData = async () => {
     try{
 
-        //Grace a useState, si le valeur à déja été chargée (dans le cas où il arrive depuis une autre page, pas besoin de refaire une requête)
-        if(community.value){
-            return;
-        }
-
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}`, {
+        const cmy = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}`, {
             credentials: 'include',
         })
 
-        community.value = response;
+        community.value = cmy;
 
-    }catch (error){
-        console.log('An unexptected error occured : ', error);
-    }
-
-    try{
-
-        if(communityThemes.value){
-            return;
-        }
-
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/themes`, {
+        const the = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/themes`, {
             credentials: 'include',
         })
 
-        communityThemes.value = response;
+        communityThemes.value = the;
 
-    }catch (error){
-        console.log('An unexptected error occured : ', error);
-    }
-}
-
-const fetchProposals = async () => {
-    try{
-
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/proposals`, {
+        const pro = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/proposals`, {
             credentials: 'include',
         })
 
-        proposals.value = response;
-        selectedProposals.value = response;
+        proposals.value = pro;
+        selectedProposals.value = pro;
 
     }catch (error){
         console.log('An unexptected error occured : ', error);
@@ -132,7 +109,6 @@ const fetchProposals = async () => {
 
 onMounted(() => {
     fetchData();
-    fetchProposals();
 })
 
 </script>

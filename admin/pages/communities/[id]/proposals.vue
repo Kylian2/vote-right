@@ -57,17 +57,18 @@ const hover = ref(false);
 
 const fetchData = async () => {
     try{
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}`, {
+        const cmy = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}`, {
             credentials: 'include',
         });
 
-        community.value = response;
+        community.value = cmy;
 
-        const response2 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/themes`, {
+        const pro = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/proposals`, {
             credentials: 'include',
-        });
+        })
 
-        communityThemes.value = response2;
+        proposals.value = pro;
+        selectedProposals.value = pro;
         
     } catch(error) {
         console.log("An error occured", error);
@@ -99,23 +100,7 @@ const updateFilter = () => {
     }
 }
 
-const fetchProposals = async () => {
-    try{
-
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/proposals`, {
-            credentials: 'include',
-        })
-
-        proposals.value = response;
-        selectedProposals.value = response;
-
-    }catch (error){
-        console.log('An unexptected error occured : ', error);
-    }
-}
-
 onMounted(() => {
     fetchData();
-    fetchProposals();
 })
 </script>
