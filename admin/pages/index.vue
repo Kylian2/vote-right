@@ -7,7 +7,7 @@
             <form>
                 <p v-if="error"class="error">Email ou mot de passe incorrect</p>
                 <Input type="text" name="login" placeholder="Entrez votre email">Email</Input>
-                <Input type="password" name="password" placeholder="Entrez votre email">Mot de passe</Input>
+                <Input type="password" name="password" placeholder="Entrez votre mot de passe">Mot de passe</Input>
                 <button formmethod="dialog" class="btn btn--full" @click="handleForm()">Connexion</button>
 
             </form>
