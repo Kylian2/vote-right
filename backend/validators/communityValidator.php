@@ -23,7 +23,7 @@ class CommunityValidator{
             throw new Error("Invalid size of image name");
         }
 
-        if(strlen($data["emoji"]) !== 5){
+        if(strlen($data["emoji"]) !== 5 && strlen($data["emoji"]) !== 4){
             throw new Error("Invalid size of emoji (in Ascii)");
         }
 

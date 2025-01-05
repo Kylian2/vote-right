@@ -33,7 +33,7 @@
             </div>    
             <div>
                 <ImagePicker 
-                    name="image" :images="images" :vModele="image"
+                    name="image" :images="images"
                     :rules="[
                             (v) => Boolean(v) || 'Une couleur est requise', 
                     ]"
@@ -117,12 +117,6 @@
             color.value = response.CMY_color_VC;
             emoji.value = response.CMY_emoji_VC;
             image.value = response.CMY_image_VC;
-
-            console.log(name.value);
-            console.log(description.value);
-            console.log(color.value);
-            console.log(emoji.value);
-            console.log(image.value);
         
         } catch (error) {
             console.error("An error occurred : ", error);

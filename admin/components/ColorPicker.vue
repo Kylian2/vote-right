@@ -22,8 +22,6 @@
 </template>
 
 <script setup>
-
-const colorSelected = useState("colorSelected", () => -1);
   
 const props = defineProps({
     name: {
@@ -44,6 +42,7 @@ const modele = useState(`${props.name}`, () => '');
 const hasAChange = ref(false);
 const valid = useState(`${props.name}Valid`, () => false);
 valid.value = computed(() => errorMessages.value.length === 0);
+const colorSelected = useState("colorSelected", () => -1);
 
 // Validation des règles
 const errorMessages = computed(() => {
@@ -55,6 +54,7 @@ return props.rules
 
 watch(modele, (newVal) => {
     hasAChange.value = true;
+    colorSelected.value = props.colors.indexOf(newVal);
 });
   
 </script>
