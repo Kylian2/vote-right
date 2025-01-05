@@ -139,6 +139,7 @@
                         (v) => v.length >= 8 || 'Le mot de passe doit contenir au moins 8 caractères', 
                     ]">Mot de passe</Input>
                 </div>
+                <span class="disconnect" @click="disconnect()">Se déconnecter</span>
             </form>
 
             <div v-else class="header-settings-modal__settings-list">
@@ -464,6 +465,19 @@ const beforeClose = () => {
     notificationChanged.value = false;
     // Afficher la section des informations de l'utilisateur en premier lorsqu'on ouvre la modale
     MyInformationSection.value = true;
+}
+
+const disconnect = async () => {
+    try{
+        await $fetch(`${config.public.baseUrl}/auth/logout`, {
+            method: 'POST',
+            credentials: 'include',
+        });
+        settingsModal.value = false;
+        navigateTo('/');
+    } catch (error) {
+        console.log("An error occured", error);
+    }
 }
 
 </script>
