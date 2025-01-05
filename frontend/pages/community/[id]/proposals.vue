@@ -51,7 +51,7 @@ const communityThemes = useState("communityThemes");
 const proposals = ref();
 const selectedProposals = ref();
 const filter = ref('');
-const statuses = ["Validée", "Refusée", "En cours"];
+const statuses = ["Validée", "Rejetée", "En cours"];
 const checkedStatus = ref([]);
 const hideFilter = ref(true);
 const hover = ref(false);
@@ -101,6 +101,8 @@ const fetchData = async () => {
 
         proposals.value = pro;
         selectedProposals.value = pro;
+
+        console.log(selectedProposals.value);
 
     }catch (error){
         console.log('An unexptected error occured : ', error);

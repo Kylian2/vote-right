@@ -50,7 +50,7 @@ const communityThemes = ref();
 const proposals = ref();
 const selectedProposals = ref();
 const filter = ref('');
-const statuses = ["Validée", "Refusée", "En cours"];
+const statuses = ["Validée", "Rejetée", "En cours"];
 const checkedStatus = ref([]);
 const hideFilter = ref(true);
 const hover = ref(false);
@@ -62,6 +62,12 @@ const fetchData = async () => {
         });
 
         community.value = cmy;
+        
+        const the = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/themes`, {
+            credentials: 'include',
+        })
+
+        communityThemes.value = the;
 
         const pro = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/proposals`, {
             credentials: 'include',
