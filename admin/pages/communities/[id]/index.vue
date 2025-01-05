@@ -118,7 +118,7 @@
             <div class="community__actions__btns">
                 <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="addThemeModal = true"> Ajouter un thème</button>
                 <NuxtLink class="btn btn--small" :to="`/communities/${$route.params.id}/proposals`">Voir toutes les propositions</NuxtLink>
-                <NuxtLink v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small" :to="`/communities/${$route.params.id}/modify`"> Modifier le groupe </NuxtLink>
+                <NuxtLink v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small" :to="`/communities/${$route.params.id}/edit`"> Modifier le groupe </NuxtLink>
                 <NuxtLink v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small" :to="`/communities/${$route.params.id}/members`"> Gérer les membres</NuxtLink>
                 <NuxtLink v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == MODERATOR" class="btn btn--small" :to="`/communities/${$route.params.id}`"> Accéder aux outils de modérations</NuxtLink>
             </div>
