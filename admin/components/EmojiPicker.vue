@@ -114,9 +114,12 @@ function togglePicker() {
 
 // Fonction pour sélectionner un emoji
 function selectEmoji(emoji) {
-  selectedEmoji.value = emoji.emoji;
-  showPicker.value = false;
-  modele.value = emoji.code;
+	if(!emoji){
+		return;
+	}
+	selectedEmoji.value = emoji.emoji;
+	showPicker.value = false;
+	modele.value = emoji.code;
 }
 
 // Fonction pour masquer le picker quand on clique ailleurs
