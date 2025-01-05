@@ -43,7 +43,7 @@
                 </ImagePicker>
                 <div class="btn-container">
                     <NuxtLink class="btn btn--cancel" :to="`/communities/${$route.params.id}`">Annuler</NuxtLink>
-                    <button class="btn btn--full" formmethod="dialog" :disabled="!formIsValid" @click="handleData">Valider les modifications</button>
+                    <button class="btn" formmethod="dialog" :disabled="!formIsValid" @click="handleData">Valider les modifications</button>
                 </div>
             </div>
         </form>
