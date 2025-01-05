@@ -1,7 +1,6 @@
 <template>
 
 <div class="emoji-picker flex align-start">
-
     <div class="base-2">
 		<p><slot></slot></p>
 			<div class="emoji-picker__container" ref="pickerContainer">
@@ -22,7 +21,6 @@
         <p v-for="(error, index) in errorMessages" :key="index">{{ error }}</p>
     </div>
 </div>
-
 
 </template>
 
@@ -61,6 +59,7 @@ return props.rules
 
 watch(modele, (newVal) => {
     hasAChange.value = true;
+    selectEmoji(emojisList.find(item => item.code === newVal))
 });
 
 //Il faudra peut etre intérroger une API à terme

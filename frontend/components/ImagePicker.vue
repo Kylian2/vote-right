@@ -26,8 +26,6 @@
 </template>
     
 <script setup>
-
-const imageSelected = useState("imageSelected", () => -1);
     
 const props = defineProps({
     name: {
@@ -43,11 +41,11 @@ const props = defineProps({
         required: false,
     }
 })
-
 const modele = useState(`${props.name}`, () => '');
 const hasAChange = ref(false);
 const valid = useState(`${props.name}Valid`, () => false);
 valid.value = computed(() => errorMessages.value.length === 0);
+const imageSelected = useState("imageSelected", () => -1);
 
 // Validation des règles
 const errorMessages = computed(() => {
@@ -59,6 +57,8 @@ return props.rules
 
 watch(modele, (newVal) => {
     hasAChange.value = true;
+    imageSelected.value = props.images.indexOf(newVal);
 });
+
     
 </script>
