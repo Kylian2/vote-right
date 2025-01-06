@@ -115,6 +115,12 @@ class Community extends Model{
         );
         $prepare->execute($member);
 
+        $request = 'INSERT INTO community_budget(BUC_community_NB, BUC_period_YEAR, BUC_amount_NB, BUC_fixed_fees_NB) 
+                    VALUES (:community, YEAR(NOW()), 0, 0), (:community, YEAR(NOW())+1, 0, 0)';
+        $prepare = connexion::pdo()->prepare($request);
+        $budget['community'] = $this->get('CMY_id_NB');
+        $prepare->execute($budget);
+
         return true;
     }
 
