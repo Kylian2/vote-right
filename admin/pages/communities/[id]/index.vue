@@ -25,6 +25,7 @@
                 </h3>
                 <div>
                     <p v-for="theme, key in budget['CMY_budget_theme_NB']"><b>{{theme['THM_name_VC']}} : </b> {{theme['BUT_used_budget_NB']}} € /an (max: {{theme['BUT_amount_NB']}} €)</p>
+                    <p v-if="budget['CMY_budget_theme_NB']?.length === 0">Il n'y a aucun thème, vous pouvez en <span class="underline pointer" @click="addThemeModal = true">ajouter un</span>.</p>
                 </div>
                 <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="editBudgetModale = true"> Modifier les budgets</button>
             </div>
