@@ -5,7 +5,7 @@
         <NuxtLink class="btn--full btn--responsive-hidden" to="/community/new">
             Créer mon groupe
         </NuxtLink>
-        <NuxtLink class="btn--full btn--plus btn--responsive" to="#">
+        <NuxtLink class="btn--full btn--plus btn--responsive" to="/community/new">
             <span class="btn--plus__plus"></span>
             <span class="btn--plus__plus"></span>
         </NuxtLink>

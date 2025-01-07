@@ -6,22 +6,29 @@
         margin: 30px auto;
         width: 400px;
     }
+    @media screen and (max-width: 600px) {
+        max-width: 100vw;
+    }
 }
 
 .registration{
     width: 50%;
-    @media screen and (max-width: 999px) {
-        width: 100%;
-    }
     display: flex;
     flex-direction: column;
     align-items: start;
+    @media screen and (max-width: 999px) {
+        width: 100%;
+        align-items: center;
+    }
     &__form{
         display: flex;
         flex-direction: column;
         gap: 25px;
         .btn{
             width: 400px;
+            @media screen and (max-width: 600px) {
+                max-width: 90vw;
+            }
         }
     }
     &__button-conteneur{
