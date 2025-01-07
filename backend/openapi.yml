@@ -976,6 +976,25 @@ paths:
           required: true
           name: PHPSESSID
     parameters: []
+    delete:
+      summary: Supprimer un utilisateur
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Bad Request, vous ne pouvez pas supprimer l''utilisateur'
+      operationId: delete-users-me
+      x-stoplight:
+        id: 7ymscuukuxs82
+      description: Supprimer l'utilisateur si il n'est pas administrateur d'un groupe
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: PHPSESSID
+          description: Le cookie d'authentification
+          required: true
   '/users/me/role/{community}':
     get:
       summary: Le rôle de l'utilisateur

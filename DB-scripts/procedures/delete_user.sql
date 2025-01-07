@@ -5,6 +5,8 @@ DELIMITER //
 CREATE OR REPLACE PROCEDURE delete_user(user_id INT) 
 BEGIN 
 
+DELETE FROM member WHERE MEM_user_NB = user_id;
+
 UPDATE user SET 
     USR_firstname_VC = 'Supprimé',
     USR_lastname_VC = 'Supprimé',
@@ -24,7 +26,6 @@ DELETE FROM report WHERE RPT_user_NB = user_id;
 DELETE FROM comment WHERE COM_sender_NB = user_id;
 DELETE FROM comment_reaction WHERE REC_user_NB = user_id;
 DELETE FROM proposal_reaction WHERE REP_user_NB = user_id;
-DELETE FROM member WHERE MEM_user_NB = user_id;
 DELETE FROM invitation WHERE INV_sender_NB = user_id OR INV_recipient_NB = user_id;
 
 END //

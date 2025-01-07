@@ -162,6 +162,15 @@ class User extends Model{
         return $user;
     }
 
+    public function delete(){
+        $prepare = connexion::pdo()->prepare("CALL delete_user(:user)");
+        $values['user'] = $this->get('USR_id_NB');
+        $prepare->execute($values);
+
+        return true;
+    }
+
+
 }
 
 ?>

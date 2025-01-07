@@ -183,6 +183,22 @@ class UserController{
         echo json_encode($user);
     }
 
+    public function delete(){
+        try{
+            $result = SessionGuard::getUser()->delete();
+            if($result === true){
+                SessionGuard::stop();
+            }
+            echo json_encode($result);
+        }catch(PDOException $e){
+            if($e->errorInfo[2] == "Erreur : Veuillez nommer au moins un administrateur avant de quitter le groupe."){
+                http_response_code(400);
+            }
+            echo json_encode($e);
+        }
+        
+    }
+
 }
 
 ?>

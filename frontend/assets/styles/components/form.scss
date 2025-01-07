@@ -276,3 +276,19 @@ select{
     margin-right: auto;
     margin-left: 5px;
 }
+
+.inline-input{
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+        align-items: start;
+        margin-top: 20px;
+    }
+    > label{
+        font-size: 16px;
+        font-weight: 400;
+    }
+}

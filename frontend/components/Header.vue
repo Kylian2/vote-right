@@ -140,6 +140,7 @@
                     ]">Mot de passe</Input>
                 </div>
                 <span class="disconnect" @click="disconnect()">Se déconnecter</span>
+                <span class="disconnect" @click="deleteUser = true">Supprimer le compte</span>
             </form>
 
             <div v-else class="header-settings-modal__settings-list">
@@ -191,6 +192,41 @@
     >
     Vos modification ont été prises en compte !
     </Toast>
+
+    <Modal
+    name="deleteUser"
+    ok-text="Supprimer"
+    cancel-text="Annuler"
+    :disable-valid="!deleteUserValid"
+    :before-ok="() => {
+        handleDelete();
+        deleteUserContent = '';
+    }"
+    :before-cancel=" () => {
+        deleteUserContent = '';
+    }"
+    >
+    <template #title>Supprimer le compte</template>
+    <template #body>
+        <p>Pour confirmer veuillez écrire votre email :</p>
+        <Input type="text" :placeholder="user['USR_email_VC']" class="inline-input"
+        name="deleteUser"
+        :rules="[
+            (v) => v === user['USR_email_VC'] || ''
+        ]"
+        >Réécrivez : </Input>
+    </template>
+    </Modal>
+
+    <Toast 
+        name="cantDelete" 
+        :type="1" 
+        :time="5" 
+        :loader="true"
+        class="toast"
+    >
+    Impossible de supprimer votre compte tant que vous êtes admin
+    </Toast>
 </template>
 
 <script setup>
@@ -236,6 +272,10 @@ const toggleHeader = () => {
 
 const user = useState("user");
 const settingsModal = useState(`settingsModal`, () => false);
+
+const deleteUser = useState('deleteUserModal', () => false);
+const deleteUserValid = useState('deleteUserValid');
+const deleteUserContent = useState('deleteUser');
 
 const MyInformationSection = ref(true);
 
@@ -477,6 +517,26 @@ const disconnect = async () => {
         navigateTo('/');
     } catch (error) {
         console.log("An error occured", error);
+    }
+}
+
+const cantDelete = useState("cantDeleteUp", () => false);
+
+const handleDelete = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/users/me`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        deleteUser.value = false;
+        settingsModal.value = false;
+        if(response === true){
+            navigateTo('/');
+        }
+    } catch (error){
+        if(error.status == 400){
+            cantDelete.value = true;
+        }
     }
 }
 

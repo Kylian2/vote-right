@@ -41,7 +41,7 @@
         display: flex;
         gap: 5%;
         margin-top: 130px;
-        @media screen and (max-width: 600px) {
+        @media screen and (max-width: 800px) {
             margin-top: 60px;
             flex-direction: column;
             max-width: 90vw;
@@ -53,7 +53,7 @@
             justify-content: space-between;
             height: 250px;
             gap: 20px;
-            @media screen and (max-width: 600px) {
+            @media screen and (max-width: 800px) {
                 width: unset;
             }
             a{
@@ -67,7 +67,7 @@
             grid-template-rows: repeat(2, 1fr);
             grid-column-gap: 10px;
             grid-row-gap: 10px;
-            @media screen and (max-width: 600px) {
+            @media screen and (max-width: 800px) {
                 display: flex;
                 flex-direction: column;
                 margin-top: 20px;
@@ -83,7 +83,7 @@
             justify-content: end;
             padding: 20px;
             cursor: pointer;
-            @media screen and (max-width: 600px) {
+            @media screen and (max-width: 800px) {
                 width: 100%;
                 height: unset;
             }

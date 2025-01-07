@@ -5,7 +5,7 @@
 Router::post('/auth/register', 'authController@register');
 Router::post('/auth/login', 'authController@login');
 Router::get('/auth/check', 'authController@check');
-Router::post('/auth/logout', 'authController@logout'); //à implémenter + faire la doc
+Router::post('/auth/logout', 'authController@logout');
 
 Router::get('/communities', 'communityController@index', true);
 Router::get('/communities/{id}', 'communityController@show');
@@ -38,6 +38,7 @@ Router::get('/users/me/role/{community}/proposals', 'userController@roleProposal
 Router::patch('/users/me/information', 'userController@editInformation', true);
 Router::patch('/users/me/password', 'userController@editPassword', true);
 Router::patch('/users/me/notification', 'userController@editNotification', true);
+Router::delete('/users/me', 'userController@delete');
 
 Router::get('/proposals/ongoing', 'proposalController@ongoing', true);
 Router::get('/proposals/finished', 'proposalController@finished', true);
