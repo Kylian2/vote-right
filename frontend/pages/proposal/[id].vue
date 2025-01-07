@@ -355,7 +355,7 @@ const react = async (reaction) => {
                     break;
             }
 
-            await $fetch(`${config.public.baseUrl}/notifications/reactions/proposals/`, {
+            $fetch(`${config.public.baseUrl}/notifications/reactions/proposals/`, {
                 method: 'POST',
                 credentials: 'include',
                 body: {
