@@ -59,7 +59,7 @@
                 <p v-if="proposal['PRO_period_YEAR']"><img src="/images/icons/date.svg" alt="icons-theme">{{ proposal['PRO_period_YEAR'] }}</p>
             </div>
 
-            <div v-if="proposal && formalRequest" class="proposal__request">
+            <div v-if="proposal && formalRequest && !voteHasStarted" class="proposal__request">
                 <h3>Demande Formelle</h3>
                 <button @click="makeFormalRequest()" class="btn btn--full btn--block" :style="{background: communityColor}" :disabled="formalRequest['hasAsked']">
                     <img src="/images/icons/ticks.png" alt="validation-ticks">
@@ -102,15 +102,14 @@
                     </div>
                 </div>
 
-                <div v-if="currentVote && (results.length+1 < nbRounds || timeRemaining !== 0)" class="vote">
+                <div v-if="currentVote && (results.length+1 < nbRounds || timeRemaining !== 0) && voteHasStarted" class="vote">
                     <h3>{{ classicSystem ? 'Vote' : `Vote - Tour ${currentVote['VOT_round_NB']}`}}</h3>
                     <div>
                         <p class="legende">{{ timeRemaining > 0 ? formatTimeRemaning(timeRemaining) : 'Le vote est terminé.'}}</p>
                         <p class="legende">Le vote est un {{currentVote['VOT_type_VC']}}</p>
                     </div>
-
                     <div 
-                    v-if="!hasVoted && classicSystem" 
+                    v-if="!hasVoted && classicSystem && voteHasStarted" 
                     class="vote__options vote__options--classique">
                         <button v-for="possibility in currentVote['VOT_possibilities_TAB']"
                         class="btn btn--full" 
@@ -120,9 +119,8 @@
                         :disabled="timeRemaining === 0"
                         >{{ possibility[0] }}</button>
                     </div>
-
                     <div 
-                    v-if="!hasVoted && !classicSystem" 
+                    v-if="!hasVoted && !classicSystem && voteHasStarted" 
                     class="vote__options vote__options--multiple">
                         <button v-for="possibility in currentVote['VOT_possibilities_TAB']"
                         class="btn btn--full" 
@@ -132,7 +130,7 @@
                         :disabled="timeRemaining === 0"
                         >{{ possibility[0] }}</button>
                     </div>
-                    <div v-if="!hasVoted || timeRemaining !== 0" class="vote__validation">
+                    <div v-if="!hasVoted || timeRemaining !== 0 && voteHasStarted" class="vote__validation">
                         <p v-if="!hasVoted" class="legende">Attention, ce choix est irréversible</p>
                         <div class="vote__validation__wrapper"
                         :style="{background: communityColor}"
@@ -420,6 +418,7 @@ const requiredHoldTime = 3000;
 const timeRemaining = ref(0);
 const nbRounds = ref();
 const classicSystem = ref();
+const voteHasStarted = ref(true);
 
 const voteError = useState('voteErrorUp', ()=>false);
 const voteValid = useState('voteValidUp', ()=>false);
@@ -482,7 +481,7 @@ const fetchVote = async () => {
             nbRounds.value = currentVote.value['VOT_nb_rounds_NB'];
             classicSystem.value = (currentVote.value['VOT_type_NB'] === 1 || currentVote.value['VOT_type_NB'] === 2);
             hasVoted.value = !!currentVote.value['hasVoted'];
-
+            voteHasStarted.value = calculateTimeRemaining(new Date(), new Date(currentVote.value['VOT_start_DATE'])) == 0;
             for(let i = 0; i < votes.value.length; i++){
                 let rmt = calculateTimeRemaining(new Date(), new Date(votes.value[i]['VOT_end_DATE']?.replace(" ", "T")));
                 if(rmt === 0){
