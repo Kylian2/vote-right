@@ -95,12 +95,12 @@
             </ul>
 			<ul>
                 <li><h4>Esteban</h4></li>
-                <li><a href="https://github.com/Kylian2">Github</a></li>
+                <li><a href="https://github.com/Laren21">Github</a></li>
                 <li><a href="#">Linkedin</a></li>
             </ul>
 			<ul>
                 <li><h4>Mathieu</h4></li>
-                <li><a href="#">Github</a></li>
+                <li><a href="https://github.com/mguiborat">Github</a></li>
                 <li><a href="#">Linkedin</a></li>
             </ul>
         </div>
