@@ -27,7 +27,7 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1',
       title: 'VoteRight',
       meta: [
-        { name: 'google-site-verification', content: 'TYoJdcPBjFyZ50B0pA1Qpb9oO' }
+        { name: 'google-site-verification', content: 'TYoJdcPBjFyZ50B0pA1Qpb9oO-eNZ3KhGRfsvbNs-xw' }
       ]
     }
   }
