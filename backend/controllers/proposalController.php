@@ -459,7 +459,7 @@ class ProposalController{
                 echo json_encode(false);
                 return;
             }
-            if($result->errorInfo[2] === "Erreur : Le budget de cette proposition fait dépasser le budget total alloué pour son thème."){
+            if($result->errorInfo[2] === "Erreur : Seuls les décideurs et les administrateurs peuvent approuver une proposition."){
                 http_response_code(403);
                 echo json_encode(false);
                 return;
