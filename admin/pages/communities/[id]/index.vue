@@ -121,7 +121,7 @@
                 <NuxtLink class="btn btn--small" :to="`/communities/${$route.params.id}/proposals`">Voir toutes les propositions</NuxtLink>
                 <NuxtLink v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small" :to="`/communities/${$route.params.id}/edit`"> Modifier le groupe </NuxtLink>
                 <NuxtLink v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small" :to="`/communities/${$route.params.id}/members`"> Gérer les membres</NuxtLink>
-                <NuxtLink v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == MODERATOR" class="btn btn--small" :to="`/communities/${$route.params.id}`"> Accéder aux outils de modérations</NuxtLink>
+                <NuxtLink v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == MODERATOR" class="btn btn--small" :to="`/communities/${$route.params.id}/moderation`"> Accéder aux outils de modérations</NuxtLink>
                 <NuxtLink class="btn btn--small" :to="`${config.public.appUrl}/community/${$route.params.id}`"> Retourner au groupe</NuxtLink>
             </div>
 
