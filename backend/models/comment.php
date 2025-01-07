@@ -68,7 +68,7 @@ class Comment extends Model{
     public function getReactions(int $user){
         $request = "SELECT nblove, nblike, nbdislike, nbhate FROM comment_total_reaction WHERE COM_id_NB = :comment";
         $prepare = connexion::pdo()->prepare($request);
-        $values["comment"] = $this->COM_id_NB;
+        $values["comment"] = $this->get('COM_id_NB');
         $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_ASSOC);
         $reactions = $prepare->fetch();
@@ -82,9 +82,9 @@ class Comment extends Model{
         $prepare = connexion::pdo()->prepare($request);
         $values["user"] = $user;
         $prepare->execute($values);
-        $hasReacted = $prepare->fetch();
+        $hasReacted = $prepare->fetchColumn();
 
-        $reactions["hasReacted"] = boolval($hasReacted[0]);
+        $reactions["hasReacted"] = boolval($hasReacted);
 
         return $reactions;
     }
