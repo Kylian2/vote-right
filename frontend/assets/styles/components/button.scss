@@ -127,4 +127,14 @@
     &--block{
         display: block;
     }
+    &--secondary{
+        border: 2px solid $dark;
+        padding: 12px 24px;
+        transition: .2s;
+        border-radius: 5px;
+        text-align: center;
+        &:hover{
+            background: $color-2;
+        }
+    }
 }
