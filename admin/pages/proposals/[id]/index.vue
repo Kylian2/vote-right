@@ -199,7 +199,7 @@ const deleteValid = useState('deleteValidationValid');
 
 const editBudgetModal = useState('editBudgetModal', () => false);
 const proposalBudgetEditValid = useState('proposalBudgetEditValid');
-const proposalBudgetEdit = useState('proposalBudgetEdit');
+const proposalBudgetEdit = useState('proposalBudgetEdit', () => 0);
 
 const votes = ref();
 const currentVote = ref();
