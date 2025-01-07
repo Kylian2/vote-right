@@ -25,7 +25,10 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'VoteRight'
+      title: 'VoteRight',
+      meta: [
+        { name: 'google-site-verification', content: 'TYoJdcPBjFyZ50B0pA1Qpb9oO' }
+      ]
     }
   }
 })
