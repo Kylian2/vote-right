@@ -28,6 +28,10 @@ export default defineNuxtConfig({
       title: 'VoteRight',
       meta: [
         { name: 'google-site-verification', content: 'TYoJdcPBjFyZ50B0pA1Qpb9oO-eNZ3KhGRfsvbNs-xw' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/png', href: '/favicon.ico' }, 
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' } 
       ]
     }
   }
