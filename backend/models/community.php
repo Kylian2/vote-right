@@ -149,8 +149,7 @@ class Community extends Model{
                     INNER JOIN proposal_total_reaction pr ON p.PRO_id_NB = pr.PRO_id_NB
                     INNER JOIN theme ON p.PRO_community_NB = THM_community_NB AND PRO_theme_NB = THM_id_NB
                     INNER JOIN community ON p.PRO_community_NB = CMY_id_NB
-                    WHERE p.PRO_status_VC = 'En cours' AND p.PRO_community_NB = :community AND PRO_deleter_NB IS NULL
-                    ORDER BY p.PRO_creation_DATE DESC";
+                    WHERE p.PRO_status_VC = 'En cours' AND p.PRO_community_NB = :community AND PRO_deleter_NB IS NULL";
 
         $prepare = connexion::pdo()->prepare($request);
         $values["community"] = $this->CMY_id_NB;    
