@@ -6,9 +6,6 @@
 - **Rodriguez Esteban** as Laren21
 - **Guiborat--Bost** Mathieu as mguiborat
 
-Voici une documentation détaillée en markdown expliquant comment mettre en place l'environnement de développement d'un projet composé de deux frontends NUXTJS 3 et d'un backend PHP avec Docker, ainsi que les variables d'environnement nécessaires.
-
-
 ## Installer l'environnement de développement
 
 ## Prérequis
