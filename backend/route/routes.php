@@ -6,7 +6,6 @@ Router::post('/auth/register', 'authController@register');
 Router::post('/auth/login', 'authController@login');
 Router::get('/auth/check', 'authController@check');
 Router::post('/auth/logout', 'authController@logout');
-Router::post('/auth/code', 'authController@sendCode');
 
 Router::get('/communities', 'communityController@index', true);
 Router::get('/communities/{id}', 'communityController@show');
@@ -82,5 +81,7 @@ Router::post('/notifications/reactions/proposals', 'notificationController@notif
 Router::get('/votes/systems', 'voteController@systems', true);
 
 Router::patch('/reports/{user}/{comment}', 'reportController@solvReport', true);
+
+Router::post('/code/verification', 'codeController@sendVerificationCode');
 
 ?>

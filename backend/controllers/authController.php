@@ -129,51 +129,6 @@ class AuthController{
         echo json_encode(true);
     }
 
-    public function sendCode(){
-        $body = file_get_contents('php://input');
-        $body = json_decode($body, true);
-
-        if(!$body["email"]){
-            http_response_code(422);
-            echo '{"Unprocessable Entity":"missing data for processing"}';
-            return;
-        }
-
-        if(User::getByEmail($body['email'])){
-            echo '{"Error":"email already used"}';
-            http_response_code(409);
-            return;
-        }
-
-        $code = Code::generateCode($body["email"], 'create');
-
-        $mail = Mailer::init();
-        $mail->Subject = 'Code de verification';
-        $htmlBody = file_get_contents('./view/mail/verification-code.html');
-        $htmlBody = str_replace(
-            [
-                '{{code}}', 
-                '{{imageUrl}}',
-            ],
-            [
-                $code, 
-                $_ENV['IMAGE_URL'],
-            ],
-            $htmlBody
-        );
-        $mail->Body = $htmlBody;
-        $mail->SMTPKeepAlive = true;
-
-        $mail->addBCC($body["email"]);
-        try{
-            Mailer::send($mail);
-        }catch (Exception $e) {
-            echo "Erreur d'envoi : {$mail->ErrorInfo}";
-        }
-        $mail->SmtpClose();
-
-        echo json_encode(true);
-    }
 }
 
 ?>

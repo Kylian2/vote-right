@@ -75,7 +75,7 @@
                         (v) => Boolean(v) || 'Veuillez entrer le code',  
                     ]"
                     >Entrez le code</InputNumber>
-                    <span class="underline font--small">Renvoyer un code</span>
+                    <span class="underline font--small" @click="sendCode">Renvoyer un code</span>
                 </div>
 
                 <!--formmethod="dialog" permet au bouton de se comporter comme si il allait envoyer le formulaire (et donc de faire ses vérifications de format (ex emai ou date) mais de ne pas envoyer le formulaire)-->
@@ -190,7 +190,7 @@ const handleForm = async () => {
 
 const sendCode = async () => {
     try {
-        await $fetch(`${config.public.baseUrl}/auth/code`, {
+        await $fetch(`${config.public.baseUrl}/code/verification`, {
             method: 'POST',
             body: {
                 email: email.value,
