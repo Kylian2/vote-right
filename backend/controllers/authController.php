@@ -1,6 +1,7 @@
 <?php
 
 @require_once('models/user.php');
+@require_once('models/code.php');
 @require_once('validators/userValidator.php');
 @require_once('core/sessionGuard.php');
 @require_once('core/mailer.php');
@@ -28,7 +29,7 @@ class AuthController{
 
         // Vérifier que toutes les données sont reçues
         if(!isset($body["email"]) || !isset($body["password"]) || !isset($body["lastname"]) 
-        || !isset($body["firstname"]) || !isset($body["address"]) || !isset($body["zipcode"]) || !isset($body["birthdate"])){
+        || !isset($body["firstname"]) || !isset($body["address"]) || !isset($body["zipcode"]) || !isset($body["birthdate"]) || !isset($body["code"])){
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing data for processing"}';
             return;
@@ -54,9 +55,10 @@ class AuthController{
         $values["USR_birthdate_DATE"] = $body["birthdate"];
 
         $user = new User($values);
+        $code = $body["code"];
 
         try{
-            $user->insert();
+            $user->insert($code);
         }catch(Exception $e){
             http_response_code(400);
             $return["Erreur"] = $e->getMessage();
@@ -124,6 +126,52 @@ class AuthController{
      */
     public function logout(){
         SessionGuard::stop();
+        echo json_encode(true);
+    }
+
+    public function sendCode(){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!$body["email"]){
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"missing data for processing"}';
+            return;
+        }
+
+        if(User::getByEmail($body['email'])){
+            echo '{"Error":"email already used"}';
+            http_response_code(409);
+            return;
+        }
+
+        $code = Code::generateCode($body["email"], 'create');
+
+        $mail = Mailer::init();
+        $mail->Subject = 'Code de verification';
+        $htmlBody = file_get_contents('./view/mail/verification-code.html');
+        $htmlBody = str_replace(
+            [
+                '{{code}}', 
+                '{{imageUrl}}',
+            ],
+            [
+                $code, 
+                $_ENV['IMAGE_URL'],
+            ],
+            $htmlBody
+        );
+        $mail->Body = $htmlBody;
+        $mail->SMTPKeepAlive = true;
+
+        $mail->addBCC($body["email"]);
+        try{
+            Mailer::send($mail);
+        }catch (Exception $e) {
+            echo "Erreur d'envoi : {$mail->ErrorInfo}";
+        }
+        $mail->SmtpClose();
+
         echo json_encode(true);
     }
 }
