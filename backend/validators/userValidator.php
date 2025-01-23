@@ -31,6 +31,10 @@ class UserValidator{
         if (!User::validateDate($data["birthdate"], 'Y-m-d')) { 
             throw new Error("Invalid date format (must be in Y-m-d)");
         }
+
+        if(!is_numeric($data["code"])){
+            throw new Error("Incorrect code");
+        }
         
         return true;
     }

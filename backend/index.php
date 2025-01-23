@@ -34,12 +34,13 @@
         exit();
     }
 
-    ini_set('session.cookie_secure', 1);
-
-
     require_once 'route/routes.php'; 
-    
-    require_once 'config/connexion.php'; 
+    require_once 'config/connexion.php';
+
+    if($_ENV['ENV'] === 'production'){
+        ini_set('session.cookie_secure', 1);
+    }
+
     connexion::connect();
 
     // Dispatcher la requête en fonction de l'URI et de la méthode HTTP

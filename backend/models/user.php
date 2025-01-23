@@ -46,7 +46,22 @@ class User extends Model{
         return $result;
     }
 
-    public function insert() {
+    public function insert(string $code) {
+        $request = "SELECT * FROM code WHERE COD_email_VC = :email AND COD_code_NB = :code AND COD_action_VC = 'create'";
+        $prepare = connexion::pdo()->prepare($request);
+        $info['code'] = $code;
+        $info['email'] = $this->USR_email_VC;
+        $prepare->execute($info);
+        $result = $prepare->fetch();
+        if(!$result){
+            throw new Exception('Incorrect code');
+            return;
+        }else{
+            $request = 'DELETE FROM code WHERE COD_email_VC = :email AND COD_code_NB = :code';
+            $prepare = connexion::pdo()->prepare($request);
+            $prepare->execute($info);
+        }
+
         $request = 'INSERT INTO user(USR_email_VC, USR_password_VC, USR_lastname_VC, USR_firstname_VC, USR_address_VC, USR_zipcode_CH, USR_birthdate_DATE) 
                     VALUES (:USR_email_VC, :USR_password_VC, :USR_lastname_VC, :USR_firstname_VC, :USR_address_VC, :USR_zipcode_CH, :USR_birthdate_DATE);';
         $prepare = connexion::pdo()->prepare($request);
