@@ -39,7 +39,6 @@ Router::patch('/users/me/information', 'userController@editInformation', true);
 Router::patch('/users/me/password', 'userController@editPassword', true);
 Router::patch('/users/me/notification', 'userController@editNotification', true);
 Router::delete('/users/me', 'userController@delete');
-Router::post('/users/me/reset-password', 'userController@resetPassword');
 
 Router::get('/proposals/ongoing', 'proposalController@ongoing', true);
 Router::get('/proposals/finished', 'proposalController@finished', true);
@@ -84,5 +83,6 @@ Router::get('/votes/systems', 'voteController@systems', true);
 Router::patch('/reports/{user}/{comment}', 'reportController@solvReport', true);
 
 Router::post('/code/verification', 'codeController@sendVerificationCode');
+Router::post('/code/recuperation', 'codeController@sendRecuperationCode');
 
 ?>
