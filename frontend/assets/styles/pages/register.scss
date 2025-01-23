@@ -41,9 +41,13 @@
             width: auto;
         }
     }
-    .second{
+    .second-reset-password{
         display: block;
-        margin: 10px 0;
+        font-size: 14px;
+    }
+    .second-register{
+        display: block;
+        margin-top: 10px;
     }
     .inline-input{
         display: flex;

@@ -199,6 +199,30 @@ class UserController{
         
     }
 
+    /**
+     * Enregistre une demande de réinitialisation de mdp
+     * 
+     * Le body attend un élément :
+     * - `string` email: l'email pour lequel on envoie un mail de récupération de mdp
+     * 
+     * @return void renvoie au format json `true` si le mail de récupération a été envoyé
+     * 
+     */
+    public static function resetPassword(){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body['email'])){
+            http_response_code(422);
+            $return["Unprocessable Entity"] = 'Missing data';
+            echo json_encode($return);
+            return;
+        }
+
+        $values[''] = $body['email'];
+
+        echo json_encode(true);
+    }
 }
 
 ?>
