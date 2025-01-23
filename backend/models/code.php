@@ -26,7 +26,7 @@ class Code extends Model{
             $codeok = !$result;
         }
 
-        $request = "INSERT INTO code VALUES (:code, :email, :action)";
+        $request = "INSERT INTO code(COD_code_NB, COD_email_VC, COD_action_VC) VALUES (:code, :email, :action)";
         $prepare = connexion::pdo()->prepare($request);
         $values["email"] = $email;
         $values["action"] = $action;
