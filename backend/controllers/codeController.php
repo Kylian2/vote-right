@@ -71,7 +71,9 @@ class CodeController{
             return;
         }
 
-        if(!User::getByEmail($body['email'])){
+        if(User::getByEmail($body['email'])){
+            
+        } else {
             echo '{"Error":"email not exist"}';
             http_response_code(409);
             return;
