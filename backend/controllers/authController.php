@@ -1,6 +1,7 @@
 <?php
 
 @require_once('models/user.php');
+@require_once('models/code.php');
 @require_once('validators/userValidator.php');
 @require_once('core/sessionGuard.php');
 @require_once('core/mailer.php');
@@ -28,7 +29,7 @@ class AuthController{
 
         // Vérifier que toutes les données sont reçues
         if(!isset($body["email"]) || !isset($body["password"]) || !isset($body["lastname"]) 
-        || !isset($body["firstname"]) || !isset($body["address"]) || !isset($body["zipcode"]) || !isset($body["birthdate"])){
+        || !isset($body["firstname"]) || !isset($body["address"]) || !isset($body["zipcode"]) || !isset($body["birthdate"]) || !isset($body["code"])){
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing data for processing"}';
             return;
@@ -54,9 +55,10 @@ class AuthController{
         $values["USR_birthdate_DATE"] = $body["birthdate"];
 
         $user = new User($values);
+        $code = $body["code"];
 
         try{
-            $user->insert();
+            $user->insert($code);
         }catch(Exception $e){
             http_response_code(400);
             $return["Erreur"] = $e->getMessage();
@@ -126,6 +128,7 @@ class AuthController{
         SessionGuard::stop();
         echo json_encode(true);
     }
+
 }
 
 ?>

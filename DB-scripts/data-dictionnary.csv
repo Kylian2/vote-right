@@ -97,6 +97,10 @@ THEME_BUDGET      ;BUT_period_YEAR                 ;A              ;YEAR        
 THEME_BUDGET      ;BUT_amount_NB                   ;A              ;NB               ;FLOAT(12,2) ;Montant du bugdet dédié au theme
 FORMAL_REQUEST    ;FOR_proposal_NB                 ;A              ;NB               ;INT         ;La proposition sujette à la demande
 FORMAL_REQUEST    ;FOR_user_NB                     ;A              ;NB               ;INT         ;L'utilisateur qui demande
+CODE    ;COD_code_NB                     ;A              ;NB               ;INT         ;Le code à six chiffres
+CODE    ;COD_user_VC                     ;A              ;VC               ;200         ;L'email associé au code (peut servir à identifier un utilisateur)
+CODE    ;COD_action_VC                     ;A              ;VC               ;40         ;Le type d'action associé au code
+CODE    ;COD_creation_DATE                     ;A              ;DATETIME               ;         ;La date de création du code
                   ;INV_validity_time_NB            ;P              ;NB               ;            ;Durée de validité d’une invitation. Actuellement = 7j
                   ;PRO_request_goal_NB             ;C              ;NB               ;            ;Nombre de demande à atteindre pour déclencher un vote formel. = (MEM_nbmembre_NB / 2)+1
                   ;MEM_nb_member_NB                ;C              ;NB               ;            ;Nombre de membre d’un groupe. (Calculé avec une requête sur la table membre) = SELECT COUNT(*) FROM MEMBRE WHERE MEM_groupe_NB = x.

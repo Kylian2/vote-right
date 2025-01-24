@@ -26,6 +26,21 @@ paths:
             application/json:
               schema:
                 type: object
+                x-examples:
+                  Example 1:
+                    USR_id_NB: 104
+                    USR_lastname_VC: Athan
+                    USR_firstname_VC: John
+                    USR_email_VC: johnathan@gmail.com
+                    USR_password_VC: '$argon2id$v=19$m=65536,t=4,p=1$MVhlRVFOVXJ1QWhvMDNSWQ$0s4oYr327cjxPIon10lHlUEdX2LZpwE1BJs+TXDpwuo'
+                    USR_address_VC: Rue du blé
+                    USR_zipcode_CH: '78300'
+                    USR_birthdate_DATE: '2005-10-10'
+                    USR_notification_frequency_CH: H
+                    USR_notify_proposal_BOOL: 0
+                    USR_notify_vote_BOOL: 0
+                    USR_notify_reaction_BOOL: 0
+                    USR_newsletter_BOOL: 0
                 properties:
                   USR_id_NB:
                     type: integer
@@ -53,21 +68,6 @@ paths:
                     type: integer
                   USR_newsletter_BOOL:
                     type: integer
-                x-examples:
-                  Example 1:
-                    USR_id_NB: 104
-                    USR_lastname_VC: Athan
-                    USR_firstname_VC: John
-                    USR_email_VC: johnathan@gmail.com
-                    USR_password_VC: '$argon2id$v=19$m=65536,t=4,p=1$MVhlRVFOVXJ1QWhvMDNSWQ$0s4oYr327cjxPIon10lHlUEdX2LZpwE1BJs+TXDpwuo'
-                    USR_address_VC: Rue du blé
-                    USR_zipcode_CH: '78300'
-                    USR_birthdate_DATE: '2005-10-10'
-                    USR_notification_frequency_CH: H
-                    USR_notify_proposal_BOOL: 0
-                    USR_notify_vote_BOOL: 0
-                    USR_notify_reaction_BOOL: 0
-                    USR_newsletter_BOOL: 0
               examples:
                 Example 1:
                   value:
@@ -84,6 +84,8 @@ paths:
                     USR_notify_vote_BOOL: 0
                     USR_notify_reaction_BOOL: 0
                     USR_newsletter_BOOL: 0
+        '400':
+          description: 'Bad Request, le code fourni est incorrect'
       operationId: post-auth-register
       x-stoplight:
         id: 1b6npyrgcq80b
@@ -93,6 +95,15 @@ paths:
           application/json:
             schema:
               type: object
+              x-examples:
+                Example 1:
+                  email: johnathan@gmail.com
+                  password: unmotdepasse
+                  lastname: Athan
+                  firstname: John
+                  address: Rue du blé
+                  zipcode: '78300'
+                  birthdate: '2005-10-10'
               properties:
                 email:
                   type: string
@@ -108,15 +119,10 @@ paths:
                   type: string
                 birthdate:
                   type: string
-              x-examples:
-                Example 1:
-                  email: johnathan@gmail.com
-                  password: unmotdepasse
-                  lastname: Athan
-                  firstname: John
-                  address: Rue du blé
-                  zipcode: '78300'
-                  birthdate: '2005-10-10'
+                code:
+                  type: number
+                  x-stoplight:
+                    id: tdxu2mn2wazku
             examples:
               Example 1:
                 value:
@@ -127,6 +133,7 @@ paths:
                   address: Rue du blé
                   zipcode: '78300'
                   birthdate: '2005-10-10'
+                  code: 123456
   /auth/login:
     post:
       summary: S'authentifier
@@ -978,7 +985,8 @@ paths:
     parameters: []
     delete:
       summary: Supprimer un utilisateur
-      tags: []
+      tags:
+        - users
       responses:
         '200':
           description: OK
@@ -3671,6 +3679,44 @@ paths:
           name: PHPSESSID
           description: Le cookie d'authentification
           required: true
+  /code/verification:
+    post:
+      summary: Genère un code de vérification pour la création d'un compte
+      tags:
+        - code
+      responses:
+        '200':
+          description: 'OK, renvoie `true` si le code a été envoyé.'
+        '409':
+          description: 'Conflict, le mail a déjà été utilise'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: string
+                x-examples:
+                  Example 1:
+                    Error: email already used
+              examples:
+                Example 1:
+                  value:
+                    Error: email already used
+      operationId: post-code-verification
+      x-stoplight:
+        id: 739hn1vxrt7ym
+      description: Genère un code à 6 chiffre pour valider l'adresse email d'un nouvel utilisateur. Envoie le code par email.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  x-stoplight:
+                    id: c4irik04pfbz0
 components:
   securitySchemes: {}
   responses: {}

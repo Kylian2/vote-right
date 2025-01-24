@@ -65,11 +65,27 @@
                         (v) => Boolean(v) || 'Une date de naissance est requise',  
                     ]"
                 >Date de naissance</Input>
+
+                <Button v-if="step === 2 && !verificationCodeIsSend" type="button" class="btn btn--cancel" @click="sendCode()">Recevoir le code de verification</Button>
+                <div class="registration__form__code" v-if="step === 2 && verificationCodeIsSend">
+                    <InputNumber
+                    placeholder="Entrez le code reçu par email"
+                    name="code"
+                    :rules="[
+                        (v) => Boolean(v) || 'Veuillez entrer le code',  
+                    ]"
+                    >Entrez le code</InputNumber>
+                    <span class="underline font--small" @click="sendCode">Renvoyer un code</span>
+                </div>
+
                 <!--formmethod="dialog" permet au bouton de se comporter comme si il allait envoyer le formulaire (et donc de faire ses vérifications de format (ex emai ou date) mais de ne pas envoyer le formulaire)-->
                 <Button v-if="step === 1" :disabled="!stepOneIsValid" formmethod="dialog" class="btn btn--full" @click="() => { step++ }">Commencer l'inscription</Button>
                 <div v-if="stepOneIsValid" class="registration__button-conteneur">
                     <Button v-if="step === 2" :disabled="!stepOneIsValid || !stepTwoIsValid" formmethod="dialog" class="btn btn--full" @click="handleForm()" >Terminer l'inscription</Button>
-                    <Button v-if="step === 2" type="button" class="btn btn--cancel" @click="step--" >Retour</Button>
+                    <Button v-if="step === 2" type="button" class="btn btn--cancel" @click="() => {
+                        step--;
+                        verificationCodeIsSend = false;
+                    }" >Retour</Button>
                 </div>
                 <NuxtLink class="second" to="/login">Ou <span class="underline">se connecter</span></NuxtLink>
             </form>
@@ -88,8 +104,20 @@ class="toast"
 >
 Email déjà utilisé
 </Toast>
+
+<Toast 
+name="incorrectCode" 
+:type="1" 
+:time="5" 
+:loader="true"
+class="toast"
+>
+Code incorrect
+</Toast>
 </template>
 <script setup>
+import InputNumber from '~/components/InputNumber.vue';
+
 
 const config = useRuntimeConfig();
 
@@ -98,6 +126,7 @@ definePageMeta({
 })
 
 const step = useState("step", ()=> 1);
+const verificationCodeIsSend = useState("verificationCodeIsSend", () => false);
 
 const lastname = useState("lastname", ()=> "");
 const firstname = useState("firstname", ()=> "");
@@ -107,6 +136,7 @@ const address = useState("address", ()=> "");
 const city = useState("city", ()=> "");
 const zipcode = useState("zipcode", ()=> "");
 const birthdate = useState("birthdate", ()=> "");
+const code = useState("code", ()=> "");
 
 const firstnameValid = useState("firstnameValid");
 const lastnameValid = useState("lastnameValid");
@@ -116,15 +146,17 @@ const addressValid = useState("addressValid");
 const cityValid = useState("cityValid");
 const zipcodeValid = useState("zipcodeValid");
 const birthdateValid = useState("birthdateValid");
+const codeValid = useState("codeValid", () => false);
 
 const sameEmail = useState("sameEmailUp", () => false);
+const incorrectCode = useState("incorrectCodeUp", () => false);
 
 const stepOneIsValid  = computed(() => {
     return firstnameValid.value && lastnameValid.value && emailValid.value && passwordValid.value;
 })
 
 const stepTwoIsValid  = computed(() => {
-    return addressValid.value && cityValid.value && zipcodeValid.value && birthdateValid.value;
+    return addressValid.value && cityValid.value && zipcodeValid.value && birthdateValid.value && codeValid.value;
 })
 
 const handleForm = async () => {
@@ -140,6 +172,7 @@ const handleForm = async () => {
                 address: address.value,
                 zipcode: zipcode.value,
                 birthdate: birthdate.value,
+                code: code.value,
             }
         });
 
@@ -149,10 +182,26 @@ const handleForm = async () => {
 
     } catch (error) {
         if(error.status === 400){
-            sameEmail.value = true;
+            incorrectCode.value = true;
         }
     }
 
+}
+
+const sendCode = async () => {
+    try {
+        await $fetch(`${config.public.baseUrl}/code/verification`, {
+            method: 'POST',
+            body: {
+                email: email.value,
+            }
+        });
+        verificationCodeIsSend.value = true
+    } catch (error) {
+        if(error.status === 409){
+            sameEmail.value = true;
+        }
+    }
 }
 
 const validateEmail = (email) => {
