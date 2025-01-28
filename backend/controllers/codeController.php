@@ -61,7 +61,7 @@ class CodeController{
      * @return void renvoie au format json `true` si le mail de récupération a été envoyé
      * 
      */
-    public static function sendRecuperationCode(){
+    public function sendRecuperationCode(){
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
@@ -71,15 +71,13 @@ class CodeController{
             return;
         }
 
-        if(User::getByEmail($body['email'])){
-            
-        } else {
+        if(!User::getByEmail($body['email'])){
             echo '{"Error":"email not exist"}';
             http_response_code(409);
             return;
         }
 
-        $code = Code::generateCode($body["email"], 'create');
+        $code = Code::generateCode($body["email"], 'recuperation-code');
 
         $mail = Mailer::init();
         $mail->Subject = 'Code de recuperation';
@@ -108,4 +106,38 @@ class CodeController{
 
         echo json_encode(true);
     }
+
+    /**
+     * Vérifie si le code est correct (si oui, supprime le code)
+     * 
+     * Le body attend les éléments suivants :
+     * - `string` email: l'email de l'utilisateur voulant récupérer son compte
+     * - `string` code: le code à vérifier
+     * - `string` action: l'action pour laquelle le code existe
+     * 
+     * @return void renvoie au format json `true` si le code est correct
+     * 
+     */
+    public function checkCode(){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!$body["email"] || !$body["code"] || !$body["action"]){
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"missing data for processing"}';
+            return;
+        }
+
+        try{
+            Code::checkCode($body["email"], $body["code"], $body["action"]);
+        } catch (Exception $e) {
+            http_response_code(400);
+            $return["Erreur"] = $e->getMessage();
+            echo json_encode($return);
+            return;
+        }
+
+        echo json_encode(true);
+    }
+
 }

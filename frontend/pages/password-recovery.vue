@@ -3,11 +3,16 @@
     <main class="login">
         <div class="registration">
             <h1>Récupération de votre mot de passe</h1>
-            <p v-if="emailNotExist" class="error">Email inconnu</p>
             <form  class="registration__form">
-                <Input v-if="!recuperationCodeIsSend" :vModele="email" type="email" name="email" placeholder="Entrez votre email" required>Votre email</Input>
-                <Button v-if="!recuperationCodeIsSend" formmethod="dialog" class="btn btn--full" @click="sendCode()">Envoyer</Button>
-                <div class="registration__form__code" v-if="recuperationCodeIsSend">
+
+                <!-- Première partie -->
+                <p v-if="step === 1 && emailNotExist" class="error">Email inconnu, veuillez réessayer</p>
+                <Input v-if="step === 1" type="email" name="email" placeholder="Entrez votre email" required>Votre email</Input>
+                <Button v-if="step === 1" :disabled="!email" formmethod="dialog" class="btn btn--full" @click="sendCode()">Envoyer</Button>
+                
+                <!-- Deuxième partie -->
+                <p v-if="step === 2 && incorrectCode" class="error">Code incorrect, veuillez réessayer</p>
+                <div v-if="step === 2" class="registration__form__code">
                     <InputNumber
                     placeholder="Entrez le code reçu par email"
                     name="code"
@@ -17,6 +22,25 @@
                     >Entrez le code</InputNumber>
                     <span class="underline font--small" @click="sendCode">Renvoyer un code</span>
                 </div>
+                <Button v-if="step === 2" :disabled="!code" formmethod="dialog" class="btn btn--full" @click="checkCode()">Valider</Button>
+
+                <!-- Troisième partie -->
+                <Input 
+                    v-if="step === 3" type="password" name="password" placeholder="Entrez votre nouveau mot de passe" required
+                    :rules="[
+                        (v) => Boolean(v) || 'Un mot de passe est requis', 
+                        (v) => v.length > 8 || 'Le mot de passe doit contenir au moins 8 caractères', 
+                    ]"
+                >Nouveau mot de passe</Input>
+                <Input 
+                    v-if="step === 3" type="password" name="confirmationPassword" placeholder="Confirmez votre nouveau mot de passe" required
+                    :rules="[
+                        (v) => Boolean(v) || 'Un mot de passe est requis', 
+                        (v) => v.length > 8 || 'Le mot de passe doit contenir au moins 8 caractères', 
+                        (v) => samePassword() || 'Le mot de passe est différent du premier'
+                    ]"
+                >Confirmation du nouveau mot de passe</Input>
+                <Button v-if="step === 3" :disabled="!password || !confirmationPassword" formmethod="dialog" class="btn btn--full" @click="changePassword()">Modifier</Button>
             </form>
         </div>
         <div class="illustration-conteneur">
@@ -26,15 +50,19 @@
 </template>
 
 <script setup>
-import InputNumber from '~/components/InputNumber.vue';
 
 const config = useRuntimeConfig();
 
-const email = ref("email", ()=> "");
-const recuperationCodeIsSend = useState("recuperationCodeIsSend", () => false);
+const step = useState("step", ()=> 1);
+
+const email = useState("email", ()=> "");
 const emailNotExist = useState("emailNotExist", () => false);
 
 const code = useState("code", ()=> "");
+const incorrectCode = useState("incorrectCodeUp", () => false);
+
+const password = useState("password", ()=> "");
+const confirmationPassword = useState("confirmationPassword", ()=> "");
 
 definePageMeta({
   middleware: ["guest"]
@@ -47,13 +75,56 @@ const sendCode = async() => {
             body: {
                 email: email.value
             }
-        })
-        recuperationCodeIsSend.value = true
+        });
+
+        step.value = 2;
     } catch (error) {
         if(error.status === 409){
             emailNotExist.value = true;
         }
     }
+}
+
+const checkCode = async() => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/code/check`, {
+            method: 'POST',
+            body: {
+                email: email.value,
+                code: code.value,
+                action: "recuperation-code"
+            }
+        });
+
+        step.value = 3;
+    } catch (error) {
+        if(error.status === 400){
+            incorrectCode.value = true;
+        }
+    }
+}
+
+const changePassword = async() => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/users/me/password`, {
+            method: 'PATCH',
+            credentials: 'include',
+            body: {
+                password: password.value
+            }
+        });
+
+        navigateTo('/login');
+    } catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+}
+
+const samePassword = () => {
+    if(password.value == confirmationPassword.value){
+        return true;
+    }
+    return false;
 }
 
 </script>

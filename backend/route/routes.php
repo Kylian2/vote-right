@@ -84,5 +84,6 @@ Router::patch('/reports/{user}/{comment}', 'reportController@solvReport', true);
 
 Router::post('/code/verification', 'codeController@sendVerificationCode');
 Router::post('/code/recuperation', 'codeController@sendRecuperationCode');
+Router::post('/code/check', 'codeController@checkCode');
 
 ?>
