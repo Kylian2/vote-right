@@ -84,4 +84,8 @@ Router::patch('/reports/{user}/{comment}', 'reportController@solvReport', true);
 
 Router::post('/code/verification', 'codeController@sendVerificationCode');
 
+/* Routes accessible via l'api algorithms */
+Router::get('/algo/users', 'userController@index', false, true);
+Router::get('/algo/communities/{id}/proposals/formatted', 'communityController@formattedProposals', true, true);
+
 ?>
