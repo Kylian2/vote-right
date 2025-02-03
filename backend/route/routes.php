@@ -87,5 +87,6 @@ Router::post('/code/verification', 'codeController@sendVerificationCode');
 /* Routes accessible via l'api algorithms */
 Router::get('/algo/users', 'userController@index', false, true);
 Router::get('/algo/communities/{id}/proposals/formatted', 'communityController@formattedProposals', true, true);
+Router::get('/algo/communities/{id}/budget', 'communityController@budget', true, true);
 
 ?>
