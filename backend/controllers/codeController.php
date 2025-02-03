@@ -72,8 +72,7 @@ class CodeController{
         }
 
         if(!User::getByEmail($body['email'])){
-            echo '{"Error":"email not exist"}';
-            http_response_code(409);
+            echo json_encode(false);
             return;
         }
 
@@ -108,12 +107,12 @@ class CodeController{
     }
 
     /**
-     * Vérifie si le code est correct (si oui, supprime le code)
+     * Vérifie si le code est correct
      * 
      * Le body attend les éléments suivants :
      * - `string` email: l'email de l'utilisateur voulant récupérer son compte
      * - `string` code: le code à vérifier
-     * - `string` action: l'action pour laquelle le code existe
+     * - `string` action: l'action associée au code
      * 
      * @return void renvoie au format json `true` si le code est correct
      * 
@@ -128,12 +127,10 @@ class CodeController{
             return;
         }
 
-        try{
-            Code::checkCode($body["email"], $body["code"], $body["action"]);
-        } catch (Exception $e) {
-            http_response_code(400);
-            $return["Erreur"] = $e->getMessage();
-            echo json_encode($return);
+        $result = Code::checkCode($body["email"], $body["code"], $body["action"]);
+
+        if (!$result) {
+            echo json_encode(false);
             return;
         }
 

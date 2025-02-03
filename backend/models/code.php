@@ -30,20 +30,24 @@ class Code extends Model{
     public static function checkCode(string $email, string $code, string $action) {
         $request = "SELECT * FROM code WHERE COD_email_VC = :email AND COD_code_NB = :code AND COD_action_VC = :action";
         $prepare = connexion::pdo()->prepare($request);
-        $info1['email'] = $email;
-        $info1['code'] = $code;
-        $info1['action'] = $action;
-        $prepare->execute($info1);
+        $info['email'] = $email;
+        $info['code'] = $code;
+        $info['action'] = $action;
+        $prepare->execute($info);
         $result = $prepare->fetch();
         if(!$result){
-            throw new Exception('Incorrect code');
-            return;
+            return false;
         }
-        $request = 'DELETE FROM code WHERE COD_email_VC = :email AND COD_code_NB = :code';
+        return true;
+    }
+
+    public static function deleteCode(string $email, string $code, string $action) {
+        $request = "DELETE FROM code WHERE COD_email_VC = :email AND COD_code_NB = :code AND COD_action_VC = :action";
         $prepare = connexion::pdo()->prepare($request);
-        $info2['email'] = $email;
-        $info2['code'] = $code;
-        $prepare->execute($info2);
+        $info['email'] = $email;
+        $info['code'] = $code;
+        $info['action'] = $action;
+        $prepare->execute($info);
         return true;
     }
 }

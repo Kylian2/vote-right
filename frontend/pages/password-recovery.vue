@@ -25,6 +25,7 @@
                 <Button v-if="step === 2" :disabled="!code" formmethod="dialog" class="btn btn--full" @click="checkCode()">Valider</Button>
 
                 <!-- Troisième partie -->
+                <p v-if="step === 3 && error" class="error">Un problème est survenu, veuillez réessayer</p>
                 <Input 
                     v-if="step === 3" type="password" name="password" placeholder="Entrez votre nouveau mot de passe" required
                     :rules="[
@@ -40,7 +41,7 @@
                         (v) => samePassword() || 'Le mot de passe est différent du premier'
                     ]"
                 >Confirmation du nouveau mot de passe</Input>
-                <Button v-if="step === 3" :disabled="!password || !confirmationPassword" formmethod="dialog" class="btn btn--full" @click="changePassword()">Modifier</Button>
+                <Button v-if="step === 3" :disabled="!passwordValid" formmethod="dialog" class="btn btn--full" @click="changePassword()">Modifier</Button>
             </form>
         </div>
         <div class="illustration-conteneur">
@@ -53,19 +54,25 @@
 
 const config = useRuntimeConfig();
 
+definePageMeta({
+  middleware: ["guest"]
+})
+
 const step = useState("step", ()=> 1);
 
 const email = useState("email", ()=> "");
 const emailNotExist = useState("emailNotExist", () => false);
 
 const code = useState("code", ()=> "");
-const incorrectCode = useState("incorrectCodeUp", () => false);
+const incorrectCode = useState("incorrectCode", () => false);
 
 const password = useState("password", ()=> "");
 const confirmationPassword = useState("confirmationPassword", ()=> "");
 
-definePageMeta({
-  middleware: ["guest"]
+const error = useState("error", () => false);
+
+const passwordValid  = computed(() => {
+    return password.value && confirmationPassword.value && samePassword();
 })
 
 const sendCode = async() => {
@@ -77,11 +84,13 @@ const sendCode = async() => {
             }
         });
 
-        step.value = 2;
-    } catch (error) {
-        if(error.status === 409){
+        if(response === false) {
             emailNotExist.value = true;
+        } else {
+            step.value = 2;
         }
+    } catch (error) {
+        console.log('An unexptected error occured : ', error);
     }
 }
 
@@ -96,25 +105,32 @@ const checkCode = async() => {
             }
         });
 
-        step.value = 3;
-    } catch (error) {
-        if(error.status === 400){
+        if(response === false) {
             incorrectCode.value = true;
+        } else {
+            step.value = 3;
         }
+    } catch (error) {
+        console.log('An unexptected error occured : ', error);
     }
 }
 
 const changePassword = async() => {
     try{
-        const response = await $fetch(`${config.public.baseUrl}/users/me/password`, {
+        const response = await $fetch(`${config.public.baseUrl}/users/me/reset/password`, {
             method: 'PATCH',
-            credentials: 'include',
             body: {
+                email: email.value,
+                code: code.value,
                 password: password.value
             }
         });
 
-        navigateTo('/login');
+        if(response === false) {
+            error.value = true;
+        } else {
+            navigateTo('/login');
+        }
     } catch (error){
         console.log('An unexptected error occured : ', error);
     }
