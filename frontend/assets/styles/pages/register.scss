@@ -41,13 +41,24 @@
             width: auto;
         }
     }
+    &__recovery{
+        &__title{
+            margin-left: 0;
+            margin-bottom: 20px;
+        }
+        &__p{
+            margin: 20px 0;
+        }
+    }
     .second-recuperation{
         display: block;
         font-size: 14px;
+        margin-top: -10px;
     }
     .second-register{
         display: block;
-        margin-top: 10px;
+        margin-top: 5px;
+        font-size: 14px;
     }
     .inline-input{
         display: flex;

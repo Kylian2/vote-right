@@ -1,8 +1,9 @@
 <template>
     <Header type="notlogged"></Header>
     <main class="login">
-        <div class="registration">
-            <h1>Récupération de votre mot de passe</h1>
+        <div class="registration registration__recovery">
+            <h1 class="registration__recovery__title">Récupération de votre mot de passe</h1>
+            <p class="registration__recovery__p">Veuillez entrez votre email, s'il existe, nous vous enverrons un code pour récupérer votre mot de passe</p>
             <p v-if="emailNotExist" class="error">Email inconnu</p>
             <form  class="registration__form">
                 <Input v-if="!recuperationCodeIsSend" :vModele="email" type="email" name="email" placeholder="Entrez votre email" required>Votre email</Input>
