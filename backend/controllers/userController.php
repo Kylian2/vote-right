@@ -1,6 +1,7 @@
 <?php
 
 @require_once('models/user.php');
+@require_once('models/code.php');
 @require_once('validators/userValidator.php');
 @require_once('core/sessionGuard.php');
 
@@ -119,6 +120,55 @@ class UserController{
             echo json_encode($return);
             return;
         }
+
+        echo json_encode(true);
+    }
+
+    /**
+     * Met à jour le mot de passe de l'utilisateur du mail passé dans la requête
+     * 
+     * Le body attend les éléments suivants :
+     * - `string` email: l'email de l'utilisateur voulant changer son mot de passe
+     * - `string` code: le code à vérifier
+     * - `string` password: le nouveau code
+     * 
+     * @return void renvoie au format json `true` si la modification du mot de passe a été effectuée avec succès
+     * 
+     */
+    public function resetPassword(){
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if(!isset($body["email"]) || !isset($body["code"]) || !isset($body["password"])){
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"missing data for processing"}';
+            return;
+        }
+        
+        if (!Code::checkCode($body["email"], $body["code"], "recuperation-code")) {
+            echo json_encode(false);
+            return;
+        }
+
+        $user = User::getByEmail($body["email"]);
+
+        if(!$user){
+            echo json_encode(false);
+            return;
+        }
+
+        $user->USR_password_VC = password_hash($body["password"], PASSWORD_ARGON2ID);
+
+        try{
+            $user->updatePassword();
+        }catch(Exception $e){
+            http_response_code(400);
+            $return["Erreur"] = $e->getMessage();
+            echo json_encode($return);
+            return;
+        }
+
+        Code::deleteCode($body["email"], $body["code"], "recuperation-code");
 
         echo json_encode(true);
     }
