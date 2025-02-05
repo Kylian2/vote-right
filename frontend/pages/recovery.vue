@@ -6,7 +6,7 @@
             <p class="registration__recovery__p">Veuillez entrez votre email, s'il existe, nous vous enverrons un code pour récupérer votre mot de passe</p>
             <p v-if="emailNotExist" class="error">Email inconnu</p>
             <form  class="registration__form">
-                <Input v-if="!recuperationCodeIsSend" :vModele="email" type="email" name="email" placeholder="Entrez votre email" required>Votre email</Input>
+                <Input v-if="!recuperationCodeIsSend" type="email" name="emailRecup" placeholder="Entrez votre email" required>Votre email</Input>
                 <Button v-if="!recuperationCodeIsSend" formmethod="dialog" class="btn btn--full" @click="sendCode()">Envoyer</Button>
                 <div class="registration__form__code" v-if="recuperationCodeIsSend">
                     <InputNumber
@@ -31,7 +31,7 @@ import InputNumber from '~/components/InputNumber.vue';
 
 const config = useRuntimeConfig();
 
-const email = ref("email", ()=> "");
+const email = useState("emailRecup", ()=> "");
 const recuperationCodeIsSend = useState("recuperationCodeIsSend", () => false);
 const emailNotExist = useState("emailNotExist", () => false);
 
