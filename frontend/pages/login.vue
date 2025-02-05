@@ -12,12 +12,10 @@
 
                 <!--formmethod="dialog" permet au bouton de se comporter comme si il allait envoyer le formulaire (et donc de faire ses vérifications de format (ex emai ou date) mais de ne pas envoyer le formulaire)-->
                 <div>
-                    <NuxtLink class="second-password-recovery" to="/password-recovery"><span class="underline">Mot de passe oublié ?</span></NuxtLink>
+                    <Button formmethod="dialog" class="btn btn--full" @click="handleForm()">Connexion</Button>
                     <NuxtLink class="second-register" to="/register">Ou <span class="underline">s'inscrire</span></NuxtLink>
                 </div>
-                <div>
-                    <NuxtLink class="second-recuperation" to="/recovery"><span class="underline">Mot de passe oublié ?</span></NuxtLink>
-                </div>
+                <NuxtLink class="second-recuperation" to="/password-recovery"><span class="underline">Mot de passe oublié ?</span></NuxtLink>
             </form>
         </div>
         <div class="illustration-conteneur">
