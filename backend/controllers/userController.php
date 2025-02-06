@@ -146,14 +146,14 @@ class UserController{
         }
         
         if (!Code::checkCode($body["email"], $body["code"], "recuperation-code")) {
-            echo json_encode(false);
+            http_response_code(400);
             return;
         }
 
         $user = User::getByEmail($body["email"]);
 
         if(!$user){
-            echo json_encode(false);
+            http_response_code(400);
             return;
         }
 

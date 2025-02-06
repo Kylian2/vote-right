@@ -72,7 +72,7 @@ class CodeController{
         }
 
         if(!User::getByEmail($body['email'])){
-            echo json_encode(false);
+            http_response_code(400);
             return;
         }
 
@@ -127,10 +127,8 @@ class CodeController{
             return;
         }
 
-        $result = Code::checkCode($body["email"], $body["code"], $body["action"]);
-
-        if (!$result) {
-            echo json_encode(false);
+        if (!Code::checkCode($body["email"], $body["code"], $body["action"])) {
+            http_response_code(400);
             return;
         }
 

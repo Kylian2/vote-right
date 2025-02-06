@@ -84,7 +84,7 @@ Router::get('/votes/systems', 'voteController@systems', true);
 Router::patch('/reports/{user}/{comment}', 'reportController@solvReport', true);
 
 Router::post('/code/verification', 'codeController@sendVerificationCode');
-Router::post('/code/recuperation', 'codeController@sendRecuperationCode');
+Router::post('/code/recovery', 'codeController@sendRecuperationCode');
 Router::post('/code/check', 'codeController@checkCode');
 
 ?>

@@ -3,16 +3,17 @@
     <main class="login">
         <div class="registration registration__recovery">
             <h1 class="registration__recovery__title">Récupération de votre mot de passe</h1>
-            <p class="registration__recovery__p">Veuillez entrez votre email, s'il existe, nous vous enverrons un code pour récupérer votre mot de passe</p>
+            <p v-if="step === 1" class="registration__recovery__p">Veuillez entrer votre adresse e-mail. Si celle-ci correspond à un compte existant, nous vous enverrons un code pour récupérer votre mot de passe.</p>
+            <p v-if="step === 2" class="registration__recovery__p">Veuillez entrer le code reçu par e-mail. Si vous ne l'avez pas reçu, cliquez sur "Renvoyer un code".</p>
             <form  class="registration__form">
 
                 <!-- Première partie -->
-                <p v-if="step === 1 && emailNotExist" class="error">Email inconnu, veuillez réessayer</p>
+                <p v-if="step === 1 && emailNotExist" class="error">Email inconnu, veuillez réessayer.</p>
                 <Input v-if="step === 1" type="email" name="email" placeholder="Entrez votre email" required>Votre email</Input>
                 <Button v-if="step === 1" :disabled="!email" formmethod="dialog" class="btn btn--full" @click="sendCode()">Envoyer</Button>
                 
                 <!-- Deuxième partie -->
-                <p v-if="step === 2 && incorrectCode" class="error">Code incorrect, veuillez réessayer</p>
+                <p v-if="step === 2 && incorrectCode" class="error">Code incorrect, veuillez réessayer.</p>
                 <div v-if="step === 2" class="registration__form__code">
                     <InputNumber
                     placeholder="Entrez le code reçu par email"
@@ -26,7 +27,7 @@
                 <Button v-if="step === 2" :disabled="!code" formmethod="dialog" class="btn btn--full" @click="checkCode()">Valider</Button>
 
                 <!-- Troisième partie -->
-                <p v-if="step === 3 && error" class="error">Un problème est survenu, veuillez réessayer</p>
+                <p v-if="step === 3 && error" class="error">Un problème est survenu, veuillez réessayer en raffraichissant la page.</p>
                 <Input 
                     v-if="step === 3" type="password" name="password" placeholder="Entrez votre nouveau mot de passe" required
                     :rules="[
@@ -78,20 +79,18 @@ const passwordValid  = computed(() => {
 
 const sendCode = async() => {
     try{
-        const response = await $fetch(`${config.public.baseUrl}/code/recuperation`, {
+        const response = await $fetch(`${config.public.baseUrl}/code/recovery`, {
             method: 'POST',
             body: {
                 email: email.value
             }
         });
 
-        if(response === false) {
-            emailNotExist.value = true;
-        } else {
-            step.value = 2;
-        }
+        step.value = 2;
     } catch (error) {
-        console.log('An unexptected error occured : ', error);
+        if(error.status === 400){
+            emailNotExist.value = true;
+        }
     }
 }
 
@@ -106,13 +105,11 @@ const checkCode = async() => {
             }
         });
 
-        if(response === false) {
-            incorrectCode.value = true;
-        } else {
-            step.value = 3;
-        }
+        step.value = 3;
     } catch (error) {
-        console.log('An unexptected error occured : ', error);
+        if(error.status === 400){
+            incorrectCode.value = true;
+        }
     }
 }
 
@@ -127,13 +124,11 @@ const changePassword = async() => {
             }
         });
 
-        if(response === false) {
-            error.value = true;
-        } else {
-            navigateTo('/login');
-        }
+        navigateTo('/login');
     } catch (error){
-        console.log('An unexptected error occured : ', error);
+        if(error.status === 400){
+            error.value = true;
+        }
     }
 }
 
