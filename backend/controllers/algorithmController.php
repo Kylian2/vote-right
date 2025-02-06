@@ -41,7 +41,7 @@ class algorithmController{
             echo 'Erreur cURL :'.curl_error($curl);
         }
         curl_close($curl);
-
+        http_response_code(curl_getinfo($curl, CURLINFO_HTTP_CODE));
         echo $response;
     }
 
