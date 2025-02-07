@@ -27,7 +27,7 @@
                 <Button v-if="step === 2" :disabled="!code" formmethod="dialog" class="btn btn--full" @click="checkCode()">Valider</Button>
 
                 <!-- Troisième partie -->
-                <p v-if="step === 3 && error" class="error">Un problème est survenu, veuillez réessayer en raffraichissant la page.</p>
+                <p v-if="step === 3 && error" class="error">Un problème est survenu, veuillez réessayer en rafraîchissant la page.</p>
                 <Input 
                     v-if="step === 3" type="password" name="password" placeholder="Entrez votre nouveau mot de passe" required
                     :rules="[
