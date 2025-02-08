@@ -12,9 +12,6 @@ RUN apk add --no-cache \
 # Installation de Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Configuration de Nginx -- à peut etre retirer à terme pour en monter une spécifique
-COPY ./config/nginx.conf /etc/nginx/nginx.conf
-
 WORKDIR /var/www/html
 
 COPY ./composer.json ./composer.lock ./
