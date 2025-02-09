@@ -1,5 +1,4 @@
 <template>
-
     <Header></Header>
     <h1>{{community["CMY_name_VC"]}}</h1>
     <main class="community">
@@ -36,7 +35,7 @@
             <div class="community__adopted">
                 <h3>Proposition adoptées</h3>
                 <div>
-                    <NuxtLink :to="`/proposals/${proposal['PRO_id_NB']}`" v-for="proposal in adopted" class="proposal-card">
+                    <NuxtLink :to="`/proposals/${proposal['PRO_id_NB']}`" v-for="proposal in adopted" class="proposal-card proposal-card">
                         <div>
                             <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
                             <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
@@ -63,7 +62,7 @@
                 <div>
                     <div v-for="proposal, key in voted" class="proposal-card__wrapper">
                         <img class="proposal-card__image" src="/images/like.png" alt="like icon" v-if="false">
-                        <NuxtLink class="proposal-card" :class="{'proposal-card--action': false}" :to="`/proposals/${proposal['PRO_id_NB']}`">
+                        <NuxtLink class="proposal-card" :class="{'proposal-card--action': (best == proposal['PRO_id_NB']) }" :to="`/proposals/${proposal['PRO_id_NB']}`">
                             <div>
                                 <p class="proposal-card__theme">{{proposal['PRO_theme_VC']}}</p>
                                 <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
@@ -81,7 +80,7 @@
                                 <p class="proposal-card__title">{{proposal['PRO_title_VC']}}</p>
                             </div>
                         </NuxtLink>
-                        <div v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER"  class="proposal-card__btns" :class="{'proposal-card__btns': false}">
+                        <div v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER"  class="proposal-card__btns" :class="{'proposal-card__btns--action': (best == proposal['PRO_id_NB'])}">
                             <button class="btn btn--small" @click="approveProposal(true, proposal['PRO_id_NB'])">Adopter</button>
                             <button class="btn btn--small" @click="approveProposal(false, proposal['PRO_id_NB'])">Refuser</button>
                         </div>
@@ -392,6 +391,8 @@ const fetchData = async () => {
                 period.value = p;
             }
         });
+
+        algorithm();
         
     } catch(error) {
         console.log("An error occured", error);
@@ -412,6 +413,8 @@ const fetchDataByPeriod = async () =>{
         });
 
         adopted.value = ado;
+
+        algorithm();
 
     }catch(error){
         console.log("An error occured", error);
@@ -528,6 +531,27 @@ const approveProposal = async (status, proposal) => {
         if(error.status === 400){
             limit.value = true;
         }
+    }
+}
+
+const best = ref();
+
+const algorithm = async () => {
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/algo?period=${period.value}`, {
+            method: 'GET',
+            credentials: 'include',
+        });
+
+        if(!response){
+            best.value = 0;
+            return;
+        }
+
+        best.value = response[0]["PRO_id_NB"];
+        
+    } catch(error) {
+        console.log("An error occured", error);
     }
 }
 
