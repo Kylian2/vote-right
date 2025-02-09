@@ -32,6 +32,7 @@ Router::patch('/communities/{id}/update', 'communityController@update');
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');
+Router::patch('/users/me/reset/password', 'userController@resetPassword');
 Router::get('/users/me', 'userController@me', true);
 Router::get('/users/me/role/{community}', 'userController@role', true);
 Router::get('/users/me/role/{community}/proposals', 'userController@roleProposal', true);
@@ -83,5 +84,7 @@ Router::get('/votes/systems', 'voteController@systems', true);
 Router::patch('/reports/{user}/{comment}', 'reportController@solvReport', true);
 
 Router::post('/code/verification', 'codeController@sendVerificationCode');
+Router::post('/code/recovery', 'codeController@sendRecuperationCode');
+Router::post('/code/check', 'codeController@checkCode');
 
 ?>
