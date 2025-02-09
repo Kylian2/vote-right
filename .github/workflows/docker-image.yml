@@ -56,3 +56,19 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}-admin
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name : Deploy new images 
+        uses : appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            docker compose down
+            docker volume rm root_app-data
+            docker pull ghcr.io/kylian2/vote-right:main-backend
+            docker pull ghcr.io/kylian2/vote-right:main-frontend
+            docker pull ghcr.io/kylian2/vote-right:main-admin
+            docker compose up -d 
+            docker ps
+            docker images | awk '$2 == "<none>" {print $3}' | xargs docker rmi
