@@ -116,6 +116,7 @@
         </section>
         <section class="community__actions">
             <div class="community__actions__btns">
+                <NuxtLink v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" :to="`/communities/${$route.params.id}/budget`">Détails du budget</NuxtLink>
                 <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="addThemeModal = true"> Ajouter un thème</button>
                 <NuxtLink class="btn btn--small" :to="`/communities/${$route.params.id}/proposals`">Voir toutes les propositions</NuxtLink>
                 <NuxtLink v-if="role['MEM_role_NB'] == ADMIN" class="btn btn--small" :to="`/communities/${$route.params.id}/edit`"> Modifier le groupe </NuxtLink>
