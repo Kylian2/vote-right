@@ -12,9 +12,9 @@
                 <select v-model="period" @change="fetchDataByPeriod()">
                     <option v-for="p in periods" :value="p">{{p}}</option>
                 </select>
-                <p><b>Budget Total : </b> {{formatNumber(budget['CMY_budget_NB'])}} € /an max</p>
-                <p><b>Budget Utilisé : </b> {{formatNumber(budget['CMY_used_budget_NB'])}} € /an</p>
-                <p><b>Frais fixes :</b> {{formatNumber(budget['CMY_fixed_fees_NB'])}} € /an</p>
+                <p><b>Budget Total : </b> {{formatNumber(budget['CMY_budget_NB'])}} € max</p>
+                <p><b>Budget Utilisé : </b> {{formatNumber(budget['CMY_used_budget_NB'])}} €</p>
+                <p><b>Frais fixes :</b> {{formatNumber(budget['CMY_fixed_fees_NB'])}} €</p>
                 <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="editBudgetModale = true"> Modifier le budget maximal</button>
             </div>
 
@@ -23,7 +23,7 @@
                     Par thème
                 </h3>
                 <div>
-                    <p v-for="theme, key in budget['CMY_budget_theme_NB']"><b>{{theme['THM_name_VC']}} : </b> {{theme['BUT_used_budget_NB']}} € /an (max: {{theme['BUT_amount_NB']}} €)</p>
+                    <p v-for="theme, key in budget['CMY_budget_theme_NB']"><b>{{theme['THM_name_VC']}} : </b> {{theme['BUT_used_budget_NB']}} € (max: {{theme['BUT_amount_NB']}} €)</p>
                     <p v-if="budget['CMY_budget_theme_NB']?.length === 0">Il n'y a aucun thème, vous pouvez en <span class="underline pointer" @click="addThemeModal = true">ajouter un</span>.</p>
                 </div>
                 <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="editBudgetModale = true"> Modifier les budgets</button>
@@ -153,7 +153,7 @@
                             (v) => (v >= budget['CMY_fixed_fees_NB'] + budgetTotalTheme) || 'Budget trop bas'
                         ]"
                         ></InputNumber>
-                        <p> € /an</p>
+                        <p> €</p>
                     </div>
                 </div>
                 <div>
@@ -164,7 +164,7 @@
                             (v) => (v <= budget['CMY_budget_NB'] - budget['CMY_used_budget_NB']) || 'Frais trop haut'
                         ]"
                         ></InputNumber>
-                        <p> € /an</p>
+                        <p> €</p>
                     </div>
                 </div>
             </div>
@@ -177,7 +177,7 @@
                         :rules="[
                             (v) => (v <= budgetTotalTheme - theme['BUT_amount_NB']) || 'Le budget est trop élévé'
                         ]"></InputNumber>
-                        <p> € /an</p>
+                        <p> €</p>
                     </div>
                 </div>
             </div>
@@ -228,15 +228,15 @@
             <div class="edit-budget">
                 <div>
                     <p><b>Budget max :</b></p>
-                    <p><b>{{ budget['CMY_budget_NB'] }}</b> € /an</p>
+                    <p><b>{{ budget['CMY_budget_NB'] }}</b> €</p>
                 </div>
                 <div>
                     <p>Budget utilisé :</p>
-                    <p><b>{{ budget['CMY_used_budget_NB'] }}</b> € /an</p>
+                    <p><b>{{ budget['CMY_used_budget_NB'] }}</b> €</p>
                 </div>
                 <div>
                     <p>Budget restant non attribué :</p>
-                    <p><b>{{ budget['CMY_budget_NB']  - budgetTotalTheme - budget['CMY_fixed_fees_NB'] }}</b> € /an</p>
+                    <p><b>{{ budget['CMY_budget_NB']  - budgetTotalTheme - budget['CMY_fixed_fees_NB'] }}</b> €</p>
                 </div>
             </div>
 
@@ -249,7 +249,7 @@
                         (v) => v <= budget['CMY_budget_NB']  - budgetTotalTheme - budget['CMY_fixed_fees_NB'] || 'Le budget est trop élevé'
                     ]"
                     ></InputNumber>
-                    <p> € /an</p>
+                    <p> €</p>
                 </div>
             </div>
             <p class="legende mt20">Le budget défini pour le thème sera ajouté pour la période en cours ({{ new Date().getFullYear() }}).</p>
