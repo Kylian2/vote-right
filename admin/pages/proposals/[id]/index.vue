@@ -1,7 +1,11 @@
 <template>
 <Header></Header>
-<NuxtLink class="back" :to="`/communities/${proposal['PRO_community_NB']}`">Retour au groupe</NuxtLink>
+
+<NuxtLink v-if="from?.name === 'communities-id-budget'" class="back" :to="from?.href">Retour au budget</NuxtLink>
+<NuxtLink v-else-if="community" class="back" :to="`/communities/${community['CMY_id_NB']}`">Retour au groupe</NuxtLink>
+
 <h1>{{ proposal['PRO_title_VC'] }}</h1>
+
 <main class="proposal">
 <section class="section-1">
     <div v-if="initiator" class="proposal__initiator">
@@ -413,5 +417,14 @@ const validateVote = async (vote, answer) => {
 onMounted(() => {
     fetchData();
     fetchVote();
+})
+
+onBeforeUnmount(() => {
+    useState('from', () => {
+        return {
+            name: route.name,
+            href: route.href,
+        }
+    })
 })
 </script>

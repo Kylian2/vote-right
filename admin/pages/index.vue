@@ -52,6 +52,7 @@ const handleForm = async () => {
     }
 }
 
+//TODO : verifier si la fonction est utilisée sinon la supprimer
 const validateVote = async (vote, answer) => {
     try{
         await $fetch(`${config.public.baseUrl}/proposals/${proposal}/${vote}/vote`, {
@@ -69,4 +70,13 @@ const validateVote = async (vote, answer) => {
         }
     }
 }
+
+onBeforeUnmount(() => {
+    useState('from', () => {
+        return {
+            name: route.name,
+            href: route.href,
+        }
+    })
+})
 </script>

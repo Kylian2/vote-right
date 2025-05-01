@@ -1,6 +1,7 @@
 <template>
     <Header></Header>
     <h1>{{community["CMY_name_VC"]}}</h1>
+    {{ $route }}
     <main class="community">
 
         <section class="community__lateral">
@@ -406,5 +407,14 @@ const algorithm = async () => {
 
 onMounted(() => {
     fetchData();
+})
+
+onBeforeUnmount(() => {
+    useState('from', () => {
+        return {
+            name: route.name,
+            href: route.href,
+        }
+    })
 })
 </script>

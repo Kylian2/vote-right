@@ -592,11 +592,18 @@ watch(checkCount, (n, o) => {
     }
 }, { deep: true, immediate: false })
 
-onBeforeUnmount(() => {
-    destroyCharts();
-});
-
 onMounted(async () => {
     await fetchData();
 });
+
+onBeforeUnmount(() => {
+    destroyCharts();
+
+    useState('from', () => {
+        return {
+            name: route.name,
+            href: route.href,
+        }
+    })
+})
 </script>

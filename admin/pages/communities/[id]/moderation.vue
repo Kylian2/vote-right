@@ -111,4 +111,12 @@
         }
     }
     
+    onBeforeUnmount(() => {
+        useState('from', () => {
+            return {
+                name: route.name,
+                href: route.href,
+            }
+        })
+    })
 </script>
