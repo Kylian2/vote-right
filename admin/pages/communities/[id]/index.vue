@@ -15,7 +15,6 @@
                 <p><b>Budget Total : </b> {{formatNumber(budget['CMY_budget_NB'])}} € max</p>
                 <p><b>Budget Utilisé : </b> {{formatNumber(budget['CMY_used_budget_NB'])}} €</p>
                 <p><b>Frais fixes :</b> {{formatNumber(budget['CMY_fixed_fees_NB'])}} €</p>
-                <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="editBudgetModale = true"> Modifier le budget maximal</button>
             </div>
 
             <div class="community__recap-themes">
@@ -26,7 +25,6 @@
                     <p v-for="theme, key in budget['CMY_budget_theme_NB']"><b>{{theme['THM_name_VC']}} : </b> {{theme['BUT_used_budget_NB']}} € (max: {{theme['BUT_amount_NB']}} €)</p>
                     <p v-if="budget['CMY_budget_theme_NB']?.length === 0">Il n'y a aucun thème, vous pouvez en <span class="underline pointer" @click="addThemeModal = true">ajouter un</span>.</p>
                 </div>
-                <button v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER" class="btn btn--small" @click="editBudgetModale = true"> Modifier les budgets</button>
             </div>
 
         </section>
@@ -229,7 +227,7 @@ const budget = ref({});
 const period = ref(new Date().getFullYear());
 const periods = ref([]);
 const role = ref({});
-const communityBudget = useState('budget');
+const communityBudget = ref(0);
 
 const formatNumber = (number) => {
     return isNaN(number) ? 0 : new Intl.NumberFormat('fr-FR').format(number);
