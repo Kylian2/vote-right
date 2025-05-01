@@ -1,7 +1,7 @@
 .input--classique{
-    background: $background-light;
+    background: $background-form;
     padding: 15px 10px;
-    border: 2px solid $background-light;
+    border: 2px solid $background-form;
     border-radius: 10px;
     width: 400px;
 
@@ -21,9 +21,9 @@
     display: flex;
     flex-direction: column;
     input{
-        background: $background-light;
+        background: $background-form;
         padding: 15px 10px;
-        border: 2px solid $background-light;
+        border: 2px solid $background-form;
         border-radius: 10px;
         width: 400px;
 
@@ -40,9 +40,9 @@
     }
 
     textarea{
-        background: $background-light;
+        background: $background-form;
         padding: 15px 10px;
-        border: 2px solid $background-light;
+        border: 2px solid $background-form;
         border-radius: 10px;
         width: 600px;
 
@@ -138,7 +138,7 @@
     }
 
     select {
-        background-color: $background-light;
+        background-color: $background-form;
         border-radius: 10px;
         color: #000;
         cursor: pointer;
@@ -176,8 +176,8 @@
     }
     
     &__btn{
-        background: $background-light;
-        border: 2px solid $background-light;
+        background: $background-form;
+        border: 2px solid $background-form;
         border-radius: 10px;
         cursor: pointer;
         height: 50px;
@@ -193,7 +193,7 @@
         width: fit-content;
         max-height: 220px;
         background: $contrast;
-        border: 2px solid $background-light;
+        border: 2px solid $background-form;
         border-radius: 5px;
         overflow: scroll;
         display: grid;
@@ -214,7 +214,7 @@
         border-radius: 5px;
         padding: 2px 4px;
         &:hover{
-            background: $background-light;
+            background: $background-form;
         }
     }
 }
@@ -231,7 +231,7 @@
 }
 
 select{
-    background: darken($background-light, 4);
+    background: darken($background-form, 4);
     color: $dark;
     padding: 5px 10px;
     cursor: pointer;

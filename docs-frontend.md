@@ -499,3 +499,18 @@ Dans l'application, il y a des middlewares permettant de restreindre l'accès à
 5. *proposal* : bloque l'accès aux pages aux utilisateurs n'ayant pas un de gestion dans la communauté (pour les pages ayant comme paramètre un identifiant de proposition). Redirige vers */home*.
 6. *assessor* : bloque l'accès aux pages aux utilisateurs n'ayant pas un de gestion dans la communauté **de la proposition** (**pour les pages ayant comme paramètre un identifiant de proposition**). Redirige vers */home*.
 7. *moderator* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de modérateur (ou d'administrateur) dans la communauté (se base sur le paramètre de l'url). Redirige vers */home*.
+
+## Conseils suite aux bugs rencontrés
+
+### Utilisation des graphiques Chart.JS
+
+*Bug:* 
+````
+Uncaught RangeError: Maximum call stack size exceeded
+````
+
+Il semble que le comportement des graphiques Chart.JS soit instables avec des variables réactives, préferez l'utilisation de variables non-réactives pour la créations de graphiques. 
+
+Le problèmes rencontrés est une boucle infinie (semble-t-il) lors de la mise à jour de grahiques avec la méthode `update()`. 
+
+Exemple dans le fichier `budget.vue` de l'application admin.

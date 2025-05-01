@@ -135,86 +135,6 @@
     </main>
 
     <Modal
-    name="editBudget"
-    ok-text="Valider les changements"
-    cancel-text="Annuler"
-    :disable-valid="!budgetValid"
-    :before-ok="() => {
-        updateBudget();
-    }"
-    >
-        <template #title>Modifier les budgets</template>
-        <template #body>
-            <div class="edit-budget">
-                <div>
-                    <p><b>Budget max :</b></p>
-                    <div>
-                        <InputNumber name="budget" :placeholder="budget['CMY_budget_NB']+''" :step="100"
-                        :rules="[
-                            (v) => (v >= budget['CMY_fixed_fees_NB'] + budgetTotalTheme) || 'Budget trop bas'
-                        ]"
-                        ></InputNumber>
-                        <p> €</p>
-                    </div>
-                </div>
-                <div>
-                    <p>Frais fixes :</p>
-                    <div>
-                        <InputNumber name="feesBudget" :placeholder="budget['CMY_fixed_fees_NB']+''" :step="100"
-                        :rules="[
-                            (v) => (v <= budget['CMY_budget_NB'] - budget['CMY_used_budget_NB']) || 'Frais trop haut'
-                        ]"
-                        ></InputNumber>
-                        <p> €</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="edit-budget section-2">
-                <div v-for="theme, key in budget['CMY_budget_theme_NB']">
-                    <p><b>{{theme["THM_name_VC"]}} :</b></p>
-                    <div>
-                        <InputNumber :name="theme['THM_name_VC']+'Budget'" :placeholder="theme['BUT_amount_NB']+''" :step="100"
-                        :rules="[
-                            (v) => (v <= budgetTotalTheme - theme['BUT_amount_NB']) || 'Le budget est trop élévé'
-                        ]"></InputNumber>
-                        <p> €</p>
-                    </div>
-                </div>
-            </div>
-
-        </template>
-    </Modal>
-
-    <Toast 
-        name="budgetToastValid" 
-        :type="3" 
-        :time="5" 
-        :loader="true"
-        class="toast"
-    >
-    Budget Modifié !
-    </Toast>
-    <Toast 
-        name="budgetToastError" 
-        :type="1" 
-        :time="5" 
-        :loader="true"
-        class="toast"
-    >
-    Erreur lors de la modification du budget
-    </Toast>
-    <Toast 
-        name="budgetToastAlert" 
-        :type="2" 
-        :time="5" 
-        :loader="true"
-        class="toast"
-    >
-    Aucune modification a appliquer
-    </Toast>
-
-    <Modal
     name="addTheme"
     ok-text="Ajouter le theme"
     cancel-text="Annuler"
@@ -309,35 +229,7 @@ const budget = ref({});
 const period = ref(new Date().getFullYear());
 const periods = ref([]);
 const role = ref({});
-
-const budgetToastValid = useState('budgetToastValidUp', () => false);
-const budgetToastError = useState('budgetToastErrorUp', () => false);
-const budgetToastAlert = useState('budgetToastAlertUp', () => false);
-
-const editBudgetModale = useState('editBudgetModal', () => false);
-const budgetTotalTheme = computed(() => {
-    let somme = 0;
-    for (let i = 0; i < budget.value['CMY_budget_theme_NB']?.length; i++){
-        somme+=budget.value['CMY_budget_theme_NB'][i]['BUT_amount_NB'];
-    }
-    return somme;
-})
-
 const communityBudget = useState('budget');
-const communityBudgetValid = useState('budgetValid', ()=>true);
-const feesBudgetValid = useState('feesBudgetValid');
-
-//verifie l'ensemble des budgets entrés par l'utilisateur
-const budgetValid = computed(() => {
-    let valid = true;
-    valid = valid && feesBudgetValid.value && communityBudgetValid.value;
-    for (let i = 0; i < budget.value['CMY_budget_theme_NB']?.length; i++){
-        const bud = useState(budget.value['CMY_budget_theme_NB'][i]['THM_name_VC']+'BudgetValid');
-        valid = valid && bud.value;
-    }
-    return valid;
-}) 
-
 
 const formatNumber = (number) => {
     return isNaN(number) ? 0 : new Intl.NumberFormat('fr-FR').format(number);
@@ -418,48 +310,6 @@ const fetchDataByPeriod = async () =>{
         algorithm();
 
     }catch(error){
-        console.log("An error occured", error);
-    }
-}
-
-const updateBudget = async () => {
-    let raw = {};
-    const totalBudget = useState('budget');
-    if(totalBudget.value != ""){
-        raw['0'] = totalBudget.value;
-    }
-    const feesBudget = useState('feesBudget');
-    if(feesBudget.value != ""){
-        raw['-1'] = feesBudget.value;
-    }
-
-    budget.value['CMY_budget_theme_NB'].forEach(theme => {
-        const budgetTheme = useState(theme['THM_name_VC']+'Budget');
-        if(budgetTheme.value != ""){
-            raw[theme['THM_id_NB']] = budgetTheme.value;
-        }
-    });
-    if(Object.keys(raw).length === 0){
-        budgetToastAlert.value = true;
-        return;
-    }
-    try{
-        const response1 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
-            method: 'PATCH',
-            credentials: 'include',
-            body: raw
-        });
-
-        budgetToastValid.value = response1 === true;
-        budgetToastError.value = response1 !== true;
-
-        const response2 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
-            credentials: 'include',
-        });
-
-        budget.value = response2;
-        
-    } catch(error) {
         console.log("An error occured", error);
     }
 }

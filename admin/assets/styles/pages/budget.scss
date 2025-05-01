@@ -1,0 +1,147 @@
+.budget{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+
+    &__card, &__chart, &__edits{
+        background: $background-light;
+        border-radius: 5px;
+        padding: 16px;
+    }
+
+    &__header{
+        grid-column: 1 / 13;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        &__cards{
+            display: flex;
+            gap: 20px;
+            > div{
+                min-width: 300px;
+            }
+        }
+    }
+
+    &__period{
+        display: flex;
+        background: unset !important;
+        align-items: center;
+        gap: 10px;
+        grid-column: span 12;
+        padding: 0 !important;
+    }
+
+    &__card{
+        grid-column: span 3;
+
+        h3{
+            font-size: 22px;
+            margin-bottom: 4px;
+            justify-self: top;
+        }
+
+        &__amount{
+            margin-bottom: 4px;
+            display: flex;
+            align-items: end;
+
+            &__main{
+                font-size: 22px;
+            }
+
+            &__sub{
+                font-weight: 300;
+                font-size: 14px;
+                margin-left: 8px;
+                margin-bottom: 2px;
+            }
+        }
+
+        &__percentage{
+
+            > p > span{
+                font-size:  20px;
+            }
+
+        }
+
+        &--settings{
+            grid-column: span 2;
+            background: unset !important;
+            padding: 5 0 !important;
+        }
+
+    }
+
+    &__chart{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        h3{
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+        &--pie{
+            grid-column: span 5;
+            grid-row: span 2;
+        }
+        &--bar{
+            grid-column: span 7;
+            grid-row: span 2;
+        }
+    }
+
+    &__edits{
+        grid-column: span 12;
+    }
+
+}
+
+.budget__edits{
+    h3{
+        margin-bottom: 20px;
+    }
+    &__content{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 50px;
+        grid-row-gap: 10px;
+        > div{
+            &:nth-child(2){
+                grid-column: span 2;
+                padding-right: 50px;
+            }
+            &:nth-child(1){
+                grid-column: span 1;
+            }
+        }
+    }
+    &__buttons{
+        display: flex;
+        gap: 20px;
+        margin-top: 30px;
+    }
+}
+
+.edit-budget{
+
+    > div{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        >div{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            input{
+                max-width: 200px;
+            }
+        }
+        &:nth-child(2){
+            margin-bottom: 20px;
+        }
+    }
+}
