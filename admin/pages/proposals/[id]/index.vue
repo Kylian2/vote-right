@@ -172,6 +172,8 @@ Vous n'avez pas les droits pour effectuer cette action
 const config = useRuntimeConfig();
 const route = useRoute();
 
+const from = useState('from');
+
 definePageMeta({
   middleware: ["auth", "proposal"]
 })
