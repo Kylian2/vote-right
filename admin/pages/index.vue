@@ -23,6 +23,7 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig();
+const route = useRoute();
 
 const login = useState("login", ()=> "");
 const password = useState("password", ()=> "");

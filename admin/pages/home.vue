@@ -21,6 +21,7 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig();
+const route = useRoute();
 
 const communities = ref();
 
