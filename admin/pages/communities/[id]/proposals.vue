@@ -1,8 +1,8 @@
 <template>
     <Header></Header>
-    <div class="proposals">
-        <NuxtLink class="proposals__return" :to="`/communities/${community['CMY_id_NB']}`">Retour au groupe</NuxtLink>
-    </div>
+
+    <NuxtLink class="back" :to="`/communities/${community['CMY_id_NB']}`">Retour au groupe</NuxtLink>
+
     <h1 class="proposals">Liste des propositions</h1>
     <main class="proposals" v-if="proposals && proposals.length">
         <div>
@@ -108,5 +108,14 @@ const updateFilter = () => {
 
 onMounted(() => {
     fetchData();
+})
+
+onBeforeUnmount(() => {
+    useState('from', () => {
+        return {
+            name: route.name,
+            href: route.href,
+        }
+    })
 })
 </script>

@@ -11,11 +11,15 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "chart.js": "^4.4.9",
     "nuxt": "^3.15.1",
     "vue": "latest",
     "vue-router": "latest"
   },
   "devDependencies": {
     "sass": "1.77.6"
+  },
+  "overrides": {
+    "esbuild": "^0.25.3"
   }
 }

@@ -21,6 +21,7 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig();
+const route = useRoute();
 
 const communities = ref();
 
@@ -40,6 +41,15 @@ const fetchData =  async() =>{
 
 onMounted(() => {
     fetchData();
+})
+
+onBeforeUnmount(() => {
+    useState('from', () => {
+        return {
+            name: route.name,
+            href: route.href,
+        }
+    })
 })
 
 </script>
