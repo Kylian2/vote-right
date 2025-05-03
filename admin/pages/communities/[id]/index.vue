@@ -1,7 +1,6 @@
 <template>
     <Header></Header>
     <h1>{{community["CMY_name_VC"]}}</h1>
-    {{ $route }}
     <main class="community">
 
         <section class="community__lateral">

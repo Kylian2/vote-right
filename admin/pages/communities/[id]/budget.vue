@@ -6,11 +6,14 @@
     <main class="budget">
         
         <div class="budget__header">
-            <div class="budget__period">
-                <p>Année : </p>
-                <select v-model="period" @change="fetchDataByPeriod();">
-                    <option v-for="p in periods" :value="p" :key="p">{{p}}</option>
-                </select>
+            <div class="budget__header__toolbar">
+                <div class="budget__period">
+                    <p>Année : </p>
+                    <select v-model="period" @change="fetchDataByPeriod();">
+                        <option v-for="p in periods" :value="p" :key="p">{{p}}</option>
+                    </select>
+                </div>
+                <button class="btn" @click="editBudgetBlock = true"> Editer les budgets</button>
             </div>
 
             <div class="budget__header__cards">
@@ -40,10 +43,6 @@
                     <div class="budget__card__percentage">
                         <p><span> {{ Math.round(((nonSpecifiedBudget || 0) / (budget['CMY_budget_NB'] || 0))*100) }}%</span> non catégorisé</p>
                     </div>
-                </div>
-
-                <div class="budget__card budget__card--settings">
-                    <button class="btn btn--small" @click="editBudgetBlock = true"> Editer les budgets</button>
                 </div>
             </div>
         </div>
@@ -503,6 +502,10 @@ const updateBudget = async () => {
 
         budgetToastValid.value = response1 === true;
         budgetToastError.value = response1 !== true;
+
+        if(response1 === true){
+            editBudgetBlock.value = false;
+        }
 
         const response2 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/budget?period=${period.value}`, {
             credentials: 'include',
