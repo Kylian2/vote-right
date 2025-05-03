@@ -404,6 +404,10 @@ const algorithm = async () => {
     }
 }
 
+onMounted(() => {
+    fetchData();
+})
+
 onBeforeUnmount(() => {
     const from = useState('from', () => {
         return {
