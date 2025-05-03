@@ -124,11 +124,15 @@
     }
     
     onBeforeUnmount(() => {
-        useState('from', () => {
+        const from = useState('from', () => {
             return {
                 name: route.name,
                 href: route.href,
             }
-        })
+        }); 
+        from.value = {
+            name: route.name,
+            href: route.href,
+        }
     })
 </script>

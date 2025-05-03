@@ -389,12 +389,16 @@ const initCharts = () => {
                 onClick: (event, elements) => {
                     if (elements.length > 0) {
                         const index = elements[0].index;
-                        useState('from', () => {
+                        const from = useState('from', () => {
                             return {
                                 name: route.name,
                                 href: route.href,
                             }
-                        })
+                        }); 
+                        from.value = {
+                            name: route.name,
+                            href: route.href,
+                        }
                         navigateTo(`/proposals/${adoptedProposals.value[index]['PRO_id_NB']}`);
                     }
                 }

@@ -513,12 +513,16 @@ Pour connaitre la page d'où l'utilisateur provient, une variable `from` est mis
 **Attention** : cette fonctionnalité requiert le placement dans le hook `onBeforeUnmount` de la variable : 
 ````js
 onBeforeUnmount(() => {
-    useState('from', () => {
+    const from = useState('from', () => {
         return {
             name: route.name,
             href: route.href,
         }
-    })
+    }); 
+    from.value = {
+        name: route.name,
+        href: route.href,
+    }
 })
 ````
 
@@ -530,15 +534,17 @@ onBeforeUnmount(() => {
 </template>
 
 <script setup>
-const from = useState('from');
-
 onBeforeUnmount(() => {
-    useState('from', () => {
+    const from = useState('from', () => {
         return {
             name: route.name,
             href: route.href,
         }
-    })
+    }); 
+    from.value = {
+        name: route.name,
+        href: route.href,
+    }
 })
 </script>
 ````
