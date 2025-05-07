@@ -15,6 +15,9 @@
             <NuxtLink v-if="role && role['MEM_role_NB'] != 5" :to="`${config.public.adminUrl}/communities/${route.params.id}`" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">ADMINPANEL</NuxtLink>
+            <Button class="btn--full btn--block" :style="{
+                background: '#909090'}" 
+                @click="leaveGroupModal = !leaveGroupModal"> Quitter le groupe</Button>
         </div>
 
         <div class="community__description">
@@ -42,10 +45,27 @@
             <p v-else>Aucune proposition terminée</p>
         </div>
     </main>
+
+    <Modal 
+    name="leaveGroup"
+    ok-text="Quitter le groupe"
+    cancel-text="Annuler"
+    :before-ok="() => {beforeOk()}"
+    >
+        <template #title>Supprimer le compte</template>
+        <template v-if="role && role['MEM_role_NB'] == 1" #body>
+            <p>Vous êtes actuellement l'administrateur de ce groupe vous devez promouvoir quelqu'un d'autre avant de le quitter</p>
+        </template>
+        <template v-else #body>
+            <p>Vous allez quitter ce groupe, vous ne pourrez pas revenir dedans sans une invitation</p>
+        </template>
+    </Modal>
+
 </template>
+
 <script setup>
 import BannerCommunity from '~/components/Banner.vue';
-
+import Button from '~/components/Button.vue';
 
 const config = useRuntimeConfig();
 
@@ -55,11 +75,33 @@ definePageMeta({
 
 const route = useRoute();
 
+onMounted(()=>{
+    fetchData();
+    fetchRole();
+    fetchOngoingProposal();
+    fetchFinishedProposal();
+})
+
 const community = useState("community");
 const communityThemes = useState("communityThemes");
 const role = ref();
 const ongoingProposals = ref();
 const finishedProposals = ref();
+
+const leaveGroupModal = useState(`leaveGroupModal`, () => false);
+/*
+const personalizedResponse = useState('personalizedResponse', () => {
+    if(role && role['MEM_role_NB'] == 1){
+        personalizedResponse.value = "J'ai compris";
+    }else{
+        personalizedResponse.value = "Je quitte le groupe";
+    }
+});
+*/
+
+const beforeOk = async () => {
+
+}
 
 const fetchData = async () => {
     try{
@@ -128,12 +170,5 @@ const fetchFinishedProposal = async () => {
         console.log('An unexptected error occured : ', error);
     }
 }
-
-onMounted(()=>{
-    fetchData();
-    fetchRole();
-    fetchOngoingProposal();
-    fetchFinishedProposal();
-})
 
 </script>

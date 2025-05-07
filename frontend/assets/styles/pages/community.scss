@@ -99,6 +99,10 @@ main.community{
             grid-row: 1;
             flex-direction: row;
             flex-wrap: wrap;
+
+            @media screen and (max-width: 400px) {
+                flex-direction: column;
+            }
         }
 
         > a {

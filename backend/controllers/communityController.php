@@ -21,7 +21,7 @@ class CommunityController{
     /**
      * Affiche un json contenant les données de la communauté passée dans l'URL
      * 
-     * @param $params, un tableau correspondant auc paramètres attendus dans l'URL. 
+     * @param $params, un tableau correspondant aux paramètres attendus dans l'URL. 
      * 
      * Compositon de $params : 
      * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
@@ -476,6 +476,55 @@ class CommunityController{
         Community::updateCommunity($values);
         echo json_encode(true);
     }
+
+    /**
+     * Affiche un json contenant pour un rôle le nombre de personne qui le possède dans une communauté donnée.
+     * 
+     * @param $params, un tableau correspondant aux paramètres attendus dans l'URL. 
+     * 
+     * Compositon de $params : 
+     *  - L'identifiant de la communauté ($params[0]).
+     *  - L'identifiant du role à chercher ($params[1]).
+     * Si $params[1] est null alors on donne pour chaque rôle le nombre de personnes qui le possède.
+     */
+    public static function count(array $params){
+        $community = $params[0];
+        $role = $params[1];
+
+        $values["CMY_id_NB"] = $community;
+        $community = new Community($values);
+
+        if(is_null($role)){
+            $return = $community->countAllRoles();
+            echo json_encode($return);
+            return;
+        }
+
+        $return = $community->countRole($role);
+        echo json_encode($return);
+    }
+
+    /**
+     * Supprime un membre d'une communauté.
+     *
+     * @param array $params Contient :
+     *  - L'identifiant de la communauté ($params[0]).
+     *  - L'identifiant du membre à supprimer ($params[1]).
+     *
+     * @return void
+     * - true (JSON) si la suppression réussit.
+     */
+    public static function delete(array $params){
+        $community = $params[0];
+        $member = $params[1];
+
+        $values["CMY_id_NB"] = $params[0];
+        $community = new Community($values);
+
+        $community->delete($member);
+        echo json_encode(true);
+    }
+
 }
 
 ?>
