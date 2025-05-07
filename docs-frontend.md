@@ -499,3 +499,70 @@ Dans l'application, il y a des middlewares permettant de restreindre l'accès à
 5. *proposal* : bloque l'accès aux pages aux utilisateurs n'ayant pas un de gestion dans la communauté (pour les pages ayant comme paramètre un identifiant de proposition). Redirige vers */home*.
 6. *assessor* : bloque l'accès aux pages aux utilisateurs n'ayant pas un de gestion dans la communauté **de la proposition** (**pour les pages ayant comme paramètre un identifiant de proposition**). Redirige vers */home*.
 7. *moderator* : bloque l'accès aux pages aux utilisateurs n'ayant pas un role de modérateur (ou d'administrateur) dans la communauté (se base sur le paramètre de l'url). Redirige vers */home*.
+
+## Fonctionnalités 
+
+### Connaitre la page d'où l'utilisateur provient
+
+Pour connaitre la page d'où l'utilisateur provient, une variable `from` est mise en place. Celle-ci est accessible partout depuis l'application (peut-être pas dans les middlewares...). 
+
+**Composition de `from`** : 
+- `name`: le nom de la page (tiré de l'arborescence de placement du fichier vue associé, ex : /communities/[id]/budget aura le nom 'communities-id-budget')
+- `href`: l'url de provenance
+
+**Attention** : cette fonctionnalité requiert le placement dans le hook `onBeforeUnmount` de la variable : 
+````js
+onBeforeUnmount(() => {
+    const from = useState('from', () => {
+        return {
+            name: route.name,
+            href: route.href,
+        }
+    }); 
+    from.value = {
+        name: route.name,
+        href: route.href,
+    }
+})
+````
+
+**Exemple d'utilisation:**
+````html
+<template>
+  <NuxtLink v-if="from?.name === 'communities-id-budget'" class="back" :to="from?.href">Retour au budget</NuxtLink>
+  <NuxtLink v-else-if="community" class="back" :to="`/communities/${community['CMY_id_NB']}`">Retour au groupe</NuxtLink>
+</template>
+
+<script setup>
+onBeforeUnmount(() => {
+    const from = useState('from', () => {
+        return {
+            name: route.name,
+            href: route.href,
+        }
+    }); 
+    from.value = {
+        name: route.name,
+        href: route.href,
+    }
+})
+</script>
+````
+
+*Note du 01/04/2025 : Cette fonctionnalité est en place uniquement dans l'application administrateur*
+
+
+## Conseils suite aux bugs rencontrés
+
+### Utilisation des graphiques Chart.JS
+
+*Bug:* 
+````
+Uncaught RangeError: Maximum call stack size exceeded
+````
+
+Il semble que le comportement des graphiques Chart.JS soit instables avec des variables réactives, préferez l'utilisation de variables non-réactives pour la créations de graphiques. 
+
+Le problèmes rencontrés est une boucle infinie (semble-t-il) lors de la mise à jour de grahiques avec la méthode `update()`. 
+
+Exemple dans le fichier `budget.vue` de l'application admin.

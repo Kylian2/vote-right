@@ -1,6 +1,7 @@
 <template>
     <NuxtLink :to="`/proposal/${proposal['PRO_id_NB']}`"
     class="card-proposal"
+    :class="{ 'card-proposal__finished': finished }"
     :style="{background: proposal['PRO_color_VC']}"
     >
         {{ proposal["PRO_title_VC"]}}
@@ -13,6 +14,11 @@ const props = defineProps({
     proposal : {
         type: Object,
         required: true,
+    },
+    finished : {
+        type: Boolean,
+        required: false,
+        default: false,
     }
 })
 

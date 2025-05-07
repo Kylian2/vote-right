@@ -216,28 +216,6 @@
     
 }
 
-.edit-budget{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    > div{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        >div{
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            input{
-                max-width: 200px;
-            }
-        }
-    }
-    &.section-2{
-        margin-top: 60px;
-    }
-}
-
 .ajouter-theme{
     display: flex;
     align-items: center;

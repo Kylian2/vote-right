@@ -57,26 +57,6 @@
 				</div>
 			</div>
 		</section>
-
-		<section class="join">
-			<h2>Rejoindre VoteRight, c'est facile !</h2>
-			<div class="join__step-container">
-				<div class="join__step">
-					<span class="join__step__number">1</span>
-					<p class="join__step__detail">Créez votre groupe communautaire.</p>
-				</div>
-				<div class="join__step">
-					<span class="join__step__number">2</span>
-					<p class="join__step__detail">Invitez vos membres.</p>
-				</div>
-				<div class="join__step">
-					<span class="join__step__number">3</span>
-					<p class="join__step__detail">Proposez, discutez et votez !</p>
-				</div>
-			</div>
-			<NuxtLink class="btn btn--full" to="/register">Créer</NuxtLink>
-		</section>
-
 	</main>
 
 	<footer>

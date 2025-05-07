@@ -29,11 +29,13 @@ Router::get('/communities/{id}/periods', 'communityController@periods', true);
 Router::get('/communities/{id}/proposals/formatted', 'communityController@formattedProposals', true);
 Router::get('/communities/{id}/reports', 'reportController@index', true);
 Router::patch('/communities/{id}/update', 'communityController@update');
+Router::get('/communities/{id}/algo', 'algorithmController@proposal', true);
 Router::get('/communities/{id}/headcount/{role}', 'communityController@count');
 Router::delete('/communities/{id}/delete/{member}', 'communityController@delete');
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');
+Router::patch('/users/me/reset/password', 'userController@resetPassword');
 Router::get('/users/me', 'userController@me', true);
 Router::get('/users/me/role/{community}', 'userController@role', true);
 Router::get('/users/me/role/{community}/proposals', 'userController@roleProposal', true);
@@ -85,5 +87,12 @@ Router::get('/votes/systems', 'voteController@systems', true);
 Router::patch('/reports/{user}/{comment}', 'reportController@solvReport', true);
 
 Router::post('/code/verification', 'codeController@sendVerificationCode');
+Router::post('/code/recovery', 'codeController@sendRecuperationCode');
+Router::post('/code/check', 'codeController@checkCode');
+
+/* Routes accessible via l'api algorithms */
+Router::get('/algo/users', 'userController@index', false, true);
+Router::get('/algo/communities/{id}/proposals/formatted', 'communityController@formattedProposals', true, true);
+Router::get('/algo/communities/{id}/budget', 'communityController@budget', true, true);
 
 ?>

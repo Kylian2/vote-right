@@ -7,3 +7,4 @@ backend/test.php
 autres-tests
 
 .DS_Store
+.vscode
