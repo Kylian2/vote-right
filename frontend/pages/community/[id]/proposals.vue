@@ -4,20 +4,26 @@
     <Banner :community="community" :themes="communityThemes" back>{{ community["CMY_name_VC"] }}</Banner>
 
     <main class="community-proposals" v-if="proposals && proposals.length">
-        <div>
-            <p class="filter" @click="updateFilter" @mouseover="hover = true" @mouseleave="hover = false" :style="{
+        <div class="filter">
+            <p  @click="updateFilter" @mouseover="hover = true" @mouseleave="hover = false" :style="{
                 color: hover ? community['CMY_color_VC'] : 'inherit' }">{{ hideFilter ? 'Filtrer' : 'Masquer' }}</p>
+            <img src="/images/icons/grid-active.png" alt="Vue grille" v-if="view === 'grid'"
+                @click="view = 'grid'"/>
+            <img src="/images/icons/grid-inactive.png" alt="Vue grille inactive" v-else
+                @click="view = 'grid'"/>
+            <img src="/images/icons/list-active.png" alt="Vue liste" v-if="view === 'list'"
+                @click="view = 'list'"/>
+            <img src="/images/icons/list-inactive.png" alt="Vue liste inactive" v-else
+                @click="view = 'list'"/>
         </div>
         <div class="filter-container" v-if="!hideFilter">
             <div class="filter-container__block">
-                <p>Filtrer par thème : </p>
                 <select v-model="filter" name="theme" @change="updateFilteredProposals">
                     <option value="">Filtrer</option>
                     <option :value="theme['THM_id_NB']" v-for="theme in communityThemes">{{ theme["THM_name_VC"] }}</option>
                 </select>
             </div>
             <div class="filter-container__block">
-                <p>Statut : </p>
                 <div>
                     <div class="filter-container__checkboxes" v-for="status in statuses">
                         <input type="checkbox" :id="status" :value="status" v-model="checkedStatus" @change="updateFilteredProposals">
@@ -26,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="proposals" class="list-proposals">
+        <div v-if="proposals && view === 'list'" class="list-proposals">
             <NuxtLink :to="`/proposal/${proposal['PRO_id_NB']}`" 
             class="proposal-card" 
             :class="{'card-proposal__finished' : proposal['PRO_status_VC'] != 'En cours'}"
@@ -37,6 +43,28 @@
                 <p><span>{{ proposal["PRO_status_VC"] }}</span></p>
             </NuxtLink>
             <p class="error" v-else-if="!hideFilter">Aucune proposition</p>
+        </div>
+        <div v-if="proposals && view === 'grid'" class="grid-proposals">
+            <NuxtLink :to="`/proposal/${proposal['PRO_id_NB']}`"
+            class="proposal-card-grid"
+            :class="{'card-proposal__finished': proposal['PRO_status_VC'] != 'En cours'}"
+            :style="{background: community['CMY_color_VC']}"
+            v-if="selectedProposals && selectedProposals.length"
+            v-for="proposal in selectedProposals">
+                <div class="proposal-grid-header">
+                    <span class="theme">{{ proposal['PRO_theme_VC'] }}</span>
+                    <span class="title">{{ proposal['PRO_title_VC'] }}</span>
+                    <span class="status">{{ proposal['PRO_status_VC'] }}</span>
+                </div>
+                <div class="proposal-grid-description">
+                    {{ proposal['PRO_description_VC'] }}
+                </div>
+                <div class="proposal-grid-footer">
+                    <span><img src="/images/icons/date.svg" alt="Calendrier"/>{{ proposal['PRO_year_NB'] }}</span>
+                    <span><img src="/images/icons/budget.svg" alt="Bourse"/>{{ proposal['PRO_budget_NB'] }}€</span>
+                    <span><img src="/images/icons/location.svg" alt="Point de localisation"/>{{ proposal['PRO_location_VC'] }}</span>
+                </div>
+            </NuxtLink>
         </div>
     </main>
 </template>
@@ -58,6 +86,7 @@ const statuses = ["Validée", "Rejetée", "En cours"];
 const checkedStatus = ref([]);
 const hideFilter = ref(true);
 const hover = ref(false);
+const view = ref('list')
 
 const updateFilteredProposals = () => {
     let filtered = proposals.value;
