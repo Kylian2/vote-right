@@ -7,13 +7,13 @@
         <div class="filter">
             <p  @click="updateFilter" @mouseover="hover = true" @mouseleave="hover = false" :style="{
                 color: hover ? community['CMY_color_VC'] : 'inherit' }">{{ hideFilter ? 'Filtrer' : 'Masquer' }}</p>
-            <img src="/images/icons/grid-active.png" alt="Vue grille" v-if="view === 'grid'"
+            <img src="/public/images/icons/grid-active.png" alt="Vue grille" v-if="view === 'grid'"
                 @click="view = 'grid'"/>
-            <img src="/images/icons/grid-inactive.png" alt="Vue grille inactive" v-else
+            <img src="/public/images/icons/grid-inactive.png" alt="Vue grille inactive" v-else
                 @click="view = 'grid'"/>
-            <img src="/images/icons/list-active.png" alt="Vue liste" v-if="view === 'list'"
+            <img src="/public/images/icons/list-active.png" alt="Vue liste" v-if="view === 'list'"
                 @click="view = 'list'"/>
-            <img src="/images/icons/list-inactive.png" alt="Vue liste inactive" v-else
+            <img src="/public/images/icons/list-inactive.png" alt="Vue liste inactive" v-else
                 @click="view = 'list'"/>
         </div>
         <div class="filter-container" v-if="!hideFilter">
