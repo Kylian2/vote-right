@@ -38,7 +38,7 @@ git clone https://github.com/Kylian2/vote-right
 cd <nom_du_dossier>
 ```
 
-### 2. Configuration du Fichier `ompose.yml`
+### 2. Configuration du Fichier `compose.yml`
 
 Lors du clone de l'application vous avez récupéré un fichier `compose.yml`. Ce fichier permet d'orchester la base de données et le service phpmyadmin associé ainsi que de faire tourner un serveur nginx local servant le backend.
 

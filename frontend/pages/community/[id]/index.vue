@@ -48,16 +48,13 @@
 
     <Modal 
     name="leaveGroup"
-    ok-text="Quitter le groupe"
-    cancel-text="Annuler"
-    :before-ok="() => {beforeOk()}"
+    :ok-text= "okText"
+    :cancel-text= "concelText"
+    :before-ok= "beforeOk"
     >
-        <template #title>Supprimer le compte</template>
-        <template v-if="role && role['MEM_role_NB'] == 1" #body>
-            <p>Vous êtes actuellement l'administrateur de ce groupe vous devez promouvoir quelqu'un d'autre avant de le quitter</p>
-        </template>
-        <template v-else #body>
-            <p>Vous allez quitter ce groupe, vous ne pourrez pas revenir dedans sans une invitation</p>
+        <template #title> {{ title }} </template>
+        <template #body>
+            <p> {{ body }} </p>
         </template>
     </Modal>
 
@@ -84,22 +81,48 @@ onMounted(()=>{
 
 const community = useState("community");
 const communityThemes = useState("communityThemes");
-const role = ref();
 const ongoingProposals = ref();
 const finishedProposals = ref();
+const currentUser = ref();
+const role = ref();
 
 const leaveGroupModal = useState(`leaveGroupModal`, () => false);
-/*
-const personalizedResponse = useState('personalizedResponse', () => {
-    if(role && role['MEM_role_NB'] == 1){
-        personalizedResponse.value = "J'ai compris";
-    }else{
-        personalizedResponse.value = "Je quitte le groupe";
-    }
-});
-*/
+const title = ref("Êtes-vous sûr de vouloir quitter le groupe ?");
+const body = ref('');
+const okText = ref("Je quitte le groupe");
+const concelText = ref("Annuler");
+const beforeOk = ref(() => beforeLeave());
 
-const beforeOk = async () => {
+const beforeLeave = async () => {
+    try {
+
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/delete/${currentUser.value.USR_id_NB}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+        
+        if(response == true){
+            title.value = "Vous avez quitté le groupe";
+            body.value = "Votre décision a bien été prise en compte";
+            okText.value = "Retour au menu";
+            concelText.value = null;
+            beforeOk.value = () => navigateTo("/home");
+
+        }else{
+            title.value = "Impossible de quitter le groupe";
+            body.value = "Vous êtes le seul administrateur. Promouvez un autre admin avant de quitter.";
+            okText.value = "J'ai compris";
+            concelText.value = "Annuler";
+            beforeOk.value = () => {};
+        }
+
+        setTimeout(() => {
+            leaveGroupModal.value = true; 
+        }, 300);
+
+    } catch (error) {
+        console.error('An error occurred : ', error);
+    }
 
 }
 
@@ -111,6 +134,7 @@ const fetchData = async () => {
         })
 
         community.value = response;
+        body.value = ref(`Vous allez quitter le groupe « ${community.value.CMY_name_VC} », vous ne pourrez pas revenir sans invitation.`);   
 
     }catch (error){
         console.log('An unexptected error occured : ', error);
@@ -126,6 +150,18 @@ const fetchData = async () => {
     }catch (error){
         console.log('An unexptected error occured : ', error);
     }
+
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/users/me`, {
+            credentials: 'include',
+        })
+
+        currentUser.value = response;
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+
 
 }
 
