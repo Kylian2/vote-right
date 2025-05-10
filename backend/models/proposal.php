@@ -73,7 +73,7 @@ class Proposal extends Model{
 
     public static function allOfCommunity($CMY_id_NB) {
         @require_once("models/proposal.php");
-        $request = "SELECT PRO_id_NB, PRO_title_VC, PRO_status_VC, PRO_theme_NB, THM_name_VC as PRO_theme_VC
+        $request = "SELECT PRO_id_NB, PRO_title_VC, PRO_status_VC, PRO_theme_NB, THM_name_VC as PRO_theme_VC, PRO_budget_NB, PRO_period_YEAR, PRO_description_TXT, PRO_location_VC
                     FROM proposal
                     INNER JOIN theme ON pro_community_nb = thm_community_nb AND pro_theme_nb = thm_id_nb
                     WHERE pro_community_nb = :community AND pro_deleter_nb IS NULL
