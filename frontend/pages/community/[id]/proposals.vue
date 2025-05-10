@@ -51,20 +51,21 @@
             :style="{background: community['CMY_color_VC']}"
             v-if="selectedProposals && selectedProposals.length"
             v-for="proposal in selectedProposals">
-                <div class="proposal-grid-header">
-                    <span class="theme">{{ proposal['PRO_theme_VC'] }}</span>
-                    <span class="title">{{ proposal['PRO_title_VC'] }}</span>
-                    <span class="status">{{ proposal['PRO_status_VC'] }}</span>
+                <div class="proposal-card-grid__header">
+                    <span>{{ proposal['PRO_theme_VC'] }}</span>
+                    <span class="proposal-card-grid__header__title">{{ proposal['PRO_title_VC'] }}</span>
+                    <span>{{ proposal['PRO_status_VC'] }}</span>
                 </div>
-                <div class="proposal-grid-description">
-                    {{ proposal['PRO_description_VC'] }}
+                <div class="proposal-card-grid__description">
+                    {{ proposal['PRO_description_TXT'] }}
                 </div>
-                <div class="proposal-grid-footer">
-                    <span><img src="/images/icons/date.svg" alt="Calendrier"/>{{ proposal['PRO_year_NB'] }}</span>
-                    <span><img src="/images/icons/budget.svg" alt="Bourse"/>{{ proposal['PRO_budget_NB'] }}€</span>
-                    <span><img src="/images/icons/location.svg" alt="Point de localisation"/>{{ proposal['PRO_location_VC'] }}</span>
+                <div class="proposal-card-grid__footer">
+                    <p><span class="proposal-card-grid__footer__date"><img src="/images/icons/date.svg" alt="Calendrier"/>{{ proposal['PRO_period_YEAR'] }}</span>
+                    <span><img v-if="proposal['PRO_budget_NB']" src="/images/icons/budget.svg" alt="Bourse"/>{{ proposal['PRO_budget_NB'] }}€</span></p>
+                    <p><span><img v-if="proposal['PRO_location_VC']" src="/images/icons/location.svg" alt="Point de localisation"/>{{ proposal['PRO_location_VC'] }}</span></p>
                 </div>
             </NuxtLink>
+            <p class="error" v-else-if="!hideFilter">Aucune proposition</p>
         </div>
     </main>
 </template>
@@ -86,7 +87,7 @@ const statuses = ["Validée", "Rejetée", "En cours"];
 const checkedStatus = ref([]);
 const hideFilter = ref(true);
 const hover = ref(false);
-const view = ref('list')
+const view = ref('list');
 
 const updateFilteredProposals = () => {
     let filtered = proposals.value;
