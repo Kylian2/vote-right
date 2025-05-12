@@ -15,6 +15,9 @@
             <NuxtLink v-if="role && role['MEM_role_NB'] != 5" :to="`${config.public.adminUrl}/communities/${route.params.id}`" class="btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">ADMINPANEL</NuxtLink>
+            <Button class="btn--full btn--block" :style="{
+                background: '#909090'}" 
+                @click="leaveGroupModal = !leaveGroupModal"> Quitter le groupe</Button>
         </div>
 
         <div class="community__description">
@@ -42,10 +45,24 @@
             <p v-else>Aucune proposition terminée</p>
         </div>
     </main>
+
+    <Modal 
+    name="leaveGroup"
+    :ok-text= "okText"
+    :cancel-text= "concelText"
+    :before-ok= "beforeOk"
+    >
+        <template #title> {{ title }} </template>
+        <template #body>
+            <p> {{ body }} </p>
+        </template>
+    </Modal>
+
 </template>
+
 <script setup>
 import BannerCommunity from '~/components/Banner.vue';
-
+import Button from '~/components/Button.vue';
 
 const config = useRuntimeConfig();
 
@@ -55,11 +72,59 @@ definePageMeta({
 
 const route = useRoute();
 
+onMounted(()=>{
+    fetchData();
+    fetchRole();
+    fetchOngoingProposal();
+    fetchFinishedProposal();
+})
+
 const community = useState("community");
 const communityThemes = useState("communityThemes");
-const role = ref();
 const ongoingProposals = ref();
 const finishedProposals = ref();
+const currentUser = ref();
+const role = ref();
+
+const leaveGroupModal = useState(`leaveGroupModal`, () => false);
+const title = ref("Êtes-vous sûr de vouloir quitter le groupe ?");
+const body = ref('');
+const okText = ref("Je quitte le groupe");
+const concelText = ref("Annuler");
+const beforeOk = ref(() => beforeLeave());
+
+const beforeLeave = async () => {
+    try {
+
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/delete/${currentUser.value.USR_id_NB}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+        
+        if(response == true){
+            title.value = "Vous avez quitté le groupe";
+            body.value = "Votre décision a bien été prise en compte";
+            okText.value = "Retour au menu";
+            concelText.value = null;
+            beforeOk.value = () => navigateTo("/home");
+
+        }else{
+            title.value = "Impossible de quitter le groupe";
+            body.value = "Vous êtes le seul administrateur. Promouvez un autre admin avant de quitter.";
+            okText.value = "J'ai compris";
+            concelText.value = "Annuler";
+            beforeOk.value = () => {};
+        }
+
+        setTimeout(() => {
+            leaveGroupModal.value = true; 
+        }, 300);
+
+    } catch (error) {
+        console.error('An error occurred : ', error);
+    }
+
+}
 
 const fetchData = async () => {
     try{
@@ -69,6 +134,7 @@ const fetchData = async () => {
         })
 
         community.value = response;
+        body.value = ref(`Vous allez quitter le groupe « ${community.value.CMY_name_VC} », vous ne pourrez pas revenir sans invitation.`);   
 
     }catch (error){
         console.log('An unexptected error occured : ', error);
@@ -84,6 +150,18 @@ const fetchData = async () => {
     }catch (error){
         console.log('An unexptected error occured : ', error);
     }
+
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/users/me`, {
+            credentials: 'include',
+        })
+
+        currentUser.value = response;
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+
 
 }
 
@@ -128,12 +206,5 @@ const fetchFinishedProposal = async () => {
         console.log('An unexptected error occured : ', error);
     }
 }
-
-onMounted(()=>{
-    fetchData();
-    fetchRole();
-    fetchOngoingProposal();
-    fetchFinishedProposal();
-})
 
 </script>
