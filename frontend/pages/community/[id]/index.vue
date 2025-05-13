@@ -58,6 +58,16 @@
         </template>
     </Modal>
 
+    <Toast 
+        name="groupLeaved" 
+        :type="3" 
+        :time="3" 
+        :loader="true"
+        class="toast"
+    >
+    Vous avez quitté le groupe, vous allez être redirigé vers la page d'accueil
+    </Toast>
+
 </template>
 
 <script setup>
@@ -93,6 +103,8 @@ const okText = ref("Je quitte le groupe");
 const concelText = ref("Annuler");
 const beforeOk = ref(() => beforeLeave());
 
+const groupLeaved = useState("groupLeavedUp", () => false);
+
 const beforeLeave = async () => {
     try {
 
@@ -100,25 +112,26 @@ const beforeLeave = async () => {
             method: 'DELETE',
             credentials: 'include',
         });
-        
-        if(response == true){
-            title.value = "Vous avez quitté le groupe";
-            body.value = "Votre décision a bien été prise en compte";
-            okText.value = "Retour au menu";
-            concelText.value = null;
-            beforeOk.value = () => navigateTo("/home");
 
+        if(response == true){
+            groupLeaved.value = true;
+            setTimeout(() => {
+                navigateTo(`/home`);
+            }, 3000);
+            
         }else{
             title.value = "Impossible de quitter le groupe";
             body.value = "Vous êtes le seul administrateur. Promouvez un autre admin avant de quitter.";
             okText.value = "J'ai compris";
             concelText.value = "Annuler";
             beforeOk.value = () => {};
+
+            setTimeout(() => {
+                leaveGroupModal.value = true; 
+            }, 300);
         }
 
-        setTimeout(() => {
-            leaveGroupModal.value = true; 
-        }, 300);
+       
 
     } catch (error) {
         console.error('An error occurred : ', error);
