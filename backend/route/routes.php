@@ -30,6 +30,8 @@ Router::get('/communities/{id}/proposals/formatted', 'communityController@format
 Router::get('/communities/{id}/reports', 'reportController@index', true);
 Router::patch('/communities/{id}/update', 'communityController@update');
 Router::get('/communities/{id}/algo', 'algorithmController@proposal', true);
+Router::get('/communities/{id}/headcount/{role}', 'communityController@count');
+Router::delete('/communities/{id}/delete/{member}', 'communityController@delete');
 
 Router::get('/users', 'userController@index');
 Router::get('/users/{id}', 'userController@show');
