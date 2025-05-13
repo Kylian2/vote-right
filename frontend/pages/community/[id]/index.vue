@@ -6,16 +6,16 @@
     <main class="community" v-if="community">
 
         <div class="community__action-block">
-            <NuxtLink :to="`${route.params.id}/new/proposal`" class="btn--full btn--block" :style="{ 
+            <NuxtLink :to="`${route.params.id}/new/proposal`" class="btn btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">Nouvelle proposition</NuxtLink>
-            <NuxtLink :to="`${$route.params.id}/members`" class="btn--full btn--block" :style="{ 
+            <NuxtLink :to="`${$route.params.id}/members`" class="btn btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">Voir les membres</NuxtLink>
-            <NuxtLink v-if="role && role['MEM_role_NB'] != 5" :to="`${config.public.adminUrl}/communities/${route.params.id}`" class="btn--full btn--block" :style="{ 
+            <NuxtLink v-if="role && role['MEM_role_NB'] != 5" :to="`${config.public.adminUrl}/communities/${route.params.id}`" class="btn btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">ADMINPANEL</NuxtLink>
-            <Button class="btn--full btn--block" :style="{
+            <Button class="btn btn--full btn--block" :style="{
                 background: '#909090'}" 
                 @click="leaveGroupModal = !leaveGroupModal"> Quitter le groupe</Button>
         </div>
@@ -48,21 +48,19 @@
 
     <Modal 
     name="leaveGroup"
-    :ok-text= "okText"
-    :cancel-text= "concelText"
-    :before-ok= "beforeOk"
+    :ok-text= "leaveModalData.okText"
+    :cancel-text= "leaveModalData.cancelText"
+    :before-ok= "leaveModalData.beforeOk"
     >
-        <template #title> {{ title }} </template>
+        <template #title> {{ leaveModalData.title }} </template>
         <template #body>
-            <p> {{ body }} </p>
+            <p> {{ leaveModalData.body }} </p>
         </template>
     </Modal>
 
 </template>
 
 <script setup>
-import BannerCommunity from '~/components/Banner.vue';
-import Button from '~/components/Button.vue';
 
 const config = useRuntimeConfig();
 
@@ -86,12 +84,19 @@ const finishedProposals = ref();
 const currentUser = ref();
 const role = ref();
 
-const leaveGroupModal = useState(`leaveGroupModal`, () => false);
-const title = ref("Êtes-vous sûr de vouloir quitter le groupe ?");
-const body = ref('');
-const okText = ref("Je quitte le groupe");
-const concelText = ref("Annuler");
-const beforeOk = ref(() => beforeLeave());
+const leaveGroupModal = useState('leaveGroupModal', () => false);
+const initialState = () => {
+    return {
+        title: 'Quitter le groupe',
+        body: 'Êtes-vous sûr de vouloir quitter le groupe ? Vous ne pourrez pas revenir sans invitation.',
+        okText: 'Quitter',
+        cancelText: 'Rester',
+        beforeOk: () => beforeLeave(),
+    }
+}
+const leaveModalData = ref(initialState());
+
+const leaveCommunityToast = useState(`leaveCommunityToastMustUp`, () => false);
 
 const beforeLeave = async () => {
     try {
@@ -102,28 +107,25 @@ const beforeLeave = async () => {
         });
         
         if(response == true){
-            title.value = "Vous avez quitté le groupe";
-            body.value = "Votre décision a bien été prise en compte";
-            okText.value = "Retour au menu";
-            concelText.value = null;
-            beforeOk.value = () => navigateTo("/home");
-
+            leaveGroupModal.value = false;
+            leaveCommunityToast.value = true;
+            navigateTo("/home");
         }else{
-            title.value = "Impossible de quitter le groupe";
-            body.value = "Vous êtes le seul administrateur. Promouvez un autre admin avant de quitter.";
-            okText.value = "J'ai compris";
-            concelText.value = "Annuler";
-            beforeOk.value = () => {};
+            leaveModalData.value.title = "Impossible de quitter le groupe";
+            leaveModalData.value.body = "Vous êtes le seul administrateur. Promouvez un autre admin avant de quitter.";
+            leaveModalData.value.okText = "J'ai compris";
+            leaveModalData.value.cancelText = "";
+            leaveModalData.value.beforeOk = () => {
+                leaveModalData.value = initialState(); 
+                leaveModalData.value.body = `Vous allez quitter le groupe « ${community.value.CMY_name_VC} », vous ne pourrez pas revenir sans invitation.`};
+            setTimeout(() => {
+                leaveGroupModal.value = true;
+            }, 200);
         }
-
-        setTimeout(() => {
-            leaveGroupModal.value = true; 
-        }, 300);
 
     } catch (error) {
         console.error('An error occurred : ', error);
     }
-
 }
 
 const fetchData = async () => {
@@ -134,7 +136,7 @@ const fetchData = async () => {
         })
 
         community.value = response;
-        body.value = ref(`Vous allez quitter le groupe « ${community.value.CMY_name_VC} », vous ne pourrez pas revenir sans invitation.`);   
+        leaveModalData.value.body = `Vous allez quitter le groupe « ${community.value.CMY_name_VC} », vous ne pourrez pas revenir sans invitation.`;   
 
     }catch (error){
         console.log('An unexptected error occured : ', error);
