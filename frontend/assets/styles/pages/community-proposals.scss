@@ -157,10 +157,21 @@
             font-size: 13px;
             gap: 5px;
 
-            p {
+            > div {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+
+                > p{
+                    display: flex;
+                    align-items: center;
+                    gap: 2px;
+
+                    > span{
+                        margin-top: 2px;
+                        line-height: 24px;
+                    }
+                }
             }
 
             &__date {

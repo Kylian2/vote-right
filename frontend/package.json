@@ -11,6 +11,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "material-icons": "^1.13.14",
     "nuxt": "^3.15.1",
     "postcss": "^8.4.38",
     "vue": "latest",

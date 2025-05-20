@@ -60,9 +60,13 @@
                     {{ proposal['PRO_description_TXT'] }}
                 </div>
                 <div class="proposal-card-grid__footer">
-                    <p><span class="proposal-card-grid__footer__date"><img src="/images/icons/date.svg" alt="Calendrier"/>{{ proposal['PRO_period_YEAR'] }}</span>
-                    <span><img v-if="proposal['PRO_budget_NB']" src="/images/icons/budget.svg" alt="Bourse"/>{{ proposal['PRO_budget_NB'] }}€</span></p>
-                    <p><span><img v-if="proposal['PRO_location_VC']" src="/images/icons/location.svg" alt="Point de localisation"/>{{ proposal['PRO_location_VC'] }}</span></p>
+                    <div>
+                        <p><i class="material-icons">calendar_month</i><span class="proposal-card-grid__footer__date">{{ proposal['PRO_period_YEAR'] }}</span></p>
+                        <p><i class="material-icons">savings</i><span v-if="proposal['PRO_budget_NB']">{{ proposal['PRO_budget_NB'] }}€</span></p>
+                    </div>
+                    <div>
+                        <p><i class="material-icons">location_on</i><span v-if="proposal['PRO_location_VC']">{{ proposal['PRO_location_VC'] }}</span></p>
+                    </div>
                 </div>
             </NuxtLink>
             <p class="error" v-else-if="!hideFilter">Aucune proposition</p>
