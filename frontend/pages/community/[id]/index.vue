@@ -51,6 +51,7 @@
     :ok-text= "leaveModalData.okText"
     :cancel-text= "leaveModalData.cancelText"
     :before-ok= "leaveModalData.beforeOk"
+    :error= "leaveModalData.error"
     >
         <template #title> {{ leaveModalData.title }} </template>
         <template #body>
@@ -92,6 +93,7 @@ const initialState = () => {
         okText: 'Quitter',
         cancelText: 'Rester',
         beforeOk: () => beforeLeave(),
+        error: false,
     }
 }
 const leaveModalData = ref(initialState());
@@ -118,6 +120,7 @@ const beforeLeave = async () => {
             leaveModalData.value.beforeOk = () => {
                 leaveModalData.value = initialState(); 
                 leaveModalData.value.body = `Vous allez quitter le groupe « ${community.value.CMY_name_VC} », vous ne pourrez pas revenir sans invitation.`};
+            leaveModalData.value.error = true;
             setTimeout(() => {
                 leaveGroupModal.value = true;
             }, 200);
