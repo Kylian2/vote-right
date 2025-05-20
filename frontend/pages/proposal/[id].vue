@@ -53,10 +53,10 @@
                     background: communityColor
                 }"
             >
-                <p v-if="proposal['PRO_theme_VC']"><img src="/images/icons/theme.svg" alt="icons-theme">{{ proposal['PRO_theme_VC'] }}</p>
-                <p v-if="proposal['PRO_budget_NB']"><img src="/images/icons/budget.svg" alt="icons-theme">{{ proposal['PRO_budget_NB'] }}<span>€</span></p>
-                <p v-if="proposal['PRO_location_VC']"><img src="/images/icons/location.svg" alt="icons-theme">{{ proposal['PRO_location_VC'] }}</p>
-                <p v-if="proposal['PRO_period_YEAR']"><img src="/images/icons/date.svg" alt="icons-theme">{{ proposal['PRO_period_YEAR'] }}</p>
+                <p v-if="proposal['PRO_theme_VC']"><i class="material-icons">category</i><span>{{ proposal['PRO_theme_VC'] }}</span></p>
+                <p v-if="proposal['PRO_budget_NB']"><i class="material-icons">savings</i><span>{{ proposal['PRO_budget_NB'] }} €</span></p>
+                <p v-if="proposal['PRO_location_VC']"><i class="material-icons">location_on</i><span>{{ proposal['PRO_location_VC'] }}</span></p>
+                <p v-if="proposal['PRO_period_YEAR']"><i class="material-icons">calendar_month</i><span>{{ proposal['PRO_period_YEAR'] }}</span></p>
             </div>
 
             <div v-if="proposal && formalRequest && !voteHasStarted" class="proposal__request">

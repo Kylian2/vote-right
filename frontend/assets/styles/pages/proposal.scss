@@ -166,6 +166,8 @@
         p{
             display: flex;
             align-items: center;
+            gap: 10px;
+            color: $contrast;
         }
         img{
             height: 32px;
