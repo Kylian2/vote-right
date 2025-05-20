@@ -62,11 +62,8 @@
     <Toast 
         name="groupLeaved" 
         :type="3" 
-        :time="3" 
-        :loader="true"
         class="toast"
     >
-    Vous avez quitté le groupe, vous allez être redirigé vers la page d'accueil
     </Toast>
 
 </template>
@@ -96,6 +93,7 @@ const currentUser = ref();
 const role = ref();
 
 const leaveGroupModal = useState('leaveGroupModal', () => false);
+
 const initialState = () => {
     return {
         title: 'Quitter le groupe',
@@ -127,9 +125,12 @@ const beforeLeave = async () => {
             leaveModalData.value.body = "Vous êtes le seul administrateur. Promouvez un autre admin avant de quitter.";
             leaveModalData.value.okText = "J'ai compris";
             leaveModalData.value.cancelText = "";
+
             leaveModalData.value.beforeOk = () => {
                 leaveModalData.value = initialState(); 
-                leaveModalData.value.body = `Vous allez quitter le groupe « ${community.value.CMY_name_VC} », vous ne pourrez pas revenir sans invitation.`};
+                leaveModalData.value.body = `Vous allez quitter le groupe « ${community.value.CMY_name_VC} », vous ne pourrez pas revenir sans invitation.`;
+            };
+
             leaveModalData.value.error = true;
             setTimeout(() => {
                 leaveGroupModal.value = true;

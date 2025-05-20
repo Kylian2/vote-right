@@ -216,6 +216,25 @@ Exemples :
 - `fix: type incorrect dans les attributs de la classe Equipe `
 - `feat(langue): ajouter la langue polonaise `
 
+### 2. Convention de nommage des branches 
+
+La convention de nommage des branches reprend les éléments de la convention de commit, elle permet d'identifier clairement la tâche par son type et son identifiant.
+
+#### Structure du nom de la branche
+
+- **Type** : Un mot décrivant la raison d'être de la branche.
+- **Identifiant de la tâche** : Un identifiant qui commence par **TSKVOTERIGHT** et suivi d'une suite de chiffres correspondant à l'identifiant de la tâche parmi l'ensemble des tâches réalisées.
+
+Voici les différents types :
+
+- **feat** : Une branche dédiée au développement d'une fonctionnalité.
+- **fix** : Une branche dédiée à la résolution d'un bug après que la branche de développement correspondante a déjà été fusionné dans la branche main.
+- **chore** : Une branche dédiée à des modifications qui n'impactent pas le code.
+
+Exemples : 
+
+- `feat/TSKVOTERIGHT-123`
+- `fix/TSKVOTERIGHT-123`  
 
 #### Corps (Body)
 
