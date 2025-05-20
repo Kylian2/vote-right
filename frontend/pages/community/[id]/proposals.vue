@@ -3,12 +3,12 @@
 
     <Banner :community="community" :themes="communityThemes" back>{{ community["CMY_name_VC"] }}</Banner>
 
-    <main class="community-proposals" v-if="proposals && proposals.length">
+    <main class="community-proposals">
         <div>
             <p class="filter" @click="updateFilter" @mouseover="hover = true" @mouseleave="hover = false" :style="{
                 color: hover ? community['CMY_color_VC'] : 'inherit' }">{{ hideFilter ? 'Filtrer' : 'Masquer' }}</p>
         </div>
-        <div class="filter-container" v-if="!hideFilter">
+        <div v-if="!hideFilter" class="filter-container">
             <div class="filter-container__block">
                 <p>Filtrer par thème : </p>
                 <select v-model="filter" name="theme" @change="updateFilteredProposals">
@@ -26,17 +26,19 @@
                 </div>
             </div>
         </div>
-        <div v-if="proposals" class="list-proposals">
+        <div v-if="selectedProposals && selectedProposals.length" class="list-proposals">
             <NuxtLink :to="`/proposal/${proposal['PRO_id_NB']}`" 
             class="proposal-card" 
             :class="{'card-proposal__finished' : proposal['PRO_status_VC'] != 'En cours'}"
-            v-if="selectedProposals && selectedProposals.length" v-for="proposal in selectedProposals" :style="{ 
+            v-for="proposal in selectedProposals" :style="{ 
                 background: community['CMY_color_VC']}">
                 <p><span class="proposal-card__theme">{{ proposal["PRO_theme_VC"] }}</span>
                 <span class="proposal-card__title">{{ proposal["PRO_title_VC"] }}</span></p>
                 <p><span>{{ proposal["PRO_status_VC"] }}</span></p>
             </NuxtLink>
-            <p class="error" v-else-if="!hideFilter">Aucune proposition</p>
+        </div>
+        <div class="proposal-not-found">
+            <p v-if="isDataFetched && (!selectedProposals || !selectedProposals.length)" class="error">Aucune proposition</p>
         </div>
     </main>
 </template>
@@ -58,6 +60,7 @@ const statuses = ["Validée", "Rejetée", "En cours"];
 const checkedStatus = ref([]);
 const hideFilter = ref(true);
 const hover = ref(false);
+const isDataFetched = ref(false);
 
 const updateFilteredProposals = () => {
     let filtered = proposals.value;
@@ -105,6 +108,7 @@ const fetchData = async () => {
         proposals.value = pro;
         selectedProposals.value = pro;
 
+        isDataFetched.value = true;
     }catch (error){
         console.log('An unexptected error occured : ', error);
     }
