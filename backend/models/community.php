@@ -440,16 +440,6 @@ class Community extends Model{
 
         return $register;
     }
-
-    public function delete(int $member){
-        $request = 'DELETE FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = :community';
-        $prepare = connexion::pdo()->prepare($request);
-
-        $values["community"] = $this->CMY_id_NB;    
-        $values["user"] = $member;
-
-        $prepare->execute($values);
-    }
 }
 
 ?>

@@ -15,8 +15,7 @@
             <NuxtLink v-if="role && role['MEM_role_NB'] != 5" :to="`${config.public.adminUrl}/communities/${route.params.id}`" class="btn btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">ADMINPANEL</NuxtLink>
-            <Button class="btn btn--full btn--block" :style="{
-                background: '#909090'}" 
+            <Button class="btn btn--full btn--block colorLeaveButton" 
                 @click="leaveGroupModal = !leaveGroupModal"> Quitter le groupe</Button>
         </div>
 
@@ -58,13 +57,6 @@
             <p> {{ leaveModalData.body }} </p>
         </template>
     </Modal>
-
-    <Toast 
-        name="groupLeaved" 
-        :type="3" 
-        class="toast"
-    >
-    </Toast>
 
 </template>
 
@@ -111,8 +103,8 @@ const leaveCommunityToast = useState(`leaveCommunityToastMustUp`, () => false);
 const beforeLeave = async () => {
     try {
 
-        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/delete/${currentUser.value.USR_id_NB}`, {
-            method: 'DELETE',
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/exclude/${currentUser.value.USR_id_NB}`, {
+            method: 'POST',
             credentials: 'include',
         });
 

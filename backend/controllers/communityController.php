@@ -366,7 +366,6 @@ class CommunityController{
             $community->exclude($member);
             echo json_encode(true);
         }catch(Exception $e){
-            http_response_code(401);
             echo json_encode(array('Error' => $e->getMessage()));
         }
     }
@@ -487,7 +486,7 @@ class CommunityController{
      *  - L'identifiant du role à chercher ($params[1]).
      * Si $params[1] est null alors on donne pour chaque rôle le nombre de personnes qui le possède.
      */
-    public static function count(array $params){
+    public static function headcount(array $params){
         $community = $params[0];
         $role = $params[1];
 
@@ -502,27 +501,6 @@ class CommunityController{
 
         $return = $community->countRole($role);
         echo json_encode($return);
-    }
-
-    /**
-     * Supprime un membre d'une communauté.
-     *
-     * @param array $params Contient :
-     *  - L'identifiant de la communauté ($params[0]).
-     *  - L'identifiant du membre à supprimer ($params[1]).
-     *
-     * @return void
-     * - true (JSON) si la suppression réussit.
-     */
-    public static function delete(array $params){
-        $community = $params[0];
-        $member = $params[1];
-
-        $values["CMY_id_NB"] = $params[0];
-        $community = new Community($values);
-
-        $community->delete($member);
-        echo json_encode(true);
     }
 
 }

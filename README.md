@@ -228,7 +228,7 @@ La convention de nommage des branches reprend les éléments de la convention de
 Voici les différents types :
 
 - **feat** : Une branche dédiée au développement d'une fonctionnalité.
-- **fix** : Une branche dédiée à la résolution d'un bug après que la branche de développement correspondante a déjà été fusionné dans la branche main.
+- **fix** : Une branche dédiée à la résolution d'un bug.
 - **chore** : Une branche dédiée à des modifications qui n'impactent pas le code.
 
 Exemples : 
