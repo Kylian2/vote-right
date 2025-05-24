@@ -38,7 +38,7 @@ git clone https://github.com/Kylian2/vote-right
 cd <nom_du_dossier>
 ```
 
-### 2. Configuration du Fichier `ompose.yml`
+### 2. Configuration du Fichier `compose.yml`
 
 Lors du clone de l'application vous avez récupéré un fichier `compose.yml`. Ce fichier permet d'orchester la base de données et le service phpmyadmin associé ainsi que de faire tourner un serveur nginx local servant le backend.
 
@@ -216,7 +216,6 @@ Exemples :
 - `fix: type incorrect dans les attributs de la classe Equipe `
 - `feat(langue): ajouter la langue polonaise `
 
-
 #### Corps (Body)
 
 Le corps est optionnel mais recommandé pour les commits complexes. Il fournit une description détaillée des modifications, raisons et contexte.
@@ -234,6 +233,26 @@ Ce correctif résout un problème où les images ne s'affichaient pas correcteme
 Reviewed-by: Zanzibar35
 Refs: #123
 ```
+
+### 2. Convention de nommage des branches 
+
+La convention de nommage des branches reprend les éléments de la convention de commit, elle permet d'identifier clairement la tâche par son type et son identifiant.
+
+#### Structure du nom de la branche
+
+- **Type** : Un mot décrivant la raison d'être de la branche.
+- **Identifiant de la tâche** : Un identifiant qui commence par **TSKVOTERIGHT** et suivi d'une suite de chiffres correspondant à l'identifiant de la tâche parmi l'ensemble des tâches réalisées.
+
+Voici les différents types :
+
+- **feat** : Une branche dédiée au développement d'une fonctionnalité.
+- **fix** : Une branche dédiée à la résolution d'un bug.
+- **chore** : Une branche dédiée à des modifications qui n'impactent pas le code.
+
+Exemples : 
+
+- `feat/TSKVOTERIGHT-123`
+- `fix/TSKVOTERIGHT-123`  
 
 ## Utilisation de GitHub
 

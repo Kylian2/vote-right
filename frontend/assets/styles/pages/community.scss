@@ -41,6 +41,16 @@
                 display: block;
                 padding: 3px 6px;
                 border-radius: 5px;
+                &--full-size{
+                    @media screen and (max-width: 475px) {
+                        display: none !important;
+                    }
+                }
+                &--responsive{
+                    @media screen and (min-width: 476px) {
+                        display: none !important;
+                    }
+                }
             }
         }
 
@@ -48,7 +58,15 @@
             margin: unset;
             color: $contrast;
         }
+
+        .tag__infos{
+            color: $contrast;
+        }
     }
+}
+
+.colorLeaveButton{
+    background: #909090;
 }
 
 main.community{
@@ -99,6 +117,10 @@ main.community{
             grid-row: 1;
             flex-direction: row;
             flex-wrap: wrap;
+
+            @media screen and (max-width: 400px) {
+                flex-direction: column;
+            }
         }
 
         > a {

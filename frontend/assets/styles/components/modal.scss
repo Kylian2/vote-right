@@ -95,4 +95,19 @@
             height: 75%;
         }
     }
+
+
+    &--error{
+        border: 5px solid $error;
+
+        h3{
+            color: $error;
+        }
+
+        .btn--full{
+            background: $error;
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+    }
 }
