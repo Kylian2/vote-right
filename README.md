@@ -216,6 +216,24 @@ Exemples :
 - `fix: type incorrect dans les attributs de la classe Equipe `
 - `feat(langue): ajouter la langue polonaise `
 
+#### Corps (Body)
+
+Le corps est optionnel mais recommandé pour les commits complexes. Il fournit une description détaillée des modifications, raisons et contexte.
+
+#### Pied de page (Footer)
+
+Le pied de page est optionnel et est utilisé pour des informations supplémentaires comme les références aux tickets (issues) ou les notes spéciales.
+
+Exemple de commit avec en-tête, corps et pieds de page : 
+```
+fix: corriger le bug d'affichage sur la page d'accueil
+
+Ce correctif résout un problème où les images ne s'affichaient pas correctement sur la page d'accueil. La cause était une mauvaise URL d'image générée par la fonction de rendu
+
+Reviewed-by: Zanzibar35
+Refs: #123
+```
+
 ### 2. Convention de nommage des branches 
 
 La convention de nommage des branches reprend les éléments de la convention de commit, elle permet d'identifier clairement la tâche par son type et son identifiant.
@@ -235,24 +253,6 @@ Exemples :
 
 - `feat/TSKVOTERIGHT-123`
 - `fix/TSKVOTERIGHT-123`  
-
-#### Corps (Body)
-
-Le corps est optionnel mais recommandé pour les commits complexes. Il fournit une description détaillée des modifications, raisons et contexte.
-
-#### Pied de page (Footer)
-
-Le pied de page est optionnel et est utilisé pour des informations supplémentaires comme les références aux tickets (issues) ou les notes spéciales.
-
-Exemple de commit avec en-tête, corps et pieds de page : 
-```
-fix: corriger le bug d'affichage sur la page d'accueil
-
-Ce correctif résout un problème où les images ne s'affichaient pas correctement sur la page d'accueil. La cause était une mauvaise URL d'image générée par la fonction de rendu
-
-Reviewed-by: Zanzibar35
-Refs: #123
-```
 
 ## Utilisation de GitHub
 
