@@ -1,107 +1,211 @@
 <template>
-	<Header type="notlogged"></Header>
+	<div class="floating-element floating-element--1"></div>
+	<div class="floating-element floating-element--2"></div>
+	<div class="floating-element floating-element--3"></div>
+    <div class="landing-body">
+		<header class="landing-header">
+			<a href="/" class="landing-header__logo">VoteRight</a>
+			
+			<nav class="landing-header__nav">
+					<a href="#fonctionnalites" class="landing-header__nav-link">Fonctionnalités</a>
+					<a href="#communautes" class="landing-header__nav-link">Communautés</a>
+					<a href="#contact" class="landing-header__nav-link">Contact</a>
+			</nav>
+			
+			<div class="landing-header__actions">
+				<a href="/login" class="landing-btn landing-btn--secondary">Connexion</a>
+				<a href="/register" class="landing-btn landing-btn--primary">Commencer gratuitement</a>
+			</div>
+		</header>
 
-	<main class="index">
-	
 		<section class="hero">
-			<div class="hero__title-container">
-				<h1>Simplifiez la démocratie participative dans votre communauté</h1>
-				<p class="legende">Proposez, votez, discutez et gérez des projets collectifs en toute transparence.</p>
-				<div>
-					<NuxtLink class="btn btn--full" to="/register">Essayer maintenant</NuxtLink>
-					<NuxtLink class="btn btn--secondary" to="#">Découvrir nos fonctionnalités</NuxtLink>
+			<div class="badge">
+				Simplifions vos décisions collectives
+			</div>
+			
+			<h1 class="hero__title">Reprenez le pouvoir sur vos décisions collectives</h1>
+			
+			<p class="hero__subtitle">Proposez, débattez, votez et gérez des projets en toute transparence. La démocratie participative à portée de votre communauté.</p>
+			
+			<div class="hero__actions">
+				<a href="/register" class="landing-btn landing-btn--primary landing-btn--large">Devenez Beta-Testeur</a>
+				<a href="#" class="landing-btn landing-btn--secondary landing-btn--large">Demander une démo</a>
+			</div>
+
+			<div class="hero__demo-section">
+				<div class="hero__mockup">
+					<div class="mockup__header">
+						<div class="mockup__dot"></div>
+						<div class="mockup__dot"></div>
+						<div class="mockup__dot"></div>
+					</div>
+					<div class="mockup__content">
+						<div class="mockup__item">
+							<div class="mockup__icon">🗳️</div>
+							<div>
+								<strong>Création de vote</strong><br>
+								<small>Lancez un scrutin en quelques clics</small>
+							</div>
+						</div>
+						<div class="mockup__item">
+							<div class="mockup__icon">💬</div>
+							<div>
+								<strong>Discussion collaborative</strong><br>
+								<small>Débattez avant de décider</small>
+							</div>
+						</div>
+						<div class="mockup__item">
+							<div class="mockup__icon">📊</div>
+							<div>
+								<strong>Résultats transparents</strong><br>
+								<small>Visualisez les décisions prises</small>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
 
-		<section class="why">
-			<h2>Pourquoi VoteRight ?</h2>
-			<p>
-				La solution idéale pour collectivités et associations.
-			</p>
-			<ul>
-				<li>Favorisez la participation citoyenne en ligne.</li>
-				<li>centralisez la gestion des propositions et des votes.</li>
-				<li>Transparence et efficacité dans la gestion des budgets.</li>
-			</ul>
-		</section>
-
-		<section class="function-overview">
-			<div>
-				<h2>
-					Découvrez tout ce que VoteRight peut faire pour vous.
-				</h2>
-				<p class="legende">VoteRight permet à votre communauté de s'engager activement dans les décisions collectives grâce à des outils simples et efficaces.</p>
-				<NuxtLink class="btn btn--full" to="/register">Utiliser</NuxtLink>
-			</div>
-			<div class="function-overview__container">
-				<div class="function-overview__function">
-					<img src="/images/icons/vote.svg" alt="discussion icon" class="no-mobile">
-					<h5>Propositions citoyennes</h5>
-					<p>Chaque membre peut soumettre ses idées pour améliorer la collectivité ou l'association.</p>
-				</div>
-				<div class="function-overview__function">
-					<img src="/images/icons/talking.svg" alt="discussion icon" class="no-mobile">
-					<h5>Discussions collaboratives</h5>
-					<p>Créez des espaces d'échange pour discuter des propositions, enrichir les idées et prendre des décisions ensemble.</p>
-				</div>
-				<div class="function-overview__function">
-					<img src="/images/icons/budget.svg" alt="discussion icon" class="no-mobile">
-					<h5>Gestion des budgets</h5>
-					<p>Suivez les dépenses et gérez les budgets annuels par thèmes, avec une vue claire et intuitive.</p>
-				</div>
-				<div class="function-overview__function">
-					<img src="/images/icons/algo.svg" alt="discussion icon" class="no-mobile">
-					<h5>Outils d'administration</h5>
-					<p>Modérez, personnalisez les paramètres des votes, et obtenez des rapports détaillés pour une gestion optimale.</p>
-				</div>
+		<section class="section">
+			<div class="section__header">
+				<div class="badge badge--color-4">Pourquoi VoteRight ?</div>
+				<h2 class="section__title">Impliquer tous vos membres, simplement et efficacement</h2>
+				<p class="section__text">
+					Que vous soyez une association, une entreprise, une collectivité ou un collectif citoyen, offrez à chacun la possibilité de contribuer activement aux décisions. Notre plateforme met à votre disposition les outils essentiels pour structurer la participation, favoriser le débat et faire avancer les projets communs.
+				</p>
 			</div>
 		</section>
-	</main>
 
-	<footer>
-        <div class="footer-partie-haute">
-            <ul>
-                <li><h4>Navigation</h4></li>
-                <li><a href="/">Accueil</a></li>
-                <li><a href="/login">Se connecter</a></li>
-                <li><a href="/register">Créer un compte</a></li>
-                <li><a href="https://admin.voteright.fr">Admin</a></li>
-            </ul>
-			<ul>
-                <li><h4>Kylian</h4></li>
-                <li><a href="https://github.com/Kylian2">Github</a></li>
-                <li><a href="https://www.linkedin.com/in/kylian-richard/">Linkedin</a></li>
-            </ul>
-			<ul>
-                <li><h4>Esteban</h4></li>
-                <li><a href="https://github.com/Laren21">Github</a></li>
-                <li><a href="#">Linkedin</a></li>
-            </ul>
-			<ul>
-                <li><h4>Mathieu</h4></li>
-                <li><a href="https://github.com/mguiborat">Github</a></li>
-                <li><a href="#">Linkedin</a></li>
-            </ul>
-        </div>
-        <div class="footer-partie-basse">
-            <div>
-                <p>© all rights reserved</p>
-            </div>
-        </div>
-    </footer>
+		<section id="fonctionnalites" class="section">
+			<div class="section__header">
+				<div class="badge badge--color-1">Fonctionnalités</div>
+				<h2 class="section__title">Des décisions collectives plus rapides, plus justes, et plus transparentes</h2>
+			</div>
+			
+			<div class="features__grid">
+				<div class="feature-card">
+					<div class="feature-card__icon">🔍</div>
+					<h3 class="feature-card__title">Transparence totale</h3>
+					<p class="feature-card__text">Toutes les prises de décision sont visibles et traçables pour l'ensemble des membres de la communauté.</p>
+				</div>
+				
+				<div class="feature-card">
+					<div class="feature-card__icon">💬</div>
+					<h3 class="feature-card__title">Participation facilitée</h3>
+					<p class="feature-card__text">Des fils de discussion dédiés à chaque proposition permettent à tous de s'exprimer, même les plus discrets.</p>
+				</div>
+				
+				<div class="feature-card">
+					<div class="feature-card__icon">🗳️</div>
+					<h3 class="feature-card__title">Scrutins adaptés</h3>
+					<p class="feature-card__text">Large choix de modes de vote pour des décisions plus représentatives selon chaque contexte.</p>
+				</div>
+				
+				<div class="feature-card">
+					<div class="feature-card__icon">⚙️</div>
+					<h3 class="feature-card__title">Gestion complète</h3>
+					<p class="feature-card__text">Outils intégrés de budget, de modération et de gestion de projets pour une approche globale.</p>
+				</div>
+				
+				<div class="feature-card">
+					<div class="feature-card__icon">👥</div>
+					<h3 class="feature-card__title">Rôles dédiés </h3>
+					<p class="feature-card__text">Support spécifique pour les rôles à responsabilité au sein de votre communauté.</p>
+				</div>
+				
+				<div class="feature-card">
+					<div class="feature-card__icon">🔒 </div>
+					<h3 class="feature-card__title">Anonymat garanti</h3>
+					<p class="feature-card__text">Protection de l'identité et des choix de vote pour tous les membres participants.</p>
+				</div>
+			</div>
+		</section>
 
+		<section id="communautes" class="section">
+			<div class="section__header">
+				<div class="badge badge--color-7">Pour qui ?</div>
+				<h2 class="section__title">Une solution qui s'adapte à tous les profils de communauté</h2>
+			</div>
+			
+			<div class="audiences__grid">
+				<div class="audience-item">
+					<div class="audience-item__icon">🤝</div>
+					<span class="audience-item__text">Associations et ONG</span>
+				</div>
+				
+				<div class="audience-item">
+					<div class="audience-item__icon">🏢</div>
+					<span class="audience-item__text">Entreprises et startups</span>
+				</div>
+				
+				<div class="audience-item">
+					<div class="audience-item__icon">🏛️</div>
+					<span class="audience-item__text">Collectivités locales</span>
+				</div>
+				
+				<div class="audience-item">
+					<div class="audience-item__icon">🌍</div>
+					<span class="audience-item__text">Réseaux citoyens</span>
+				</div>
+				
+				<div class="audience-item">
+					<div class="audience-item__icon">⚖️</div>
+					<span class="audience-item__text">Coopératives et syndicats</span>
+				</div>
+				
+				<div class="audience-item">
+					<div class="audience-item__icon">🎓</div>
+					<span class="audience-item__text">Projets étudiants et bien d'autres</span>
+				</div>
+			</div>
+		</section>
+
+		<section class="section cta">
+			<div class="section__header">
+				<h2 class="section__title">Envie de découvrir une nouvelle manière de décider ensemble ?</h2>
+				<p class="section__text">Rejoignez celles et ceux qui transforment leurs idées en actions concrètes.</p>
+			</div>
+			
+			<div class="cta__actions">
+				<a href="/register" class="landing-btn landing-btn--primary landing-btn--large">Rejoindre</a>
+				<a href="#" class="landing-btn landing-btn--secondary landing-btn--large">Demander une démo</a>
+			</div>
+		</section>
+
+		<section class="section feedback">
+			<div class="feedback__card">
+				<div class="badge">Votre avis compte</div>
+				<h2 class="section__title">Envie de partager votre avis sur notre site ?</h2>
+				<p class="section__text">Nous sommes à l'écoute de tous les retours : n'hésitez pas à nous faire part de vos suggestions, remarques ou critiques !</p>
+				
+				<a href="#" class="btn landing-btn landing-btn--primary landing-btn--large">Donner mon avis maintenant</a>
+			</div>
+		</section>
+
+		<footer id="contact" class="footer">
+			<div class="footer__content">
+				<div class="footer__brand">
+					<a href="/" class="footer__logo">VoteRight</a>
+					<p class="footer__description">
+						La plateforme de démocratie participative qui transforme vos idées en actions concrètes.
+					</p>
+				</div>
+				
+				<nav class="footer__nav">
+					<ul class="footer__nav-list">
+						<li><a href="#" class="footer__nav-link">Fonctionnalités</a></li>
+						<!--<li><a href="#" class="footer__nav-link">Tarifs</a></li>-->
+						<li><a href="#" class="footer__nav-link">Contact</a></li>
+						<li><a href="#" class="footer__nav-link">Mentions légales</a></li>
+						<li><a href="#" class="footer__nav-link">Confidentialité</a></li>
+						<li><a href="#" class="footer__nav-link">Support</a></li>
+					</ul>
+				</nav>
+			</div>
+				
+			<div class="footer__bottom">
+				<p>&copy; 2025 VoteRight Team. Tous droits réservés.</p>
+			</div>
+		</footer>
+	</div>
 </template>
-<script setup>
-
-definePageMeta({
-  	middleware: ["guest"]
-})
-
-useHead({
-	title: 'VoteRight',
-	meta: [
-		{ name: 'description', content: 'VoteRight : donnez à votre communauté le pouvoir de proposer, voter, discuter et gérer des projets collectifs. Idéal pour collectivités et associations engagées !' }
-	],
-})
-</script>
