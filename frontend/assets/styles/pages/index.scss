@@ -72,6 +72,16 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: $text-primary;
     background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 50%, #ecfeff 100%);
     overflow-x: hidden;
+
+    &.hamburger-menu-active{
+        section {
+            display: none;
+        }
+
+        footer{
+            display: none;
+        }
+    }
 }
 
 // ===== UTILITY CLASSES =====
@@ -223,6 +233,7 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     align-items: center;
     box-shadow: map-get($shadows, light);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: .3s ease-in-out;
 
     @include respond-to(sm) {
         top: 2rem;
@@ -279,6 +290,76 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
         @include respond-to(lg) {
             display: flex;
+        }
+    }
+
+    &__hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        cursor: pointer;
+        z-index: 101;
+        transition: $transition;
+
+        @include respond-to(sm) {
+            display: none;
+        }
+
+        &__line {
+            width: 30px;
+            height: 3px;
+            background: $text-primary;
+            transition: $transition;
+
+            &:nth-child(2) {
+                width: 20px;
+            }
+
+        }
+
+        &:hover{
+            transform: rotate(-90deg);
+        }
+    }
+
+    &--active{
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 10vh 0;
+        position: fixed;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 5vh;
+
+        .landing-header{
+            &__logo{
+                font-size: 36px;
+            }
+
+            &__hamburger-menu {
+                gap: 3px;
+                &__line{
+                    &:nth-child(1) {
+                        transform: rotate(45deg) translateY(8px);
+                    }
+                    &:nth-child(2) {
+                        opacity: 0;
+                    }
+                    &:nth-child(3) {
+                        transform: rotate(-45deg) translateY(-8px);
+                    }
+                }
+            }
+        }
+
+        > nav {
+            display: flex;
+            flex-direction: column;
+            font-size: 20px;
+            margin: 0;
+            padding: 0;
         }
     }
 }

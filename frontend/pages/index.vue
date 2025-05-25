@@ -2,8 +2,8 @@
 	<div class="floating-element floating-element--1"></div>
 	<div class="floating-element floating-element--2"></div>
 	<div class="floating-element floating-element--3"></div>
-    <div class="landing-body">
-		<header class="landing-header">
+    <div class="landing-body" :class="{ 'landing-header--active': hamburgerMenuActive }">
+		<header class="landing-header" :class="{ 'landing-header--active': hamburgerMenuActive }">
 			<a href="/" class="landing-header__logo">VoteRight</a>
 			
 			<nav class="landing-header__nav">
@@ -16,6 +16,13 @@
 				<a href="/login" class="landing-btn landing-btn--secondary">Connexion</a>
 				<a href="/register" class="landing-btn landing-btn--primary">Commencer gratuitement</a>
 			</div>
+
+			<div class="landing-header__hamburger-menu" @click="hamburgerMenuActive = !hamburgerMenuActive">
+				<div class="landing-header__hamburger-menu__line"></div>
+				<div class="landing-header__hamburger-menu__line"></div>
+				<div class="landing-header__hamburger-menu__line"></div>
+			</div>
+
 		</header>
 
 		<section class="hero">
@@ -209,3 +216,8 @@
 		</footer>
 	</div>
 </template>
+<script setup>
+
+const hamburgerMenuActive = ref(false);
+
+</script>
