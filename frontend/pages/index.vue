@@ -220,4 +220,7 @@
 
 const hamburgerMenuActive = ref(false);
 
+const html = document.getElementsByTagName('html')[0];
+html.classList.add('landing-page-background');
+
 </script>
