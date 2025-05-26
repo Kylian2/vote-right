@@ -1,6 +1,8 @@
 /* Import des variables */
 
 @import './variables/variables.scss';
+@import './reset.scss';
+@import './global.scss';
 
 /* Import des utilitaires (animations, mixins etc...) */
 
@@ -33,6 +35,3 @@
 /* Import des éléments de structures */
 
 @import './layout/header.scss';
-
-@import './reset.scss';
-@import './global.scss';
