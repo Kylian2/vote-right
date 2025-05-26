@@ -88,6 +88,22 @@
         }
     }
 
+    &--leave{
+        background: $lightdark;
+        color: $contrast;
+        padding: 11px 24px;
+        transition: .2s;
+        border: 0;
+        border-radius: 5px;
+        text-align: center;
+        &:hover{
+            background: darken($color: $lightdark, $amount: 20%);
+        }
+        &:active{
+            background: darken($color: $lightdark, $amount: 20%);
+        }
+    }
+
     &--plus{
         display: flex;
         align-items: center;

@@ -15,7 +15,7 @@
             <NuxtLink v-if="role && role['MEM_role_NB'] != 5" :to="`${config.public.adminUrl}/communities/${route.params.id}`" class="btn btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">ADMINPANEL</NuxtLink>
-            <Button class="btn btn--full btn--block colorLeaveButton" 
+            <Button class="btn btn--full btn--block btn--leave" 
                 @click="leaveGroupModal = !leaveGroupModal"> Quitter le groupe</Button>
         </div>
 
@@ -112,7 +112,12 @@ const beforeLeave = async () => {
             leaveGroupModal.value = false;
             leaveCommunityToast.value = true;
             navigateTo("/home");
-        }else{
+        }
+
+    } catch (error) {
+        console.error('An error occurred : ', error);
+        
+        if(error.status === 401){
             leaveModalData.value.title = "Impossible de quitter le groupe";
             leaveModalData.value.body = "Vous êtes le seul administrateur. Promouvez un autre admin avant de quitter.";
             leaveModalData.value.okText = "J'ai compris";
@@ -128,9 +133,6 @@ const beforeLeave = async () => {
                 leaveGroupModal.value = true;
             }, 200);
         }
-
-    } catch (error) {
-        console.error('An error occurred : ', error);
     }
 }
 

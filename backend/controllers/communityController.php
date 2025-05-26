@@ -366,6 +366,7 @@ class CommunityController{
             $community->exclude($member);
             echo json_encode(true);
         }catch(Exception $e){
+            http_response_code(401);
             echo json_encode(array('Error' => $e->getMessage()));
         }
     }
