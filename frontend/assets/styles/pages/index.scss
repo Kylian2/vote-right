@@ -352,6 +352,12 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                     }
                 }
             }
+
+            &__actions{
+                display: flex;
+                flex-direction: column;
+                padding-bottom: 60px;
+            }
         }
 
         > nav {
@@ -570,6 +576,10 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         @include respond-to(lg) {
             grid-template-columns: repeat(3, 1fr);
         }
+    }
+
+    .material-icons{
+        font-size: 30px;
     }
 }
 

@@ -48,21 +48,21 @@
 					</div>
 					<div class="mockup__content">
 						<div class="mockup__item">
-							<div class="mockup__icon">🗳️</div>
+							<div class="mockup__icon"><i class="material-icons" id="how_to_vote-icon">how_to_vote</i></div>
 							<div>
 								<strong>Création de vote</strong><br>
 								<small>Lancez un scrutin en quelques clics</small>
 							</div>
 						</div>
 						<div class="mockup__item">
-							<div class="mockup__icon">💬</div>
+							<div class="mockup__icon"><i class="material-icons" id="chat-icon">chat</i></div>
 							<div>
 								<strong>Discussion collaborative</strong><br>
 								<small>Débattez avant de décider</small>
 							</div>
 						</div>
 						<div class="mockup__item">
-							<div class="mockup__icon">📊</div>
+							<div class="mockup__icon"><i class="material-icons" id="leaderboard-icon">leaderboard</i></div>
 							<div>
 								<strong>Résultats transparents</strong><br>
 								<small>Visualisez les décisions prises</small>
@@ -83,7 +83,7 @@
 			</div>
 		</section>
 
-		<section id="fonctionnalites" class="section">
+		<section class="features section">
 			<div class="section__header">
 				<div class="badge badge--color-1">Fonctionnalités</div>
 				<h2 class="section__title">Des décisions collectives plus rapides, plus justes, et plus transparentes</h2>
@@ -91,44 +91,44 @@
 			
 			<div class="features__grid">
 				<div class="feature-card">
-					<div class="feature-card__icon">🔍</div>
+					<div class="feature-card__icon"><i class="material-icons" id="search-icon">search</i></div>
 					<h3 class="feature-card__title">Transparence totale</h3>
 					<p class="feature-card__text">Toutes les prises de décision sont visibles et traçables pour l'ensemble des membres de la communauté.</p>
 				</div>
 				
 				<div class="feature-card">
-					<div class="feature-card__icon">💬</div>
+					<div class="feature-card__icon"><i class="material-icons" id="chat-icon">chat</i></div>
 					<h3 class="feature-card__title">Participation facilitée</h3>
 					<p class="feature-card__text">Des fils de discussion dédiés à chaque proposition permettent à tous de s'exprimer, même les plus discrets.</p>
 				</div>
 				
 				<div class="feature-card">
-					<div class="feature-card__icon">🗳️</div>
+					<div class="feature-card__icon"><i class="material-icons" id="how_to_vote-icon">how_to_vote</i></div>
 					<h3 class="feature-card__title">Scrutins adaptés</h3>
 					<p class="feature-card__text">Large choix de modes de vote pour des décisions plus représentatives selon chaque contexte.</p>
 				</div>
 				
 				<div class="feature-card">
-					<div class="feature-card__icon">⚙️</div>
+					<div class="feature-card__icon"><i class="material-icons" id="settings-icon">settings</i></div>
 					<h3 class="feature-card__title">Gestion complète</h3>
 					<p class="feature-card__text">Outils intégrés de budget, de modération et de gestion de projets pour une approche globale.</p>
 				</div>
 				
 				<div class="feature-card">
-					<div class="feature-card__icon">👥</div>
+					<div class="feature-card__icon"><i class="material-icons" id="supervised_user_circle-icon">supervised_user_circle</i></div>
 					<h3 class="feature-card__title">Rôles dédiés </h3>
 					<p class="feature-card__text">Support spécifique pour les rôles à responsabilité au sein de votre communauté.</p>
 				</div>
 				
 				<div class="feature-card">
-					<div class="feature-card__icon">🔒 </div>
+					<div class="feature-card__icon"><i class="material-icons" id="visibility_off-icon">visibility_off</i> </div>
 					<h3 class="feature-card__title">Anonymat garanti</h3>
 					<p class="feature-card__text">Protection de l'identité et des choix de vote pour tous les membres participants.</p>
 				</div>
 			</div>
 		</section>
 
-		<section id="communautes" class="section">
+		<section class="audiences section">
 			<div class="section__header">
 				<div class="badge badge--color-7">Pour qui ?</div>
 				<h2 class="section__title">Une solution qui s'adapte à tous les profils de communauté</h2>
@@ -136,32 +136,32 @@
 			
 			<div class="audiences__grid">
 				<div class="audience-item">
-					<div class="audience-item__icon">🤝</div>
+					<div class="audience-item__icon"><i class="material-icons" id="volunteer_activism-icon">volunteer_activism</i></div>
 					<span class="audience-item__text">Associations et ONG</span>
 				</div>
 				
 				<div class="audience-item">
-					<div class="audience-item__icon">🏢</div>
+					<div class="audience-item__icon"><i class="material-icons" id="corporate_fare-icon">corporate_fare</i></div>
 					<span class="audience-item__text">Entreprises et startups</span>
 				</div>
 				
 				<div class="audience-item">
-					<div class="audience-item__icon">🏛️</div>
+					<div class="audience-item__icon"><i class="material-icons" id="house-icon">house</i></div>
 					<span class="audience-item__text">Collectivités locales</span>
 				</div>
 				
 				<div class="audience-item">
-					<div class="audience-item__icon">🌍</div>
+					<div class="audience-item__icon"><i class="material-icons" id="elderly_woman-icon">elderly_woman</i></div>
 					<span class="audience-item__text">Réseaux citoyens</span>
 				</div>
 				
 				<div class="audience-item">
-					<div class="audience-item__icon">⚖️</div>
+					<div class="audience-item__icon"><i class="material-icons" id="handshake-icon">handshake</i></div>
 					<span class="audience-item__text">Coopératives et syndicats</span>
 				</div>
 				
 				<div class="audience-item">
-					<div class="audience-item__icon">🎓</div>
+					<div class="audience-item__icon"><i class="material-icons" id="school-icon">school</i></div>
 					<span class="audience-item__text">Projets étudiants et bien d'autres</span>
 				</div>
 			</div>
