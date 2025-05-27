@@ -34,7 +34,7 @@ services:
   php: 
     build: 
       context: .
-      dockerfile: Dockerfile  # Ajoutez cette ligne
+      dockerfile: Dockerfile
     volumes: 
       - ./backend:/backend
 
