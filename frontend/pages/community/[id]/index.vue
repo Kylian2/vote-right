@@ -15,7 +15,7 @@
             <NuxtLink v-if="role && role['MEM_role_NB'] != 5" :to="`${config.public.adminUrl}/communities/${route.params.id}`" class="btn btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">ADMINPANEL</NuxtLink>
-            <Button class="btn btn--full btn--block btn--leave" 
+            <Button class="btn btn--full btn--block btn--tertiary" 
                 @click="leaveGroupModal = !leaveGroupModal"> Quitter le groupe</Button>
         </div>
 
