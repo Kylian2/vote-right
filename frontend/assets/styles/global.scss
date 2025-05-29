@@ -2,6 +2,19 @@
     font-family: $main-font;
 }
 
+$breakpoints: (
+    sm: 640px,
+    md: 769px,
+    lg: 1024px,
+    xl: 1280px
+);
+
+@mixin respond-to($breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+        @content;
+    }
+}
+
 .underline{
     text-decoration: underline;
     transition: .2s;
@@ -14,36 +27,42 @@
     display: none !important;
 }
 
+
 h1{
-    font-size: 48px;
+    font-size: 36px;
+    margin: 30px 5%;
     font-family: $exotic-font;
-    margin: 60px 5%;
-    @media screen and (max-width: 600px) {
-        font-size: 36px;
-        margin: 30px 5%;
+
+    @include respond-to(md) {
+        font-size: 48px;
+        margin: 60px 5%;
     }
+
 }
 
 h2{
-    font-size: 36px;
+    font-size: 28px;
     font-family: $exotic-font;
-    @media screen and (max-width: 600px) {
-        font-size: 28px;
+
+    @include respond-to(md) {
+        font-size: 36px;
     }
 }
 
 h3{
-    font-size: 28px;
+    font-size: 22px;
     font-family: $exotic-font;
-    @media screen and (max-width: 600px) {
-        font-size: 22px;
+
+    @include respond-to(md) {
+        font-size: 28px;
     }
 }
 
 h4{
-    font-size: 22px;
-    @media screen and (max-width: 600px) {
-        font-size: 20px;
+    font-size: 20px;
+
+    @include respond-to(md) {
+        font-size: 22px;
     }
 }
 

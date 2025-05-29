@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 # Installer les dépendances et l'extension pdo_mysql
 RUN apk add --no-cache \
