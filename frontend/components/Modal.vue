@@ -2,7 +2,7 @@
 
 <div @click="open = false" v-if="open" class="modal__wrapper">
 
-    <div @click.stop class="modal" :class="{ 'fullscreen' : fullscreen}">
+    <div @click.stop class="modal" :class="{ 'fullscreen' : fullscreen, 'modal--error' : error }">
 
         <h3>
             <slot name="title"></slot>
@@ -81,6 +81,11 @@ const props = defineProps({
         default: false,
     },
     subtitles: {
+        type: Boolean,
+        required: false,
+        default: false,
+    }, 
+    error: {
         type: Boolean,
         required: false,
         default: false,

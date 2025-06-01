@@ -33,6 +33,16 @@
             </div>
         </div>
     </main>
+
+    <Toast 
+        name="leaveCommunityToast" 
+        :type="3" 
+        :time="10" 
+        :loader="true"
+        class="toast"
+    >
+    Vous avez quitté le groupe
+    </Toast>
 </template>
 <script setup>
 
@@ -44,6 +54,10 @@ definePageMeta({
 
 onMounted(() => {
     fetchData();
+    if(useState("leaveCommunityToastMustUp").value){
+        useState("leaveCommunityToastUp").value = true;
+        useState("leaveCommunityToastMustUp").value = false;
+    }
 })
 
 const communities = useState("communities");

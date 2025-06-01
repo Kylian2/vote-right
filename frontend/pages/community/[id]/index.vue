@@ -6,15 +6,17 @@
     <main class="community" v-if="community">
 
         <div class="community__action-block">
-            <NuxtLink :to="`${route.params.id}/new/proposal`" class="btn--full btn--block" :style="{ 
+            <NuxtLink :to="`${route.params.id}/new/proposal`" class="btn btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">Nouvelle proposition</NuxtLink>
-            <NuxtLink :to="`${$route.params.id}/members`" class="btn--full btn--block" :style="{ 
+            <NuxtLink :to="`${$route.params.id}/members`" class="btn btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">Voir les membres</NuxtLink>
-            <NuxtLink v-if="role && role['MEM_role_NB'] != 5" :to="`${config.public.adminUrl}/communities/${route.params.id}`" class="btn--full btn--block" :style="{ 
+            <NuxtLink v-if="role && role['MEM_role_NB'] != 5" :to="`${config.public.adminUrl}/communities/${route.params.id}`" class="btn btn--full btn--block" :style="{ 
                 background: community['CMY_color_VC'],
             }">ADMINPANEL</NuxtLink>
+            <Button class="btn btn--full btn--block btn--tertiary" 
+                @click="leaveGroupModal = !leaveGroupModal"> Quitter le groupe</Button>
         </div>
 
         <div class="community__description">
@@ -42,10 +44,23 @@
             <p v-else>Aucune proposition terminée</p>
         </div>
     </main>
-</template>
-<script setup>
-import BannerCommunity from '~/components/Banner.vue';
 
+    <Modal 
+    name="leaveGroup"
+    :ok-text= "leaveModalData.okText"
+    :cancel-text= "leaveModalData.cancelText"
+    :before-ok= "leaveModalData.beforeOk"
+    :error= "leaveModalData.error"
+    >
+        <template #title> {{ leaveModalData.title }} </template>
+        <template #body>
+            <p> {{ leaveModalData.body }} </p>
+        </template>
+    </Modal>
+
+</template>
+
+<script setup>
 
 const config = useRuntimeConfig();
 
@@ -55,11 +70,71 @@ definePageMeta({
 
 const route = useRoute();
 
+onMounted(()=>{
+    fetchData();
+    fetchRole();
+    fetchOngoingProposal();
+    fetchFinishedProposal();
+})
+
 const community = useState("community");
 const communityThemes = useState("communityThemes");
-const role = ref();
 const ongoingProposals = ref();
 const finishedProposals = ref();
+const currentUser = ref();
+const role = ref();
+
+const leaveGroupModal = useState('leaveGroupModal', () => false);
+
+const initialState = () => {
+    return {
+        title: 'Quitter le groupe',
+        body: 'Êtes-vous sûr de vouloir quitter le groupe ? Vous ne pourrez pas revenir sans invitation.',
+        okText: 'Quitter',
+        cancelText: 'Rester',
+        beforeOk: () => beforeLeave(),
+        error: false,
+    }
+}
+const leaveModalData = ref(initialState());
+
+const leaveCommunityToast = useState(`leaveCommunityToastMustUp`, () => false);
+
+const beforeLeave = async () => {
+    try {
+
+        const response = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/exclude/${currentUser.value.USR_id_NB}`, {
+            method: 'POST',
+            credentials: 'include',
+        });
+
+        if(response == true){
+            leaveGroupModal.value = false;
+            leaveCommunityToast.value = true;
+            navigateTo("/home");
+        }
+
+    } catch (error) {
+        console.error('An error occurred : ', error);
+        
+        if(error.status === 401){
+            leaveModalData.value.title = "Impossible de quitter le groupe";
+            leaveModalData.value.body = "Vous êtes le seul administrateur. Promouvez un autre admin avant de quitter.";
+            leaveModalData.value.okText = "J'ai compris";
+            leaveModalData.value.cancelText = "";
+
+            leaveModalData.value.beforeOk = () => {
+                leaveModalData.value = initialState(); 
+                leaveModalData.value.body = `Vous allez quitter le groupe « ${community.value.CMY_name_VC} », vous ne pourrez pas revenir sans invitation.`;
+            };
+
+            leaveModalData.value.error = true;
+            setTimeout(() => {
+                leaveGroupModal.value = true;
+            }, 200);
+        }
+    }
+}
 
 const fetchData = async () => {
     try{
@@ -69,6 +144,7 @@ const fetchData = async () => {
         })
 
         community.value = response;
+        leaveModalData.value.body = `Vous allez quitter le groupe « ${community.value.CMY_name_VC} », vous ne pourrez pas revenir sans invitation.`;   
 
     }catch (error){
         console.log('An unexptected error occured : ', error);
@@ -84,6 +160,18 @@ const fetchData = async () => {
     }catch (error){
         console.log('An unexptected error occured : ', error);
     }
+
+    try{
+        const response = await $fetch(`${config.public.baseUrl}/users/me`, {
+            credentials: 'include',
+        })
+
+        currentUser.value = response;
+
+    }catch (error){
+        console.log('An unexptected error occured : ', error);
+    }
+
 
 }
 
@@ -128,12 +216,5 @@ const fetchFinishedProposal = async () => {
         console.log('An unexptected error occured : ', error);
     }
 }
-
-onMounted(()=>{
-    fetchData();
-    fetchRole();
-    fetchOngoingProposal();
-    fetchFinishedProposal();
-})
 
 </script>

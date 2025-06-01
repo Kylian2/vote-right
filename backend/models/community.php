@@ -409,6 +409,37 @@ class Community extends Model{
         );
         $prepare->execute($values);
     }
+
+    public static function countRole(int $role){
+        $request = 'SELECT ROL_label_VC, COUNT(MEM_role_NB)
+                    FROM role R
+                    INNER JOIN member M ON R.ROL_id_NB = M.MEM_role_NB
+                    WHERE MEM_community_NB = :community
+                    AND ROL_id_NB = :role;';
+        $prepare = connexion::pdo()->prepare($request);
+
+        $value['community'] = $this->CMY_id_NB;
+        $value['role'] = $role;
+        $prepare->execute($value);
+        $register = $prepare->fetch();
+
+        return $register;
+    }
+
+    public static function countAllRoles(){
+        $request = 'SELECT ROL_label_VC, COUNT(MEM_role_NB)
+                    FROM role R
+                    INNER JOIN member M ON R.ROL_id_NB = M.MEM_role_NB
+                    WHERE MEM_community_NB = :community
+                    GROUP BY ROL_label_VC;';
+        $prepare = connexion::pdo()->prepare($request);
+
+        $value['community'] = $this->CMY_id_NB;
+        $prepare->execute($value);
+        $register = $prepare->fetch();
+
+        return $register;
+    }
 }
 
 ?>

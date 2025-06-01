@@ -3,21 +3,27 @@
 
     <Banner :community="community" :themes="communityThemes" back>{{ community["CMY_name_VC"] }}</Banner>
 
-    <main class="community-proposals">
-        <div>
-            <p class="filter" @click="updateFilter" @mouseover="hover = true" @mouseleave="hover = false" :style="{
+    <main class="community-proposals" v-if="proposals && proposals.length">
+        <div class="filter">
+            <p  @click="updateFilter" @mouseover="hover = true" @mouseleave="hover = false" :style="{
                 color: hover ? community['CMY_color_VC'] : 'inherit' }">{{ hideFilter ? 'Filtrer' : 'Masquer' }}</p>
+            <img src="/public/images/icons/grid-active.png" alt="Vue grille" v-if="view === 'grid'"
+                @click="view = 'grid'"/>
+            <img src="/public/images/icons/grid-inactive.png" alt="Vue grille inactive" v-else
+                @click="view = 'grid'"/>
+            <img src="/public/images/icons/list-active.png" alt="Vue liste" v-if="view === 'list'"
+                @click="view = 'list'"/>
+            <img src="/public/images/icons/list-inactive.png" alt="Vue liste inactive" v-else
+                @click="view = 'list'"/>
         </div>
         <div v-if="!hideFilter" class="filter-container">
             <div class="filter-container__block">
-                <p>Filtrer par thème : </p>
                 <select v-model="filter" name="theme" @change="updateFilteredProposals">
                     <option value="">Filtrer</option>
                     <option :value="theme['THM_id_NB']" v-for="theme in communityThemes">{{ theme["THM_name_VC"] }}</option>
                 </select>
             </div>
             <div class="filter-container__block">
-                <p>Statut : </p>
                 <div>
                     <div class="filter-container__checkboxes" v-for="status in statuses">
                         <input type="checkbox" :id="status" :value="status" v-model="checkedStatus" @change="updateFilteredProposals">
@@ -26,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="selectedProposals && selectedProposals.length" class="list-proposals">
+        <div v-if="selectedProposals && selectedProposals.length && view === 'list'" class="list-proposals">
             <NuxtLink :to="`/proposal/${proposal['PRO_id_NB']}`" 
             class="proposal-card" 
             :class="{'card-proposal__finished' : proposal['PRO_status_VC'] != 'En cours'}"
@@ -36,9 +42,66 @@
                 <span class="proposal-card__title">{{ proposal["PRO_title_VC"] }}</span></p>
                 <p><span>{{ proposal["PRO_status_VC"] }}</span></p>
             </NuxtLink>
+            </div>
+        <div class="proposal-not-found">
+            <p v-if="isDataFetched && (!selectedProposals || !selectedProposals.length)" class="error">Aucune proposition</p>
         </div>
         <div class="proposal-not-found">
             <p v-if="isDataFetched && (!selectedProposals || !selectedProposals.length)" class="error">Aucune proposition</p>
+        </div>
+        <div v-if="proposals && view === 'grid'" class="grid-proposals">
+            <NuxtLink :to="`/proposal/${proposal['PRO_id_NB']}`"
+            class="proposal-card-grid"
+            :class="{'card-proposal__finished': proposal['PRO_status_VC'] != 'En cours'}"
+            :style="{background: community['CMY_color_VC']}"
+            v-if="selectedProposals && selectedProposals.length"
+            v-for="proposal in selectedProposals">
+                <div class="proposal-card-grid__header">
+                    <span>{{ proposal['PRO_theme_VC'] }}</span>
+                    <span class="proposal-card-grid__header__title">{{ proposal['PRO_title_VC'] }}</span>
+                    <span>{{ proposal['PRO_status_VC'] }}</span>
+                </div>
+                <div class="proposal-card-grid__description">
+                    {{ proposal['PRO_description_TXT'] }}
+                </div>
+                <div class="proposal-card-grid__footer">
+                    <div>
+                        <p><i class="material-icons">calendar_month</i><span class="proposal-card-grid__footer__date">{{ proposal['PRO_period_YEAR'] }}</span></p>
+                        <p><i class="material-icons">savings</i><span v-if="proposal['PRO_budget_NB']">{{ proposal['PRO_budget_NB'] }}€</span></p>
+                    </div>
+                    <div>
+                        <p><i class="material-icons">location_on</i><span v-if="proposal['PRO_location_VC']">{{ proposal['PRO_location_VC'] }}</span></p>
+                    </div>
+                </div>
+            </NuxtLink>
+            <p class="error" v-else-if="!hideFilter">Aucune proposition</p>
+        </div>
+        <div v-if="proposals && view === 'grid'" class="grid-proposals">
+            <NuxtLink :to="`/proposal/${proposal['PRO_id_NB']}`"
+            class="proposal-card-grid"
+            :class="{'card-proposal__finished': proposal['PRO_status_VC'] != 'En cours'}"
+            :style="{background: community['CMY_color_VC']}"
+            v-if="selectedProposals && selectedProposals.length"
+            v-for="proposal in selectedProposals">
+                <div class="proposal-card-grid__header">
+                    <span>{{ proposal['PRO_theme_VC'] }}</span>
+                    <span class="proposal-card-grid__header__title">{{ proposal['PRO_title_VC'] }}</span>
+                    <span>{{ proposal['PRO_status_VC'] }}</span>
+                </div>
+                <div class="proposal-card-grid__description">
+                    {{ proposal['PRO_description_TXT'] }}
+                </div>
+                <div class="proposal-card-grid__footer">
+                    <div>
+                        <p><i class="material-icons">calendar_month</i><span class="proposal-card-grid__footer__date">{{ proposal['PRO_period_YEAR'] }}</span></p>
+                        <p><i class="material-icons">savings</i><span v-if="proposal['PRO_budget_NB']">{{ proposal['PRO_budget_NB'] }}€</span></p>
+                    </div>
+                    <div>
+                        <p><i class="material-icons">location_on</i><span v-if="proposal['PRO_location_VC']">{{ proposal['PRO_location_VC'] }}</span></p>
+                    </div>
+                </div>
+            </NuxtLink>
+            <p class="error" v-else-if="!hideFilter">Aucune proposition</p>
         </div>
     </main>
 </template>
@@ -60,6 +123,7 @@ const statuses = ["Validée", "Rejetée", "En cours"];
 const checkedStatus = ref([]);
 const hideFilter = ref(true);
 const hover = ref(false);
+const view = ref('list');
 const isDataFetched = ref(false);
 
 const updateFilteredProposals = () => {
