@@ -10,9 +10,11 @@
     .filter{
         p {
             float: left;
+            margin-right: 15px;
             text-decoration: underline;
             cursor: pointer;
         }
+
         img{
             float: right;
             height: 32px;
@@ -21,7 +23,7 @@
     }
 
     .filter-container {
-        margin-top: 20px;
+        margin-top: 10px;
         display: flex;
         align-items: center;
         gap: 25px;
@@ -38,6 +40,10 @@
                 display: flex;
                 gap: 15px;
                 flex-wrap: wrap;
+            }
+            img {
+                height: 32px;
+                width: auto;
             }
         } 
         &__checkboxes{
