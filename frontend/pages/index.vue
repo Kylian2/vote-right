@@ -111,7 +111,7 @@
 				<div class="feature-card">
 					<div class="feature-card__icon"><i class="material-icons" id="settings-icon">settings</i></div>
 					<h3 class="feature-card__title">Gestion complète</h3>
-					<p class="feature-card__text">Outils intégrés de budget, de modération et de gestion de projets pour une approche globale.</p>
+					<p class="feature-card__text">Outils de gestion de budget, de modération et algorithmes de recommendations.</p>
 				</div>
 				
 				<div class="feature-card">
@@ -185,7 +185,7 @@
 				<h2 class="section__title">Envie de partager votre avis sur notre site ?</h2>
 				<p class="section__text">Nous sommes à l'écoute de tous les retours : n'hésitez pas à nous faire part de vos suggestions, remarques ou critiques !</p>
 				
-				<a href="#" class="btn landing-btn landing-btn--primary landing-btn--large">Donner mon avis maintenant</a>
+				<a href="https://beta.voteright.fr" class="btn landing-btn landing-btn--primary landing-btn--large">Donner mon avis maintenant</a>
 			</div>
 		</section>
 
@@ -200,12 +200,12 @@
 				
 				<nav class="footer__nav">
 					<ul class="footer__nav-list">
-						<li><a href="#" class="footer__nav-link">Fonctionnalités</a></li>
+						<li><a href="#fonctionnalites" class="footer__nav-link">Fonctionnalités</a></li>
 						<!--<li><a href="#" class="footer__nav-link">Tarifs</a></li>-->
-						<li><a href="#" class="footer__nav-link">Contact</a></li>
+						<li><a href="#contact" class="footer__nav-link">Contact</a></li>
 						<li><a href="#" class="footer__nav-link">Mentions légales</a></li>
 						<li><a href="#" class="footer__nav-link">Confidentialité</a></li>
-						<li><a href="#" class="footer__nav-link">Support</a></li>
+						<li><a href="https://beta.voteright.fr" class="footer__nav-link">Support</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -219,6 +219,7 @@
 <script setup>
 
 const hamburgerMenuActive = ref(false);
+const config = useRuntimeConfig();
 
 const html = document.getElementsByTagName('html')[0];
 html.classList.add('landing-page-background');
