@@ -74,7 +74,7 @@ class Invitation extends Model{
 
     public static function getCodeById(string $id){
         $request = 'SELECT INV_code_NB
-                    FROM invitation I 
+                    FROM invitation  
                     WHERE INV_id_VC = :id';
         $prepare = connexion::pdo()->prepare($request);
 
