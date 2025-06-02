@@ -36,7 +36,7 @@
 			
 			<div class="hero__actions">
 				<a href="/register" class="landing-btn landing-btn--primary landing-btn--large">Devenez Beta-Testeur</a>
-				<a href="#" class="landing-btn landing-btn--secondary landing-btn--large">Demander une démo</a>
+				<!--<a href="#" class="landing-btn landing-btn--secondary landing-btn--large">Demander une démo</a>-->
 			</div>
 
 			<div class="hero__demo-section">
