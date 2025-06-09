@@ -50,44 +50,17 @@
             margin-right: 10px;
             margin-bottom: 5px;
         }
+
+        @media screen and (max-width: 600px) {
+            font-size: 14px;
+            display: block;
+
+            select {
+                display: block;
+                margin-bottom: 10px;
+            }
+        }
     }
-
-    // .filter-container {
-    //     margin-top: 10px;
-    //     display: flex;
-    //     align-items: center;
-    //     gap: 25px;
-    //     &__block{
-    //         display: flex;
-    //         align-items: center;
-    //         gap: 15px;
-    //         flex-wrap: wrap;
-    //         @media screen and (max-width: 600px) {
-    //             flex-direction: column;
-    //             align-items: start;
-    //         }
-    //         > div{
-    //             display: flex;
-    //             gap: 15px;
-    //             flex-wrap: wrap;
-    //         }
-    //         img {
-    //             height: 32px;
-    //             width: auto;
-    //         }
-    //     } 
-    //     &__checkboxes{
-    //         display: flex;
-    //         align-items: center;
-    //         gap: 10px;
-    //     }
-
-    //     @media screen and (max-width: 875px) {
-    //         flex-direction: column;
-    //         align-items: start;
-    //         gap: 20px;
-    //     }
-    // }
 
     .list-proposals {
         display: flex;
@@ -130,6 +103,11 @@
 
         &__title{
             margin-left: 1em;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            -webkit-line-clamp: 1;
+            text-overflow: ellipsis;
         }
 
         @media screen and (max-width: 600px) {
@@ -201,19 +179,24 @@
             font-size: 13px;
             gap: 5px;
 
-            > div {
+            div {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
 
-                > p{
+                p {
                     display: flex;
                     align-items: center;
                     gap: 2px;
 
-                    > span{
+                    span {
                         margin-top: 2px;
                         line-height: 24px;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        -webkit-line-clamp: 1;
+                        text-overflow: ellipsis;
                     }
                 }
             }

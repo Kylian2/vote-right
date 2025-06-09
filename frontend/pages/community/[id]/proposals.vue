@@ -2,14 +2,16 @@
     <Header type="logged" :color="community && community['CMY_color_VC'] ? community['CMY_color_VC'].slice(-6) : '000000'"></Header>
     <Banner :community="community" :themes="communityThemes" back>{{ community["CMY_name_VC"] }}</Banner>
     <main class="community-proposals">
+        {{ yearRange }}
+        {{ selectedRange }}
         <div class="view-selector">
             <p  @click="showFilter = !showFilter" @mouseover="hover = true" @mouseleave="hover = false" :style="{
             color: hover ? community['CMY_color_VC'] : 'inherit' }">{{ showFilter ? 'Masquer' : 'Filtrer' }}</p>
             <div>
-                <img v-if="view === 'grid'" src="/public/images/icons/grid-active.png" alt="Vue grille"/>
-                <img v-else @click="view = 'grid'" src="/public/images/icons/grid-inactive.png" alt="Vue grille inactive"/>
                 <img v-if="view === 'list'" src="/public/images/icons/list-active.png" alt="Vue liste"/>
                 <img v-else @click="view = 'list'" src="/public/images/icons/list-inactive.png" alt="Vue liste inactive"/>
+                <img v-if="view === 'grid'" src="/public/images/icons/grid-active.png" alt="Vue grille"/>
+                <img v-else @click="view = 'grid'" src="/public/images/icons/grid-inactive.png" alt="Vue grille inactive"/>
             </div>
         </div>
         <div v-if="showFilter" class="filter">
@@ -27,9 +29,9 @@
             </select>
             <div class="filter__year">
                 <label for="minYearInput">Année min</label>
-                <Input name="minYear" type="number" id="minYearInput" step="1"/>
+                <InputNumber @change="updateFilteredProposals" name="minYear" :min="MIN_YEAR" :max="maxYear" type="number" id="minYearInput" step="1"/>
                 <label for="maxYearInput">max</label>
-                <Input name="maxYear" type="number" id="maxYearInput" step="1"/>
+                <InputNumber @change="updateFilteredProposals" name="maxYear" :min="minYear" :max="MAX_YEAR" type="number" id="maxYearInput" step="1"/>
             </div>
         </div>
         <div v-if="selectedProposals && selectedProposals.length && view === 'list'" class="list-proposals">
@@ -40,7 +42,7 @@
             background: community['CMY_color_VC']}">
                 <p><span class="proposal-card__theme">{{ proposal["PRO_theme_VC"] }}</span>
                 <span class="proposal-card__title">{{ proposal["PRO_title_VC"] }}</span></p>
-                <p><span>{{ proposal["PRO_status_VC"] }}</span></p>
+                <p><span style="white-space: nowrap;">{{ proposal["PRO_status_VC"] }}</span></p>
             </NuxtLink>
         </div>
         <div v-if="selectedProposals && selectedProposals.length && view === 'grid'" class="grid-proposals">
@@ -99,21 +101,27 @@ const showFilter = ref(false);
 const hover = ref(false);
 const view = ref('list');
 
-const years = ref();
+const MIN_YEAR = ref();
+const MAX_YEAR = ref();
+const NB_YEAR = ref();
 const minYear = useState("minYear");
 const maxYear = useState("maxYear");
-const yearRange = ref();
-const selectedRange = ref();
 
 const updateFilteredProposals = () => {
     let filtered = proposals.value;
 
-    if(checkedTheme.value){
+    if (checkedTheme.value) {
         filtered = filtered.filter(proposal => proposal['PRO_theme_NB'] == checkedTheme.value);
     }
 
-    if(checkedStatus.value.length > 0){
+    if (checkedStatus.value) {
         filtered = filtered.filter(proposal => proposal['PRO_status_VC'] == checkedStatus.value);
+    }
+
+    if (NB_YEAR.value > 0) {
+        filtered = filtered.filter(
+            proposal => proposal['PRO_period_YEAR'] >= minYear.value && proposal['PRO_period_YEAR'] <= maxYear.value
+        )
     }
 
     selectedProposals.value = filtered;
@@ -265,11 +273,12 @@ const fetchData = async () => {
         proposals.value = pro;
         selectedProposals.value = pro;
 
-        years.value = proposals.value.map(p => p.PRO_period_YEAR);
-        minYear.value = Math.min(...years.value);
-        maxYear.value = Math.max(...years.value);
-        yearRange.value = Array.from({ length: maxYear.value - minYear.value + 1 }, (_, i) => minYear.value + i);
-        selectedRange.value = [minYear.value, maxYear.value];
+        let years = proposals.value.map(proposal => proposal['PRO_period_YEAR']);
+        MIN_YEAR.value = Math.min(...years);
+        MAX_YEAR.value = Math.max(...years);
+        NB_YEAR.value = MAX_YEAR.value - MIN_YEAR.value;
+        minYear.value = MIN_YEAR.value;
+        maxYear.value = MAX_YEAR.value;  
 
         isDataFetched.value = true;
     }catch (error){
