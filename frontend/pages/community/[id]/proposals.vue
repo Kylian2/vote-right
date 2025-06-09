@@ -28,10 +28,13 @@
                 <option v-for="status in statuses" :value="status">{{ status }}</option>
             </select>
             <div class="filter__year">
-                <label for="minYearInput">Année min</label>
-                <InputNumber @change="updateFilteredProposals" name="minYear" :min="MIN_YEAR" :max="maxYear" type="number" id="minYearInput" step="1"/>
-                <label for="maxYearInput">max</label>
-                <InputNumber @change="updateFilteredProposals" name="maxYear" :min="minYear" :max="MAX_YEAR" type="number" id="maxYearInput" step="1"/>
+                <div>
+                    <label for="minYearInput">Année min</label>
+                    <InputNumber @change="updateFilteredProposals" name="minYear" :min="MIN_YEAR" :max="maxYear" type="number" id="minYearInput" step="1"/>
+                    <label for="maxYearInput">max</label>
+                    <InputNumber @change="updateFilteredProposals" name="maxYear" :min="minYear" :max="MAX_YEAR" type="number" id="maxYearInput" step="1"/>
+                    <i v-if="filterChanged" @click="cancelFilter" class="material-icons">cancel</i>
+                </div>
             </div>
         </div>
         <div v-if="selectedProposals && selectedProposals.length && view === 'list'" class="list-proposals">
@@ -106,6 +109,20 @@ const MAX_YEAR = ref();
 const NB_YEAR = ref();
 const minYear = useState("minYear");
 const maxYear = useState("maxYear");
+
+const filterChanged = computed(() => {
+    return chekedSort.value || checkedTheme.value || checkedStatus.value || minYear.value != MIN_YEAR.value || maxYear.value != MAX_YEAR.value;
+})
+
+const cancelFilter = () => {
+    chekedSort.value = '';
+    checkedTheme.value = '';
+    checkedStatus.value = '';
+    minYear.value = MIN_YEAR.value;
+    maxYear.value = MAX_YEAR.value;
+
+    selectedProposals.value = proposals.value;
+}
 
 const updateFilteredProposals = () => {
     let filtered = proposals.value;

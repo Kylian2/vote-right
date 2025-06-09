@@ -38,6 +38,20 @@
             display: inherit;
             align-items: inherit;
             margin-left: 15px;
+
+            div {
+                display: flex;
+                align-items: inherit;
+            }
+
+            @media screen and (max-width: 1000px) {
+                margin-top: 5px;
+                margin-left: 5px;
+            }
+
+            @media screen and (max-width: 600px) {
+                margin-top: 0px;
+            }
         }
 
         label {
@@ -51,6 +65,11 @@
             margin-bottom: 5px;
         }
 
+        i {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
         @media screen and (max-width: 600px) {
             font-size: 14px;
             display: block;
@@ -59,6 +78,10 @@
                 display: block;
                 margin-bottom: 10px;
             }
+        }
+
+        @media screen and (max-width: 1000px) {
+            display: block;
         }
     }
 
