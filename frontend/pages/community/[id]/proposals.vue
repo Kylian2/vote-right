@@ -2,40 +2,34 @@
     <Header type="logged" :color="community && community['CMY_color_VC'] ? community['CMY_color_VC'].slice(-6) : '000000'"></Header>
     <Banner :community="community" :themes="communityThemes" back>{{ community["CMY_name_VC"] }}</Banner>
     <main class="community-proposals">
-        <div class="filter">
-            <p @click="updateSort" :style="{ color: hoverSort ? community['CMY_color_VC'] : 'inherit' }">Trier</p>
-            <p @click="updateFilter" :style="{ color: hoverFilter ? community['CMY_color_VC'] : 'inherit' }">Filtrer</p>
-            <img v-if="view === 'grid'" src="/public/images/icons/grid-active.png" alt="Vue grille"/>
-            <img v-else @click="view = 'grid'" src="/public/images/icons/grid-inactive.png" alt="Vue grille inactive"/>
-            <img v-if="view === 'list'" src="/public/images/icons/list-active.png" alt="Vue liste"/>
-            <img v-else @click="view = 'list'" src="/public/images/icons/list-inactive.png" alt="Vue liste inactive"/>
-        </div>
-        <div v-if="showFilter && typeFilter == 'Trier'" class="filter-container">
-            <div class="filter-container__block">
-                <img src="/public/images/icons/grid-active.png" alt="Date chronologique"
-                @click="sortProposals('Date chronologique')"/>
-                <img src="/public/images/icons/grid-active.png" alt="Date antéchronologique"
-                @click="sortProposals('Date antéchronologique')"/>
-                <img src="/public/images/icons/grid-active.png" alt="Budget croissant"
-                @click="sortProposals('Budget croissant')"/>
-                <img src="/public/images/icons/grid-active.png" alt="Budget décroissant"
-                @click="sortProposals('Budget décroissant')"/>
+        <div class="view-selector">
+            <p  @click="showFilter = !showFilter" @mouseover="hover = true" @mouseleave="hover = false" :style="{
+            color: hover ? community['CMY_color_VC'] : 'inherit' }">{{ showFilter ? 'Masquer' : 'Filtrer' }}</p>
+            <div>
+                <img v-if="view === 'grid'" src="/public/images/icons/grid-active.png" alt="Vue grille"/>
+                <img v-else @click="view = 'grid'" src="/public/images/icons/grid-inactive.png" alt="Vue grille inactive"/>
+                <img v-if="view === 'list'" src="/public/images/icons/list-active.png" alt="Vue liste"/>
+                <img v-else @click="view = 'list'" src="/public/images/icons/list-inactive.png" alt="Vue liste inactive"/>
             </div>
         </div>
-        <div v-if="showFilter && typeFilter == 'Filtrer'" class="filter-container">
-            <div class="filter-container__block">
-                <select v-model="filter" name="theme" @change="updateFilteredProposals">
-                    <option value="">Filtrer</option>
-                    <option :value="theme['THM_id_NB']" v-for="theme in communityThemes">{{ theme["THM_name_VC"] }}</option>
-                </select>
-            </div>
-            <div class="filter-container__block">
-                <div>
-                    <div class="filter-container__checkboxes" v-for="status in statuses">
-                        <input type="checkbox" :id="status" :value="status" v-model="checkedStatus" @change="updateFilteredProposals">
-                        <label :for="status">{{ status }}</label>
-                    </div>
-                </div>
+        <div v-if="showFilter" class="filter">
+            <select v-model="chekedSort" @change="sortProposals">
+                <option value="">Trier par budget ou date</option>
+                <option v-for="typeSort in sortList" :value="typeSort">{{ typeSort }}</option>
+            </select>
+            <select v-model="checkedTheme" @change="updateFilteredProposals">
+                <option value="">Filtrer par thème</option>
+                <option v-for="theme in communityThemes" :value="theme['THM_id_NB']">{{ theme["THM_name_VC"] }}</option>
+            </select>
+            <select v-model="checkedStatus" @change="updateFilteredProposals">
+                <option value="">Filtrer par statut</option>
+                <option v-for="status in statuses" :value="status">{{ status }}</option>
+            </select>
+            <div class="filter__year">
+                <label for="minYearInput">Année min</label>
+                <Input name="minYear" type="number" id="minYearInput" step="1"/>
+                <label for="maxYearInput">max</label>
+                <Input name="maxYear" type="number" id="maxYearInput" step="1"/>
             </div>
         </div>
         <div v-if="selectedProposals && selectedProposals.length && view === 'list'" class="list-proposals">
@@ -92,68 +86,56 @@ const community = useState("community");
 const communityThemes = useState("communityThemes");
 const proposals = ref();
 const selectedProposals = ref();
-const filter = ref('');
-const statuses = ["Validée", "Rejetée", "En cours"];
-const checkedStatus = ref([]);
-const showFilter = ref(false);
-const hoverSort = ref(false);
-const hoverFilter = ref(false);
-const view = ref('list');
 const isDataFetched = ref(false);
-const typeFilter = ref('');
+
+const sortList = ["Budget croissant", "Budget décroissant", "Date chronologique", "Date antéchronologique"];
+const statuses = ["Validée", "Rejetée", "En cours"];
+
+const chekedSort = ref('');
+const checkedTheme = ref('');
+const checkedStatus = ref('');
+
+const showFilter = ref(false);
+const hover = ref(false);
+const view = ref('list');
+
+const years = ref();
+const minYear = useState("minYear");
+const maxYear = useState("maxYear");
+const yearRange = ref();
+const selectedRange = ref();
 
 const updateFilteredProposals = () => {
     let filtered = proposals.value;
 
-    if(filter.value){
-        filtered = filtered.filter(proposal => proposal['PRO_theme_NB'] == filter.value);
+    if(checkedTheme.value){
+        filtered = filtered.filter(proposal => proposal['PRO_theme_NB'] == checkedTheme.value);
     }
 
     if(checkedStatus.value.length > 0){
-        filtered = filtered.filter(proposal => checkedStatus.value.includes(proposal['PRO_status_VC']));
+        filtered = filtered.filter(proposal => proposal['PRO_status_VC'] == checkedStatus.value);
     }
 
     selectedProposals.value = filtered;
+    sortProposals();
 }
 
-const updateSort = () => {
-    if (typeFilter.value == 'Trier') {
-        typeFilter.value = '';
-        hoverSort.value = false;
-        showFilter.value = false;
-    } else {
-        typeFilter.value = 'Trier';
-        hoverSort.value = true;
-        hoverFilter.value = false;
-        showFilter.value = true;
-    }
-}
-
-const updateFilter = () => {
-    if (typeFilter.value == 'Filtrer') {
-        typeFilter.value = '';
-        hoverFilter.value = false;
-        showFilter.value = false;
-    } else {
-        typeFilter.value = 'Filtrer';
-        hoverFilter.value = true;
-        hoverSort.value = false;
-        showFilter.value = true;
-    }
-}
-
-const sortProposals = (choice) => {
-    if (choice == "Date chronologique") {
-        selectedProposals.value = mergeSortProposalsByDate(selectedProposals.value);
-    }
-    if (choice == "Date antéchronologique") {
-        selectedProposals.value = mergeSortProposalsByDateDesc(selectedProposals.value);
-    }
-    if (choice == "Budget croissant") {
-        selectedProposals.value = mergeSortProposals(selectedProposals.value);
-    }
-    if (choice == "Budget décroissant") {
-        selectedProposals.value = mergeSortProposalsDesc(selectedProposals.value);
+const sortProposals = () => {
+    switch (chekedSort.value) {
+        case "Date chronologique":
+            selectedProposals.value = mergeSortProposalsByDate(selectedProposals.value);
+            break;
+        case "Date antéchronologique":
+            selectedProposals.value = mergeSortProposalsByDateDesc(selectedProposals.value);
+            break;
+        case "Budget croissant":
+            selectedProposals.value = mergeSortProposals(selectedProposals.value);
+            break;
+        case "Budget décroissant":
+            selectedProposals.value = mergeSortProposalsDesc(selectedProposals.value);
+            break;
+        default:
+            updateFilteredProposals();
     }
 }
 
@@ -282,6 +264,12 @@ const fetchData = async () => {
 
         proposals.value = pro;
         selectedProposals.value = pro;
+
+        years.value = proposals.value.map(p => p.PRO_period_YEAR);
+        minYear.value = Math.min(...years.value);
+        maxYear.value = Math.max(...years.value);
+        yearRange.value = Array.from({ length: maxYear.value - minYear.value + 1 }, (_, i) => minYear.value + i);
+        selectedRange.value = [minYear.value, maxYear.value];
 
         isDataFetched.value = true;
     }catch (error){

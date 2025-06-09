@@ -1,4 +1,4 @@
-.community-proposals{
+.community-proposals {
     margin: 20px 5% 20px 5%;
     display: flex;
     flex-direction: column;
@@ -7,57 +7,87 @@
         margin: 20px 2% 20px 2%;
     }
 
-    .filter{
+    .view-selector {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
         p {
-            float: left;
-            margin-right: 15px;
             text-decoration: underline;
             cursor: pointer;
         }
 
-        img{
-            float: right;
+        img {
             height: 32px;
             width: auto;
         }
     }
 
-    .filter-container {
-        margin-top: 10px;
+    .filter {
         display: flex;
         align-items: center;
-        gap: 25px;
-        &__block{
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            @media screen and (max-width: 600px) {
-                flex-direction: column;
-                align-items: start;
-            }
-            > div{
-                display: flex;
-                gap: 15px;
-                flex-wrap: wrap;
-            }
-            img {
-                height: 32px;
-                width: auto;
-            }
-        } 
-        &__checkboxes{
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        margin-top: 5px;
+
+        select {
+            border: 1px solid gray;
+            background: white;
+            margin-right: 15px;
         }
 
-        @media screen and (max-width: 875px) {
-            flex-direction: column;
-            align-items: start;
-            gap: 20px;
+        &__year {
+            display: inherit;
+            align-items: inherit;
+            margin-left: 15px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        input {
+            width: 85px;
+            height: 30px;
+            margin-right: 10px;
+            margin-bottom: 5px;
         }
     }
+
+    // .filter-container {
+    //     margin-top: 10px;
+    //     display: flex;
+    //     align-items: center;
+    //     gap: 25px;
+    //     &__block{
+    //         display: flex;
+    //         align-items: center;
+    //         gap: 15px;
+    //         flex-wrap: wrap;
+    //         @media screen and (max-width: 600px) {
+    //             flex-direction: column;
+    //             align-items: start;
+    //         }
+    //         > div{
+    //             display: flex;
+    //             gap: 15px;
+    //             flex-wrap: wrap;
+    //         }
+    //         img {
+    //             height: 32px;
+    //             width: auto;
+    //         }
+    //     } 
+    //     &__checkboxes{
+    //         display: flex;
+    //         align-items: center;
+    //         gap: 10px;
+    //     }
+
+    //     @media screen and (max-width: 875px) {
+    //         flex-direction: column;
+    //         align-items: start;
+    //         gap: 20px;
+    //     }
+    // }
 
     .list-proposals {
         display: flex;
