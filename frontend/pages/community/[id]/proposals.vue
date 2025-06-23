@@ -2,11 +2,9 @@
     <Header type="logged" :color="community && community['CMY_color_VC'] ? community['CMY_color_VC'].slice(-6) : '000000'"></Header>
     <Banner :community="community" :themes="communityThemes" back>{{ community["CMY_name_VC"] }}</Banner>
     <main class="community-proposals">
-        {{ yearRange }}
-        {{ selectedRange }}
         <div class="view-selector">
-            <p  @click="showFilter = !showFilter" @mouseover="hover = true" @mouseleave="hover = false" :style="{
-            color: hover ? community['CMY_color_VC'] : 'inherit' }">{{ showFilter ? 'Masquer' : 'Filtrer' }}</p>
+            <i class="material-icons" @click="showFilter = !showFilter" @mouseover="hover = true" @mouseleave="hover = false"
+            :style="{color: (hover || showFilter) ? community['CMY_color_VC'] : 'inherit'}">tune</i>
             <div>
                 <img v-if="view === 'list'" src="/public/images/icons/list-active.png" alt="Vue liste"/>
                 <img v-else @click="view = 'list'" src="/public/images/icons/list-inactive.png" alt="Vue liste inactive"/>
@@ -30,9 +28,9 @@
             <div class="filter__year">
                 <div>
                     <label for="minYearInput">Année min</label>
-                    <InputNumber @change="updateFilteredProposals" name="minYear" :min="MIN_YEAR" :max="maxYear" type="number" id="minYearInput" step="1"/>
+                    <InputNumber @change="updateFilteredProposals" name="minYear" :min="MIN_YEAR" :max="maxYear" type="number" id="minYearInput" :step="1"/>
                     <label for="maxYearInput">max</label>
-                    <InputNumber @change="updateFilteredProposals" name="maxYear" :min="minYear" :max="MAX_YEAR" type="number" id="maxYearInput" step="1"/>
+                    <InputNumber @change="updateFilteredProposals" name="maxYear" :min="minYear" :max="MAX_YEAR" type="number" id="maxYearInput" :step="1"/>
                     <i v-if="filterChanged" @click="cancelFilter" class="material-icons">cancel</i>
                 </div>
             </div>
