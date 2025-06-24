@@ -6,7 +6,9 @@ use Mailgun\Mailgun;
 class Mailer{
     
     /**
-     * Send an email using Mailgun API.
+     * Envoyer un email avec l'api Mailgun
+     * 
+     * @return true si la requête s'est correctement déroulée
      */
     public static function send(string $to, string $subject, string $message)
     {
