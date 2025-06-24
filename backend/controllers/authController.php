@@ -69,19 +69,21 @@ class AuthController{
         echo json_encode($user);
 
         try{
-            $mail = Mailer::init();
-            $mail->addAddress($user->get('USR_email_VC'));
-            $mail->Subject = 'Création de compte VoteRight.fr';
             $htmlBody = file_get_contents('./view/mail/register.html');
             $htmlBody = str_replace(
                 ['{{firstname}}', '{{imageUrl}}'],
                 [$user->get("USR_firstname_VC"), $_ENV['IMAGE_URL']],
                 $htmlBody
             );
-            $mail->Body = $htmlBody;
-            Mailer::send($mail);
+
+            $mail = Mailer::send(
+                $user->get('USR_email_VC'),
+                'Création de compte VoteRight.fr',
+                $htmlBody
+            );
+
         }catch (Exception $e) {
-            echo "Erreur d'envoi : {$mail->ErrorInfo}";
+            echo "Erreur d'envoi : {$e->getMessage()}";
         }
     }
 

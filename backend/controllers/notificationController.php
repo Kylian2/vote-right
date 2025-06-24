@@ -40,6 +40,7 @@ class notificationController{
         $prepare->setFetchmode(PDO::FETCH_CLASS, "user");
         $senderUser = $prepare->fetch();
 
+        /*
         $mail = Mailer::init();
         $mail->Subject = 'Nouvelle proposition';
         $htmlBody = file_get_contents('./view/mail/notify-proposal.html');
@@ -77,7 +78,7 @@ class notificationController{
         }catch (Exception $e) {
             echo "Erreur d'envoi : {$mail->ErrorInfo}";
         }
-        $mail->SmtpClose();
+        $mail->SmtpClose();*/
     }
 
     public static function notifyCommentReaction(){
@@ -141,7 +142,7 @@ class notificationController{
         $prepare->setFetchmode(PDO::FETCH_CLASS, "user");
         $user = $prepare->fetch();
 
-        $mail = Mailer::init();
+        /*$mail = Mailer::init();
         $mail->Subject = "Quelqu'un a réagit à votre commentaire";
         
         if(!$reaction){
@@ -181,7 +182,7 @@ class notificationController{
             $mail->SmtpClose();
         }catch (Exception $e) {
             echo "Erreur d'envoi : {$mail->ErrorInfo}";
-        }
+        }*/
     }
 
     public static function notifyReactionProposal(){
@@ -222,7 +223,7 @@ class notificationController{
         $prepare->execute($values);
         $nbReaction = $prepare->fetch();
 
-        $mail = Mailer::init();
+        /*$mail = Mailer::init();
         $mail->Subject = "Quelqu'un a réagit à votre proposition";
 
         if($body['reaction'] === LIKE || $body['reaction'] === LOVE){
@@ -258,12 +259,12 @@ class notificationController{
             $mail->SmtpClose();
         }catch (Exception $e) {
             echo "Erreur d'envoi : {$mail->ErrorInfo}";
-        }
+        }*/
     }
 
     public static function sendInvitation(string $recipientMail, User $sender, Invitation $invitation, Community $community){
 
-        $mail = Mailer::init();
+        /*$mail = Mailer::init();
         $mail->Subject = "Vous avez reçu une invitation";
 
         $htmlBody = file_get_contents('./view/mail/invitation.html');
@@ -296,7 +297,7 @@ class notificationController{
             return $return;
         }catch (Exception $e) {
             echo "Erreur d'envoi : {$mail->ErrorInfo}";
-        }
+        }*/
     }
 
 }
