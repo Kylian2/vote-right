@@ -159,11 +159,12 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         color: $color-5;
         border: 2px solid rgba(139, 92, 246, 0.2);
         backdrop-filter: blur(10px);
-        
-        &:hover {
+        transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:hover {  
             background: $gradient;
             color: $contrast;
-            border-color: transparent;
+            border-color:  rgba(255, 255, 255, 0.95);
         }
     }
     
