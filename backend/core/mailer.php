@@ -1,43 +1,34 @@
 <?php
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+use Mailgun\Mailgun;
 
 
 class Mailer{
     
     /**
-     * Initialise un mail avec les paramètres smtp, l'encodage utf8.
-     * L'envoyeur du mail est celui de l'utilisateur spécifié par les variables d'environnement
+     * Envoyer un email avec l'api Mailgun
      * 
-     * @return PHPMailer une instance de mail PHPMailer
+     * @return true si la requête s'est correctement déroulée
      */
-    public static function init() {
+    public static function send(string $to, string $subject, string $message)
+    {
+        $mg = Mailgun::create($_ENV['EMAIL_API_KEY'], 'https://api.eu.mailgun.net');
 
-        $mail = new PHPMailer(true);
-    
-        // Paramètres du serveur SMTP
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com '; 
-        $mail->SMTPAuth = true;
-        $mail->Username = $_ENV['EMAIL_USER'];
-        $mail->Password = $_ENV['EMAIL_PASS'];
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
-        $mail->CharSet = 'UTF-8';
-        $mail->isHTML(true);
-        $mail->setFrom($_ENV['EMAIL_USER'], 'VoteRight');
+        $result = $mg->messages()->send(
+            $_ENV['EMAIL_DOMAIN'], 
+            [
+                'from'    => $_ENV['APP_NAME'] . ' <' . $_ENV['EMAIL_USER'] . '>',
+                'to'      => $to,
+                'subject' => $subject,
+                'html'    => $message
+            ]
+        );
 
-        return $mail;
-    }
-    
-    /**
-     * Envoie le mail passé en paramètre
-     * 
-     * @param PHPMailer une instance de mail PHPMailer
-     */
-    public static function send(PHPMailer $mail){
-        return $mail->send();
+        if ($result->getMessage() === 'Queued. Thank you.') {
+            return true;
+        } else {
+            throw new Exception('Error sending email: ' . $result->getMessage());
+        }
     }
 }
 

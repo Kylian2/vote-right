@@ -24,8 +24,6 @@ class CodeController{
 
         $code = Code::generateCode($body["email"], 'create');
 
-        $mail = Mailer::init();
-        $mail->Subject = 'Code de verification';
         $htmlBody = file_get_contents('./view/mail/verification-code.html');
         $htmlBody = str_replace(
             [
@@ -38,16 +36,16 @@ class CodeController{
             ],
             $htmlBody
         );
-        $mail->Body = $htmlBody;
-        $mail->SMTPKeepAlive = true;
 
-        $mail->addBCC($body["email"]);
         try{
-            Mailer::send($mail);
+            $mail = Mailer::send(
+                $body["email"], 
+                'Code de verification', 
+                $htmlBody
+            );
         }catch (Exception $e) {
-            echo "Erreur d'envoi : {$mail->ErrorInfo}";
+            echo "Erreur d'envoi : {$e->getMessage()}";
         }
-        $mail->SmtpClose();
 
         echo json_encode(true);
     }
@@ -78,8 +76,6 @@ class CodeController{
 
         $code = Code::generateCode($body["email"], 'recuperation-code');
 
-        $mail = Mailer::init();
-        $mail->Subject = 'Code de recuperation';
         $htmlBody = file_get_contents('./view/mail/recuperation-code.html');
         $htmlBody = str_replace(
             [
@@ -92,16 +88,16 @@ class CodeController{
             ],
             $htmlBody
         );
-        $mail->Body = $htmlBody;
-        $mail->SMTPKeepAlive = true;
 
-        $mail->addBCC($body["email"]);
         try{
-            Mailer::send($mail);
+            $mail = Mailer::send(
+                $body["email"], 
+                'Code de recuperation', 
+                $htmlBody
+            );
         }catch (Exception $e) {
-            echo "Erreur d'envoi : {$mail->ErrorInfo}";
+            echo "Erreur d'envoi : {$e->getMessage()}";
         }
-        $mail->SmtpClose();
 
         echo json_encode(true);
     }

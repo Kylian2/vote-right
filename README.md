@@ -94,14 +94,18 @@ Le backend PHP est servi par NGINX. Assurez-vous que votre code PHP est bien dan
 Créez un fichier `.env` dans le dossier config contenant les variables suivantes  :
 
 ```ini
+APP_NAME=Voteright
 DB_HOST=db
 DB_NAME=voterigth_db
 DB_USER=root
 DB_PASS=root
-EMAIL_USER=your-email@example.com
-EMAIL_PASS=your-email-password
+EMAIL_USER=user@email.fr
+EMAIL_DOMAIN=mail.fr
+EMAIL_API_KEY=yourapikey
 IMAGE_URL=url-du-frontend
 ```
+
+**Mailer** : nous utilisons *Mailgun* pour envoyer nos emails. Il vous faudra un compte pour remplir les variables d'environnements associées au mailing.
 
 Ensuite installez les dépendances php à l'aide de composer (assurez vous d'être dans le dossier `./backend`). 
 
