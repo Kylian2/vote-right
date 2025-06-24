@@ -1,4 +1,4 @@
-.community-proposals{
+.community-proposals {
     margin: 20px 5% 20px 5%;
     display: flex;
     flex-direction: column;
@@ -7,49 +7,94 @@
         margin: 20px 2% 20px 2%;
     }
 
-    .filter{
-        p {
-            float: left;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-        img{
-            float: right;
+    .view-selector {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        i, img {
             height: 32px;
             width: auto;
+            cursor: pointer;
+        }
+
+        img {
+            margin-bottom: 2px;
         }
     }
 
-    .filter-container {
-        margin-top: 20px;
+    .filter {
         display: flex;
         align-items: center;
-        gap: 25px;
-        &__block{
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
+        margin-top: 5px;
+
+        select {
+            border: 1px solid gray;
+            background: white;
+            margin-right: 15px;
+
             @media screen and (max-width: 600px) {
-                flex-direction: column;
-                align-items: start;
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
             }
-            > div{
-                display: flex;
-                gap: 15px;
-                flex-wrap: wrap;
-            }
-        } 
-        &__checkboxes{
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        @media screen and (max-width: 875px) {
-            flex-direction: column;
-            align-items: start;
-            gap: 20px;
+        &__year {
+            display: inherit;
+            align-items: inherit;
+            margin-left: 15px;
+
+            div {
+                display: flex;
+                align-items: inherit;
+            }
+
+            @media screen and (max-width: 1000px) {
+                margin-top: 5px;
+                margin-left: 5px;
+            }
+
+            @media screen and (max-width: 600px) {
+                margin-top: 0px;
+            }
+        }
+
+        label {
+            margin-right: 10px;
+
+            @media screen and (max-width: 600px) {
+                margin-right: 5px;
+            }
+        }
+
+        input {
+            width: 85px;
+            height: 30px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+
+            @media screen and (max-width: 600px) {
+                margin-right: 5px;
+            }
+        }
+
+        i {
+            margin-left: 10px;
+            cursor: pointer;
+
+            @media screen and (max-width: 600px) {
+                margin-left: 0px;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            font-size: 14px;
+            display: block;
+        }
+
+        @media screen and (max-width: 1000px) {
+            display: block;
         }
     }
 
@@ -94,6 +139,11 @@
 
         &__title{
             margin-left: 1em;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            -webkit-line-clamp: 1;
+            text-overflow: ellipsis;
         }
 
         @media screen and (max-width: 600px) {
@@ -146,6 +196,14 @@
             line-height: 1.4;
             font-size: 14px;
 
+            span {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                -webkit-line-clamp: 3;
+                text-overflow: ellipsis;
+            }
+
             @media screen and (max-width: 600px) {
                 font-size: 13px;
             }
@@ -157,19 +215,24 @@
             font-size: 13px;
             gap: 5px;
 
-            > div {
+            div {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
 
-                > p{
+                p {
                     display: flex;
                     align-items: center;
                     gap: 2px;
 
-                    > span{
+                    span {
                         margin-top: 2px;
                         line-height: 24px;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        -webkit-line-clamp: 1;
+                        text-overflow: ellipsis;
                     }
                 }
             }
@@ -192,5 +255,9 @@
                 font-size: 12px;
             }     
         }
-    }      
+    }
+    
+    .proposal-not-found{
+        margin-top: 20px;
+    }
 }
