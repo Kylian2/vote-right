@@ -1,5 +1,5 @@
 <template>
-    <Header type="notlogged"></Header>
+    <Header2></Header2>
     <main class="login">
         <div class="registration">
             <h1>Connexion</h1>
@@ -29,6 +29,9 @@ const config = useRuntimeConfig();
 
 const email = useState("email", ()=> "");
 const password = useState("password", ()=> "");
+
+const html = document.getElementsByTagName('html')[0];
+html.classList.add('landing-page-background');
 
 const error = ref(false);
 definePageMeta({

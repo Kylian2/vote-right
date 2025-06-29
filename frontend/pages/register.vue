@@ -1,5 +1,5 @@
 <template>
-    <Header type="notlogged"></Header>
+    <Header2></Header2>
     <main class="register">
         <div class="registration">
             <h1>Inscription</h1>
@@ -116,14 +116,15 @@ Code incorrect
 </Toast>
 </template>
 <script setup>
-import InputNumber from '~/components/InputNumber.vue';
-
 
 const config = useRuntimeConfig();
 
 definePageMeta({
   middleware: ["guest"]
 })
+
+const html = document.getElementsByTagName('html')[0];
+html.classList.add('landing-page-background');
 
 const step = useState("step", ()=> 1);
 const verificationCodeIsSend = useState("verificationCodeIsSend", () => false);
