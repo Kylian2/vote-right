@@ -62,4 +62,8 @@ const handleForm = async () => {
 
 }
 
+onBeforeUnmount(() => {
+    html.classList.remove('landing-page-background');
+});
+
 </script>

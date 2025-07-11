@@ -213,4 +213,8 @@ const validateEmail = (email) => {
     return regex.test(email);
 }
 
+onBeforeUnmount(() => {
+    html.classList.remove('landing-page-background');
+});
+
 </script>

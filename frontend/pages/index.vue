@@ -224,4 +224,8 @@ const config = useRuntimeConfig();
 const html = document.getElementsByTagName('html')[0];
 html.classList.add('landing-page-background');
 
+onBeforeUnmount(() => {
+    html.classList.remove('landing-page-background');
+});
+
 </script>
