@@ -14,6 +14,7 @@
         <nav v-if="type === 'logged'" class="logged">
             <div class="wrapper" :class="{'active' : actif === 'accueil'}" ><NuxtLink class="logged__link" to="/home">Accueil</NuxtLink></div>
             <div class="wrapper" :class="{'active' : actif === 'groupes'}"><NuxtLink class="logged__link" to="/communities">Groupes</NuxtLink></div>
+            <div class="wrapper" :class="{'active' : actif === 'sondages'}"><NuxtLink class="logged__link" to="/surveys">Sondages</NuxtLink></div>
         </nav>
         <div v-if="type === 'logged'" class="logged">
             <button class="logged__link shine"  @click="settingsModal = !settingsModal">Mon compte</button>

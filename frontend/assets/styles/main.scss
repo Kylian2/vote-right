@@ -17,6 +17,7 @@
 @import './components/comment.scss';
 @import './components/modal.scss';
 @import './components/toast.scss';
+@import './components/surveyCard.scss';
 
 /* Import des styles de page */
 
@@ -31,8 +32,10 @@
 @import './pages/new-proposal.scss';
 @import './pages/proposal.scss';
 @import './pages/invitation.scss';
+@import './pages/surveys.scss';
 
 /* Import des éléments de structures */
 
 @import './layout/header.scss';
 @import './layout/header_2.scss';
+@import './layout/main-layout-blocs.scss';

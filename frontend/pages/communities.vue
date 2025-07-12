@@ -1,6 +1,6 @@
 <template>
     <Header type="logged" actif="groupes"></Header>
-    <div class="communities__title">
+    <div class="page__title communities__title">
         <h1>Groupes</h1>
         <NuxtLink class="btn--full btn--responsive-hidden" to="/community/new">
             Créer mon groupe

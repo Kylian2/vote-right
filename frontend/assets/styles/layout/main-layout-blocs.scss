@@ -1,0 +1,12 @@
+.page{
+
+    &__title{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        a{
+            margin:0 5%;
+        }
+    }
+    
+}
