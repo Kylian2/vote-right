@@ -104,7 +104,7 @@
         font-size: 20px;
         margin-bottom: 5px;
         font-weight: 500;
-        @media screen and (min-width: 600px) {
+        @media screen and (max-width: 600px) {
             font-size: 18px;
         }
     }
@@ -290,5 +290,25 @@ select{
     > label{
         font-size: 16px;
         font-weight: 400;
+    }
+}
+
+.radio-input{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+
+    p{
+        font-size: 20px;
+        margin-bottom: 5px;
+        font-weight: 500;
+        @media screen and (min-width: 600px) {
+            font-size: 18px;
+        }
+    }
+
+    label{
+        margin: 0 5px;
     }
 }
