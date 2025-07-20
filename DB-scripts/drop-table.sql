@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS survey_answer;
+DROP TABLE IF EXISTS survey_choice;
+DROP TABLE IF EXISTS survey_question;
+DROP TABLE IF EXISTS survey_type;
 DROP TABLE IF EXISTS formal_request;
 DROP TABLE IF EXISTS report;
 DROP TABLE IF EXISTS comment_reaction;
