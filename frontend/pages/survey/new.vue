@@ -73,6 +73,31 @@
                 <Select name="suffrage" placeholder="Selectionnez un mode de scrutin" :options="suffrageMode">Mode de scrutin</Select>
             </div>
 
+            <div class="new-survey__choice-list" v-if="suffrage">
+                <p>Indiquez les choix</p>
+
+                <div class="sortable-list" id="sortable-list-1" ref="sortableList">                     
+                    <div v-for="item, key in choiceList" class="sortable-list__item" draggable="true"
+                        @dragstart="(e) => {
+                            draggedItem = e.target;
+                        }">
+                        <i class="material-icons">drag_handle</i>
+                        <input v-model="choiceList[key]" placeholder="Indiquez un choix"></input>
+                        <i class="material-icons close-icon"
+                            @click="() => {
+                                choiceList.splice(key, 1);
+                                addDropzone();
+                            }"
+                        >close</i></div>     
+                    <p v-if="choiceList.length === 0" class="legende">Aucun choix</p>                
+                </div>
+
+                <button class="btn btn--small" @click="() => {
+                    choiceList.push('');
+                    addDropzone();
+                }">Ajouter un choix</button>
+            </div>
+
         </div>
     </section>
 
@@ -113,6 +138,88 @@ const formIsValid = computed(() => {
         (endDate.value === 'now' || customEndDateValid.value);
 });
 
-//https://sortablejs.github.io/Sortable/#shared-lists
+// ------- Gestion des dropzones -------
+
+const sortableList = ref(null);
+const draggedItem = ref(null);
+const choiceList = useState("surveyChoiceList", () => ["Choix 1", "Choix 2", "Choix 3"]);
+const createDropzoneWithListeners = () => {
+    const dropzone = document.createElement('div');
+    dropzone.className = 'sortable-list__dropzone';
+    dropzone.innerHTML = '<span></span>';
+    
+    dropzone.addEventListener('dragover', (e) => {
+        e.target.classList.add('dragover');
+        e.preventDefault();
+    }, false);
+    
+    dropzone.addEventListener('dragleave', (e) => {
+        e.target.classList.remove('dragover');
+    });
+    
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        
+        let target = e.target;
+        if (!target.classList.contains('sortable-list__dropzone')) {
+            target = target.closest('.sortable-list__dropzone');
+        }
+        
+        target.classList.remove('dragover');
+        target.replaceWith(draggedItem.value);
+        draggedItem.value = null;
+        
+        // Nettoyer et recréer toutes les dropzones
+        Array.from(sortableList.value.getElementsByClassName('sortable-list__dropzone')).forEach(dropzone => {
+            dropzone.remove();
+        });
+        
+        addDropzone();
+    });
+    
+    return dropzone;
+};
+
+const addDropzone = () => {
+
+    // Nettoyer les anciennes dropzones
+    Array.from(sortableList.value.getElementsByClassName('sortable-list__dropzone')).forEach(dropzone => {
+        dropzone.remove();
+    });
+
+    const array = Array.from(sortableList.value.getElementsByClassName('sortable-list__item'));
+
+    // Dropzone au début de la liste
+    const firstDropzone = createDropzoneWithListeners();
+    if (array.length > 0) {
+        sortableList.value.insertBefore(firstDropzone, array[0]);
+    } else {
+        sortableList.value.appendChild(firstDropzone);
+    }
+    
+    // Dropzones entre les éléments
+    for(let i = 0; i < array.length; i++){
+        const dropzoneClone = createDropzoneWithListeners();
+        sortableList.value.insertBefore(dropzoneClone, array[i].nextSibling);
+    }
+    
+    // Dropzone à la fin de la liste
+    const lastDropzone = createDropzoneWithListeners();
+    sortableList.value.appendChild(lastDropzone);
+};
+
+watch(suffrage, () => {
+    nextTick(() => {
+        if(suffrage.value){
+            addDropzone();
+        }
+    })
+})
+
+// ------- Fin de la gestion des dropzones -------
+
+onBeforeUnmount(() => {
+    document.removeEventListener('DOMContentLoaded', () => {});
+})
 
 </script>
