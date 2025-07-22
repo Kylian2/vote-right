@@ -75,11 +75,10 @@
 
             <div class="new-survey__choice-list" v-if="suffrage">
                 <p>Indiquez les choix</p>
-
                 <div class="sortable-list" id="sortable-list-1" ref="sortableList">                     
                     <div v-for="item, key in choiceList" class="sortable-list__item" draggable="true"
                         @dragstart="(e) => {
-                            draggedItem = e.target;
+                            draggedItem = key;
                         }">
                         <i class="material-icons">drag_handle</i>
                         <input v-model="choiceList[key]" placeholder="Indiquez un choix"></input>
@@ -166,9 +165,11 @@ const createDropzoneWithListeners = () => {
         }
         
         target.classList.remove('dragover');
-        target.replaceWith(draggedItem.value);
-        draggedItem.value = null;
-        
+        const index = parseInt(target.getAttribute('data-index'));
+        const element = choiceList.value[draggedItem.value];
+        choiceList.value.splice(draggedItem.value, 1);
+        choiceList.value.splice(index, 0, element);
+
         // Nettoyer et recréer toutes les dropzones
         Array.from(sortableList.value.getElementsByClassName('sortable-list__dropzone')).forEach(dropzone => {
             dropzone.remove();
@@ -191,6 +192,7 @@ const addDropzone = () => {
 
     // Dropzone au début de la liste
     const firstDropzone = createDropzoneWithListeners();
+    firstDropzone.setAttribute('data-index', '0');
     if (array.length > 0) {
         sortableList.value.insertBefore(firstDropzone, array[0]);
     } else {
@@ -200,11 +202,13 @@ const addDropzone = () => {
     // Dropzones entre les éléments
     for(let i = 0; i < array.length; i++){
         const dropzoneClone = createDropzoneWithListeners();
+        dropzoneClone.setAttribute('data-index', `${i + 1}`);
         sortableList.value.insertBefore(dropzoneClone, array[i].nextSibling);
     }
     
     // Dropzone à la fin de la liste
     const lastDropzone = createDropzoneWithListeners();
+    lastDropzone.setAttribute('data-index', `${array.length + 1}`);
     sortableList.value.appendChild(lastDropzone);
 };
 
