@@ -54,6 +54,13 @@
         width: 100%;
     }
 
+    &__participants{
+        > p {
+            max-width: 600px;
+            margin: 10px 0;
+        }
+    }
+
     .btn-container{
         display: flex;
         justify-content: end;

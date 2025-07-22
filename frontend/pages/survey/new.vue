@@ -5,7 +5,7 @@
 
 <main class="new-survey">
 
-    <section>
+    <section v-if="step === 1">
         <div>
             <Input 
                 type="text" name="title" placeholder="Donnez un titre à votre sondage" required
@@ -100,14 +100,44 @@
         </div>
     </section>
 
+    <section v-if="step === 2">
+        <div>
+            <div class="new-survey__participants">
+                <label class="form-label" for="participants">Ajouter des participants</label>
+                <p>Les adresses électroniques peuvent être séparées par un retour à la ligne, une espace, une virgule, etc. Les adresses en double seront traitées comme des votes par procuration. 
+                    Vous pouvez copier-coller les données d'un tableur ou d'un fichier CSV pour ajouter des champs: poids, nom de l'électeur, etc.Les votes sont limités à 1000 électeurs. </p>
+                <TextArea 
+                    name="participants" 
+                    placeholder="Indiquez les adresses électroniques des participants"
+                    :rows='10'
+                />
+            </div>
+        </div>
+        <div>
+            <div>
+                <Radio name="who-can-vote" 
+                :options="[
+                    {value: 'everyone', label: 'Toutes les personnes bénéficiant du lien', default: true}, 
+                    {value: 'participants', label: 'Uniquements les destinataires du sondage'}
+                ]"
+                >Qui peut voter ?</Radio>
+            </div>
+            <Checkbox :choices="anonymousList">Anonymat</Checkbox>
+        </div>
+    </section>
+
     <div class="btn-container">
-        <NuxtLink class="btn btn--cancel" href="/communities">Annuler</NuxtLink>
-        <button formmethod="dialog" :disabled="!formIsValid" @click="handleData" class="btn btn--full">Valider la création</button>
+        <NuxtLink v-if="step === 1" class="btn btn--cancel" href="/surveys">Annuler</NuxtLink>
+        <button v-if="step === 2" class="btn btn--cancel" @click="step--" >Retour</button>
+        <button v-if="step === 1" formmethod="dialog" :disabled="!firstFormIsValid" @click="step++" class="btn btn--full">Ajouter des participants</button>
+        <button v-if="step === 2" formmethod="dialog" :disabled="!secondFormIsValid" @click="handleData" class="btn btn--full">Valider la création</button>
     </div>
 </main>
 
 </template>
 <script setup>
+
+const step = useState("newSurveyFormStep", () => 1);
 
 const colors = useState("colors", () => ["#5AB7EE", "#FDBE55", "#FB961F", "#13329F", "#8700CF", "#F669D9", "#DE3D59"])
 const suffrageMode = useState("suffrageMode", () => [
@@ -117,6 +147,9 @@ const suffrageMode = useState("suffrageMode", () => [
     ["Choix par pondération", "ponderation"],
 ]);
 const wantDescription = ref(false);
+
+const title = useState("title");
+const titleValid = useState("titleValid");
 
 const startDate = useState("start-date");
 const startDateValid = useState("start-dateValid");
@@ -131,10 +164,31 @@ const customEndDateValid = useState("custom-end-dateValid");
 const suffrage = useState("suffrage");
 const suffrageValid = useState("suffrageValid");
 
-const formIsValid = computed(() => {
-    return startDateValid.value && endDateValid.value && suffrageValid.value &&
+const color = useState("color");
+const colorValid = useState("colorValid");
+
+const firstFormIsValid = computed(() => {
+    return titleValid.value && startDateValid.value && endDateValid.value && suffrageValid.value &&
         (startDate.value === 'now' || customStartDateValid.value) &&
-        (endDate.value === 'now' || customEndDateValid.value);
+        (endDate.value === 'now' || customEndDateValid.value) && colorValid.value && (choiceList.value.length > 0 && choiceList.value.every(choice => choice.trim() !== ''));
+});
+
+const anonymousList = [{
+    name: 'anonymous',
+    label: 'Vote anonyme',
+    value: true,
+}];
+
+const participants = useState("participants", () => '');
+const participantsValid = useState("participantsValid", () => false);
+
+const whoCanVote = useState("who-can-vote", () => 'everyone');
+const whoCanVoteValid = useState("who-can-voteValid", () => true);
+
+const anonymous = useState("anonymous", () => anonymousList);
+
+const secondFormIsValid = computed(() => {
+    return participantsValid.value;
 });
 
 // ------- Gestion des dropzones -------
