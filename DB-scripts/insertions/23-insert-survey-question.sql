@@ -1,0 +1,16 @@
+INSERT INTO `survey_question` (`SQU_id_NB`, `SQU_survey_NB`, `SQU_label_VC`, `SQU_type_NB`, `created_at`, `updated_at`, `SQU_required_BOOL`) VALUES
+(1, 1, 'Êtes-vous satisfait du produit A?', 4, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 2, 'Quelle couleur préférez-vous pour le logo?', 2, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 3, 'À quelle fréquence utilisez-vous notre application?', 2, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 4, 'Comment notez-vous notre service client sur 10?', 4, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 5, 'Recommanderiez-vous notre entreprise à un ami?', 5, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 6, 'Quelles améliorations souhaitez-vous en priorité?', 1, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 7, 'Quel est votre canal de communication préféré?', 2, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 8, 'La formation a-t-elle répondu à vos attentes?', 5, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 9, 'Comment évaluez-vous le temps de réponse du support?', 4, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 10, 'L\'interface utilisateur est-elle intuitive?', 5, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 11, 'Comment jugez-vous le rapport qualité-prix?', 4, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 12, 'Quelles fonctionnalités vous manquent le plus?', 1, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 0),
+(1, 13, 'L\'installation du logiciel était-elle simple?', 5, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 14, 'Rencontrez-vous des problèmes de stabilité?', 5, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1),
+(1, 15, 'Quelle note donnez-vous à votre expérience globale?', 4, '2025-07-27 21:51:34', '2025-07-27 21:51:34', 1);
