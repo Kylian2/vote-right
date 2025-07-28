@@ -20,20 +20,20 @@
                     class="surveys__about__informations__item surveys__about__informations__item--total"
                 >
                     <p>Total de sondage</p>
-                    <p>64</p>
+                    <p>{{ surveysData?.['survey_count'] }}</p>
                 </div>
                 <div
                     class="surveys__about__informations__item surveys__about__informations__item--responses"
                 >
                     <p>Nombre de réponses</p>
-                    <p>1554</p>
+                    <p>{{ surveysData?.['survey_answers_count'] }}</p>
                 </div>
-                <div
+                <!--<div
                     class="surveys__about__informations__item surveys__about__informations__item--average"
                 >
                     <p>Taux moyen de réponse</p>
                     <p>78%</p>
-                </div>
+                </div>-->
             </div>
         </section>
 
@@ -53,6 +53,7 @@
 </template>
 <script setup>
 const surveys = ref()
+const surveysData = ref()
 const config = useRuntimeConfig()
 
 onMounted(() => {
@@ -66,6 +67,16 @@ const fetchData = async () => {
         })
 
         surveys.value = response
+    } catch (error) {
+        console.log('An error occured', error)
+    }
+
+    try {
+        const response = await $fetch(`${config.public.baseUrl}/surveys/data`, {
+            credentials: 'include',
+        })
+
+        surveysData.value = response
     } catch (error) {
         console.log('An error occured', error)
     }

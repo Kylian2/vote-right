@@ -17,4 +17,12 @@ class SurveyController
         $surveys = Survey::getAllOf($user->USR_id_NB);
         echo json_encode($surveys);
     }
+
+    public static function data()
+    {
+        $user = SessionGuard::getUser();
+
+        $data = Survey::getUserSurveysData($user->USR_id_NB);
+        echo json_encode($data);
+    }
 }

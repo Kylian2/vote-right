@@ -90,6 +90,7 @@ Router::post('/code/recovery', 'codeController@sendRecuperationCode');
 Router::post('/code/check', 'codeController@checkCode');
 
 Router::get('/surveys', 'surveyController@index', true);
+Router::get('/surveys/data', 'surveyController@data', true);
 
 /* Routes accessible via l'api algorithms */
 Router::get('/algo/users', 'userController@index', false, true);

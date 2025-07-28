@@ -63,4 +63,17 @@ class Survey extends Model
 
         return $result;
     }
+
+    public static function getUserSurveysData(int $userId)
+    {
+        $request = "SELECT COUNT(DISTINCT SUR_id_NB) as survey_count, COUNT(DISTINCT SAN_user_NB, SAN_survey_NB, SAN_question_NB) as survey_answers_count
+                    FROM survey s
+                    INNER JOIN survey_answer sa ON s.SUR_id_NB = sa.SAN_survey_NB
+                    WHERE SUR_user_NB = :user";
+        $prepare = connexion::pdo()->prepare($request);
+        $prepare->bindParam(':user', $userId, PDO::PARAM_INT);
+        $prepare->execute();
+        $result = $prepare->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
