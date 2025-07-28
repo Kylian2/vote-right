@@ -1,23 +1,30 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "dependencies": {
-    "material-icons": "^1.13.14",
-    "nuxt": "^3.15.1",
-    "postcss": "^8.4.38",
-    "vue": "latest",
-    "vue-router": "latest"
-  },
-  "devDependencies": {
-    "sass": "1.77.6"
-  }
+    "name": "nuxt-app",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "nuxt build",
+        "start": "nuxt start",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare"
+    },
+    "dependencies": {
+        "material-icons": "^1.13.14",
+        "nuxt": "^3.15.1",
+        "postcss": "^8.4.38",
+        "vue": "latest",
+        "vue-router": "latest"
+    },
+    "devDependencies": {
+        "sass": "1.77.6"
+    },
+    "prettier": {
+        "singleQuote": true,
+        "semi": false,
+        "trailingComma": "es5",
+        "printWidth": 80,
+        "tabWidth": 4
+    }
 }
