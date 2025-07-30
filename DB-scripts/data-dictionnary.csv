@@ -76,6 +76,7 @@ COMMENT           ;COM_proposal_NB                 ;A              ;NB          
 COMMENT           ;COM_sender_NB                   ;A              ;NB               ;INT         ;Identifie l’utilisateur qui commente
 COMMENT           ;COM_suppressor_NB               ;A              ;NB               ;INT         ;Identifie le modérateur qui effectue une action sur le commentaire
 COMMENT           ;COM_creation_DATE               ;A              ;DATETIME         ;            ;Date d’envoi du commentaire
+COMMENT           ;COM_events_NB                   ;A              ;NB               ;INT         ;Identifie l'évènement commenté
 REASON            ;RES_id_NB                       ;A              ;NB               ;TINYINT     ;Identifiant du motif
 REASON            ;RES_label_VC                    ;A              ;VC               ;100         ;Libelle du motif
 REPORT            ;RPT_user_NB                     ;A              ;NB               ;INT         ;Identifie l'utilisateur qui signale le commentaire
@@ -97,10 +98,32 @@ THEME_BUDGET      ;BUT_period_YEAR                 ;A              ;YEAR        
 THEME_BUDGET      ;BUT_amount_NB                   ;A              ;NB               ;FLOAT(12,2) ;Montant du bugdet dédié au theme
 FORMAL_REQUEST    ;FOR_proposal_NB                 ;A              ;NB               ;INT         ;La proposition sujette à la demande
 FORMAL_REQUEST    ;FOR_user_NB                     ;A              ;NB               ;INT         ;L'utilisateur qui demande
-CODE    ;COD_code_NB                     ;A              ;NB               ;INT         ;Le code à six chiffres
-CODE    ;COD_user_VC                     ;A              ;VC               ;200         ;L'email associé au code (peut servir à identifier un utilisateur)
-CODE    ;COD_action_VC                     ;A              ;VC               ;40         ;Le type d'action associé au code
-CODE    ;COD_creation_DATE                     ;A              ;DATETIME               ;         ;La date de création du code
+CODE              ;COD_code_NB                     ;A              ;NB               ;INT         ;Le code à six chiffres
+CODE              ;COD_user_VC                     ;A              ;VC               ;200         ;L'email associé au code (peut servir à identifier un utilisateur)
+CODE              ;COD_action_VC                   ;A              ;VC               ;40          ;Le type d'action associé au code
+CODE              ;COD_creation_DATE               ;A              ;DATETIME         ;            ;La date de création du code
+EVENT_CATEGORY    ;EVC_id_NB                       ;A              ;NB               ;INT         ;Identifiant de la catégorie d'évènement
+EVENT_CATEGORY    ;EVC_name_VC                     ;A              ;VC               ;50          ;Nom de la catégorie
+EVENT_CATEGORY    ;EVC_color_VC                    ;A              ;VC               ;7           ;Couleur de la catégorie
+EVENT_CATEGORY    ;EVC_community_NB                ;A              ;NB               ;INT         ;Identifiant de la communauté
+EVENTS            ;EVT_id_NB                       ;A              ;NB               ;INT         ;Identifiant de l'évènement
+EVENTS            ;EVT_start_DATE                  ;A              ;DATETIME         ;            ;Heure de début de l'évènement
+EVENTS            ;EVT_end_DATE                    ;A              ;DATETIME         ;            ;Heure de fin de l'évènement
+EVENTS            ;EVT_modality_VC                 ;A              ;VC               ;50          ;Modalité de l'évènement
+EVENTS            ;EVT_place_VC                    ;A              ;VC               ;100         ;Lieu de l'évènement
+EVENTS            ;EVT_url_VC                      ;A              ;VC               ;150         ;URL de l'évènement
+EVENTS            ;EVT_can_register_BOOL           ;A              ;BOOL             ;            ;Vrai si l'inscription à l'évènement est possible
+EVENTS            ;EVT_max_participants            ;A              ;NB               ;SMALLINT    ;Nombre maximum de participants
+EVENTS            ;EVT_registration_deadline_DATE  ;A              ;DATETIME         ;            ;Date limite d'inscription
+EVENTS            ;EVT_remember_email_NB           ;A              ;NB               ;TINYINT     ;Nombre de rappels envoyés
+EVENTS            ;EVT_creator_NB                  ;A              ;NB               ;INT         ;Identifiant du créateur de l'évènement
+EVENTS            ;EVT_category_NB                 ;A              ;NB               ;INT         ;Identifiant de la catégorie
+EVENT_PARTICIPANT ;EVP_events_NB                   ;A              ;NB               ;INT         ;Identifiant de l'évènement
+EVENT_PARTICIPANT ;EVT_user_NB                     ;A              ;NB               ;INT         ;Identifiant du participant à l'évènement
+EVENT_ROLE        ;EVR_events_NB                   ;A              ;NB               ;INT         ;Identifiant de l'évènement
+EVENT_ROLE        ;EVR_role_NB                     ;A              ;NB               ;INT         ;Identifiant du rôle pouvant voir l'évènement
+EVENT_USER        ;EVU_events_NB                   ;A              ;NB               ;INT         ;Identifiant de l'évènement
+EVENT_USER        ;EVU_user_NB                     ;A              ;NB               ;INT         ;Identifiant de l'utilisateur pouvant voir l'évènement
                   ;INV_validity_time_NB            ;P              ;NB               ;            ;Durée de validité d’une invitation. Actuellement = 7j
                   ;PRO_request_goal_NB             ;C              ;NB               ;            ;Nombre de demande à atteindre pour déclencher un vote formel. = (MEM_nbmembre_NB / 2)+1
                   ;MEM_nb_member_NB                ;C              ;NB               ;            ;Nombre de membre d’un groupe. (Calculé avec une requête sur la table membre) = SELECT COUNT(*) FROM MEMBRE WHERE MEM_groupe_NB = x.
