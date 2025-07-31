@@ -7,7 +7,7 @@
 			<a href="/" class="landing-header__logo">VoteRight</a>
 			
 			<nav class="landing-header__nav">
-					<a href="#fonctionnalites" class="landing-header__nav-link">Fonctionnalités</a>
+					<a href="/features" class="landing-header__nav-link">Fonctionnalités</a>
 					<a href="#communautes" class="landing-header__nav-link">Communautés</a>
 					<a href="#contact" class="landing-header__nav-link">Contact</a>
 			</nav>
