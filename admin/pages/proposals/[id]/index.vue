@@ -41,7 +41,7 @@
         </p>
     </div>
     <div class="proposal__actions">
-        <NuxtLink :to="`/proposals/${$route.params.id}/votes`" class="btn btn--small" v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == ASSESSOR">Plannification du vote</NuxtLink>
+        <NuxtLink :to="`/proposals/${$route.params.id}/votes`" class="btn btn--small" v-if="role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == ASSESSOR">Planification du vote</NuxtLink>
         <div v-if="proposal['PRO_status_VC'] ==='En cours' && votesAreFinished && budgetTheme && (role['MEM_role_NB'] == ADMIN || role['MEM_role_NB'] == DECIDER)">
             <button class="btn btn--small btn--full" @click="approveProposal(true)" :disabled="(proposal['PRO_budget_NB'] > (budgetTheme['BUT_amount_NB'] - budgetTheme['BUT_used_budget_NB']))">Adopter</button>
             <button class="btn btn--small btn--full" @click="approveProposal(false)">Refuser</button>

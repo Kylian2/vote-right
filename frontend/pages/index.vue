@@ -7,7 +7,7 @@
 			<a href="/" class="landing-header__logo">VoteRight</a>
 			
 			<nav class="landing-header__nav">
-					<a href="/features" class="landing-header__nav-link">Fonctionnalités</a>
+					<a href="#fonctionnalites" class="landing-header__nav-link">Fonctionnalités</a>
 					<a href="#communautes" class="landing-header__nav-link">Communautés</a>
 					<a href="#contact" class="landing-header__nav-link">Contact</a>
 			</nav>
@@ -125,6 +125,10 @@
 					<h3 class="feature-card__title">Anonymat garanti</h3>
 					<p class="feature-card__text">Protection de l'identité et des choix de vote pour tous les membres participants.</p>
 				</div>
+			</div>
+
+			<div class="features__guide">
+				<a href="/tutorial/guide" class="landing-btn landing-btn--blue"> Accéder au guide →</a>
 			</div>
 		</section>
 
