@@ -12,29 +12,30 @@
         <section class="guide__menu test1">
             <div class="guide__menu__grid-container test2">
 
-                <div class="guide__menu__cell-container">
-                    <h2 class="guide__menu__item"> Les <br> groupes </h2>
+                <div class="guide__menu__grid-container__cell-container">
+                    <h2 class="guide__menu__grid-container__cell-container__item"> Les <br> groupes </h2>
                 </div>
 
-                <div class="guide__menu__cell-container">
-                    <h2 class="guide__menu__item"> Les <br> propositions </h2>
+                <div class="guide__menu__grid-container__cell-container">
+                    <h2 class="guide__menu__grid-container__cell-container__item"> Les <br> propositions </h2>
                 </div>
 
-                <div class="guide__menu__cell-container">
-                    <h2 class="guide__menu__item"> Les <br> votes </h2>
+                <div class="guide__menu__grid-container__cell-container">
+                    <h2 class="guide__menu__grid-container__cell-container__item"> Les <br> votes </h2>
                 </div>
 
-                <div class="guide__menu__cell-container">
-                    <h2 class="guide__menu__item"> Outils <br> de gestion </h2>
+                <div class="guide__menu__grid-container__cell-container">
+                    <h2 class="guide__menu__grid-container__cell-container__item"> Outils <br> de gestion </h2>
                 </div>
 
-                <div class="guide__menu__cell-container">
-                    <h2 class="guide__menu__item" > Les rôles </h2>
+                <div class="guide__menu__grid-container__cell-container">
+                    <h2 class="guide__menu__grid-container__cell-container__item" > Les rôles </h2>
                 </div>
 
-                <div class="guide__menu__cell-container">
-                    <h2 class="guide__menu__item"> Gestion <br> du compte </h2>
+                <div class="guide__menu__grid-container__cell-container">
+                    <h2 class="guide__menu__grid-container__cell-container__item"> Gestion <br> du compte </h2>
                 </div>
+                
             </div>
         </section>
 
@@ -42,13 +43,13 @@
             <div class="guide__FAQ-redirection__content">
                 
                 <div class="guide__FAQ-redirection__content__arrow-container">
-                    <img class="guide__FAQ-redirection__content__arrow" src="~/public/down-arrow-60x60.png" alt="left">
+                    <img class="guide__FAQ-redirection__content__arrow-container__arrow" src="~/public/down-arrow-60x60.png" alt="left">
                 </div>
 
                 <h1 class="hero__title guide__FAQ-redirection__content__title">FAQ</h1>
 
                 <div class="guide__FAQ-redirection__content__arrow-container">
-                    <img class="guide__FAQ-redirection__content__arrow" src="~/public/down-arrow-60x60.png" alt="right">
+                    <img class="guide__FAQ-redirection__content__arrow-container__arrow" src="~/public/down-arrow-60x60.png" alt="right">
                 </div>
 
             </div>
