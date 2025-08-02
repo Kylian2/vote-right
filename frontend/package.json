@@ -19,5 +19,12 @@
   },
   "devDependencies": {
     "sass": "1.77.6"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "es5",
+    "printWidth": 120,
+    "tabWidth": 4
   }
 }
