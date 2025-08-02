@@ -333,6 +333,9 @@
     </Modal>
 
     <Toast name="addThemeValid" :type="3" :time="5" :loader="true" class="toast"> Thème ajouté </Toast>
+    <Toast name="addThemeError" :type="1" :time="5" :loader="true" class="toast">
+        Le thème n'a pas pu être ajouté
+    </Toast>
 
     <Toast name="forbidden" :type="1" :time="5" :loader="true" class="toast">
         Vous n'avez pas les droits pour effectuer cette action
@@ -341,6 +344,9 @@
     <Toast name="limit" :type="1" :time="5" :loader="true" class="toast">
         Le budget de la proposition est superieur à celui de son thème
     </Toast>
+
+    <Toast name="justAdopted" :type="3" :time="5" :loader="true">La proposition a été adoptée</Toast>
+    <Toast name="justRejected" :type="3" :time="5" :loader="true">La proposition a été refusée</Toast>
 </template>
 <script setup>
 const ADMIN = 1
@@ -458,6 +464,7 @@ const fetchDataByPeriod = async () => {
 
 const addThemeModal = useState('addThemeModal', () => false)
 const addThemeToast = useState('addThemeValidUp', () => false)
+const addThemeError = useState('addThemeErrorUp', () => false)
 const nameNewTheme = useState('nameNewTheme')
 const budgetNewTheme = useState('budgetNewTheme')
 const budgetNewThemeValid = useState('budgetNewThemeValid')
@@ -487,12 +494,15 @@ const addTheme = async () => {
 
         budget.value = response2
     } catch (error) {
+        addThemeError.value = true
         console.log('An error occured', error)
     }
 }
 
 const limit = useState('limitUp')
 const forbidden = useState('forbiddenUp')
+const justAdopted = useState('justAdoptedUp', () => false)
+const justRejected = useState('justRejectedUp', () => false)
 
 const approveProposal = async (status, proposal) => {
     try {
@@ -513,6 +523,9 @@ const approveProposal = async (status, proposal) => {
             )
 
             budget.value = bud
+            justAdopted.value = true
+        } else {
+            justRejected.value = true
         }
 
         const v = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/voted`, {
@@ -527,6 +540,12 @@ const approveProposal = async (status, proposal) => {
             }
         )
         adopted.value = a
+
+        const o = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/ongoing`, {
+            credentials: 'include',
+        })
+
+        ongoing.value = o
     } catch (error) {
         console.log('An unexptected error occured : ', error)
         if (error.status === 403) {
