@@ -1,6 +1,6 @@
 <template>
     <Header2></Header2>
-    <main class="roles">
+    <main class="gestion">
         <footer id="contact" class="footer">
 			<div class="footer__content">
 				<div class="footer__brand">

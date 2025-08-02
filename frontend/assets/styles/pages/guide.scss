@@ -2,14 +2,24 @@
     display: flex;
     flex-direction: column;
 
-    h2{
+    h2 {
         font-family: $main-font;
-        font-size: 30px;
+        font-size: 2.5rem;
+    }
+
+    h3{
+        font-family: $main-font;
+        font-size: 2rem;
     }
 
     &__hero {
         min-height: 0vh;
-        margin-top: 0px;
+        margin-top: 0%;
+    }
+
+    &__subtitle {
+        max-width: none;
+        margin: 1rem 4rem;
     }
 
     &__menu {
@@ -65,7 +75,7 @@
                     color: white;
                     margin-right: 0%;
                     font-size: 1.4rem;
-                    line-height: 1.6;
+                    line-height: 1.6rem;
                 }
             }
         }
@@ -73,28 +83,28 @@
 
     &__FAQ-redirection {
         display: flex;
-        justify-content: center;
-        margin-top: 2.5rem;
+        flex-direction: column;
+        text-align: center;
+        margin: 3rem 0rem;
 
         &__content {
             display: flex;
             flex-direction: row;
+            margin: 0% 40%;
 
             &__arrow-container {
                 display: grid;
                 align-items: center;
 
                 &__arrow {
-                    margin-top: 0px;
                     animation: jump 1s infinite ease-in-out;
                 }
             }
 
             &__title {
-                display: inline-block;
-                margin-top: 0px;
                 position: relative;
                 cursor: pointer;
+                margin-top: 0%;
 
                 &::after {
                     content: "";
@@ -106,16 +116,71 @@
                     background: linear-gradient(to right, $text-primary 0%, $color-5 100%);
                     transition: width 0.3s ease;
                 }
+            }
 
-                &:hover::after {
-                    width: 100%;
-                }
+            &:hover &__title::after {
+                width: 100%;
             }
 
             &:hover &__arrow-container__arrow {
                 animation-play-state: paused;
             }
         }
+    }
+
+
+    &__FAQ {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 5%;
+
+        &__list {
+            display: flex;
+            flex-direction: column;
+            max-width: 75%;
+            gap: 2rem;
+
+            &__question {
+                background-color: #fafafa;
+                border: 3px solid #8b0097;
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                transition: all 0.4s ease;
+                overflow: hidden;
+
+                &__title {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    cursor: pointer;
+                }
+
+                &__icon {
+                    width: 40px;
+                    height: 40px;
+                    transition: transform 0.4s ease;
+                }
+
+                &__text {
+                    opacity: 0;
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: all 0.4s ease;
+                }
+            }
+        }
+    }
+}
+
+.is-open {
+    .guide__FAQ__list__question__icon {
+        transform: rotate(180deg);
+    }
+
+    .guide__FAQ__list__question__text {
+        opacity: 1;
+        max-height: 500px;
+        width: 100%;
     }
 }
 
