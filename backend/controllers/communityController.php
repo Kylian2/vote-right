@@ -5,14 +5,16 @@
 @require_once('core/sessionGuard.php');
 @require_once('validators/communityValidator.php');
 
-class CommunityController{
+class CommunityController
+{
 
     /**
      * Affiche un json de la liste des communautés dont l'utilisateur fait parti
      * 
      * @return void retourne le resultat sous forme de JSON
      */
-    public static function index(){
+    public static function index()
+    {
         $userId = SessionGuard::getUserId();
         $communities = Community::communitiesOf($userId);
         echo json_encode($communities);
@@ -26,7 +28,8 @@ class CommunityController{
      * Compositon de $params : 
      * - Indice 0 = $id, l'identifiant de la communauté recherchée. 
      */
-    public static function show(array $params){
+    public static function show(array $params)
+    {
         $community = Community::getById($params[0]);
         echo json_encode($community);
     }
@@ -36,7 +39,8 @@ class CommunityController{
      * 
      * @return void retourne le resultat sous forme de JSON
      */
-    public static function administered(){
+    public static function administered()
+    {
         $userId = SessionGuard::getUserId();
         $communities = Community::communitiesBy($userId);
         echo json_encode($communities);
@@ -48,11 +52,12 @@ class CommunityController{
      * 
      * @return void retourne le resultat sous forme de JSON
      */
-    public static function managed(){
+    public static function managed()
+    {
         $userId = SessionGuard::getUserId();
 
         $role = isset($_GET["role"]) ? $_GET["role"] : null;
-        if($role === 'decider'){
+        if ($role === 'decider') {
             $communities = Community::communitiesDecidedBy($userId);
             echo json_encode($communities);
             return;
@@ -91,29 +96,32 @@ class CommunityController{
      * - 422 avec un message JSON si des données sont manquantes ou invalides.
      * - La communauté au format JSON si l'insertion réussit.
      */
-    public static function store(){
+    public static function store()
+    {
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
-        if($body === null){
+        if ($body === null) {
             http_response_code(422);
             $return["Unprocessable Entity"] = 'Missing data';
             echo json_encode($return);
             return;
         }
-        
+
         $userId = SessionGuard::getUserId();
 
-        if(!isset($body["name"]) || !isset($body["color"]) || !isset($body["emoji"]) 
-        || !isset($body["description"]) || !isset($body["image"])){
+        if (
+            !isset($body["name"]) || !isset($body["color"]) || !isset($body["emoji"])
+            || !isset($body["description"]) || !isset($body["image"])
+        ) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing data for processing"}';
             return;
         }
 
-        try{
+        try {
             CommunityValidator::storeDataValidator($body);
-        } catch (Error $e){
+        } catch (Error $e) {
             http_response_code(422);
             $return["Unprocessable Entity"] = $e->getMessage();
             echo json_encode($return);
@@ -143,7 +151,8 @@ class CommunityController{
      * 
      * @return void le resultat est affiché au format JSON
      */
-    public static function ongoingProposals($params){
+    public static function ongoingProposals($params)
+    {
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
         $proposals = $community->getOngoingProposals();
@@ -160,12 +169,13 @@ class CommunityController{
      * 
      * @return void le resultat est affiché au format JSON
      */
-    public static function finishedProposals($params){
+    public static function finishedProposals($params)
+    {
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
         $proposals = $community->getFinishedProposals();
         echo json_encode($proposals);
-    }   
+    }
 
     /**
      * Affiche un json de la liste de propositions adoptées de la communauté. Par défaut tout les propositions de toutes les années sont 
@@ -178,13 +188,14 @@ class CommunityController{
      * 
      * @return void le resultat est affiché au format JSON
      */
-    public static function adoptedProposals($params){
+    public static function adoptedProposals($params)
+    {
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
         $period = isset($_GET["period"]) ? $_GET["period"] : null;
         $proposals = $community->getAdoptedProposals($period);
         echo json_encode($proposals);
-    }   
+    }
 
     /**
      * Affiche un json de la liste de propositions dont les votes sont terminées, et dont le statut est toujours 'en cours'.
@@ -196,12 +207,13 @@ class CommunityController{
      * 
      * @return void le resultat est affiché au format JSON
      */
-    public static function votedProposals($params){
+    public static function votedProposals($params)
+    {
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
         $proposals = $community->getVotedProposals();
         echo json_encode($proposals);
-    }   
+    }
 
     /**
      * Affiche un json de la liste des membres et de leur role dans la communauté.
@@ -213,14 +225,15 @@ class CommunityController{
      * 
      * @return void le resultat est affiché au format JSON
      */
-    public static function members($params){
+    public static function members($params)
+    {
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
         $users = $community->getMembers();
         echo json_encode($users);
     }
 
-        /**
+    /**
      * Affiche un json de la liste des membres et de leur role dans la communauté.
      * 
      * @param $params Une liste contenant les paramètres de la requêtes
@@ -230,7 +243,8 @@ class CommunityController{
      * 
      * @return void le resultat est affiché au format JSON
      */
-    public static function themes($params){
+    public static function themes($params)
+    {
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
         $themes = $community->getThemes();
@@ -247,7 +261,8 @@ class CommunityController{
      * 
      * @return void le resultat est affiché au format JSON
      */
-    public static function isMember($params){
+    public static function isMember($params)
+    {
         $userId = SessionGuard::getUserId();
         $result = Community::isMember($params[0], $userId);
         echo json_encode($result);
@@ -262,10 +277,11 @@ class CommunityController{
      * - 422 avec un message JSON si la période (`period`) n'est pas spécifiée ou invalide.
      * - Les budgets (JSON) par thème pour la période spécifiée si succès.
      */
-    public static function budget($params){
+    public static function budget($params)
+    {
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
-        if(!isset($_GET['period']) || !is_numeric($_GET['period'])){
+        if (!isset($_GET['period']) || !is_numeric($_GET['period'])) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"Period is not specified"}';
             return;
@@ -283,18 +299,19 @@ class CommunityController{
      * - 422 avec un message JSON si la période n'est pas spécifiée ou si le corps de la requête contient des données invalides.
      * - true (JSON) si les budgets sont définis avec succès.
      */
-    public static function setBudget($params){
+    public static function setBudget($params)
+    {
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
-        if(!isset($_GET['period']) || !is_numeric($_GET['period'])){
+        if (!isset($_GET['period']) || !is_numeric($_GET['period'])) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"Period is not specified"}';
             return;
         }
 
-        foreach($body as $key => $value){
-            if(!is_numeric($key) || !is_numeric($value)){
+        foreach ($body as $key => $value) {
+            if (!is_numeric($key) || !(is_numeric($value) || is_null($value))) {
                 http_response_code(422);
                 echo '{"Unprocessable Entity":"Invalid element in body"}';
                 return;
@@ -318,11 +335,12 @@ class CommunityController{
      * - 401 avec un message JSON en cas d'erreur lors de la mise à jour des membres.
      * - true (JSON) si les membres sont définis avec succès.
      */
-    public static function setMembers(array $params){
+    public static function setMembers(array $params)
+    {
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
-        if(!isset($body)){
+        if (!isset($body)) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"body is missing"}';
             return;
@@ -330,10 +348,10 @@ class CommunityController{
 
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
-        try{
+        try {
             $community->setMembers($body);
             echo json_encode(true);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             http_response_code(401);
             echo json_encode(array('Error' => $e->getMessage()));
         }
@@ -351,10 +369,11 @@ class CommunityController{
      * - 401 avec un message JSON en cas d'erreur lors de l'exclusion.
      * - true (JSON) si l'exclusion réussit.
      */
-    public static function exclude(array $params){
+    public static function exclude(array $params)
+    {
         $member = $params[1];
 
-        if(!is_numeric($member)){
+        if (!is_numeric($member)) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"Invalid data"}';
             return;
@@ -362,10 +381,10 @@ class CommunityController{
 
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
-        try{
+        try {
             $community->exclude($member);
             echo json_encode(true);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             http_response_code(401);
             echo json_encode(array('Error' => $e->getMessage()));
         }
@@ -379,7 +398,8 @@ class CommunityController{
      * @return void
      * - Les périodes disponibles (JSON) pour la communauté si succès.
      */
-    public static function periods(array $params){
+    public static function periods(array $params)
+    {
         $values["CMY_id_NB"] = $params[0];
         $community = new Community($values);
         $periods = $community->getPeriods($params[0]);
@@ -395,9 +415,10 @@ class CommunityController{
      * @return void
      * - Les propositions au format JSON
      */
-    public static function formattedProposals(array $params){
+    public static function formattedProposals(array $params)
+    {
 
-        if(!isset($_GET['period'])){
+        if (!isset($_GET['period'])) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"undefined period"}';
             return;
@@ -438,28 +459,31 @@ class CommunityController{
      * 
      * @return void renvoie true si la modification a bien été effecttué
      */
-    public static function update(array $params){
+    public static function update(array $params)
+    {
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
-        if($body === null){
+        if ($body === null) {
             http_response_code(422);
             $return["Unprocessable Entity"] = 'Missing data';
             echo json_encode($return);
-            return ;
+            return;
         }
 
-        if(!isset($body["name"]) || !isset($body["color"]) || !isset($body["emoji"]) 
-        || !isset($body["description"]) || !isset($body["image"])){
+        if (
+            !isset($body["name"]) || !isset($body["color"]) || !isset($body["emoji"])
+            || !isset($body["description"]) || !isset($body["image"])
+        ) {
             http_response_code(422);
             $return["Unprocessable Entity"] = 'missing data for processing';
             echo json_encode($return);
             return;
         }
 
-        try{
+        try {
             CommunityValidator::storeDataValidator($body);
-        } catch (Error $e){
+        } catch (Error $e) {
             http_response_code(422);
             $return["Unprocessable Entity"] = $e->getMessage();
             echo json_encode($return);
@@ -487,14 +511,15 @@ class CommunityController{
      *  - L'identifiant du role à chercher ($params[1]).
      * Si $params[1] est null alors on donne pour chaque rôle le nombre de personnes qui le possède.
      */
-    public static function headcount(array $params){
+    public static function headcount(array $params)
+    {
         $community = $params[0];
         $role = $params[1];
 
         $values["CMY_id_NB"] = $community;
         $community = new Community($values);
 
-        if(is_null($role)){
+        if (is_null($role)) {
             $return = $community->countAllRoles();
             echo json_encode($return);
             return;
@@ -503,7 +528,4 @@ class CommunityController{
         $return = $community->countRole($role);
         echo json_encode($return);
     }
-
 }
-
-?>
