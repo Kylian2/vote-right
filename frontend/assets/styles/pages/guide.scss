@@ -64,7 +64,7 @@
 
                 &:hover {
                     transform: translateY(-6px);
-                    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.8);
+                    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.6);
 
                     &::before {
                         transform: scaleX(1);
@@ -90,10 +90,13 @@
         &__content {
             display: flex;
             flex-direction: row;
-            margin: 0% 40%;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            cursor: pointer;
 
             &__arrow-container {
-                display: grid;
+                display: flex;
                 align-items: center;
 
                 &__arrow {
@@ -103,7 +106,6 @@
 
             &__title {
                 position: relative;
-                cursor: pointer;
                 margin-top: 0%;
 
                 &::after {
@@ -190,5 +192,138 @@
   }
   50% {
     transform: translateY(-15px);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .guide {
+    h2 {
+      font-size: 2rem;
+    }
+
+    h3 {
+      font-size: 1.6rem;
+    }
+
+    &__subtitle {
+      margin: 1rem 2rem;
+    }
+
+    &__menu {
+      &__grid-container {
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+        grid-template-rows: repeat(3, minmax(200px, 1fr));
+        column-gap: 2rem;
+        row-gap: 2rem;
+
+        &__cell-container {
+          padding: 1.5rem;
+
+          &__item {
+            font-size: 1.2rem;
+            line-height: 1.4rem;
+          }
+        }
+      }
+    }
+
+    &__FAQ-redirection {
+      &__content {
+        margin: 0 25%;
+      }
+    }
+
+    &__FAQ {
+      &__list {
+        max-width: 90%;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .guide {
+    h2 {
+      font-size: 1.6rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+    }
+
+    &__subtitle {
+      margin: 1rem 1rem;
+    }
+
+    &__menu {
+      &__grid-container {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+        grid-template-rows: repeat(3, minmax(150px, 1fr));  
+        column-gap: 1rem;
+        row-gap: 1.5rem;
+
+        &__cell-container {
+          display: flex;
+          flex-direction: row;          
+          align-items: center;          
+          justify-content: flex-start;   
+          padding: 1rem;
+          min-height: 140px;            
+
+          &__item {
+            font-size: 1.1rem;
+            line-height: 1.3rem;
+            text-align: left;
+          }
+        }
+      }
+    }
+
+    &__FAQ-redirection {
+      &__content {
+        margin: 0 auto;
+        padding: 1rem 1.5rem; 
+        max-width: 90%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        &__arrow-container__arrow {
+          width: 40px;  
+          height: 40px;
+        }
+
+        &__title {
+          font-size: 4rem; 
+          text-align: center;
+        }
+      }
+    }
+
+    &__FAQ {
+      &__list {
+        max-width: 95%;
+
+        &__question {
+          padding: 1rem;
+
+          &__title {
+            flex-direction: column;
+          }
+
+          &__icon {
+            width: 32px;
+            height: 32px;
+          }
+
+          &__text {
+            font-size: 0.95rem;
+          }
+        }
+      }
+    }
   }
 }
