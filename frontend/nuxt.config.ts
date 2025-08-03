@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   },
   css: [
     './assets/styles/main.scss', 
-    'material-icons/iconfont/material-icons.css' // chemin vers votre fichier SCSS ou CSS
+    'material-icons/iconfont/material-icons.css'
   ],
   vite: {
     css: {
@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'VoteRight',
+      title: 'Voteright',
       meta: [
         { name: 'google-site-verification', content: 'TYoJdcPBjFyZ50B0pA1Qpb9oO-eNZ3KhGRfsvbNs-xw' }
       ],
