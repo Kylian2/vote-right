@@ -51,4 +51,18 @@
         background: darken($color: $background-light, $amount: 10);
         color: darken($color: $background-light, $amount: 50);
     }
+
+    &--link{
+        font-weight: 300;
+        font-size: 14px;
+        text-decoration: underline;
+        cursor: pointer;
+        &:hover{
+            font-weight: 400;
+        }
+    }
+}
+
+.clickable{
+    cursor: pointer;
 }

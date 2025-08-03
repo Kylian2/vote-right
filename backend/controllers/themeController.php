@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 @require_once('models/theme.php');
 @require_once('models/community.php');
 
-class ThemeController{
+class ThemeController
+{
 
     /**
      * insère un thème dans la communauté passée en paramètre. Ajoute également 
@@ -13,20 +14,21 @@ class ThemeController{
      *
      * @return void Un JSON du thème inséré. 
      */
-    public static function store($params){
+    public static function store($params)
+    {
 
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
-        if(!isset($body['name'])){
+        if (!isset($body['name'])) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"name is missing"}';
             return;
         }
 
-        if(!isset($body['budget']) || !is_numeric($body['budget'])){
+        if (isset($body['budget']) && !is_numeric($body['budget'])) {
             http_response_code(422);
-            echo '{"Unprocessable Entity":"budget is invalid or missing"}';
+            echo '{"Unprocessable Entity":"budget is invalid"}';
             return;
         }
 
@@ -37,13 +39,12 @@ class ThemeController{
         $theme->insert();
         echo json_encode(($theme));
 
-        //Ajout du budget pour l'année en cours.
-        $communityValues['CMY_id_NB'] = $theme->get('THM_community_NB');
-        $community = new Community($communityValues);
-        $budgets[$theme->get('THM_id_NB')] = $body['budget'];
-        $community->setBudget($budgets, date('Y'));
+        //Ajout du budget pour l'année en cours s'il est défini.
+        if (isset($body['budget'])) {
+            $communityValues['CMY_id_NB'] = $theme->get('THM_community_NB');
+            $community = new Community($communityValues);
+            $budgets[$theme->get('THM_id_NB')] = $body['budget'] ?? null;
+            $community->setBudget($budgets, date('Y'));
+        }
     }
-    
 }
-
-?>
