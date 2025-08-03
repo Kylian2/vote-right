@@ -155,7 +155,7 @@
                         v-else
                         type="text"
                         name="address"
-                        placeholder="Entrez votre nouvelle adresse"
+                        placeholder="Entrez votre nouvelle a‡dresse"
                         required
                         :rules="[
                             (v) => Boolean(v) || 'Une adresse est requise',
