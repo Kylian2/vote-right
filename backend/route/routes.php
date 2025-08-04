@@ -89,9 +89,10 @@ Router::post('/code/verification', 'codeController@sendVerificationCode');
 Router::post('/code/recovery', 'codeController@sendRecuperationCode');
 Router::post('/code/check', 'codeController@checkCode');
 
+Router::post('/file', 'FileController@save', true);
+
+
 /* Routes accessible via l'api algorithms */
 Router::get('/algo/users', 'userController@index', false, true);
 Router::get('/algo/communities/{id}/proposals/formatted', 'communityController@formattedProposals', true, true);
 Router::get('/algo/communities/{id}/budget', 'communityController@budget', true, true);
-
-?>
