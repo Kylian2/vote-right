@@ -4,6 +4,7 @@
 @require_once('models/user.php');
 @require_once('core/sessionGuard.php');
 @require_once('validators/communityValidator.php');
+@require_once('models/file.php');
 
 class CommunityController
 {
@@ -98,21 +99,11 @@ class CommunityController
      */
     public static function store()
     {
-        $body = file_get_contents('php://input');
-        $body = json_decode($body, true);
-
-        if ($body === null) {
-            http_response_code(422);
-            $return["Unprocessable Entity"] = 'Missing data';
-            echo json_encode($return);
-            return;
-        }
-
         $userId = SessionGuard::getUserId();
 
         if (
-            !isset($body["name"]) || !isset($body["color"]) || !isset($body["emoji"])
-            || !isset($body["description"]) || !isset($body["image"])
+            !isset($_POST["name"]) || !isset($_POST["color"]) || !isset($_POST["emoji"])
+            || !isset($_POST["description"])
         ) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing data for processing"}';
@@ -120,7 +111,7 @@ class CommunityController
         }
 
         try {
-            CommunityValidator::storeDataValidator($body);
+            CommunityValidator::storeDataValidator($_POST);
         } catch (Error $e) {
             http_response_code(422);
             $return["Unprocessable Entity"] = $e->getMessage();
@@ -128,11 +119,10 @@ class CommunityController
             return;
         }
 
-        $values["CMY_name_VC"] = $body["name"];
-        $values["CMY_color_VC"] = $body["color"];
-        $values["CMY_image_VC"] = $body["image"];
-        $values["CMY_description_TXT"] = $body["description"];
-        $values["CMY_emoji_VC"] = $body["emoji"];
+        $values["CMY_name_VC"] = $_POST["name"];
+        $values["CMY_color_VC"] = $_POST["color"];
+        $values["CMY_description_TXT"] = $_POST["description"];
+        $values["CMY_emoji_VC"] = $_POST["emoji"];
         $values["CMY_creator_NB"] = $userId;
 
         $community = new Community($values);
@@ -461,19 +451,10 @@ class CommunityController
      */
     public static function update(array $params)
     {
-        $body = file_get_contents('php://input');
-        $body = json_decode($body, true);
-
-        if ($body === null) {
-            http_response_code(422);
-            $return["Unprocessable Entity"] = 'Missing data';
-            echo json_encode($return);
-            return;
-        }
 
         if (
-            !isset($body["name"]) || !isset($body["color"]) || !isset($body["emoji"])
-            || !isset($body["description"]) || !isset($body["image"])
+            !isset($_POST["name"]) || !isset($_POST["color"]) || !isset($_POST["emoji"])
+            || !isset($_POST["description"])
         ) {
             http_response_code(422);
             $return["Unprocessable Entity"] = 'missing data for processing';
@@ -482,7 +463,7 @@ class CommunityController
         }
 
         try {
-            CommunityValidator::storeDataValidator($body);
+            CommunityValidator::storeDataValidator($_POST);
         } catch (Error $e) {
             http_response_code(422);
             $return["Unprocessable Entity"] = $e->getMessage();
@@ -491,13 +472,17 @@ class CommunityController
         }
 
         $values["CMY_id_NB"] = $params[0];
-        $values["CMY_name_VC"] = $body["name"];
-        $values["CMY_color_VC"] = $body["color"];
-        $values["CMY_image_VC"] = $body["image"];
-        $values["CMY_description_TXT"] = $body["description"];
-        $values["CMY_emoji_VC"] = $body["emoji"];
+        $values["CMY_name_VC"] = $_POST["name"];
+        $values["CMY_color_VC"] = $_POST["color"];
+        $values["CMY_description_TXT"] = $_POST["description"];
+        $values["CMY_emoji_VC"] = $_POST["emoji"];
 
         Community::updateCommunity($values);
+
+        if (isset($_FILES['image'])) {
+            $community = Community::getById($params[0]);
+            $community->updateImage('image');
+        }
         echo json_encode(true);
     }
 

@@ -13,6 +13,7 @@ class Community extends Model
 
     public int $CMY_id_NB;
     public string $CMY_name_VC;
+    public int $CMY_image_NB;
     public string $CMY_image_VC;
     public string $CMY_emoji_VC;
     public string $CMY_color_VC;
@@ -26,7 +27,10 @@ class Community extends Model
 
     public static function getById(int $id)
     {
-        $request = 'SELECT * FROM community WHERE CMY_id_NB = :id';
+        $request = 'SELECT CMY_id_NB, CMY_name_VC, FIL_path_VC as CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_creator_NB 
+                    FROM community c
+                    INNER JOIN file f ON f.FIL_id_NB = c.CMY_image_NB 
+                    WHERE CMY_id_NB = :id';
         $prepare = connexion::pdo()->prepare($request);
         $values['id'] = $id;
         $prepare->execute($values);
@@ -38,7 +42,9 @@ class Community extends Model
 
     public static function getAll()
     {
-        $request = "SELECT * FROM community;";
+        $request = 'SELECT CMY_id_NB, CMY_name_VC, FIL_path_VC as CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_creator_NB 
+        FROM community c
+        INNER JOIN file f ON f.FIL_id_NB = c.CMY_image_NB';
         $result = connexion::pdo()->query($request);
         $result->setFetchmode(PDO::FETCH_CLASS, "community");
         $communities = $result->fetchAll();
@@ -69,7 +75,7 @@ class Community extends Model
 
     public static function communitiesManagedBy(int $user)
     {
-        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_VC, 
+        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_NB, 
                     (SELECT COUNT(*) FROM member WHERE MEM_community_NB = CMY_id_NB) as CMY_nb_member_NB
                     FROM community 
                     INNER JOIN member ON MEM_community_NB = CMY_id_NB
@@ -84,7 +90,7 @@ class Community extends Model
 
     public static function communitiesDecidedBy(int $user)
     {
-        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_VC, 
+        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_NB, 
                     (SELECT COUNT(*) FROM member WHERE MEM_community_NB = CMY_id_NB) as CMY_nb_member_NB
                     FROM community 
                     INNER JOIN member ON MEM_community_NB = CMY_id_NB
@@ -99,12 +105,11 @@ class Community extends Model
 
     public function insert()
     {
-        $request = 'INSERT INTO community (CMY_name_VC, CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_creator_NB)
-                    VALUES (:name, :image, :emoji, :color, :description, :creator);';
+        $request = 'INSERT INTO community (CMY_name_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_creator_NB)
+                    VALUES (:name, :emoji, :color, :description, :creator);';
         $prepare = connexion::pdo()->prepare($request);
         $values = array(
             "name" => $this->CMY_name_VC,
-            "image" => $this->CMY_image_VC,
             "emoji" => $this->CMY_emoji_VC,
             "color" => $this->CMY_color_VC,
             "description" => $this->CMY_description_TXT,
@@ -113,6 +118,8 @@ class Community extends Model
         $prepare->execute($values);
         $communityId = connexion::pdo()->lastInsertId();
         $this->set('CMY_id_NB', $communityId);
+
+        $this->updateImage('image');
 
         $request = 'INSERT INTO member(MEM_community_NB, MEM_user_NB, MEM_role_NB) VALUES (:community, :user, :role)';
         $prepare = connexion::pdo()->prepare($request);
@@ -416,21 +423,33 @@ class Community extends Model
                     SET 
                         CMY_name_VC = :name,
                         CMY_color_VC = :color,
-                        CMY_image_VC = :image,
                         CMY_description_TXT = :description,
                         CMY_emoji_VC = :emoji
                     WHERE CMY_id_NB = :id';
+
         $prepare = connexion::pdo()->prepare($request);
 
-        $values = array(
+        $request_values = array(
             "id" => $values["CMY_id_NB"],
             "name" => $values["CMY_name_VC"],
             "color" => $values["CMY_color_VC"],
-            "image" => $values["CMY_image_VC"],
             "description" => $values["CMY_description_TXT"],
             "emoji" => $values["CMY_emoji_VC"],
         );
-        $prepare->execute($values);
+        $prepare->execute($request_values);
+    }
+
+    public function updateImage(string $array_key)
+    {
+        $file = File::save($array_key, str_replace(' ', $this->CMY_name_VC . '_', $this->CMY_id_NB . '_cover'));
+        $this->CMY_image_NB = $file->FIL_id_NB;
+
+        $request = 'UPDATE community SET CMY_image_NB = :file_id WHERE CMY_id_NB = :community_id';
+        $prepare = connexion::pdo()->prepare($request);
+        $request_values['file_id'] = $file->FIL_id_NB;
+        $request_values['community_id'] = $this->CMY_id_NB;
+        $prepare->execute($request_values);
+        return $file;
     }
 
     public static function countRole(int $role)

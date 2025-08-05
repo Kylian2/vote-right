@@ -1,6 +1,7 @@
-<?php 
+<?php
 
-class CommunityValidator{
+class CommunityValidator
+{
 
     /**
      * Valide une entrée de communauté. 
@@ -13,25 +14,22 @@ class CommunityValidator{
      * 
      * @return true si les données sont valides. 
      */
-    public static function storeDataValidator(array &$data){
+    public static function storeDataValidator(array &$data)
+    {
 
-        if(strlen($data["name"]) > 150){
+        if (strlen($data["name"]) > 150) {
             throw new Error("Invalid size of name");
         }
 
-        if(strlen($data["image"]) > 50){
-            throw new Error("Invalid size of image name");
-        }
-
-        if(strlen($data["emoji"]) !== 5 && strlen($data["emoji"]) !== 4){
+        if (strlen($data["emoji"]) !== 5 && strlen($data["emoji"]) !== 4) {
             throw new Error("Invalid size of emoji (in Ascii)");
         }
 
-        if(strlen($data["color"]) !== 7){
+        if (strlen($data["color"]) !== 7) {
             throw new Error("Invalid size of color (must be in hex)");
         }
 
-        if(strpos($data["color"], "#") !== 0){
+        if (strpos($data["color"], "#") !== 0) {
             throw new Error("Invalid format of color (must be in hex)");
         }
 
@@ -46,5 +44,3 @@ class CommunityValidator{
         return true;
     }
 }
-
-?>
