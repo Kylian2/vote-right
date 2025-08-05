@@ -2,9 +2,7 @@
     <Header type="logged" actif="groupes"></Header>
     <div class="communities__title">
         <h1>Groupes</h1>
-        <NuxtLink class="btn--full btn--responsive-hidden" to="/community/new">
-            Créer mon groupe
-        </NuxtLink>
+        <NuxtLink class="btn--full btn--responsive-hidden" to="/community/new"> Créer mon groupe </NuxtLink>
         <NuxtLink class="btn--full btn--plus btn--responsive" to="/community/new">
             <span class="btn--plus__plus"></span>
             <span class="btn--plus__plus"></span>
@@ -15,7 +13,7 @@
             <h4>Mes groupes :</h4>
             <div class="communities__bloc__contener">
                 <CardCommunity v-for="community in myCommunities" :community="community"></CardCommunity>
-                <NuxtLink to="/community/new" class="add-community" :class="{ 'small': myCommunities.length > 0 }">
+                <NuxtLink to="/community/new" class="add-community" :class="{ small: myCommunities.length > 0 }">
                     <span class="add-community__plus"></span>
                     <span class="add-community__plus"></span>
                 </NuxtLink>
@@ -26,47 +24,44 @@
             <h4>Auxquels je participe :</h4>
             <div class="communities__bloc__contener">
                 <CardCommunity v-for="community in communities" :community="community"></CardCommunity>
-                <p v-if="communities.length == 0"> Vous ne participez à aucun groupes </p>
+                <p v-if="communities.length == 0">Vous ne participez à aucun groupes</p>
             </div>
         </div>
     </main>
 </template>
 <script setup>
-
-const config = useRuntimeConfig();
+const config = useRuntimeConfig()
 
 definePageMeta({
-    middleware: ["auth"]
+    middleware: ['auth'],
 })
 
-const myCommunities = useState("myCommunities", () => []);
-const communities = useState("communities", () => []);
+const myCommunities = useState('myCommunities', () => [])
+const communities = useState('communities', () => [])
 
 onMounted(() => {
-    fetchData();
+    fetchData()
 })
 
 const fetchData = async () => {
-    try{
+    try {
         const response = await $fetch(`${config.public.baseUrl}/communities`, {
             credentials: 'include',
-        });
+        })
 
         communities.value = response
     } catch (error) {
-        console.log("An error occured", error);
+        console.log('An error occured', error)
     }
 
-    try{
+    try {
         const response = await $fetch(`${config.public.baseUrl}/communities/administered`, {
             credentials: 'include',
-        });
+        })
 
         myCommunities.value = response
     } catch (error) {
-        console.log("An error occured", error);
+        console.log('An error occured', error)
     }
-
 }
-
 </script>

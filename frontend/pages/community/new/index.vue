@@ -26,15 +26,14 @@
                 <EmojiPicker name="emoji" :rules="[(v) => Boolean(v) || 'Une couleur est requise']">Emoji</EmojiPicker>
             </div>
             <div>
-                <ImagePicker
-                    name="image"
-                    :images="images"
-                    :vModele="image"
-                    :rules="[(v) => Boolean(v) || 'Une couleur est requise']"
-                >
-                    <template #title>Image</template>
-                    <template #legend>Selectionnez une image de bannière pour votre groupe</template>
-                </ImagePicker>
+                <div>
+                    <p class="label">Image</p>
+                    <p class="legende">
+                        Sélectionnez une image pour votre groupe, celle-ci devra être au format png ou jpg.
+                    </p>
+
+                    <input type="file" @change="handleFileChange" />
+                </div>
                 <div class="btn-container">
                     <NuxtLink class="btn btn--cancel" href="/communities">Annuler</NuxtLink>
                     <button formmethod="dialog" :disabled="!formIsValid" @click="handleData" class="btn btn--full">
@@ -60,35 +59,31 @@ const color = useState('color')
 const colorValid = useState('colorValid')
 const emoji = useState('emoji')
 const emojiValid = useState('emojiValid')
-const image = useState('image')
+const image = useState('image', () => null)
 const imageValid = useState('imageValid')
 
 const colors = useState('colors', () => ['#5AB7EE', '#FDBE55', '#FB961F', '#13329F', '#8700CF', '#F669D9', '#DE3D59'])
-const images = useState('images', () => [
-    '100001.png',
-    '100002.png',
-    '100003.png',
-    '100004.png',
-    '100005.png',
-    '100006.png',
-    '100007.png',
-])
+
+const handleFileChange = (event) => {
+    image.value = event.target.files[0]
+}
 
 const formIsValid = computed(() => {
-    return nameValid.value && descriptionValid.value && colorValid.value && emojiValid.value && imageValid.value
+    return nameValid.value && descriptionValid.value && colorValid.value && emojiValid.value && image.value !== null
 })
 
 const handleData = async () => {
+    const formData = new FormData()
+    formData.append('name', name.value)
+    formData.append('description', description.value)
+    formData.append('color', color.value)
+    formData.append('emoji', emoji.value)
+    formData.append('image', image.value)
+
     try {
         const response = await $fetch(`${config.public.baseUrl}/communities`, {
             method: 'POST',
-            body: {
-                name: name.value,
-                description: description.value,
-                color: color.value,
-                emoji: emoji.value,
-                image: image.value,
-            },
+            body: formData,
             credentials: 'include',
         })
 
