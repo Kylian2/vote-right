@@ -44,7 +44,7 @@ CREATE TABLE user (
 CREATE TABLE community (
     CMY_id_NB INT AUTO_INCREMENT,
     CMY_name_VC VARCHAR(150) NOT NULL,
-    CMY_image_VC VARCHAR(50) NOT NULL,
+    CMY_image_NB VARCHAR(50) NOT NULL,
     CMY_emoji_VC VARCHAR(5) NOT NULL,
     CMY_color_VC VARCHAR(7) NOT NULL,
     CMY_description_TXT TEXT,

@@ -9,6 +9,7 @@ BEGIN
     DECLARE name VARCHAR(150);
     DECLARE emoji VARCHAR(5);
     DECLARE image VARCHAR(50);
+    DECLARE image_path VARCHAR(50);
     DECLARE color VARCHAR(50);
     DECLARE nbMembre INT;
     DECLARE themes TEXT;
@@ -17,9 +18,10 @@ BEGIN
     DECLARE fin_cursor INT DEFAULT 0;
     DECLARE first INT DEFAULT 1; 
     DECLARE communities CURSOR FOR 
-        SELECT CMY_id_NB, CMY_name_VC, CMY_emoji_VC, CMY_color_VC, CMY_image_VC, 
+        SELECT CMY_id_NB, CMY_name_VC, CMY_emoji_VC, CMY_color_VC, CMY_image_NB, FIL_path_VC as CMY_image_VC,
                (SELECT COUNT(*) FROM member WHERE MEM_community_NB = CMY_id_NB) AS nbMembre
-        FROM community
+        FROM community c
+        INNER JOIN file f ON f.FIL_id_NB = c.CMY_image_NB
         WHERE CMY_id_NB IN (SELECT MEM_community_NB FROM member WHERE MEM_user_NB = userid AND mem_role_nb = 1);
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin_cursor = 1;
@@ -27,7 +29,7 @@ BEGIN
     OPEN communities;
 
     makejson: LOOP
-        FETCH communities INTO id, name, emoji, color, image, nbMembre;
+        FETCH communities INTO id, name, emoji, color, image, image_path, nbMembre;
 
         IF fin_cursor THEN
             LEAVE makejson;
@@ -47,7 +49,8 @@ BEGIN
             '"CMY_name_VC": "', name, '",',
             '"CMY_emoji_VC": "', emoji, '",',
             '"CMY_color_VC": "', color, '",',
-            '"CMY_image_VC": "', image, '",',
+            '"CMY_image_NB": "', image, '",',
+            '"CMY_image_VC": "', image_path, '",',
             '"CMY_nb_member_NB": "', nbMembre, '",',
             '"CMY_themes_TAB": ', themes,
             '}'
