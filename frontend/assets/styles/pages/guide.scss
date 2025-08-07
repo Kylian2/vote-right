@@ -5,6 +5,7 @@
     h2 {
         font-family: $main-font;
         font-size: 2.5rem;
+        margin-bottom: 0rem !important;
     }
 
     h3{
@@ -250,6 +251,10 @@
 
     h3 {
       font-size: 1.3rem;
+    }
+
+    &__hero {
+        margin-bottom: 0%;
     }
 
     &__subtitle {
