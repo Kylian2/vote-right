@@ -195,7 +195,7 @@ class Community extends Model
         return $proposals;
     }
 
-    public function getAdoptedProposals(int $period = null)
+    public function getAdoptedProposals(int | null $period = null)
     {
         @require_once("models/proposal.php");
 
@@ -417,6 +417,16 @@ class Community extends Model
         return json_decode($result[0]);
     }
 
+    /**
+     * Mets à jour les données, hors image contenu de la communauté dont l'id est contenu dans le tableau $values
+     * 
+     * @param array $values contient les données de la communauté à mettre à jour
+     * @param string $values.CMY_id_NB l'identifiant de la communauté à mettre à jour
+     * @param string $values.CMY_name_VC le nom de la communauté
+     * @param string $values.CMY_color_VC la couleur de la communauté
+     * @param string $values.CMY_description_TXT l description de la communauté
+     * @param string $values.CMY_emoji_VC l'emoji de la communauté
+     */
     public static function updateCommunity(array $values)
     {
         $request = 'UPDATE community 
@@ -439,6 +449,11 @@ class Community extends Model
         $prepare->execute($request_values);
     }
 
+    /**
+     * Mets à jour l'image de la communauté
+     * 
+     * @param string $array_name le nom du paramètre de la requete POST comportant le fichier
+     */
     public function updateImage(string $array_key)
     {
         $file = File::save($array_key, str_replace(' ', $this->CMY_name_VC . '_', $this->CMY_id_NB . '_cover'));

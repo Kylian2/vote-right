@@ -11,6 +11,12 @@ class File extends Model
     public string $FIL_type_VC;
     public int $FIL_user_NB;
 
+    /**
+     * Enregistre un fichier (entité + données) dans la base de données
+     * 
+     * @param string $array_name le nom du paramètre de la requete POST comportant le fichier
+     * @param string | null $target_name (facultatif) le nom avec lequel le fichier doit être enregistré
+     */
     public static function save(string $array_name, string | null $target_name = null)
     {
 
@@ -78,6 +84,9 @@ class File extends Model
         return $file_instance;
     }
 
+    /**
+     * Insère l'entité en base de donnée. 
+     */
     public function insert()
     {
 
