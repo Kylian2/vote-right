@@ -25,11 +25,11 @@
             </div>
             <div>
                 <div>
-                    <p class="label">Image Actuelle</p>
+                    <p class="label">{{ !newImage ? 'Image Actuelle' : 'Nouvelle image' }}</p>
                     <div
                         class="modify-community__image-view"
                         :style="{
-                            background: `url(${config.public.baseUrl}/${image})`,
+                            background: `url(${imageUrl})`,
                             backgroundSize: `cover`,
                         }"
                     ></div>
@@ -74,6 +74,10 @@ const colors = useState('colors', () => ['#5AB7EE', '#FDBE55', '#FB961F', '#1332
 const handleFileChange = (event) => {
     newImage.value = event.target.files[0]
 }
+
+const imageUrl = computed(() => {
+    return newImage.value ? URL.createObjectURL(newImage.value) : `${config.public.baseUrl}/${image.value}`
+})
 
 onMounted(() => {
     fetchData()

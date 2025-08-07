@@ -33,6 +33,8 @@
                     </p>
 
                     <input type="file" @change="handleFileChange" />
+
+                    <img v-if="image" class="new-community__image-preview" :src="imageUrl" />
                 </div>
                 <div class="btn-container">
                     <NuxtLink class="btn btn--cancel" href="/communities">Annuler</NuxtLink>
@@ -61,12 +63,16 @@ const emoji = useState('emoji')
 const emojiValid = useState('emojiValid')
 const image = useState('image', () => null)
 const imageValid = useState('imageValid')
-
 const colors = useState('colors', () => ['#5AB7EE', '#FDBE55', '#FB961F', '#13329F', '#8700CF', '#F669D9', '#DE3D59'])
 
 const handleFileChange = (event) => {
     image.value = event.target.files[0]
+    //imageContainer.val.src = URL.createObjectURL(image.value)
 }
+
+const imageUrl = computed(() => {
+    return URL.createObjectURL(image.value)
+})
 
 const formIsValid = computed(() => {
     return nameValid.value && descriptionValid.value && colorValid.value && emojiValid.value && image.value !== null
