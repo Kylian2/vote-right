@@ -1,5 +1,5 @@
 <template>
-    <Header2></Header2>
+    <Header2 id="navbar"></Header2>
     <main class="guide">
 
         <section class="hero guide__hero">
@@ -60,7 +60,7 @@
         </section>
 
         <section id="faq" class="guide__FAQ">
-            <div class="guide__FAQ__list ">
+            <div class="guide__FAQ__list">
 
                 <div class="guide__FAQ__list__question" :class="{ 'is-open': openIndex === 0 }">
                     <div class="guide__FAQ__list__question__title" @click="toggle(0)">
@@ -187,8 +187,6 @@
 
 <script setup>
 
-import { ref } from 'vue'
-
 const openIndex = ref(null)
 
 function toggle(index) {
@@ -197,9 +195,11 @@ function toggle(index) {
 
 function scrollToFAQ() {
   const target = document.getElementById("faq")
-  if (target) {
-    target.scrollIntoView({ behavior: "smooth" })
-  }
+  const navbar = document.getElementById("navbar")
+  const offsetter = navbar.getBoundingClientRect().height + 35
+  
+  const y = target.getBoundingClientRect().top + window.scrollY - offsetter
+  window.scrollTo({ top: y, behavior: "smooth" })
 }
 
 </script>

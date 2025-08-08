@@ -4,7 +4,7 @@
 
     h2 {
         font-family: $main-font;
-        font-size: 2.5rem;
+        font-size: 2rem;
         margin-bottom: 0rem !important;
     }
 
@@ -86,6 +86,7 @@
         display: flex;
         flex-direction: column;
         text-align: center;
+        align-items: center;
         margin: 3rem 0rem;
 
         &__content {
@@ -228,7 +229,7 @@
       }
     }
 
-    &__FAQ-redirection {
+    &__FAQ-redirection {      
       &__content {
         margin: 0 25%;
       }
@@ -309,6 +310,7 @@
     }
 
     &__FAQ {
+      
       &__list {
         max-width: 95%;
 

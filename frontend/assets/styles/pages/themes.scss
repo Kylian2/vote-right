@@ -19,51 +19,55 @@
         min-width: 250px;
         position: sticky;
         top: 20%;
+
         background: linear-gradient(135deg, $text-primary 0%, $color-5 100%);
-        margin: 3rem 1rem;
         border-radius: 2rem;
+        margin: 3rem 1rem;
 
         &__return-guide {
-            margin: 1.5rem 1rem;
-            color: white;
+            display: inline-block;
+            margin: 1.5rem auto 1rem 2rem;
             text-decoration: underline;
+            color: white;
+            cursor: pointer
         }
 
         &__section-title {
-            margin: 0rem 0rem 0.5rem 1rem;
+            margin: 0rem 0.5rem 1rem 2rem;
             font-size: 2rem !important;
-            font-family: 'inter';
             color: white;
         }
 
-        &__summary ul {
+        &__summary {
             list-style: none;
-            margin: 1rem;
-        }
+            margin: 0rem 0rem 1rem 2rem;
 
-        &__summary__shortens {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: white;
-            text-decoration: none;
-            border-radius: 0.5rem;
-            transition: background-color 0.3s;
-        }
+            &__shortens {
+                display: block;
+                padding: 0.75rem 1rem;
 
-        &__summary__shortens:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
+                color: white;
+                font-size: 1rem;
+                text-decoration: none;
+                border-radius: 2rem;
+                transition: background-color 0.3s;
+                cursor: pointer;
 
-        &__summary__shortens--active {
-            font-weight: bold;
-            background-color: rgba(255, 255, 255, 0.2);
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
+            }
+
+            &--active {
+                font-weight: bold;
+                background-color: rgba(255, 255, 255, 0.2);
+            }
         }
     }
 
     &__content {
         width: 70%;
         padding: 3rem;
-        overflow-y: auto;
 
         &__content__section {
             margin-bottom: 5rem;
@@ -71,12 +75,27 @@
     }
 }
 
-.test1 {
-    background-color: aqua;
-}
-.test2 {
-    background-color: red;
-}
-.test3 {
-    background-color: lightgreen;
+@media (max-width: 1024px) {
+  .theme {
+    flex-direction: row;
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    &__sidebar {
+        width: 18%;
+        min-width: 200px;
+        margin: 3rem 0.5rem;
+
+        &__summary {
+            margin: 0rem 0rem 1rem 1rem;
+        }
+    }
+
+    &__content {
+        width: 78%;
+        padding: 2rem;
+    }
+  }
 }

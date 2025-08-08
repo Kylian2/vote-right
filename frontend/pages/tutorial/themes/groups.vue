@@ -1,37 +1,37 @@
 <template>
-    <Header2></Header2>
+    <Header2 id="navbar"></Header2>
     <main class="theme">
 		
 		<div class="theme__sidebar">
 			<a href="/tutorial/guide" class="theme__sidebar__return-guide"> Retour au guide </a>
 			<h2 class="theme__sidebar__section-title"> Les groupes </h2>
-			<nav class="theme__sidebar__summary">
-				<ul>
-					<li><a href="#partie1" class="theme__sidebar__summary__shortens"> 1. Créer un groupe </a></li>
-					<li><a href="#partie2" class="theme__sidebar__summary__shortens"> 2. Rejoindre un groupe </a></li>
-					<li><a href="#partie3" class="theme__sidebar__summary__shortens"> 3. Voir tous les membres d’un groupe </a></li>
-					<li><a href="#partie4" class="theme__sidebar__summary__shortens"> 4. Quitter un groupe </a></li>
+			<nav>
+				<ul class="theme__sidebar__summary">
+					<li><a href="#part1" class="theme__sidebar__summary__shortens"> 1. Créer un groupe </a></li>
+					<li><a href="#part2" class="theme__sidebar__summary__shortens"> 2. Rejoindre un groupe </a></li>
+					<li><a href="#part3" class="theme__sidebar__summary__shortens"> 3. Voir tous les membres d’un groupe </a></li>
+					<li><a href="#part4" class="theme__sidebar__summary__shortens"> 4. Quitter un groupe </a></li>
 				</ul>
 			</nav>
 		</div>
 
 		<div class="theme__content">
-			<section class="theme__content__section">
+			<section id="part1" class="theme__content__section">
 				<h2 class="hero__title"> Créer un groupe </h2>
 				<p class="hero__subtitle"> Pour créer un groupe, connectez-vous sur le site avec vos identifiants, puis, rendez-vous dans l’onglet « Groupes ». Cliquez sur le bouton coloré en haut à droite : une fenêtre s’ouvre, il ne vous reste plus qu’à renseigner les informations demandées, puis à cliquer sur « Valider la création ». Et voilà, votre groupe est créé ! Vous pouvez désormais le retrouver dans l’onglet d’accueil. </p>
 			</section>
 
-			<section class="theme__content__section">
+			<section id="part2" class="theme__content__section">
 				<h2 class="hero__title"> Rejoindre un groupe </h2>
 				<p class="hero__subtitle"> Il n’est pas possible de rejoindre un groupe en le recherchant via un champ de texte. Pour en faire partie, vous devez être invité directement par l’administrateur. Vous recevrez une invitation par mail, contenant un code à 6 chiffres ainsi qu’un lien vers une page dédiée sur notre site. Sur cette page, entrez simplement le code reçu, puis cliquez sur le bouton pour accepter l’invitation. Et voilà, félicitations ! Vous faites désormais partie d’une nouvelle communauté ! </p>
 			</section>
 
-			<section class="theme__content__section">
+			<section id="part3" class="theme__content__section">
 				<h2 class="hero__title"> Voir tous les membres </h2>
 				<p class="hero__subtitle"> Depuis la page d’accueil de votre groupe, vous pouvez consulter la liste de tous les membres ainsi que leur rôle. Pour cela, cliquez sur le bouton « Voir les membres ». Une fenêtre s’ouvre avec la liste complète des membres du groupe. Vous pouvez également utiliser un filtre pour afficher uniquement certains rôles. </p>
 			</section>
 
-			<section class="theme__content__section">
+			<section id="part4" class="theme__content__section">
 				<h2 class="hero__title"> Quitter un groupe </h2>
 				<p class="hero__subtitle"> Si vous souhaitez quitter l’un des groupes dont vous êtes membre, rendez-vous sur la page d’accueil du groupe, puis cliquez sur le bouton gris « Quitter le groupe ». Une fenêtre de confirmation s’affiche : validez votre choix, et le groupe disparaîtra de votre page d’accueil. </p>
 			</section>
@@ -66,3 +66,26 @@
 	</footer>
 	
 </template>
+
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  const links = document.querySelectorAll('.theme__sidebar__summary__shortens');
+  const sections = document.querySelectorAll('.theme__content__section');
+
+  const offsetter = () => document.getElementById('navbar').getBoundingClientRect().height + 30;
+
+  links.forEach(link => {
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      const targetId = link.getAttribute('href').substring(1);
+      const target = document.getElementById(targetId);
+
+      const y = target.getBoundingClientRect().top + window.scrollY - offsetter();
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
+});
+
+</script>
