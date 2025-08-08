@@ -9,7 +9,8 @@
 //On peut acceder aux durées max de session et paramètre du garbage collector dans php.ini ou en 
 //les parametrant avec php_ini().
 
-class AuthController{
+class AuthController
+{
 
     /**
      * Inscris un utilisateur avec les données passées dans la requête 
@@ -20,7 +21,8 @@ class AuthController{
      * 
      * @return void Réponse sous forme de JSON
      */
-    public function register(){
+    public function register()
+    {
 
         $body = file_get_contents('php://input');
 
@@ -28,17 +30,18 @@ class AuthController{
         $body = json_decode($body, true);
 
         // Vérifier que toutes les données sont reçues
-        if(!isset($body["email"]) || !isset($body["password"]) || !isset($body["lastname"]) 
-        || !isset($body["firstname"]) || !isset($body["address"]) || !isset($body["zipcode"]) || !isset($body["birthdate"]) || !isset($body["code"])){
+        if (
+            !isset($body["email"]) || !isset($body["password"]) || !isset($body["lastname"]) || !isset($body["firstname"]) || !isset($body["code"])
+        ) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing data for processing"}';
             return;
         }
 
         //Validation des données
-        try{
+        try {
             UserValidator::creationDataValidator($body);
-        }catch (Error $e){
+        } catch (Error $e) {
             http_response_code(422);
             $return["Unprocessable Entity"] = $e->getMessage();
             echo json_encode($return);
@@ -50,16 +53,13 @@ class AuthController{
         $values["USR_email_VC"] = $body["email"];
         $values["USR_lastname_VC"] = $body["lastname"];
         $values["USR_firstname_VC"] = $body["firstname"];
-        $values["USR_address_VC"] = $body["address"];
-        $values["USR_zipcode_CH"] = $body["zipcode"];
-        $values["USR_birthdate_DATE"] = $body["birthdate"];
 
         $user = new User($values);
         $code = $body["code"];
 
-        try{
+        try {
             $user->insert($code);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             http_response_code(400);
             $return["Erreur"] = $e->getMessage();
             echo json_encode($return);
@@ -68,7 +68,7 @@ class AuthController{
         SessionGuard::start($user);
         echo json_encode($user);
 
-        try{
+        try {
             $htmlBody = file_get_contents('./view/mail/register.html');
             $htmlBody = str_replace(
                 ['{{firstname}}', '{{imageUrl}}'],
@@ -81,8 +81,7 @@ class AuthController{
                 'Création de compte VoteRight.fr',
                 $htmlBody
             );
-
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             echo "Erreur d'envoi : {$e->getMessage()}";
         }
     }
@@ -95,19 +94,20 @@ class AuthController{
      * REPONSE JSON : true si connexion, faux sinon
      * @return void Renvoie la réponse en JSON
      */
-    public function login(){
+    public function login()
+    {
 
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
         $email = $body["email"];
         $clearPassword = $body["password"];
-        
+
         $user = SessionGuard::verifyCredentials($email, $clearPassword);
-        if($user){
+        if ($user) {
             SessionGuard::start($user);
             echo json_encode(true);
-        }else{
+        } else {
             echo json_encode(false);
             SessionGuard::stop();
         }
@@ -119,18 +119,17 @@ class AuthController{
      * REPONSE JSON : true si la session est valide, false sinon
      * @return void Réponse sous forme de JSON
      */
-    public function check(){        
+    public function check()
+    {
         echo json_encode(SessionGuard::checkSessionValidity());
     }
 
     /**
      * Déconnecte l'utilisateur
      */
-    public function logout(){
+    public function logout()
+    {
         SessionGuard::stop();
         echo json_encode(true);
     }
-
 }
-
-?>

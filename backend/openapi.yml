@@ -113,12 +113,6 @@ paths:
                   type: string
                 firstname:
                   type: string
-                address:
-                  type: string
-                zipcode:
-                  type: string
-                birthdate:
-                  type: string
                 code:
                   type: number
                   x-stoplight:
@@ -3299,7 +3293,7 @@ paths:
         name: id
         in: path
         required: true
-    patch:
+    post:
       summary: Mettre à jour une communauté
       tags:
         - communities
