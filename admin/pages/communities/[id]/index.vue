@@ -10,7 +10,11 @@
                 </select>
                 <p>
                     <b>Budget Total : </b>
-                    {{ formatNumber(budget['CMY_budget_NB']) }} € max
+                    {{
+                        budget['CMY_budget_NB']
+                            ? formatNumber(budget['CMY_budget_NB']) + '€ max'
+                            : 'Aucun budget défini'
+                    }}
                 </p>
                 <p>
                     <b>Budget Utilisé : </b>
@@ -18,7 +22,11 @@
                 </p>
                 <p>
                     <b>Frais fixes :</b>
-                    {{ formatNumber(budget['CMY_fixed_fees_NB']) }} €
+                    {{
+                        budget['CMY_fixed_fees_NB']
+                            ? formatNumber(budget['CMY_fixed_fees_NB']) + ' €'
+                            : 'Aucun budget défini'
+                    }}
                 </p>
             </div>
 
@@ -27,7 +35,8 @@
                 <div>
                     <p v-for="(theme, key) in budget['CMY_budget_theme_NB']">
                         <b>{{ theme['THM_name_VC'] }} : </b>
-                        {{ theme['BUT_used_budget_NB'] }} € (max: {{ theme['BUT_amount_NB'] }} €)
+                        {{ theme['BUT_used_budget_NB'] }} € (max:
+                        {{ theme['BUT_amount_NB'] ? theme['BUT_amount_NB'] + ' €' : 'aucun budget défini' }})
                     </p>
                     <p v-if="budget['CMY_budget_theme_NB']?.length === 0">
                         Il n'y a aucun thème, vous pouvez en
@@ -271,7 +280,7 @@
                 addTheme()
             }
         "
-        :disable-valid="!budgetNewThemeValid"
+        :disable-valid="!addThemeValid"
     >
         <template #title>Ajouter un thème</template>
         <template #body>
@@ -279,7 +288,11 @@
                 <div>
                     <p><b>Budget max :</b></p>
                     <p>
-                        <b>{{ budget['CMY_budget_NB'] }}</b> €
+                        <b>{{
+                            budget['CMY_budget_NB']
+                                ? formatNumber(budget['CMY_budget_NB']) + '€'
+                                : 'Aucun budget défini'
+                        }}</b>
                     </p>
                 </div>
                 <div>
@@ -288,10 +301,8 @@
                         <b>{{ budget['CMY_used_budget_NB'] }}</b> €
                     </p>
                 </div>
-                <div>
+                <div v-if="budget['CMY_budget_NB']">
                     <p>Budget restant non attribué :</p>
-                    {{ budget['CMY_budget_NB'] }} - {{ budgetTotalTheme }} -
-                    {{ budget['CMY_fixed_fees_NB'] }}
                     <p>
                         <b>{{ budget['CMY_budget_NB'] - budgetTotalTheme - budget['CMY_fixed_fees_NB'] }}</b>
                         €
@@ -307,9 +318,19 @@
                     name="nameNewTheme"
                     no-label
                     placeholder="Entrez le nom"
+                    required
+                    :rules="[
+                        (v) => v.length > 0 || 'Un nom est requis',
+                        (v) => v.length < 150 || 'Le nom comprends 150 caractères maximum',
+                    ]"
                 ></Input>
                 <div class="ajouter-theme__budget">
+                    <p v-if="!addBudget" class="btn--link" @click="addBudget = true">Définir un budget</p>
+                    <p v-if="addBudget" class="clickable error" @click="addBudget = false">
+                        <i class="material-icons" id="leaderboard-icon">close</i>
+                    </p>
                     <InputNumber
+                        v-if="addBudget"
                         class="ajouter-theme__budget__input"
                         type="text"
                         name="budgetNewTheme"
@@ -317,13 +338,8 @@
                         placeholder="Entrez le budget"
                         :step="100"
                         :min="0"
-                        :rules="[
-                            (v) =>
-                                v <= budget['CMY_budget_NB'] - budgetTotalTheme - budget['CMY_fixed_fees_NB'] ||
-                                'Le budget est trop élevé',
-                        ]"
                     ></InputNumber>
-                    <p>€</p>
+                    <p v-if="addBudget">€</p>
                 </div>
             </div>
             <p class="legende mt20">
@@ -466,21 +482,27 @@ const addThemeModal = useState('addThemeModal', () => false)
 const addThemeToast = useState('addThemeValidUp', () => false)
 const addThemeError = useState('addThemeErrorUp', () => false)
 const nameNewTheme = useState('nameNewTheme')
+const nameNewThemeValid = useState('nameNewThemeValid')
 const budgetNewTheme = useState('budgetNewTheme')
 const budgetNewThemeValid = useState('budgetNewThemeValid')
+const addThemeValid = computed(() => nameNewThemeValid.value && (addBudget.value ? budgetNewThemeValid.value : true))
 const budgetTotalTheme = computed(() => {
     return budget.value['CMY_budget_theme_NB'].reduce((acc, theme) => acc + theme['BUT_used_budget_NB'], 0)
 })
+const addBudget = ref(false)
 
 const addTheme = async () => {
+    const body = {
+        name: nameNewTheme.value,
+    }
+    if (addBudget) {
+        body.budget = budgetNewTheme.value
+    }
     try {
         const response1 = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/themes`, {
             method: 'POST',
             credentials: 'include',
-            body: {
-                name: nameNewTheme.value,
-                budget: budgetNewTheme.value,
-            },
+            body: body,
         })
 
         addThemeToast.value = 'THM_id_NB' in response1 && !isNaN(response1['THM_id_NB'])

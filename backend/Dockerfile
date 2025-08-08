@@ -19,6 +19,11 @@ RUN composer install --no-dev --optimize-autoloader --prefer-dist
 
 COPY . .
 
+# Créer le dossier uploads et définir les permissions
+RUN mkdir -p /backend/uploads && \
+    chown -R www-data:www-data /backend/uploads && \
+    chmod -R 755 /backend/uploads
+
 EXPOSE 80
 
 # Lancer Nginx et PHP-FPM ensemble

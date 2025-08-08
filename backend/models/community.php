@@ -1,17 +1,19 @@
-<?php 
+<?php
 
 @require_once('models/model.php');
 
-define("ROLE_ADMIN",1);
-define("ROLE_DECIDER",2);
-define("ROLE_ASSESSOR",3);
-define("ROLE_MODERATOR",4);
-define("ROLE_MEMBER",5);
+define("ROLE_ADMIN", 1);
+define("ROLE_DECIDER", 2);
+define("ROLE_ASSESSOR", 3);
+define("ROLE_MODERATOR", 4);
+define("ROLE_MEMBER", 5);
 
-class Community extends Model{
-    
+class Community extends Model
+{
+
     public int $CMY_id_NB;
     public string $CMY_name_VC;
+    public int $CMY_image_NB;
     public string $CMY_image_VC;
     public string $CMY_emoji_VC;
     public string $CMY_color_VC;
@@ -19,30 +21,38 @@ class Community extends Model{
     public float $CMY_budget_NB;
     public float $CMY_fixed_fees_NB;
     public int $CMY_creator_NB;
-    
+
     public array $CMY_themes_TAB;
     public int $CMY_nb_member_NB;
 
-    public static function getById(int $id){
-        $request = 'SELECT * FROM community WHERE CMY_id_NB = :id';
+    public static function getById(int $id)
+    {
+        $request = 'SELECT CMY_id_NB, CMY_name_VC, FIL_path_VC as CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_creator_NB 
+                    FROM community c
+                    INNER JOIN file f ON f.FIL_id_NB = c.CMY_image_NB 
+                    WHERE CMY_id_NB = :id';
         $prepare = connexion::pdo()->prepare($request);
         $values['id'] = $id;
         $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_CLASS, "community");
         $community = $prepare->fetch();
-        
+
         return $community;
     }
 
-    public static function getAll() {
-        $request = "SELECT * FROM community;";
+    public static function getAll()
+    {
+        $request = 'SELECT CMY_id_NB, CMY_name_VC, FIL_path_VC as CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_creator_NB 
+        FROM community c
+        INNER JOIN file f ON f.FIL_id_NB = c.CMY_image_NB';
         $result = connexion::pdo()->query($request);
         $result->setFetchmode(PDO::FETCH_CLASS, "community");
         $communities = $result->fetchAll();
         return $communities;
     }
 
-    public static function communitiesOf(int $id){
+    public static function communitiesOf(int $id)
+    {
         $request = 'SELECT communitiesof(:user);';
         $prepare = connexion::pdo()->prepare($request);
         $values['user'] = $id;
@@ -52,7 +62,8 @@ class Community extends Model{
         return json_decode($result[0]);
     }
 
-    public static function communitiesBy(int $id){
+    public static function communitiesBy(int $id)
+    {
         $request = 'SELECT communitiesby(:user);';
         $prepare = connexion::pdo()->prepare($request);
         $values['user'] = $id;
@@ -62,8 +73,9 @@ class Community extends Model{
         return json_decode($result[0]);
     }
 
-    public static function communitiesManagedBy(int $user){
-        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_VC, 
+    public static function communitiesManagedBy(int $user)
+    {
+        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_NB, 
                     (SELECT COUNT(*) FROM member WHERE MEM_community_NB = CMY_id_NB) as CMY_nb_member_NB
                     FROM community 
                     INNER JOIN member ON MEM_community_NB = CMY_id_NB
@@ -76,8 +88,9 @@ class Community extends Model{
         return $communities;
     }
 
-    public static function communitiesDecidedBy(int $user){
-        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_VC, 
+    public static function communitiesDecidedBy(int $user)
+    {
+        $request = "SELECT CMY_id_NB, CMY_name_VC, CMY_description_TXT, CMY_color_VC, CMY_emoji_VC, CMY_image_NB, 
                     (SELECT COUNT(*) FROM member WHERE MEM_community_NB = CMY_id_NB) as CMY_nb_member_NB
                     FROM community 
                     INNER JOIN member ON MEM_community_NB = CMY_id_NB
@@ -90,13 +103,13 @@ class Community extends Model{
         return $communities;
     }
 
-    public function insert(){
-        $request = 'INSERT INTO community (CMY_name_VC, CMY_image_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_creator_NB)
-                    VALUES (:name, :image, :emoji, :color, :description, :creator);';
+    public function insert()
+    {
+        $request = 'INSERT INTO community (CMY_name_VC, CMY_emoji_VC, CMY_color_VC, CMY_description_TXT, CMY_creator_NB)
+                    VALUES (:name, :emoji, :color, :description, :creator);';
         $prepare = connexion::pdo()->prepare($request);
         $values = array(
             "name" => $this->CMY_name_VC,
-            "image" => $this->CMY_image_VC,
             "emoji" => $this->CMY_emoji_VC,
             "color" => $this->CMY_color_VC,
             "description" => $this->CMY_description_TXT,
@@ -105,6 +118,8 @@ class Community extends Model{
         $prepare->execute($values);
         $communityId = connexion::pdo()->lastInsertId();
         $this->set('CMY_id_NB', $communityId);
+
+        $this->updateImage('image');
 
         $request = 'INSERT INTO member(MEM_community_NB, MEM_user_NB, MEM_role_NB) VALUES (:community, :user, :role)';
         $prepare = connexion::pdo()->prepare($request);
@@ -115,8 +130,8 @@ class Community extends Model{
         );
         $prepare->execute($member);
 
-        $request = 'INSERT INTO community_budget(BUC_community_NB, BUC_period_YEAR, BUC_amount_NB, BUC_fixed_fees_NB) 
-                    VALUES (:community, YEAR(NOW()), 0, 0), (:community, YEAR(NOW())+1, 0, 0)';
+        $request = 'INSERT INTO community_budget(BUC_community_NB, BUC_period_YEAR) 
+                    VALUES (:community, YEAR(NOW())), (:community, YEAR(NOW())+1)';
         $prepare = connexion::pdo()->prepare($request);
         $budget['community'] = $this->get('CMY_id_NB');
         $prepare->execute($budget);
@@ -124,7 +139,8 @@ class Community extends Model{
         return true;
     }
 
-    public function addMember($member){
+    public function addMember($member)
+    {
         $request = 'INSERT INTO member(MEM_community_NB, MEM_user_NB, MEM_role_NB) 
                     VALUES (:community, :user, :role)';
         $prepare = connexion::pdo()->prepare($request);
@@ -133,15 +149,16 @@ class Community extends Model{
             "user" => $member,
             "role" => ROLE_MEMBER,
         );
-        try{
+        try {
             $prepare->execute($values);
             return true;
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             return false;
         }
     }
 
-    public function getOngoingProposals(){
+    public function getOngoingProposals()
+    {
         @require_once("models/proposal.php");
         $request = "SELECT p.PRO_id_NB, p.PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC, PRO_budget_NB, PRO_period_YEAR,
                      nblove AS PRO_love_NB, nblike AS PRO_like_NB, nbdislike AS PRO_dislike_NB, nbhate AS PRO_hate_NB
@@ -152,14 +169,15 @@ class Community extends Model{
                     WHERE p.PRO_status_VC = 'En cours' AND p.PRO_community_NB = :community AND PRO_deleter_NB IS NULL";
 
         $prepare = connexion::pdo()->prepare($request);
-        $values["community"] = $this->CMY_id_NB;    
+        $values["community"] = $this->CMY_id_NB;
         $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
         $proposals = $prepare->fetchAll();
         return $proposals;
     }
 
-    public function getFinishedProposals(){
+    public function getFinishedProposals()
+    {
         @require_once("models/proposal.php");
         $request = "SELECT PRO_id_NB, PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC
                     FROM proposal
@@ -170,14 +188,15 @@ class Community extends Model{
                     LIMIT 6";
 
         $prepare = connexion::pdo()->prepare($request);
-        $values["community"] = $this->CMY_id_NB;    
+        $values["community"] = $this->CMY_id_NB;
         $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
         $proposals = $prepare->fetchAll();
         return $proposals;
     }
 
-    public function getAdoptedProposals(int $period = null){
+    public function getAdoptedProposals(int | null $period = null)
+    {
         @require_once("models/proposal.php");
 
         $request = "SELECT p.PRO_id_NB, p.PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC,
@@ -187,8 +206,8 @@ class Community extends Model{
                     INNER JOIN community ON p.PRO_community_NB = CMY_id_NB
                     INNER JOIN proposal_total_reaction pr ON pr.PRO_id_NB = p.PRO_id_NB
                     WHERE p.PRO_status_VC = 'Validée' AND p.PRO_community_NB = :community";
-        
-        if($period){
+
+        if ($period) {
             $request = "SELECT p.PRO_id_NB, p.PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC,
                             PRO_budget_NB, nblove as PRO_love_NB, nblike as PRO_like_NB, nbdislike as PRO_dislike_NB, nbhate as PRO_hate_NB
                         FROM proposal p
@@ -196,18 +215,19 @@ class Community extends Model{
                         INNER JOIN community ON p.PRO_community_NB = CMY_id_NB
                         INNER JOIN proposal_total_reaction pr ON pr.PRO_id_NB = p.PRO_id_NB
                         WHERE p.PRO_status_VC = 'Validée' AND p.PRO_community_NB = :community AND p.PRO_period_YEAR = :period";
-                        $values["period"] = $period;
+            $values["period"] = $period;
         }
 
         $prepare = connexion::pdo()->prepare($request);
-        $values["community"] = $this->CMY_id_NB;    
+        $values["community"] = $this->CMY_id_NB;
         $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
         $proposals = $prepare->fetchAll();
         return $proposals;
     }
 
-    public function getVotedProposals(){
+    public function getVotedProposals()
+    {
         @require_once("models/proposal.php");
         $request = "SELECT p.PRO_id_NB, p.PRO_title_VC, THM_name_VC as PRO_theme_VC, CMY_color_VC as PRO_color_VC, PRO_budget_NB, nblove as PRO_love_NB, nblike as PRO_like_NB, nbdislike as PRO_dislike_NB, nbhate as PRO_hate_NB
                     FROM proposal p
@@ -220,41 +240,43 @@ class Community extends Model{
                     AND p.PRO_status_VC = 'En cours'";
 
         $prepare = connexion::pdo()->prepare($request);
-        $values["community"] = $this->CMY_id_NB;    
+        $values["community"] = $this->CMY_id_NB;
         $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_CLASS, "proposal");
         $proposals = $prepare->fetchAll();
         return $proposals;
     }
 
-    public function getMembers(){
+    public function getMembers()
+    {
         @require_once("models/user.php");
         $request = "SELECT USR_id_NB, USR_firstname_VC, USR_lastname_VC, ROL_label_VC, MEM_role_NB FROM members_role WHERE MEM_community_NB = :community";
         $prepare = connexion::pdo()->prepare($request);
-        $values["community"] = $this->CMY_id_NB;    
+        $values["community"] = $this->CMY_id_NB;
         $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_OBJ);
         $result = $prepare->fetchAll();
         return $result;
     }
 
-    public function setMembers(array $members){
+    public function setMembers(array $members)
+    {
         @require_once("models/user.php");
         $request = 'UPDATE member SET MEM_role_NB = :role WHERE MEM_user_NB = :user AND MEM_community_NB = :community';
         $prepare = connexion::pdo()->prepare($request);
         $values['community'] = $this->get('CMY_id_NB');
 
-        foreach($members as $user => $role){
-            if(!is_numeric($user) || !is_numeric($role)){
+        foreach ($members as $user => $role) {
+            if (!is_numeric($user) || !is_numeric($role)) {
                 throw new Exception('Invalid value');
                 return;
             }
             $values['user'] = $user;
             $values['role'] = $role;
-            try{
+            try {
                 $prepare->execute($values);
-            }catch(PDOException $e){
-                if($e->errorInfo[2] === "Erreur : Veuillez nommer au moins un administrateur avant de vous rétrograder."){
+            } catch (PDOException $e) {
+                if ($e->errorInfo[2] === "Erreur : Veuillez nommer au moins un administrateur avant de vous rétrograder.") {
                     throw new Exception('Missing Administrator');
                     return;
                 }
@@ -265,18 +287,20 @@ class Community extends Model{
     }
 
 
-    public function getThemes(){
+    public function getThemes()
+    {
         @require_once("models/theme.php");
         $request = "SELECT * FROM theme WHERE THM_community_NB = :community";
         $prepare = connexion::pdo()->prepare($request);
-        $values["community"] = $this->CMY_id_NB;    
+        $values["community"] = $this->CMY_id_NB;
         $prepare->execute($values);
         $prepare->setFetchmode(PDO::FETCH_CLASS, "theme");
         $themes = $prepare->fetchAll();
         return $themes;
     }
 
-    public static function isMember(int $community, int $user){
+    public static function isMember(int $community, int $user)
+    {
         $request = "SELECT COUNT(*) FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = :community";
         $prepare = connexion::pdo()->prepare($request);
         $values["user"] = $user;
@@ -286,7 +310,8 @@ class Community extends Model{
         return boolval($result[0]);
     }
 
-    public function getBudget($period){
+    public function getBudget($period)
+    {
         $request = "SELECT THM_id_NB, THM_name_VC, BUT_amount_NB, BUT_used_budget_NB 
                     FROM used_budget ub
                     WHERE CMY_id_NB = :community AND BUT_period_YEAR = :period";
@@ -298,7 +323,7 @@ class Community extends Model{
         $budgetThemes = $prepare->fetchAll();
 
         $usedBudget = 0;
-        for($i = 0; $i < count($budgetThemes); $i++){
+        for ($i = 0; $i < count($budgetThemes); $i++) {
             $usedBudget += $budgetThemes[$i]['BUT_used_budget_NB'];
         }
 
@@ -308,27 +333,28 @@ class Community extends Model{
         $communityBudget = $prepare->fetch();
 
         $budget = array(
-           "CMY_budget_NB" => $communityBudget ? $communityBudget['BUC_amount_NB'] : 0,
-           "CMY_used_budget_NB" => $usedBudget,
-           "CMY_fixed_fees_NB" => $communityBudget ? $communityBudget['BUC_fixed_fees_NB'] : 0,
-           "CMY_budget_theme_NB" => $budgetThemes
+            "CMY_budget_NB" => $communityBudget ? $communityBudget['BUC_amount_NB'] : 0,
+            "CMY_used_budget_NB" => $usedBudget,
+            "CMY_fixed_fees_NB" => $communityBudget ? $communityBudget['BUC_fixed_fees_NB'] : 0,
+            "CMY_budget_theme_NB" => $budgetThemes
         );
 
         return $budget;
     }
 
-    public function setBudget(array $budgets, int $period){
+    public function setBudget(array $budgets, int $period)
+    {
         $values['community'] = $this->get('CMY_id_NB');
         $values['period'] = $period;
-        foreach($budgets as $theme => $amount){
-            if($theme == -1){
+        foreach ($budgets as $theme => $amount) {
+            if ($theme == -1) {
                 $request = 'UPDATE community_budget SET BUC_fixed_fees_NB = :amount WHERE BUC_community_NB = :community AND BUC_period_YEAR = :period';
                 $prepare = connexion::pdo()->prepare($request);
                 $values['amount'] = $amount;
                 $prepare->execute($values);
                 continue;
             }
-            if($theme == 0){
+            if ($theme == 0) {
                 $request = 'UPDATE community_budget SET BUC_amount_NB = :amount WHERE BUC_community_NB = :community AND BUC_period_YEAR = :period';
                 $prepare = connexion::pdo()->prepare($request);
                 $values['amount'] = $amount;
@@ -343,16 +369,17 @@ class Community extends Model{
         }
     }
 
-    public function exclude(int $member){
+    public function exclude(int $member)
+    {
         $request = 'DELETE FROM member WHERE MEM_user_NB = :user AND MEM_community_NB = :community';
         $prepare = connexion::pdo()->prepare($request);
-        $values["community"] = $this->CMY_id_NB;    
+        $values["community"] = $this->CMY_id_NB;
         $values["user"] = $member;
 
-        try{
+        try {
             $prepare->execute($values);
-        }catch(PDOException $e){
-            if($e->errorInfo[2] === "Erreur : Veuillez nommer au moins un administrateur avant de quitter le groupe."){
+        } catch (PDOException $e) {
+            if ($e->errorInfo[2] === "Erreur : Veuillez nommer au moins un administrateur avant de quitter le groupe.") {
                 throw new Exception('Missing Administrator');
                 return;
             }
@@ -361,7 +388,8 @@ class Community extends Model{
         }
     }
 
-    public function getPeriods(){
+    public function getPeriods()
+    {
         $request = "SELECT DISTINCT BUC_period_YEAR FROM community_budget WHERE BUC_community_NB = :community";
         $prepare = connexion::pdo()->prepare($request);
         $values["community"] = $this->get('CMY_id_NB');
@@ -370,14 +398,15 @@ class Community extends Model{
 
         //Formattage du resultat
         $periods = array();
-        foreach($result as $period){
+        foreach ($result as $period) {
             $periods[] = $period[0];
         }
-        
+
         return array_reverse($periods);
     }
 
-    public function getFormattedProposals(int $period){
+    public function getFormattedProposals(int $period)
+    {
         $request = 'SELECT proposal_formatted(:community, :period);';
         $prepare = connexion::pdo()->prepare($request);
         $values['community'] = $this->get('CMY_id_NB');
@@ -388,29 +417,58 @@ class Community extends Model{
         return json_decode($result[0]);
     }
 
-    public static function updateCommunity(array $values){
+    /**
+     * Mets à jour les données, hors image contenu de la communauté dont l'id est contenu dans le tableau $values
+     * 
+     * @param array $values contient les données de la communauté à mettre à jour
+     * @param string $values.CMY_id_NB l'identifiant de la communauté à mettre à jour
+     * @param string $values.CMY_name_VC le nom de la communauté
+     * @param string $values.CMY_color_VC la couleur de la communauté
+     * @param string $values.CMY_description_TXT l description de la communauté
+     * @param string $values.CMY_emoji_VC l'emoji de la communauté
+     */
+    public static function updateCommunity(array $values)
+    {
         $request = 'UPDATE community 
                     SET 
                         CMY_name_VC = :name,
                         CMY_color_VC = :color,
-                        CMY_image_VC = :image,
                         CMY_description_TXT = :description,
                         CMY_emoji_VC = :emoji
                     WHERE CMY_id_NB = :id';
+
         $prepare = connexion::pdo()->prepare($request);
 
-        $values = array(
+        $request_values = array(
             "id" => $values["CMY_id_NB"],
             "name" => $values["CMY_name_VC"],
             "color" => $values["CMY_color_VC"],
-            "image" => $values["CMY_image_VC"],
             "description" => $values["CMY_description_TXT"],
             "emoji" => $values["CMY_emoji_VC"],
         );
-        $prepare->execute($values);
+        $prepare->execute($request_values);
     }
 
-    public static function countRole(int $role){
+    /**
+     * Mets à jour l'image de la communauté
+     * 
+     * @param string $array_name le nom du paramètre de la requete POST comportant le fichier
+     */
+    public function updateImage(string $array_key)
+    {
+        $file = File::save($array_key, str_replace(' ', $this->CMY_name_VC . '_', $this->CMY_id_NB . '_cover'));
+        $this->CMY_image_NB = $file->FIL_id_NB;
+
+        $request = 'UPDATE community SET CMY_image_NB = :file_id WHERE CMY_id_NB = :community_id';
+        $prepare = connexion::pdo()->prepare($request);
+        $request_values['file_id'] = $file->FIL_id_NB;
+        $request_values['community_id'] = $this->CMY_id_NB;
+        $prepare->execute($request_values);
+        return $file;
+    }
+
+    public static function countRole(int $role)
+    {
         $request = 'SELECT ROL_label_VC, COUNT(MEM_role_NB)
                     FROM role R
                     INNER JOIN member M ON R.ROL_id_NB = M.MEM_role_NB
@@ -426,7 +484,8 @@ class Community extends Model{
         return $register;
     }
 
-    public static function countAllRoles(){
+    public static function countAllRoles()
+    {
         $request = 'SELECT ROL_label_VC, COUNT(MEM_role_NB)
                     FROM role R
                     INNER JOIN member M ON R.ROL_id_NB = M.MEM_role_NB
@@ -441,5 +500,3 @@ class Community extends Model{
         return $register;
     }
 }
-
-?>

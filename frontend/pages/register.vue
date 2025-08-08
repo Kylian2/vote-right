@@ -54,7 +54,7 @@
                 >
 
                 <!-- Deuxième partie -->
-                <Input
+                <!--<Input
                     v-if="step === 2"
                     type="text"
                     name="address"
@@ -97,8 +97,8 @@
                     required
                     :rules="[(v) => Boolean(v) || 'Une date de naissance est requise']"
                     >Date de naissance</Input
-                >
-
+                >-->
+                <p class="label" v-if="step == 2">Vérifier votre email</p>
                 <Button
                     v-if="step === 2 && !verificationCodeIsSend"
                     type="button"
@@ -210,7 +210,7 @@ const stepOneIsValid = computed(() => {
 })
 
 const stepTwoIsValid = computed(() => {
-    return addressValid.value && cityValid.value && zipcodeValid.value && birthdateValid.value && codeValid.value
+    return codeValid.value
 })
 
 const handleForm = async () => {
@@ -253,9 +253,9 @@ const sendCode = async () => {
 
         if (response !== true) {
             unknownError.value = true
-            return
+        } else {
+            emailSended.value = true
         }
-        emailSended.value = true
         verificationCodeIsSend.value = true
     } catch (error) {
         if (error.status === 409) {

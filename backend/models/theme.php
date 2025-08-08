@@ -1,8 +1,9 @@
-<?php 
+<?php
 
 @require_once('models/model.php');
 
-class Theme extends Model{
+class Theme extends Model
+{
 
     public int $THM_id_NB;
     public int $THM_community_NB;
@@ -15,14 +16,15 @@ class Theme extends Model{
      * 
      * @return bool `true` si l'insertions c'est bien déroulée.
      */
-    public function insert(){
+    public function insert()
+    {
         //Récupération de l'indentifiant du thème
         $request = "SELECT MAX(THM_id_NB) FROM theme WHERE THM_community_NB = :community";
         $values['community'] = $this->get('THM_community_NB');
         $prepare = connexion::pdo()->prepare($request);
         $prepare->execute($values);
         $id = $prepare->fetch();
-        $id = $id[0]+1;
+        $id = $id[0] + 1;
 
         //Récupération de la liste des periodes
         $request = "SELECT DISTINCT BUC_period_YEAR FROM community_budget WHERE BUC_community_NB = :community";
@@ -38,10 +40,10 @@ class Theme extends Model{
 
         $this->set('THM_id_NB', $id);
 
-        //Insertions du thèmes dans les budgets de chaque periode (initialisé à 0€).
-        foreach($periods as $period){
-            $request = "INSERT INTO theme_budget(BUT_theme_NB, BUT_community_NB, BUT_period_YEAR, BUT_amount_NB)
-                     VALUES (:id, :community, :period, 0)";
+        //Insertions du thèmes dans les budgets de chaque periode (initialisé à null).
+        foreach ($periods as $period) {
+            $request = "INSERT INTO theme_budget(BUT_theme_NB, BUT_community_NB, BUT_period_YEAR)
+                     VALUES (:id, :community, :period)";
             $prepare = connexion::pdo()->prepare($request);
             unset($values['name']);
             $values['period'] = $period[0];
@@ -49,5 +51,4 @@ class Theme extends Model{
         }
         return true;
     }
-
 }

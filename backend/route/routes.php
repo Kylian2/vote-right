@@ -28,7 +28,7 @@ Router::post('/communities/{id}/exclude/{user}', 'communityController@exclude', 
 Router::get('/communities/{id}/periods', 'communityController@periods', true);
 Router::get('/communities/{id}/proposals/formatted', 'communityController@formattedProposals', true);
 Router::get('/communities/{id}/reports', 'reportController@index', true);
-Router::patch('/communities/{id}/update', 'communityController@update');
+Router::post('/communities/{id}/update', 'communityController@update');
 Router::get('/communities/{id}/algo', 'algorithmController@proposal', true);
 Router::get('/communities/{id}/headcount/{role}', 'communityController@headcount');
 
@@ -89,9 +89,10 @@ Router::post('/code/verification', 'codeController@sendVerificationCode');
 Router::post('/code/recovery', 'codeController@sendRecuperationCode');
 Router::post('/code/check', 'codeController@checkCode');
 
+Router::post('/file', 'FileController@save', true);
+
+
 /* Routes accessible via l'api algorithms */
 Router::get('/algo/users', 'userController@index', false, true);
 Router::get('/algo/communities/{id}/proposals/formatted', 'communityController@formattedProposals', true, true);
 Router::get('/algo/communities/{id}/budget', 'communityController@budget', true, true);
-
-?>

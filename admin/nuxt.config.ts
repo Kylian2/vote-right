@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     },
   },
   css: [
-    './assets/styles/main.scss', // chemin vers votre fichier SCSS ou CSS
+    './assets/styles/main.scss', 
+    'material-icons/iconfont/material-icons.css'
   ],
   vite: {
     css: {
