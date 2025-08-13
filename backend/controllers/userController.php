@@ -5,16 +5,19 @@
 @require_once('validators/userValidator.php');
 @require_once('core/sessionGuard.php');
 
-class UserController{
+class UserController
+{
 
-    public function index(){
+    public function index()
+    {
         $users = User::getAll();
         echo json_encode($users);
     }
 
-    public function me(){
+    public function me()
+    {
         $user = SessionGuard::getUser();
-        
+
         $values["USR_id_NB"] = $user->get('USR_id_NB');
         $values["USR_lastname_VC"] = $user->get('USR_lastname_VC');
         $values["USR_firstname_VC"] = $user->get('USR_firstname_VC');
@@ -29,36 +32,37 @@ class UserController{
         $values["USR_newsletter_BOOL"] = $user->get('USR_newsletter_BOOL');
 
         $userInfos = new User($values);
-        
+
         echo json_encode($userInfos);
     }
 
-     /**
+    /**
      * Met à jour les informations d'un utilisateur
      *
-     * Données attendues : birthdate (Y-m-d), address, zipcode, email
+     * Données attendues : birthdate (Y-m-d), address, zipcode, email. Toutes sont facultatives mais 
+     * au moins une est attendue.
      *
      * @return void
      * - 422 avec un message JSON si l'entrée est invalide
      * - 400 avec un message JSON en cas d'erreur lors de la mise à jour d'une donnée.
      * - true (JSON) si la mise à jour réussit.
      */
-    public function editInformation(){
-
+    public function editInformation()
+    {
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
-        // Vérifier que toutes les données sont reçues
-        if(!isset($body["birthdate"]) || !isset($body["address"]) || !isset($body["zipcode"]) || !isset($body["email"])){
+        // Vérifier qu'au moins une donnée est fournie
+        if (empty($body) || (!isset($body["birthdate"]) && !isset($body["address"]) && !isset($body["zipcode"]) && !isset($body["email"]))) {
             http_response_code(422);
-            echo '{"Unprocessable Entity":"missing data for processing"}';
+            echo '{"Unprocessable Entity":"at least one field is required"}';
             return;
         }
 
-        //Validation des données
-        try{
+        //Validation des données présentes uniquement
+        try {
             UserValidator::informationDataValidator($body);
-        }catch (Error $e){
+        } catch (Error $e) {
             http_response_code(422);
             $return["Unprocessable Entity"] = $e->getMessage();
             echo json_encode($return);
@@ -66,15 +70,32 @@ class UserController{
         }
 
         $user = SessionGuard::getUser();
+        $fieldsToUpdate = array();
 
-        $user->USR_birthdate_DATE = $body["birthdate"];
-        $user->USR_address_VC = $body["address"];
-        $user->USR_zipcode_CH = $body["zipcode"];
-        $user->USR_email_VC = $body["email"];
+        // Mise à jour seulement des champs fournis
+        if (isset($body["birthdate"])) {
+            $user->USR_birthdate_DATE = $body["birthdate"];
+            $fieldsToUpdate[] = 'birthdate';
+        }
 
-        try{
-            $user->updateInformation();
-        }catch(Exception $e){
+        if (isset($body["address"])) {
+            $user->USR_address_VC = $body["address"];
+            $fieldsToUpdate[] = 'address';
+        }
+
+        if (isset($body["zipcode"])) {
+            $user->USR_zipcode_CH = $body["zipcode"];
+            $fieldsToUpdate[] = 'zipcode';
+        }
+
+        if (isset($body["email"])) {
+            $user->USR_email_VC = $body["email"];
+            $fieldsToUpdate[] = 'email';
+        }
+
+        try {
+            $user->updateInformation($fieldsToUpdate);
+        } catch (Exception $e) {
             http_response_code(400);
             $return["Erreur"] = $e->getMessage();
             echo json_encode($return);
@@ -94,7 +115,8 @@ class UserController{
      * - 400 avec un message JSON en cas d'erreur lors de la mise à jour d'une donnée.
      * - true (JSON) si la mise à jour réussit.
      */
-    public function editPassword(){
+    public function editPassword()
+    {
 
         $body = file_get_contents('php://input');
 
@@ -102,7 +124,7 @@ class UserController{
         $body = json_decode($body, true);
 
         // Vérifier que toutes les données sont reçues
-        if(!isset($body["password"])){
+        if (!isset($body["password"])) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing data for processing"}';
             return;
@@ -112,9 +134,9 @@ class UserController{
 
         $user->USR_password_VC = password_hash($body["password"], PASSWORD_ARGON2ID);
 
-        try{
+        try {
             $user->updatePassword();
-        }catch(Exception $e){
+        } catch (Exception $e) {
             http_response_code(400);
             $return["Erreur"] = $e->getMessage();
             echo json_encode($return);
@@ -135,16 +157,17 @@ class UserController{
      * @return void renvoie au format json `true` si la modification du mot de passe a été effectuée avec succès
      * 
      */
-    public function resetPassword(){
+    public function resetPassword()
+    {
         $body = file_get_contents('php://input');
         $body = json_decode($body, true);
 
-        if(!isset($body["email"]) || !isset($body["code"]) || !isset($body["password"])){
+        if (!isset($body["email"]) || !isset($body["code"]) || !isset($body["password"])) {
             http_response_code(422);
             echo '{"Unprocessable Entity":"missing data for processing"}';
             return;
         }
-        
+
         if (!Code::checkCode($body["email"], $body["code"], "recuperation-code")) {
             http_response_code(400);
             return;
@@ -152,16 +175,16 @@ class UserController{
 
         $user = User::getByEmail($body["email"]);
 
-        if(!$user){
+        if (!$user) {
             http_response_code(400);
             return;
         }
 
         $user->USR_password_VC = password_hash($body["password"], PASSWORD_ARGON2ID);
 
-        try{
+        try {
             $user->updatePassword();
-        }catch(Exception $e){
+        } catch (Exception $e) {
             http_response_code(400);
             $return["Erreur"] = $e->getMessage();
             echo json_encode($return);
@@ -183,30 +206,45 @@ class UserController{
      * - 400 avec un message JSON en cas d'erreur lors de la mise à jour d'une donnée.
      * - true (JSON) si la mise à jour réussit.
      */
-    public function editNotification(){
-
+    public function editNotification()
+    {
         $body = file_get_contents('php://input');
-
-        // Décoder le JSON en tableau associatif
         $body = json_decode($body, true);
 
-        // Vérifier que toutes les données sont reçues
-        if(!isset($body["newProposal"]) || !isset($body["startOfVoting"]) || !isset($body["reactionToTheProposals"]) || !isset($body["notificationFrequency"])){
+        // Vérifier qu'au moins une donnée est fournie
+        if (empty($body) || (!isset($body["newProposal"]) && !isset($body["startOfVoting"]) && !isset($body["reactionToTheProposals"]) && !isset($body["notificationFrequency"]))) {
             http_response_code(422);
-            echo '{"Unprocessable Entity":"missing data for processing"}';
+            echo '{"Unprocessable Entity":"at least one notification setting is required"}';
             return;
         }
 
         $user = SessionGuard::getUser();
+        $fieldsToUpdate = array();
 
-        $user->USR_notify_proposal_BOOL = $body["newProposal"];
-        $user->USR_notify_vote_BOOL = $body["startOfVoting"];
-        $user->USR_notify_reaction_BOOL = $body["reactionToTheProposals"];
-        $user->USR_notification_frequency_CH = $body["notificationFrequency"];
+        // Mise à jour seulement des champs fournis
+        if (isset($body["newProposal"])) {
+            $user->USR_notify_proposal_BOOL = $body["newProposal"];
+            $fieldsToUpdate[] = 'newProposal';
+        }
 
-        try{
-            $user->updateNotification();
-        }catch(Exception $e){
+        if (isset($body["startOfVoting"])) {
+            $user->USR_notify_vote_BOOL = $body["startOfVoting"];
+            $fieldsToUpdate[] = 'startOfVoting';
+        }
+
+        if (isset($body["reactionToTheProposals"])) {
+            $user->USR_notify_reaction_BOOL = $body["reactionToTheProposals"];
+            $fieldsToUpdate[] = 'reactionToTheProposals';
+        }
+
+        if (isset($body["notificationFrequency"])) {
+            $user->USR_notification_frequency_CH = $body["notificationFrequency"];
+            $fieldsToUpdate[] = 'notificationFrequency';
+        }
+
+        try {
+            $user->updateNotification($fieldsToUpdate);
+        } catch (Exception $e) {
             http_response_code(400);
             $return["Erreur"] = $e->getMessage();
             echo json_encode($return);
@@ -216,38 +254,39 @@ class UserController{
         echo json_encode(true);
     }
 
-    public static function role($params){
+    public static function role($params)
+    {
         $user = SessionGuard::getUser();
-        
+
         echo json_encode($user->getRole($params[0]));
     }
 
-    public static function roleProposal($params){
+    public static function roleProposal($params)
+    {
         $user = SessionGuard::getUser();
-        
+
         echo json_encode($user->getRoleProposal($params[0]));
     }
 
-    public static function show($params){
+    public static function show($params)
+    {
         $user = User::getById($params[0]);
         echo json_encode($user);
     }
 
-    public function delete(){
-        try{
+    public function delete()
+    {
+        try {
             $result = SessionGuard::getUser()->delete();
-            if($result === true){
+            if ($result === true) {
                 SessionGuard::stop();
             }
             echo json_encode($result);
-        }catch(PDOException $e){
-            if($e->errorInfo[2] == "Erreur : Veuillez nommer au moins un administrateur avant de quitter le groupe."){
+        } catch (PDOException $e) {
+            if ($e->errorInfo[2] == "Erreur : Veuillez nommer au moins un administrateur avant de quitter le groupe.") {
                 http_response_code(400);
             }
             echo json_encode($e);
         }
-        
     }
 }
-
-?>
