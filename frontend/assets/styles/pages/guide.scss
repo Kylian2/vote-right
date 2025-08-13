@@ -39,15 +39,14 @@
                 justify-items: flex-start; 
                 align-items: center; 
                 text-align: left;     
-                background: linear-gradient(135deg, $text-primary 0%, $color-5 100%);
+                position: relative;
                 padding: 2rem;
                 border-radius: 2rem;
-
-                position: relative;
+                border: 1px solid darken($color: $color-5, $amount: 5%);
+                background: linear-gradient(135deg, $text-primary 0%, $color-5 100%);
+                box-shadow: none;
                 overflow: hidden;
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
-                box-shadow: none;
-                border: 1px solid darken($color: $color-5, $amount: 5%);
 
                 &::before {
                     content: '';
@@ -57,15 +56,14 @@
                     right: 0;
                     height: 8px;
                     background: #EA00FF;
-
                     transform: scaleX(0);
                     transform-origin: left;
                     transition: transform 0.3s ease;
                 }
 
                 &:hover {
-                    transform: translateY(-6px);
                     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.6);
+                    transform: translateY(-6px);
 
                     &::before {
                         transform: scaleX(1);
@@ -73,10 +71,10 @@
                 }
 
                 &__item {
-                    color: white;
                     margin-right: 0%;
-                    font-size: 1.4rem;
                     line-height: 1.6rem;
+                    font-size: 1.4rem;
+                    color: white;
                 }
             }
         }
@@ -145,12 +143,12 @@
             gap: 2rem;
 
             &__question {
+                padding: 1.5rem;
+                border-radius: 0.5rem;
                 background-color: #fafafa;
                 border: 3px solid #8b0097;
-                border-radius: 0.5rem;
-                padding: 1.5rem;
-                transition: all 0.4s ease;
                 overflow: hidden;
+                transition: all 0.4s ease;
 
                 &__title {
                     display: flex;
@@ -192,6 +190,7 @@
   0%, 100% {
     transform: translateY(5);
   }
+
   50% {
     transform: translateY(-15px);
   }
@@ -224,7 +223,7 @@
           &__item {
             font-size: 1.2rem;
             line-height: 1.4rem;
-          }
+          } 
         }
       }
     }
@@ -288,13 +287,8 @@
 
     &__FAQ-redirection {
       &__content {
-        margin: 0 auto;
-        padding: 1rem 1.5rem; 
         max-width: 90%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
+        padding: 1rem 1.5rem; 
         gap: 1rem;
 
         &__arrow-container__arrow {
@@ -303,14 +297,13 @@
         }
 
         &__title {
-          font-size: 4rem; 
           text-align: center;
+          font-size: 4rem; 
         }
       }
     }
 
     &__FAQ {
-      
       &__list {
         max-width: 95%;
 

@@ -1,21 +1,33 @@
 <template>
     <Header2 id="navbar"></Header2>
     <main class="theme">
-        <div class="theme__sidebar">
-			<a href="/tutorial/guide" class="theme__sidebar__return-guide"> Retour au guide </a>
-			<h2 class="theme__sidebar__section-title"> Outil de gestion </h2>
-			<nav>
-				<ul class="theme__sidebar__summary">
-					<li><a href="#part1" class="theme__sidebar__summary__shortens"> 1. Modifier les budgets d’un groupe </a></li>
-					<li><a href="#part2" class="theme__sidebar__summary__shortens"> 2. Ajouter un thème à un groupe </a></li>
-					<li><a href="#part3" class="theme__sidebar__summary__shortens"> 3. Modifier les informations d’un groupe </a></li>
-					<li><a href="#part4" class="theme__sidebar__summary__shortens"> 4. Modifier ou supprimer une proposition </a></li>
-					<li><a href="#part5" class="theme__sidebar__summary__shortens"> 5. Planifier le vote d’une proposition </a></li>
-					<li><a href="#part6" class="theme__sidebar__summary__shortens"> 6. Gérer les rôles au sein d’un groupe  </a></li>
-					<li><a href="#part7" class="theme__sidebar__summary__shortens"> 7. Valider les votes d’une proposition </a></li>
-					<li><a href="#part8" class="theme__sidebar__summary__shortens"> 8. Traiter un signalement </a></li>
-				</ul>
-			</nav>
+
+		<div class="theme__interactions">
+			<a href="/tutorial/guide" class="theme__interactions__return-guide theme__background"> 
+				<img class="theme__interactions__return-guide__left-arrow" src="~/public/back-arrow-46x46.png">
+				<h3 class="theme__interactions__return-guide__guide"> Retour au guide </h3>
+			</a>
+
+			<div class="theme__interactions__show-summary theme__background">
+				<h3 class="theme__interactions__show-summary__summary"> Sommaire </h3>
+			</div>
+
+			<div class="theme__interactions__sidebar theme__background">
+				<img class="theme__interactions__sidebar__close" src="~/public/cross-46x46.png">
+				<h2 class="theme__interactions__sidebar__section-title"> Outil de gestion </h2>
+				<nav>
+					<ul class="theme__interactions__sidebar__summary">
+						<li><a href="#part1" class="theme__interactions__sidebar__summary__shortens"> 1. Modifier les budgets d’un groupe </a></li>
+						<li><a href="#part2" class="theme__interactions__sidebar__summary__shortens"> 2. Ajouter un thème à un groupe </a></li>
+						<li><a href="#part3" class="theme__interactions__sidebar__summary__shortens"> 3. Modifier les informations d’un groupe </a></li>
+						<li><a href="#part4" class="theme__interactions__sidebar__summary__shortens"> 4. Modifier ou supprimer une proposition </a></li>
+						<li><a href="#part5" class="theme__interactions__sidebar__summary__shortens"> 5. Planifier le vote d’une proposition </a></li>
+						<li><a href="#part6" class="theme__interactions__sidebar__summary__shortens"> 6. Gérer les rôles au sein d’un groupe  </a></li>
+						<li><a href="#part7" class="theme__interactions__sidebar__summary__shortens"> 7. Valider les votes d’une proposition </a></li>
+						<li><a href="#part8" class="theme__interactions__sidebar__summary__shortens"> 8. Traiter un signalement </a></li>
+					</ul>
+				</nav>
+			</div>
 		</div>
 
 		<div class="theme__content">
@@ -91,11 +103,14 @@
 </template>
 
 <script setup>
+
 import { onMounted } from 'vue'
 
 onMounted(() => {
-  const links = document.querySelectorAll('.theme__sidebar__summary__shortens');
-  const sections = document.querySelectorAll('.theme__content__section');
+  const sidebar = document.querySelector('.theme__interactions__sidebar');
+  const summaryButton = document.querySelector('.theme__interactions__show-summary');
+  const closeButton = document.querySelector('.theme__interactions__sidebar__close');
+  const links = document.querySelectorAll('.theme__interactions__sidebar__summary__shortens');
 
   const offsetter = () => document.getElementById('navbar').getBoundingClientRect().height + 30;
 
@@ -107,8 +122,24 @@ onMounted(() => {
 
       const y = target.getBoundingClientRect().top + window.scrollY - offsetter();
       window.scrollTo({ top: y, behavior: 'smooth' });
+
+      if (sidebar) {
+        sidebar.classList.remove('active');
+      }
     });
   });
+
+  if (summaryButton && sidebar) {
+    summaryButton.addEventListener('click', () => {
+      sidebar.classList.add('active');
+    });
+  }
+
+  if (closeButton && sidebar) {
+    closeButton.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+    });
+  }
 });
 
 </script>
