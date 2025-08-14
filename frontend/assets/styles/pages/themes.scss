@@ -30,21 +30,19 @@
         &__return-guide {
             display: flex;
             flex-direction: row;
+            align-items: center;
             height: 70px;
             transition: filter 0.3s ease, transform 0.3s ease;
             cursor: pointer;
             position: sticky;
             top: 18%;
+            gap: 5%;
 
-            &__left-arrow {
+            > i{
                 align-self: center;
-                height: 35px;
-                width: 35px;
                 margin-left: 6%;
-            }
-
-            &__guide {
-                margin: auto auto;
+                font-size: 30px;
+                color: white;
             }
 
             &:hover {
@@ -63,12 +61,14 @@
             position: sticky;
             top: 30%;
 
-            &__close {
+            > i {
                 display : none;
+                font-size: 30px !important;
+                color: white;
             }
 
             &__section-title {
-                margin: 1rem 0.5rem 1rem 2rem;
+                margin: 2rem 0.5rem 1rem 2rem;
                 font-size: 2rem !important;
                 color: white;
             }
@@ -149,13 +149,16 @@
             margin-left: 0rem;
 
             &__return-guide {
-                &__left-arrow {
-                    height: 40px;
-                    width: 40px;
+
+                > i{
+                    align-self: center;
+                    margin-left: 6%;
+                    font-size: 30px;
+                    color: white;
                 }
 
                 &__guide {
-                    margin: auto auto auto 5%;
+                    margin: 5%;
                 }
             }
 
@@ -187,12 +190,12 @@
                 transition: transform 0.3s ease;
                 z-index: 100;
 
-                &__close {
+                > i {
                     display: block;
-                    height: 40px;
-                    width: 40px;
-                    margin: 0rem 0rem 2rem auto;
+                    font-size: 30px !important;
+                    color: white;
                     cursor: pointer;
+                    align-self: self-end;
                 }
 
                 &.active {
