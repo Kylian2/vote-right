@@ -3,8 +3,8 @@
 ## Membres de l'équipe
 
 - **Kylian Richard** as Kylian2
-- **Rodriguez Esteban** as Laren21
-- **Guiborat--Bost** Mathieu as mguiborat
+- **Esteban Rodrigues** as Esteban141
+- **Mathieu Guiborat--Bost**  as mguiborat
 
 ## Installer l'environnement de développement
 

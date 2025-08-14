@@ -155,6 +155,10 @@
                     </p>
                 </div>
             </div>
+
+			<div class="features__guide">
+				<a href="/tutorial/guide" class="landing-btn landing-btn--blue"> Accéder au guide utilisateur →</a>
+			</div>
         </section>
 
         <section class="audiences section">

@@ -167,6 +167,20 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-color:  rgba(255, 255, 255, 0.95);
         }
     }
+
+    &--blue {
+        background-color: #ffffff;
+        color: #5AB7EE;
+        border: 2px solid rgba(90, 183, 238, 0.4);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:hover {
+        background: linear-gradient(135deg, #5AB7EE, #3A8DCE);
+        color: white;
+        border-color: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 20px 40px -10px rgba(90, 183, 238, 0.3);
+        }
+    }
     
     &--large {
         padding: 1.125rem 2.5rem;
@@ -428,6 +442,10 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         @include respond-to(lg) {
             grid-template-columns: repeat(3, 1fr);
         }
+    }
+
+    &__guide {
+        margin-top: 2%;
     }
 
     .material-icons{
