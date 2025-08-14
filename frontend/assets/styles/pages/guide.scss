@@ -20,7 +20,7 @@
 
     &__subtitle {
         max-width: none;
-        margin: 1rem 4rem;
+        margin: 1rem;
     }
 
     &__menu {
@@ -42,7 +42,6 @@
                 position: relative;
                 padding: 2rem;
                 border-radius: 2rem;
-                border: 1px solid darken($color: $color-5, $amount: 5%);
                 background: linear-gradient(135deg, $text-primary 0%, $color-5 100%);
                 box-shadow: none;
                 overflow: hidden;
@@ -73,7 +72,6 @@
                 &__item {
                     margin-right: 0%;
                     line-height: 1.6rem;
-                    font-size: 1.4rem;
                     color: white;
                 }
             }
@@ -277,7 +275,6 @@
           min-height: 140px;            
 
           &__item {
-            font-size: 1.1rem;
             line-height: 1.3rem;
             text-align: left;
           }
@@ -317,10 +314,6 @@
           &__icon {
             width: 32px;
             height: 32px;
-          }
-
-          &__text {
-            font-size: 0.95rem;
           }
         }
       }
