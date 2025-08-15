@@ -85,24 +85,58 @@ class User extends Model
         return true;
     }
 
-    public function updateInformation()
+    /**
+     * Mets à jour les informations personnelles d'un utilisateur 
+     * 
+     * @param array fieldsToUpdate un tableau contenant la liste des éléments à modifier
+     * 
+     * @return bool true si la modification à réussie
+     */
+    public function updateInformation($fieldsToUpdate = null)
     {
+        // Si aucun champ spécifique n'est fourni, on met à jour tous les champs
+        if ($fieldsToUpdate === null) {
+            $fieldsToUpdate = ['email', 'address', 'zipcode', 'birthdate'];
+        }
 
-        $request = "UPDATE user
-                    SET USR_email_VC = :USR_email_VC, USR_address_VC = :USR_address_VC, USR_zipcode_CH = :USR_zipcode_CH, USR_birthdate_DATE = :USR_birthdate_DATE
-                    WHERE USR_id_NB = :USR_id_NB;";
-
-        $prepare = connexion::pdo()->prepare($request);
-
+        // Construction dynamique de la requête
+        $setParts = array();
         $values = array();
 
-        $values["USR_email_VC"] = $this->USR_email_VC;
-        $values["USR_address_VC"] = $this->USR_address_VC;
-        $values["USR_zipcode_CH"] = $this->USR_zipcode_CH;
-        $values["USR_birthdate_DATE"] = $this->USR_birthdate_DATE;
+        if (in_array('email', $fieldsToUpdate)) {
+            $setParts[] = "USR_email_VC = :USR_email_VC";
+            $values["USR_email_VC"] = $this->USR_email_VC;
+        }
+
+        if (in_array('address', $fieldsToUpdate)) {
+            $setParts[] = "USR_address_VC = :USR_address_VC";
+            $values["USR_address_VC"] = $this->USR_address_VC;
+        }
+
+        if (in_array('zipcode', $fieldsToUpdate)) {
+            $setParts[] = "USR_zipcode_CH = :USR_zipcode_CH";
+            $values["USR_zipcode_CH"] = $this->USR_zipcode_CH;
+        }
+
+        if (in_array('birthdate', $fieldsToUpdate)) {
+            $setParts[] = "USR_birthdate_DATE = :USR_birthdate_DATE";
+            $values["USR_birthdate_DATE"] = $this->USR_birthdate_DATE;
+        }
+
+        // Vérifier qu'il y a au moins un champ à mettre à jour
+        if (empty($setParts)) {
+            throw new Exception("Aucun champ à mettre à jour");
+        }
+
+        // Construction de la requête SQL
+        $request = "UPDATE user SET " . implode(', ', $setParts) . " WHERE USR_id_NB = :USR_id_NB";
+
+        // Ajouter l'ID utilisateur
         $values["USR_id_NB"] = $this->USR_id_NB;
 
+        $prepare = connexion::pdo()->prepare($request);
         $prepare->execute($values);
+
         return true;
     }
 
@@ -124,24 +158,49 @@ class User extends Model
         return true;
     }
 
-    public function updateNotification()
+    public function updateNotification($fieldsToUpdate = null)
     {
+        // Si aucun champ spécifique n'est fourni, on met à jour tous les champs
+        if ($fieldsToUpdate === null) {
+            $fieldsToUpdate = ['newProposal', 'startOfVoting', 'reactionToTheProposals', 'notificationFrequency'];
+        }
 
-        $request = "UPDATE user
-                    SET USR_notify_proposal_BOOL = :USR_notify_proposal_BOOL, USR_notify_vote_BOOL = :USR_notify_vote_BOOL, USR_notify_reaction_BOOL = :USR_notify_reaction_BOOL, USR_notification_frequency_CH = :USR_notification_frequency_CH
-                    WHERE USR_id_NB = :USR_id_NB;";
-
-        $prepare = connexion::pdo()->prepare($request);
-
+        $setParts = array();
         $values = array();
 
-        $values["USR_notify_proposal_BOOL"] = $this->USR_notify_proposal_BOOL;
-        $values["USR_notify_vote_BOOL"] = $this->USR_notify_vote_BOOL;
-        $values["USR_notify_reaction_BOOL"] = $this->USR_notify_reaction_BOOL;
-        $values["USR_notification_frequency_CH"] = $this->USR_notification_frequency_CH;
+        if (in_array('newProposal', $fieldsToUpdate)) {
+            $setParts[] = "USR_notify_proposal_BOOL = :USR_notify_proposal_BOOL";
+            $values["USR_notify_proposal_BOOL"] = $this->USR_notify_proposal_BOOL;
+        }
+
+        if (in_array('startOfVoting', $fieldsToUpdate)) {
+            $setParts[] = "USR_notify_vote_BOOL = :USR_notify_vote_BOOL";
+            $values["USR_notify_vote_BOOL"] = $this->USR_notify_vote_BOOL;
+        }
+
+        if (in_array('reactionToTheProposals', $fieldsToUpdate)) {
+            $setParts[] = "USR_notify_reaction_BOOL = :USR_notify_reaction_BOOL";
+            $values["USR_notify_reaction_BOOL"] = $this->USR_notify_reaction_BOOL;
+        }
+
+        if (in_array('notificationFrequency', $fieldsToUpdate)) {
+            $setParts[] = "USR_notification_frequency_CH = :USR_notification_frequency_CH";
+            $values["USR_notification_frequency_CH"] = $this->USR_notification_frequency_CH;
+        }
+
+        // Vérifier qu'il y a au moins un champ à mettre à jour
+        if (empty($setParts)) {
+            throw new Exception("Aucune notification à mettre à jour");
+        }
+
+        // Construction de la requête SQL
+        $request = "UPDATE user SET " . implode(', ', $setParts) . " WHERE USR_id_NB = :USR_id_NB";
+
         $values["USR_id_NB"] = $this->USR_id_NB;
 
+        $prepare = connexion::pdo()->prepare($request);
         $prepare->execute($values);
+
         return true;
     }
 
