@@ -1,16 +1,24 @@
 .account-settings{
-    margin: 0 5%;
-
+    margin: 0 5% 50px 5%;
     &__page{
         margin-top: 30px;
         &__header{
             display: flex;
             justify-content: space-between;
+            align-items: center;
             > button {
                 display: flex;
                 align-items: center;
                 > i{
-                    margin: 0 5px;
+                    @include respond-to(sm){
+                        margin: 0 5px;
+                    }
+                }
+                > span{
+                    display: none;
+                    @include respond-to(sm){
+                        display: block;
+                    }
                 }
             }
         }
@@ -34,8 +42,12 @@
         display: flex;
         padding: 15px 0;
         gap: 10px;
-        width: fit-content;
         border-radius: 8px;
+        flex-direction: column;
+        @include respond-to(sm){
+            flex-direction: row;
+            width: fit-content;
+        }
         > li{
             display: flex;
             align-items: center;

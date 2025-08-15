@@ -23,7 +23,7 @@
                 <h3>Informations du profil</h3>
                 <button v-if="!updatingUserInfos" class="btn btn--full" @click="updatingUserInfos = true">
                     <i class="material-icons">edit</i>
-                    Modifier
+                    <span>Modifier</span>
                 </button>
             </div>
             <div>
