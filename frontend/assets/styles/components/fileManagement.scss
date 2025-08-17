@@ -1,0 +1,144 @@
+.file-management {
+
+    &__actions{
+        margin: 20px 0 20px;
+        > div{  
+            background: $gradient;
+            display: flex;
+            gap: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 230px;
+            transition: .3s;
+            color: white;
+            > p{
+                margin-top: 10px;
+            }
+            > i{
+                padding: 7px;
+            }
+            &:hover{
+                background: $background-light;
+                color: $dark;
+            }
+        }
+    }
+
+    &__table {
+        border-collapse: collapse;
+        background: $contrast;
+        border-radius: 4px;
+        > thead {
+            background: $background-light;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            > tr {
+                > th {
+                    text-align: left;
+                    padding: 14px 30px 10px 20px;
+                    font-family: $exotic-font;
+                    font-weight: 700;
+                    color: $text-primary;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    border-bottom: 2px solid $neutral;
+
+                    &:first-child {
+                        border-top-left-radius: 8px;
+                    }
+
+                    &:last-child {
+                        border-top-right-radius: 8px;
+                    }
+                }
+            }
+        }
+
+        > tbody {
+            > tr {
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border-bottom: 1px solid rgba(232, 232, 232, 0.5);
+
+                &:hover {
+                    background: linear-gradient(90deg, 
+                        fade-out($color-4, 0.9) 0%, 
+                        fade-out($color-2, 0.9) 50%, 
+                        fade-out($color-3, 0.9) 100%);
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                }
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                > td {
+                    padding: 16px 30px 16px 20px;
+                    color: $text-primary;
+                    font-size: 0.95rem;
+                    vertical-align: middle;
+                    position: relative;
+
+                    &:first-child {
+                        font-weight: 600;
+                        position: relative;
+                    }
+                }
+
+                &:hover > td:first-child::before {
+                    height: 60%;
+                }
+            }
+        }
+
+        &__container{
+            overflow: scroll;
+            height: 500px;
+            margin: 30px 0;
+        }
+    }
+
+    &__add-modal{
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        &__file-input{
+            margin-top: 10px;
+        }
+    }
+}
+
+// Animations
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .file-management {
+        padding: 15px;
+
+        &__table {
+            font-size: 0.85rem;
+
+            > thead > tr > th,
+            > tbody > tr > td {
+                padding: 12px 15px 12px 10px;
+            }
+        }
+
+        &__actions {
+            flex-direction: column;
+
+            .btn {
+                width: 100%;
+            }
+        }
+    }
+}

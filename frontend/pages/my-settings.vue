@@ -16,6 +16,10 @@
                 <i class="material-icons">security</i>
                 Sécurité
             </li>
+            <li :class="{ active: page === 4 }" @click="page = 4">
+                <i class="material-icons">folder_open</i>
+                Fichiers
+            </li>
         </ul>
 
         <div class="account-settings__page" v-if="page === 1 && user">
@@ -176,6 +180,9 @@
                 <p class="error" @click="disconnect">Se déconnecter</p>
                 <p class="error" @click="deleteUser = true">Supprimer le compte</p>
             </div>
+        </div>
+        <div v-if="page === 4">
+            <FileManagement></FileManagement>
         </div>
     </main>
     <Modal
