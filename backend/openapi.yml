@@ -1066,7 +1066,7 @@ paths:
           description: Le cookie d'authentification
           required: true
       requestBody:
-        description: "Les nouvelles informations de l'utilisateur.\r\nVoici la liste des éléments du body :\r\n- `birthdate` : `string`.\r\n- `address` : `string`.\r\n- `zipcode` : `string`.\r\n- `email` : `string`."
+        description: "Les nouvelles informations de l'utilisateur.\r\nVoici la liste des éléments du body :\r\n- `birthdate` : `string`.\r\n- `address` : `string`.\r\n- `zipcode` : `string`.\r\n- `email` : `string`.\r\n\r\nChaque champs est optionnel mais au moins un est requis. "
         content:
           application/json:
             schema:
@@ -1092,6 +1092,9 @@ paths:
                   birthdate: '2000-10-02'
                   address: 40 rue de la paix
                   zipcode: '75001'
+                  email: exampleOfEmail@email.com
+              Example 2:
+                value:
                   email: exampleOfEmail@email.com
   /users/me/password:
     parameters: []
@@ -1146,7 +1149,7 @@ paths:
         '422':
           description: Unprocessable Entity (WebDAV) si l'entrée est invalide.
       operationId: patch-users-me-notification
-      description: Mets à jour les paramètres de notification de l'utilisateur connecté.
+      description: 'Mets à jour les paramètres de notification de l''utilisateur connecté. '
       parameters:
         - schema:
             type: string
@@ -1155,7 +1158,7 @@ paths:
           description: Le cookie d'authentification
           required: true
       requestBody:
-        description: "Les nouveaux paramètres de notification de l'utilisateur.\r\nVoici la liste des éléments du body :\r\n- `newProposal` : `int`.\r\n- `startOfVoting` : `int`.\r\n- `reactionToTheProposals` : `int`.\r\n- `notificationFrequency` : `string`."
+        description: "Les nouveaux paramètres de notification de l'utilisateur.\r\nVoici la liste des éléments du body :\r\n- `newProposal` : `int`.\r\n- `startOfVoting` : `int`.\r\n- `reactionToTheProposals` : `int`.\r\n- `notificationFrequency` : `string`.\r\n\r\nChaque champs est optionel mais au moins un est requis."
         content:
           application/json:
             schema:
@@ -1182,6 +1185,9 @@ paths:
                   startOfVoting: 1
                   reactionToTheProposals: 0
                   notificationFrequency: Q
+              Example 2:
+                value:
+                  reactionToTheProposals: 0
       x-stoplight:
         id: ug8a1z65ft778
     parameters: []
