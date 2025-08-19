@@ -1,0 +1,137 @@
+.account-settings{
+    margin: 0 5% 50px 5%;
+    &__page{
+        margin-top: 30px;
+        &__header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            > button {
+                display: flex;
+                align-items: center;
+                > i{
+                    @include respond-to(sm){
+                        margin: 0 5px;
+                    }
+                }
+                > span{
+                    display: none;
+                    @include respond-to(sm){
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        &__buttons{
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        &__notifications{
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+
+    &__navigation{
+        list-style-type: none;
+        display: flex;
+        padding: 15px 0;
+        gap: 10px;
+        border-radius: 8px;
+        flex-direction: column;
+        @include respond-to(sm){
+            flex-direction: row;
+            width: fit-content;
+        }
+        > li{
+            display: flex;
+            align-items: center;
+            padding: 10px 30px 10px 22px;
+            border-radius: 5px;
+            cursor: pointer;
+            &:hover{
+                background: $background-light;
+            }
+            &.active {
+                background: $gradient;
+                color: white;
+            }
+            >i {
+                margin: 0 5px;
+            }
+        }
+    }
+
+    &__input-container{
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        max-width: 300px;
+        > label{
+            color: $dark;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        input{
+            width: 100%; 
+            padding-left: 1rem;  
+            padding-right: 1rem; 
+            padding-top: 0.75rem; 
+            padding-bottom: 0.75rem; 
+            border: 1px solid #d1d5db; 
+            border-radius: 0.5rem; 
+            
+            &:focus {
+                outline: none;
+                box-shadow: 0 0 0 2px #3b82f6; 
+                border-color: transparent; 
+            }
+            
+            &:disabled {
+                background-color: #f9fafb; 
+            }
+        }
+        > .error{
+            margin-bottom: 5px;
+        }
+    }
+
+    &__security{
+        &__password-container{
+            > div > div {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                p{
+                    font-size: 14px;
+                    cursor: pointer;
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        > div{
+            margin-bottom: 20px;
+        }
+
+        > p{
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: fit-content;
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+
+    }
+
+}
