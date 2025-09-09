@@ -115,8 +115,8 @@ const addFile = async () => {
             image.value = null
             successToastText.value = 'Votre fichier a été ajouté !'
             successToast.value = true
+            fetchFiles()
         }
-        files.value.push(response)
     } catch (error) {
         errorToastText.value = "Une erreur est survenue, votre fichier n'a pas été ajouté"
         errorToast.value = true
