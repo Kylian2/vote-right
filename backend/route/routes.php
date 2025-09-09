@@ -90,6 +90,9 @@ Router::post('/code/recovery', 'codeController@sendRecuperationCode');
 Router::post('/code/check', 'codeController@checkCode');
 
 Router::post('/file', 'FileController@save', true);
+Router::post('/users/file', 'FileController@saveUserFile', true);
+Router::get('/users/{id}/files', 'FileController@getAll', true);
+Router::get('/users/me/files', 'FileController@getMines', true);
 
 
 /* Routes accessible via l'api algorithms */
