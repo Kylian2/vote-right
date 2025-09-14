@@ -187,4 +187,69 @@ class File extends Model
         $files = $prepare->fetchAll();
         return $files;
     }
+
+    /**
+     * Mets à jour les informations d'un fichier 
+     * 
+     * @param int $id l'identifiant du fichier à modifier
+     * @param array fieldsToUpdate un tableau contenant la liste des éléments à modifier
+     * 
+     * @return boolean
+     * - 400 avec un message JSON en cas d'erreur lors de la mise à jour d'une donnée.
+     * - true (JSON) si la mise à jour réussit.
+     */
+    public function update(int $id, array $fieldsToUpdate)
+    {
+        if (empty($fieldsToUpdate)) {
+            return false;
+        }
+
+        $values = array();
+        $setParts = array();
+
+        if (in_array('name', $fieldsToUpdate)) {
+            $setParts[] = 'FIL_name_VC = :name';
+            $values['name'] = $this->FIL_name_VC;
+        }
+
+        $values['id'] = $id;
+
+        echo json_encode($values);
+
+        $request = 'UPDATE file SET ' . implode(', ', $setParts) . ' WHERE FIL_id_NB = :id';
+        $prepare = connexion::pdo()->prepare($request);
+        try {
+            $prepare->execute($values);
+        } catch (Exception $e) {
+            http_response_code(400);
+            $return["Erreur"] = $e->getMessage();
+            echo json_encode($return);
+            return false;
+        }
+    }
+
+    /**
+     * Supprime un fichier
+     * 
+     * @param int $id l'identifiant du fichier à supprimer
+     * 
+     * @return boolean
+     * - 400 avec un message JSON en cas d'erreur lors de la suppression.
+     * - true (JSON) si la suppression réussit.
+     */
+    public static function delete(int $id)
+    {
+        $request = 'DELETE FROM file WHERE FIL_id_NB = :id';
+        $prepare = connexion::pdo()->prepare($request);
+        $values['id'] = $id;
+        try {
+            $prepare->execute($values);
+            return true;
+        } catch (Exception $e) {
+            http_response_code(400);
+            $return["Erreur"] = $e->getMessage();
+            echo json_encode($return);
+            return false;
+        }
+    }
 }

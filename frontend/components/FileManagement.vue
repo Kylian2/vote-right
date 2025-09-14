@@ -1,5 +1,14 @@
 <template>
-    <div>
+    <div
+        @click="
+            () => {
+                if (actionContainer) {
+                    actionContainer.classList.add('d-none')
+                }
+                actionContainer.value = null
+            }
+        "
+    >
         <h3>Tous les fichiers</h3>
         <div class="file-management__actions">
             <div class="file-management__action" @click="addDocumentModal = true">
@@ -22,7 +31,45 @@
                         <td>{{ file['FIL_name_VC'] }}</td>
                         <td>{{ file['FIL_type_NB'] }}</td>
                         <td>{{ file['created_at'] }}</td>
-                        <td><i class="material-icons">more_vert</i></td>
+                        <td>
+                            <i
+                                class="material-icons"
+                                @click="
+                                    (event) => {
+                                        if (actionContainer) {
+                                            actionContainer.classList.add('d-none')
+                                        }
+                                        event.target.nextElementSibling.classList.toggle('d-none')
+                                        actionContainer = event.target.nextElementSibling
+                                        event.stopPropagation()
+                                    }
+                                "
+                                >more_vert</i
+                            >
+                            <ul @click="$event.stopPropagation()" class="file-management__table__actions d-none">
+                                <li
+                                    @click="
+                                        () => {
+                                            fileHandled = file['FIL_id_NB']
+                                            renameDocumentModal = true
+                                        }
+                                    "
+                                >
+                                    Renommer
+                                </li>
+                                <li
+                                    @click="
+                                        () => {
+                                            fileHandled = file['FIL_id_NB']
+                                            deleteFile()
+                                        }
+                                    "
+                                    class="careful"
+                                >
+                                    Supprimer
+                                </li>
+                            </ul>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -62,6 +109,25 @@
         </template>
     </Modal>
 
+    <Modal
+        :name="`renameDocumentModalSetting`"
+        ok-text="Renommer"
+        cancel-text="Annuler"
+        :disable-valid="!renameFileName"
+        :before-ok="renameFile"
+    >
+        <template #title>Renommer le document</template>
+        <template #body>
+            <Input
+                placeholder="Entrez le nom du document"
+                name="renameFileName"
+                type="text"
+                :rules="[(v) => v.length < 100 || 'Le nom doit comporter 100 caractères maximum']"
+                >Nom du document</Input
+            >
+        </template>
+    </Modal>
+
     <Toast name="fileManagementErrorToast" :type="1" :time="10" :loader="true">{{ errorToastText }}</Toast>
     <Toast name="fileManagementSuccessToast" :type="3" :time="5" :loader="true">{{ successToastText }}</Toast>
 </template>
@@ -71,6 +137,7 @@ const config = useRuntimeConfig()
 const files = ref()
 
 const addDocumentModal = useState('addNewDocumentModalSettingModal', () => false)
+const renameDocumentModal = useState('renameDocumentModalSettingModal', () => false)
 const image = useState('image', () => null)
 const name = useState('fileName')
 
@@ -78,6 +145,10 @@ const successToast = useState('fileManagementSuccessToastUp', () => false)
 const successToastText = ref()
 const errorToast = useState('fileManagementErrorToastUp', () => false)
 const errorToastText = ref()
+
+const actionContainer = ref(null)
+const fileHandled = ref(null)
+const renameFileName = useState('renameFileName')
 
 const handleFileChange = (event) => {
     image.value = event.target.files[0]
@@ -123,6 +194,54 @@ const addFile = async () => {
         console.error('An unexpected error occurred:', error)
     }
 
+    return true
+}
+
+const renameFile = async () => {
+    try {
+        const response = await $fetch(`${config.public.baseUrl}/file/${fileHandled.value}`, {
+            method: 'PATCH',
+            body: {
+                name: renameFileName.value,
+            },
+            credentials: 'include',
+        })
+        if (response) {
+            renameFileName.value = ''
+            successToastText.value = 'Le fichier a été renommé !'
+            successToast.value = true
+            fetchFiles()
+        }
+    } catch (error) {
+        console.error('An error occured', error)
+        errorToastText.value = "Une erreur est survenue, le fichier n'a pas été renommé"
+        errorToast.value = true
+        return false
+    }
+
+    fileHandled.value = null
+    return true
+}
+
+const deleteFile = async () => {
+    try {
+        const response = await $fetch(`${config.public.baseUrl}/file/${fileHandled.value}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        })
+        if (response) {
+            renameFileName.value = ''
+            successToastText.value = 'Le fichier a été supprimé'
+            successToast.value = true
+            fetchFiles()
+        }
+    } catch (error) {
+        console.error('An error occured', error)
+        errorToastText.value = "Une erreur est survenue, le fichier n'a pas été supprimé"
+        errorToast.value = true
+        return false
+    }
+    fileHandled.value = null
     return true
 }
 

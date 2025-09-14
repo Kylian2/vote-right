@@ -27,7 +27,6 @@ $breakpoints: (
     display: none !important;
 }
 
-
 h1{
     font-size: 36px;
     margin: 30px 5%;
@@ -100,7 +99,7 @@ h4{
     align-items: flex-start;
 }
 
-.error{
+.error, .careful{
     color: red;
 }
 

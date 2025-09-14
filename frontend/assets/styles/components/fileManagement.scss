@@ -55,6 +55,27 @@
             }
         }
 
+        &__actions{
+            position: absolute;
+            top: 10px;
+            left: 40px;
+            background: $background-light;
+            list-style-type:none;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 5px;
+            > li {
+                display: block;
+                padding: 5px;
+                border-radius: 5px;
+                &:hover{
+                    background-color: darken($background-light, 5%);
+                    transition: .3s;
+                }
+            }
+        }
+
         > tbody {
             > tr {
                 cursor: pointer;

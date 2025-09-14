@@ -42,4 +42,31 @@ class FileController
         $files = File::getAllOf(SessionGuard::getUserId());
         echo json_encode($files);
     }
+
+    public static function update(array $params)
+    {
+        $body = file_get_contents('php://input');
+        $body = json_decode($body, true);
+
+        if (empty($body) || !isset($body["name"])) {
+            http_response_code(422);
+            echo '{"Unprocessable Entity":"at least one field is required"}';
+            return;
+        }
+
+        $fieldsToUpdate = array();
+        $file = new File();
+
+        if (isset($body["name"]) && $body["name"] !== "" && strlen($body["name"]) <= 100) {
+            $fieldsToUpdate[] = 'name';
+            $file->FIL_name_VC = $body["name"];
+        }
+
+        $file->update($params[0], $fieldsToUpdate);
+    }
+
+    public static function delete(array $params)
+    {
+        echo File::delete($params[0]);
+    }
 }
