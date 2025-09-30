@@ -128,6 +128,21 @@ class File extends Model
             $target_file_type != "jpg" && $target_file_type != "png" && $target_file_type != "jpeg" && $target_file_type != "pdf" && $target_file_type != "docx"
         ) return false;
 
+        // Check if file extension matches MIME type
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime_type = finfo_file($finfo, $_FILES[$array_name]["tmp_name"]);
+        finfo_close($finfo);
+        $allowed_types = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'pdf' => 'application/pdf',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ];
+        if (!in_array($mime_type, $allowed_types)) {
+            return false;
+        }
+
         if (!is_dir($target_dir)) {
             mkdir($target_dir, 0775, true);
             // 0775 = droits lecture/écriture/exécution pour proprio + groupe
@@ -137,7 +152,7 @@ class File extends Model
 
         $values = array(
             "FIL_name_VC" => $target_name,
-            "FIL_type_VC" => $target_file_type,
+            "FIL_type_VC" => $mime_type,
             "FIL_path_VC" => $target_file,
             "FIL_user_NB" => SessionGuard::getUserId()
         );

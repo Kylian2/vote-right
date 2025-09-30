@@ -16,63 +16,72 @@
                 <p>Ajouter un document</p>
             </div>
         </div>
-        <div class="file-management__table__container">
-            <table class="file-management__table">
-                <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Type</th>
-                        <th>Date de l'ajout</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="file in files">
-                        <td>{{ file['FIL_name_VC'] }}</td>
-                        <td>{{ file['FIL_type_NB'] }}</td>
-                        <td>{{ file['created_at'] }}</td>
-                        <td>
-                            <i
-                                class="material-icons"
-                                @click="
-                                    (event) => {
-                                        if (actionContainer) {
-                                            actionContainer.classList.add('d-none')
-                                        }
-                                        event.target.nextElementSibling.classList.toggle('d-none')
-                                        actionContainer = event.target.nextElementSibling
-                                        event.stopPropagation()
-                                    }
-                                "
-                                >more_vert</i
-                            >
-                            <ul @click="$event.stopPropagation()" class="file-management__table__actions d-none">
-                                <li
+        <div class="file-management__wrapper">
+            <div class="file-management__table__container">
+                <table class="file-management__table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Type</th>
+                            <th>Date de l'ajout</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="file in files" @click="selectFile = file">
+                            <td>{{ file['FIL_name_VC'] }}</td>
+                            <td>{{ mime_to_human[file['FIL_type_VC']] }}</td>
+                            <td>{{ file['created_at'] }}</td>
+                            <td>
+                                <i
+                                    class="material-icons"
                                     @click="
-                                        () => {
-                                            fileHandled = file['FIL_id_NB']
-                                            renameDocumentModal = true
+                                        (event) => {
+                                            if (actionContainer) {
+                                                actionContainer.classList.add('d-none')
+                                            }
+                                            event.target.nextElementSibling.classList.toggle('d-none')
+                                            actionContainer = event.target.nextElementSibling
+                                            event.stopPropagation()
                                         }
                                     "
+                                    >more_vert</i
                                 >
-                                    Renommer
-                                </li>
-                                <li
-                                    @click="
-                                        () => {
-                                            fileHandled = file['FIL_id_NB']
-                                            deleteFile()
-                                        }
-                                    "
-                                    class="careful"
-                                >
-                                    Supprimer
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                <ul @click="$event.stopPropagation()" class="file-management__table__actions d-none">
+                                    <li
+                                        @click="
+                                            () => {
+                                                fileHandled = file['FIL_id_NB']
+                                                renameDocumentModal = true
+                                            }
+                                        "
+                                    >
+                                        Renommer
+                                    </li>
+                                    <li
+                                        @click="
+                                            () => {
+                                                fileHandled = file['FIL_id_NB']
+                                                deleteFile()
+                                            }
+                                        "
+                                        class="careful"
+                                    >
+                                        Supprimer
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="file-management__preview">
+                <embed
+                    v-if="config.public.baseUrl && selectFile"
+                    :src="`${config.public.baseUrl}/${selectFile['FIL_path_VC']}`"
+                    :type="'application/pdf'"
+                />
+            </div>
         </div>
     </div>
 
@@ -134,6 +143,13 @@
 <script setup>
 const config = useRuntimeConfig()
 
+const mime_to_human = {
+    'application/pdf': 'PDF',
+    'image/jpeg': 'Image JPEG',
+    'image/png': 'Image PNG',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Document Word',
+}
+
 const files = ref()
 
 const addDocumentModal = useState('addNewDocumentModalSettingModal', () => false)
@@ -149,6 +165,8 @@ const errorToastText = ref()
 const actionContainer = ref(null)
 const fileHandled = ref(null)
 const renameFileName = useState('renameFileName')
+
+const selectFile = ref()
 
 const handleFileChange = (event) => {
     image.value = event.target.files[0]

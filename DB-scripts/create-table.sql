@@ -229,7 +229,7 @@ CREATE TABLE file(
     FIL_id_NB INT AUTO_INCREMENT,
     FIL_name_VC VARCHAR(100),
     FIL_path_VC VARCHAR(255),
-    FIL_type_VC VARCHAR(20),
+    FIL_type_VC VARCHAR(255), -- Pour stocker les types MIME des fichiers, certains peuvent être longs (docx notamment)
     FIL_user_NB INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
