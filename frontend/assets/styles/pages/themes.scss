@@ -1,6 +1,6 @@
 .theme {
     display: flex;
-
+    margin: 80px 4rem;
     h2 {
         font-family: $main-font;
         font-size: 2.5rem;
@@ -18,7 +18,6 @@
     }
 
     &__background {
-        width: 90%;
         background: linear-gradient(135deg, $text-primary 0%, $color-5 100%);
         border-radius: 2rem;
     }
@@ -26,26 +25,24 @@
     &__interactions {
         display: flex ;
         flex-direction: column;
-        padding: 3rem 1rem;
-        margin-left: 2rem;
         gap: 2rem;
 
         &__return-guide {
             display: flex;
             flex-direction: row;
+            align-items: center;
             height: 70px;
             transition: filter 0.3s ease, transform 0.3s ease;
             cursor: pointer;
+            position: sticky;
+            top: 18%;
+            gap: 5%;
 
-            &__left-arrow {
+            > i{
                 align-self: center;
-                height: 35px;
-                width: 35px;
                 margin-left: 6%;
-            }
-
-            &__guide {
-                margin: auto auto;
+                font-size: 30px;
+                color: white;
             }
 
             &:hover {
@@ -62,14 +59,16 @@
             display: flex;
             flex-direction: column;
             position: sticky;
-            top: 25%;
+            top: 30%;
 
-            &__close {
+            > i {
                 display : none;
+                font-size: 30px !important;
+                color: white;
             }
 
             &__section-title {
-                margin: 1rem 0.5rem 1rem 2rem;
+                margin: 2rem 0.5rem 1rem 2rem;
                 font-size: 2rem !important;
                 color: white;
             }
@@ -97,9 +96,7 @@
 
     &__content {
         width: 70%;
-        padding: 3rem;
-        margin-right: 2rem;
-
+        padding-left: 3rem;
         &__section {
             margin-bottom: 5rem;
         }
@@ -107,29 +104,31 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .theme {
-    h2 {
-        font-size: 2rem;
-    }
+    .theme {
+        
+        h2 {
+            font-size: 2rem;
+        }
 
-    &__sidebar {
-        margin: 3rem 0.5rem;
+        &__sidebar {
+            margin: 3rem 0.5rem;
 
-        &__summary {
-            margin: 0rem 0rem 1rem 1rem;
+            &__summary {
+                margin: 0rem 0rem 1rem 1rem;
+            }
+        }
+
+        &__content {
+            width: 78%;
+            padding: 0 2rem;
         }
     }
-
-    &__content {
-        width: 78%;
-        padding: 3rem 2rem;
-    }
-  }
 }
 
 @media screen and (max-width: 768px) {
     .theme {
         flex-direction: column;
+        margin: 20px 3.5rem;
 
         h2 {
             font-size: 2.5rem;
@@ -150,13 +149,16 @@
             margin-left: 0rem;
 
             &__return-guide {
-                &__left-arrow {
-                    height: 40px;
-                    width: 40px;
+
+                > i{
+                    align-self: center;
+                    margin-left: 6%;
+                    font-size: 30px;
+                    color: white;
                 }
 
                 &__guide {
-                    margin: auto auto auto 5%;
+                    margin: 5%;
                 }
             }
 
@@ -188,12 +190,12 @@
                 transition: transform 0.3s ease;
                 z-index: 100;
 
-                &__close {
+                > i {
                     display: block;
-                    height: 40px;
-                    width: 40px;
-                    margin: 0rem 0rem 2rem auto;
+                    font-size: 30px !important;
+                    color: white;
                     cursor: pointer;
+                    align-self: self-end;
                 }
 
                 &.active {
@@ -209,3 +211,9 @@
         }
     }
 }
+
+@media screen and (max-width: 639px) {
+    .theme{
+      margin: 20px 0;
+    }
+  }
