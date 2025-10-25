@@ -8,36 +8,36 @@
                 <h3 class="theme__interactions__return-guide__guide">Retour au guide</h3>
             </a>
 
-            <div class="theme__interactions__show-summary theme__background">
+            <div @click="openSidebar" class="theme__interactions__show-summary theme__background">
                 <h3 class="theme__interactions__show-summary__summary">Sommaire</h3>
             </div>
 
-            <div class="theme__interactions__sidebar theme__background">
-                <i class="material-icons theme__interactions__sidebar__close">close</i>
+            <div :class="{ active: isSidebarOpen }" class="theme__interactions__sidebar theme__background">
+                <i @click="closeSidebar" class="material-icons theme__interactions__sidebar__close">close</i>
                 <h2 class="theme__interactions__sidebar__section-title">Gestion du compte</h2>
                 <nav>
-                    <ul class="theme__interactions__sidebar__summary">
-                        <li>
-                            <a href="#part1" class="theme__interactions__sidebar__summary__shortens">
-                                1. Gérer les paramètres de notification
+                    <ol class="theme__interactions__sidebar__summary">
+                        <li @click="closeSidebar">
+                            <a @click.prevent="scrollToSection('part1')" class="theme__interactions__sidebar__summary__shortens">
+                                Gérer les paramètres de notification
                             </a>
                         </li>
-                        <li>
-                            <a href="#part2" class="theme__interactions__sidebar__summary__shortens">
-                                2. Modifier les informations de son compte
+                        <li @click="closeSidebar">
+                            <a @click.prevent="scrollToSection('part2')" class="theme__interactions__sidebar__summary__shortens">
+                                Modifier les informations de son compte
                             </a>
                         </li>
-                        <li>
-                            <a href="#part3" class="theme__interactions__sidebar__summary__shortens">
-                                3. Modifier son mot de passe
+                        <li @click="closeSidebar">
+                            <a @click.prevent="scrollToSection('part3')" class="theme__interactions__sidebar__summary__shortens">
+                                Modifier son mot de passe
                             </a>
                         </li>
-                        <li>
-                            <a href="#part4" class="theme__interactions__sidebar__summary__shortens">
-                                4. Supprimer son compte
+                        <li @click="closeSidebar">
+                            <a @click.prevent="scrollToSection('part4')" class="theme__interactions__sidebar__summary__shortens">
+                                Supprimer son compte
                             </a>
                         </li>
-                    </ul>
+                    </ol>
                 </nav>
             </div>
         </div>
@@ -85,69 +85,26 @@
         </div>
     </main>
 
-    <footer id="contact" class="footer">
-        <div class="footer__content">
-            <div class="footer__brand">
-                <a href="/" class="footer__logo">VoteRight</a>
-                <p class="footer__description">
-                    La plateforme de démocratie participative qui transforme vos idées en actions concrètes.
-                </p>
-            </div>
-
-            <nav class="footer__nav">
-                <ul class="footer__nav-list">
-                    <li><a href="#fonctionnalites" class="footer__nav-link">Fonctionnalités</a></li>
-                    <!--<li><a href="#" class="footer__nav-link">Tarifs</a></li>-->
-                    <li><a href="#contact" class="footer__nav-link">Contact</a></li>
-                    <li><a href="#" class="footer__nav-link">Mentions légales</a></li>
-                    <li><a href="#" class="footer__nav-link">Confidentialité</a></li>
-                    <li><a href="https://beta.voteright.fr" class="footer__nav-link">Support</a></li>
-                </ul>
-            </nav>
-        </div>
-
-        <div class="footer__bottom">
-            <p>&copy; 2025 VoteRight Team. Tous droits réservés.</p>
-        </div>
-    </footer>
+    <Footer id="contact"></Footer>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
 
-onMounted(() => {
-    const sidebar = document.querySelector('.theme__interactions__sidebar')
-    const summaryButton = document.querySelector('.theme__interactions__show-summary')
-    const closeButton = document.querySelector('.theme__interactions__sidebar__close')
-    const links = document.querySelectorAll('.theme__interactions__sidebar__summary__shortens')
+import { ref } from 'vue'
 
-    const offsetter = () => document.getElementById('navbar').getBoundingClientRect().height + 30
+const isSidebarOpen = ref(false)
 
-    links.forEach((link) => {
-        link.addEventListener('click', (event) => {
-            event.preventDefault()
-            const targetId = link.getAttribute('href').substring(1)
-            const target = document.getElementById(targetId)
+const openSidebar = () => (isSidebarOpen.value = true)
+const closeSidebar = () => (isSidebarOpen.value = false)
 
-            const y = target.getBoundingClientRect().top + window.scrollY - offsetter()
-            window.scrollTo({ top: y, behavior: 'smooth' })
+const offsetter = () => document.getElementById('navbar').getBoundingClientRect().height + 30
 
-            if (sidebar) {
-                sidebar.classList.remove('active')
-            }
-        })
-    })
+const scrollToSection = (id) => {
+  const target = document.getElementById(id)
+  if (!target) return
+  const y = target.getBoundingClientRect().top + window.scrollY - offsetter()
+  window.scrollTo({ top: y, behavior: 'smooth' })
+  closeSidebar()
+}
 
-    if (summaryButton && sidebar) {
-        summaryButton.addEventListener('click', () => {
-            sidebar.classList.add('active')
-        })
-    }
-
-    if (closeButton && sidebar) {
-        closeButton.addEventListener('click', () => {
-            sidebar.classList.remove('active')
-        })
-    }
-})
 </script>
