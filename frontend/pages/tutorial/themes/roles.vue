@@ -18,21 +18,44 @@
                 <nav>
                     <ol class="theme__interactions__sidebar__summary">
                         <li @click="closeSidebar">
-                            <a @click.prevent="scrollToSection('part1')" class="theme__interactions__sidebar__summary__shortens">
+                            <a
+                                @click.prevent="scrollToSection('part1')"
+                                class="theme__interactions__sidebar__summary__shortens"
+                            >
                                 Administrateur
                             </a>
                         </li>
                         <li @click="closeSidebar">
-                            <a @click.prevent="scrollToSection('part2')" class="theme__interactions__sidebar__summary__shortens"> Décideur </a>
+                            <a
+                                @click.prevent="scrollToSection('part2')"
+                                class="theme__interactions__sidebar__summary__shortens"
+                            >
+                                Décideur
+                            </a>
                         </li>
                         <li @click="closeSidebar">
-                            <a @click.prevent="scrollToSection('part3')" class="theme__interactions__sidebar__summary__shortens"> Modérateur </a>
+                            <a
+                                @click.prevent="scrollToSection('part3')"
+                                class="theme__interactions__sidebar__summary__shortens"
+                            >
+                                Modérateur
+                            </a>
                         </li>
                         <li @click="closeSidebar">
-                            <a @click.prevent="scrollToSection('part4')" class="theme__interactions__sidebar__summary__shortens"> Assesseur </a>
+                            <a
+                                @click.prevent="scrollToSection('part4')"
+                                class="theme__interactions__sidebar__summary__shortens"
+                            >
+                                Assesseur
+                            </a>
                         </li>
                         <li @click="closeSidebar">
-                            <a @click.prevent="scrollToSection('part5')" class="theme__interactions__sidebar__summary__shortens"> Membre </a>
+                            <a
+                                @click.prevent="scrollToSection('part5')"
+                                class="theme__interactions__sidebar__summary__shortens"
+                            >
+                                Membre
+                            </a>
                         </li>
                     </ol>
                 </nav>
@@ -95,9 +118,6 @@
 </template>
 
 <script setup>
-
-import { ref } from 'vue'
-
 const isSidebarOpen = ref(false)
 
 const openSidebar = () => (isSidebarOpen.value = true)
@@ -106,11 +126,10 @@ const closeSidebar = () => (isSidebarOpen.value = false)
 const offsetter = () => document.getElementById('navbar').getBoundingClientRect().height + 30
 
 const scrollToSection = (id) => {
-  const target = document.getElementById(id)
-  if (!target) return
-  const y = target.getBoundingClientRect().top + window.scrollY - offsetter()
-  window.scrollTo({ top: y, behavior: 'smooth' })
-  closeSidebar()
+    const target = document.getElementById(id)
+    if (!target) return
+    const y = target.getBoundingClientRect().top + window.scrollY - offsetter()
+    window.scrollTo({ top: y, behavior: 'smooth' })
+    closeSidebar()
 }
-
 </script>
