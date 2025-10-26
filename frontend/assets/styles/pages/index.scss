@@ -167,6 +167,20 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-color:  rgba(255, 255, 255, 0.95);
         }
     }
+
+    &--blue {
+        background-color: #ffffff;
+        color: #5AB7EE;
+        border: 2px solid rgba(90, 183, 238, 0.4);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:hover {
+        background: linear-gradient(135deg, #5AB7EE, #3A8DCE);
+        color: white;
+        border-color: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 20px 40px -10px rgba(90, 183, 238, 0.3);
+        }
+    }
     
     &--large {
         padding: 1.125rem 2.5rem;
@@ -430,6 +444,10 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     }
 
+    &__guide {
+        margin-top: 2%;
+    }
+
     .material-icons{
         font-size: 30px;
     }
@@ -633,91 +651,5 @@ section.cta {
             margin-top: 24px;
         }
 
-    }
-}
-
-// ===== FOOTER COMPONENT =====
-.footer {
-    background: $text-primary;
-    color: $contrast;
-    padding: 2rem 1rem;
-    position: relative;
-
-    @include respond-to(md) {
-        padding: 4rem 4rem;
-    }
-    
-    &__content {
-        display: grid;
-        gap: 3rem;
-        text-align: center;
-        
-        @include respond-to(md) {
-            grid-template-columns: 1fr 2fr;
-            text-align: left;
-            gap: 4rem;
-        }
-    }
-    
-    &__brand {
-        margin-bottom: 1rem;
-    }
-    
-    &__logo {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: $contrast;
-        text-decoration: none;
-        background: $contrast;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    &__description {
-        margin-top: 1rem;
-        color: rgba(255, 255, 255, 0.7);
-        max-width: 400px;
-        margin-left: auto;
-        margin-right: auto;
-        
-        @include respond-to(md) {
-            margin-left: 0;
-            margin-right: 0;
-        }
-    }
-    
-    &__nav {
-        &-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            list-style: none;
-            
-            @include respond-to(md) {
-                justify-content: flex-end;
-            }
-        }
-        
-        &-link {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: $transition;
-            font-weight: 500;
-            
-            &:hover {
-                color: $contrast;
-            }
-        }
-    }
-    
-    &__bottom {
-        margin-top: 3rem;
-        padding-top: 2rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        text-align: center;
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 0.875rem;
     }
 }
