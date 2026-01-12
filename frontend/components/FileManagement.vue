@@ -260,6 +260,10 @@ const deleteFile = async () => {
         return false
     }
     fileHandled.value = null
+    if (actionContainer) {
+        actionContainer.value.classList.add('d-none')
+    }
+    actionContainer.value = null
     return true
 }
 
