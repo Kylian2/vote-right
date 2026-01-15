@@ -5,7 +5,12 @@
     <h1 class="members__title">Gestion des membres</h1>
     <main class="members">
         <div class="members__actions-bar">
-            <button class="btn btn-small" @click="invitationModal = true">Inviter un membre</button>
+            <div>
+                <button class="btn btn-small" @click="invitationModal = true">Inviter un membre</button>
+                <NuxtLink class="btn btn-small" :to="`/communities/${$route.params.id}/supportings`"
+                    >Demander des justificatifs</NuxtLink
+                >
+            </div>
             <button
                 class="btn btn-small"
                 :disabled="Object.keys(changedRole).length === 0"

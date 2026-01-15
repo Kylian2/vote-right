@@ -8,6 +8,13 @@
             flex-direction: column;
             gap: 10px;
         }
+        > div{
+            display: flex;
+            gap: 10px;
+            @media screen and (max-width: 600px) {
+                flex-direction: column;
+            }
+        }
     }
 
     &__list{
