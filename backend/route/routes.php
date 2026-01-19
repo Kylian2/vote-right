@@ -96,6 +96,8 @@ Router::post('/users/file', 'FileController@saveUserFile', true);
 Router::get('/users/{id}/files', 'FileController@getAll', true);
 Router::get('/users/me/files', 'FileController@getMines', true);
 
+Router::get('/communities/{id}/supportings', 'SupportingController@getAllOfCommunity', true);
+Router::post('/communities/{id}/supportings', 'SupportingController@store', true);
 
 /* Routes accessible via l'api algorithms */
 Router::get('/algo/users', 'userController@index', false, true);
