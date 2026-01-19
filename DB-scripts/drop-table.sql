@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS transmission;
+DROP TABLE IF EXISTS supporting;
 DROP TABLE IF EXISTS formal_request;
 DROP TABLE IF EXISTS report;
 DROP TABLE IF EXISTS comment_reaction;
