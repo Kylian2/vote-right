@@ -7,7 +7,7 @@ class Supporting extends Model
     public int $SUP_id_NB;
     public int $SUP_community_NB;
     public string $SUP_label_VC;
-    public string $SUP_description_TX;
+    public string $SUP_description_TXT;
     public string $created_at;
     public string $updated_at;
 
@@ -30,13 +30,13 @@ class Supporting extends Model
      */
     public function insert()
     {
-        $request = "INSERT INTO supporting (SUP_community_NB, SUP_label_VC, SUP_description_TX) 
-                    VALUES (:community, :name, :description)";
+        $request = "INSERT INTO supporting (SUP_community_NB, SUP_label_VC, SUP_description_TXT) 
+                    VALUES (:community, :label, :description)";
         $prepare = connexion::pdo()->prepare($request);
         return $prepare->execute([
             'community' => $this->SUP_community_NB,
-            'name' => $this->SUP_label_VC,
-            'description' => $this->SUP_description_TX
+            'label' => $this->SUP_label_VC,
+            'description' => $this->SUP_description_TXT
         ]);
     }
 }

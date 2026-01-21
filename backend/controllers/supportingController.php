@@ -26,8 +26,8 @@ class SupportingController
         $data = json_decode(file_get_contents('php://input'), true);
         $supporting = new Supporting();
         $supporting->SUP_community_NB = $data['community'];
-        $supporting->SUP_label_VC = $data['name'];
-        $supporting->SUP_description_TX = $data['description'];
+        $supporting->SUP_label_VC = $data['label'];
+        $supporting->SUP_description_TXT = $data['description'];
 
         if ($supporting->insert()) {
             http_response_code(201);

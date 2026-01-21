@@ -5,7 +5,7 @@
     <h1 class="members__title">Gestion des justificatifs</h1>
 
     <main class="supportings">
-        <table>
+        <table v-if="supportings && supportings.length > 0">
             <thead>
                 <tr>
                     <th>Nom de la pièce</th>
@@ -14,27 +14,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Justificatif de domicile</td>
-                    <td>Permet de vérifier l'adresse de résidence du membre.</td>
-                    <td class="invisible">
-                        <button class="delete-button">
-                            <i class="material-icons" id="leaderboard-icon">close</i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Pièce d'identité</td>
-                    <td>Permet de confirmer l'identité du membre.</td>
-                    <td class="invisible">
-                        <button class="delete-button">
-                            <i class="material-icons" id="leaderboard-icon">close</i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Justificatif de revenu</td>
-                    <td>Utilisé pour évaluer la situation financière du membre.</td>
+                <tr v-for="supporting in supportings" :key="supporting['SUP_id_NB']">
+                    <td>{{ supporting['SUP_label_VC'] }}</td>
+                    <td>{{ supporting['SUP_description_TXT'] }}</td>
                     <td class="invisible">
                         <button class="delete-button">
                             <i class="material-icons" id="leaderboard-icon">close</i>
@@ -43,7 +25,7 @@
                 </tr>
             </tbody>
         </table>
-
+        <p v-else>Vous ne demandez aucun justificatif pour le moment.</p>
         <div class="supportings__forms">
             <form class="supportings__form">
                 <h3>Ajouter un justificatif</h3>
@@ -61,12 +43,25 @@
                     :rules="[(v) => Boolean(v) || 'Une description est requise']"
                     >Description du justificatif</TextArea
                 >
-                <button formmethod="dialog" :disabled="!supportingForm" class="btn btn-primary">
+                <button
+                    formmethod="dialog"
+                    :disabled="!supportingForm"
+                    class="btn btn-primary"
+                    @click="handleSupporting"
+                >
                     Ajouter le justificatif
                 </button>
             </form>
         </div>
     </main>
+
+    <Toast name="supportingSuccess" :type="3" :time="10" :loader="true" class="toast">
+        Le justificatif a été ajouté
+    </Toast>
+
+    <Toast name="supportingError" :type="1" :time="10" :loader="true" class="toast">
+        Erreur lors de l'ajout du justificatif
+    </Toast>
 </template>
 <script setup>
 const config = useRuntimeConfig()
@@ -83,6 +78,43 @@ const supportingDescriptionValid = useState('supportingDescriptionValid')
 
 const supportingForm = computed(() => {
     return supportingNameValid.value && supportingDescriptionValid.value
+})
+
+const successToastUp = useState('supportingSuccessUp')
+const errorToastUp = useState('supportingErrorUp')
+
+const supportings = ref([])
+const fetchData = async () => {
+    try {
+        supportings.value = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/supportings`, {
+            credentials: 'include',
+        })
+    } catch (err) {
+        console.error('Impossible to fetch supportings date', err)
+    }
+}
+
+const handleSupporting = async () => {
+    try {
+        const answer = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/supportings`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {
+                community: route.params.id,
+                label: supportingName.value,
+                description: supportingDescription.value,
+            },
+        })
+        fetchData()
+        successToastUp.value = false
+    } catch (error) {
+        console.log('An error occured', error)
+        errorToastUp.value = true
+    }
+}
+
+onMounted(() => {
+    fetchData()
 })
 
 onBeforeUnmount(() => {
