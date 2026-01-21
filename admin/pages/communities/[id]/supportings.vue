@@ -18,8 +18,16 @@
                     <td>{{ supporting['SUP_label_VC'] }}</td>
                     <td>{{ supporting['SUP_description_TXT'] }}</td>
                     <td class="invisible">
-                        <button class="delete-button">
-                            <i class="material-icons" id="leaderboard-icon">close</i>
+                        <button
+                            class="delete-button"
+                            @click="
+                                () => {
+                                    handledSupporting = supporting
+                                    deleteSupportingModalOpen = true
+                                }
+                            "
+                        >
+                            <i class="material-icons">close</i>
                         </button>
                     </td>
                 </tr>
@@ -31,6 +39,7 @@
                 <h3>Ajouter un justificatif</h3>
                 <Input
                     name="supportingName"
+                    type="text"
                     label="Nom du justificatif"
                     placeholder="Indiquer le nom du justificatif"
                     :rules="[(v) => Boolean(v) || 'Un nom est requis']"
@@ -55,13 +64,33 @@
         </div>
     </main>
 
+    <Modal
+        name="deleteSupporting"
+        class="modal"
+        okText="Supprimer"
+        cancelText="Annuler"
+        :before-ok="() => deleteSupporting()"
+        :before-close="
+            () => {
+                handledSupporting = null
+            }
+        "
+    >
+        <template #title>Confirmer la suppression</template>
+        <template #body>
+            <p>
+                Êtes-vous sûr de vouloir supprimer le justificatif :
+                <strong>{{ handledSupporting['SUP_label_VC'] }}</strong> ?
+            </p>
+            <p>Cette action est irréversible.</p>
+        </template>
+    </Modal>
+
     <Toast name="supportingSuccess" :type="3" :time="10" :loader="true" class="toast">
         Le justificatif a été ajouté
     </Toast>
 
-    <Toast name="supportingError" :type="1" :time="10" :loader="true" class="toast">
-        Erreur lors de l'ajout du justificatif
-    </Toast>
+    <Toast name="supportingError" :type="1" :time="10" :loader="true" class="toast"> Une erreur est survenue </Toast>
 </template>
 <script setup>
 const config = useRuntimeConfig()
@@ -96,7 +125,7 @@ const fetchData = async () => {
 
 const handleSupporting = async () => {
     try {
-        const answer = await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/supportings`, {
+        await $fetch(`${config.public.baseUrl}/communities/${route.params.id}/supportings`, {
             method: 'POST',
             credentials: 'include',
             body: {
@@ -106,7 +135,26 @@ const handleSupporting = async () => {
             },
         })
         fetchData()
-        successToastUp.value = false
+        successToastUp.value = true
+        supportingName.value = ''
+        supportingDescription.value = ''
+    } catch (error) {
+        console.log('An error occured', error)
+        errorToastUp.value = true
+    }
+}
+
+const handledSupporting = ref(null)
+const deleteSupportingModalOpen = useState('deleteSupportingModal', () => false)
+
+const deleteSupporting = async () => {
+    try {
+        await $fetch(`${config.public.baseUrl}/supportings/${handledSupporting.value['SUP_id_NB']}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        })
+        handleSupporting.value = null
+        fetchData()
     } catch (error) {
         console.log('An error occured', error)
         errorToastUp.value = true

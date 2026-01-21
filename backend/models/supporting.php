@@ -39,4 +39,15 @@ class Supporting extends Model
             'description' => $this->SUP_description_TXT
         ]);
     }
+
+    /**
+     * Supprime un justificatif de la base de données
+     * @return bool True si la suppression a réussi, false sinon
+     */
+    public static function delete(int $id)
+    {
+        $request = "DELETE FROM supporting WHERE SUP_id_NB = :id";
+        $prepare = connexion::pdo()->prepare($request);
+        return $prepare->execute(['id' => $id]);
+    }
 }

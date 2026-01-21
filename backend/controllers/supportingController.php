@@ -37,4 +37,16 @@ class SupportingController
             echo json_encode(['message' => 'Error creating supporting']);
         }
     }
+
+    public static function delete($params)
+    {
+        $id = $params[0];
+        if (Supporting::delete($id)) {
+            http_response_code(200);
+            echo json_encode(['message' => 'Supporting deleted successfully']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['message' => 'Error deleting supporting']);
+        }
+    }
 }

@@ -1,51 +1,55 @@
 <template>
+    <div @click="open = false" v-if="open" class="modal__wrapper">
+        <div @click.stop class="modal" :class="{ fullscreen: fullscreen }">
+            <h3>
+                <slot name="title"></slot>
+            </h3>
 
-<div @click="open = false" v-if="open" class="modal__wrapper">
-
-    <div @click.stop class="modal" :class="{ 'fullscreen' : fullscreen}">
-
-        <h3>
-            <slot name="title"></slot>
-        </h3>
-
-        <div class="modal__body">
-            <slot name="body"></slot>
+            <div class="modal__body">
+                <slot name="body"></slot>
+            </div>
+            <div class="modal__actions">
+                <button
+                    class="btn btn--cancel"
+                    v-if="cancelText"
+                    @click="
+                        () => {
+                            beforeCancel()
+                            beforeClose()
+                            hide()
+                        }
+                    "
+                >
+                    {{ cancelText }}
+                </button>
+                <button
+                    class="btn"
+                    :disabled="disableValid"
+                    @click="
+                        () => {
+                            beforeOk()
+                            beforeClose()
+                            hide()
+                        }
+                    "
+                >
+                    {{ okText }}
+                </button>
+            </div>
         </div>
-        <div class="modal__actions">
-            <button class="btn btn--cancel" v-if="cancelText"
-            @click="() => {
-                beforeCancel()
-                beforeClose()
-                hide()
-            }"
-            > {{ cancelText }}</button>
-            <button class="btn"
-            :disabled="disableValid"
-            @click="() => {
-                beforeOk()
-                beforeClose()
-                hide()
-            }"
-            > {{ okText }}</button>
-        </div>
-
     </div>
-
-</div>
-    
 </template>
 
 <script setup>
-
 const props = defineProps({
     okText: {
         type: String,
         required: false,
-        default: 'Valider'
+        default: 'Valider',
     },
     cancelText: {
         type: String,
-        required: false
+        required: false,
     },
     beforeOk: {
         type: Function,
@@ -62,26 +66,25 @@ const props = defineProps({
         required: false,
         default: () => {},
     },
-    fullscreen:{
+    fullscreen: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     name: {
         type: String,
         required: true,
     },
     disableValid: {
-        type: Boolean, 
+        type: Boolean,
         required: false,
         default: false,
-    }
+    },
 })
 
-const open = useState(`${props.name}Modal`, () => false);
+const open = useState(`${props.name}Modal`, () => false)
 
 const hide = () => {
-    open.value = false;
+    open.value = false
 }
-
 </script>

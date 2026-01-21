@@ -98,6 +98,7 @@ Router::get('/users/me/files', 'FileController@getMines', true);
 
 Router::get('/communities/{id}/supportings', 'SupportingController@getAllOfCommunity', true);
 Router::post('/communities/{id}/supportings', 'SupportingController@store', true);
+Router::delete('/supportings/{id}', 'SupportingController@delete', true);
 
 /* Routes accessible via l'api algorithms */
 Router::get('/algo/users', 'userController@index', false, true);
